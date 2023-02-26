@@ -1,0 +1,103 @@
+name: "Build Release APKs"
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+  push:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  build:
+    name: Build Release APKs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Setup Java environment
+      - name: Setting Java Environment
+        uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+
+      # Gradle cache
+      - name: Gradle Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      # Setup Flutter environment
+      - name: Setting Flutter Environment
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.3.9"
+
+      # Decode keystore and its properties
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_JKS_PROD }}" | base64 --decode > android/app/upload-keystore.jks
+          echo "${{ secrets.KEY_PROPERTIES_PROD }}" | base64 --decode > android/key.properties
+
+      # Test and Build Apk
+      - name: Test and Build Apk
+        run: flutter pub get && flutter test && flutter build apk --split-per-abi --build-number=${GITHUB_RUN_NUMBER}
+
+      # Get App Info
+      - name: Get Apk Info
+        id: apk-info
+        uses: hkusu/apk-info-action@v1
+        with:
+          apk-path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+
+      - name: Show Apk Info
+        run: echo "APK_VERSION=${{ steps.apk-info.outputs.version-name }}" >> $GITHUB_ENV
+
+      # Get checksums and renaiming outputs
+      - name: Get SHA-256 Checksums
+        run: |
+          set -e
+          mv build/app/outputs/flutter-apk/app.apk app.apk
+          sha=`sha256sum app.apk | awk '{ print $1 }'`
+          echo "APK_UNIVERSAL_SHA=$sha" >> $GITHUB_ENV
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-arm64-v8a.apk
+          sha=`sha256sum build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-arm64-v8a.apk | awk '{ print $1 }'`
+          echo "APK_ARM64_V8A_SHA=$sha" >> $GITHUB_ENV
+          mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-armeabi-v7a.apk
+          sha=`sha256sum build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-armeabi-v7a.apk | awk '{ print $1 }'`
+          echo "APK_ARMEABI_V7A_SHA=$sha" >> $GITHUB_ENV
+          mv build/app/outputs/flutter-apk/app-x86_64-release.apk build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-x86_64.apk
+          sha=`sha256sum build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-x86_64.apk | awk '{ print $1 }'`
+          echo "APK_X86_SHA=$sha" >> $GITHUB_ENV
+      # Create Github Release
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.APK_VERSION }}-${{ github.run_number }}
+          name: Musync v${{ env.APK_VERSION }}-${{ github.run_number }}
+          body: |
+            ---
+            ### Changelogs
+            ${{ github.event.commits[0].message }}
+            ### Checksums
+            | Variant | SHA-256 |
+            | ------- | ------- |
+            | arm64-v8a | ${{ env.APK_ARM64_V8A_SHA }}
+            | armeabi-v7a | ${{ env.APK_ARMEABI_V7A_SHA }}
+            | x86_64 | ${{ env.APK_X86_SHA }} |
+          files: |
+            build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-arm64-v8a.apk
+            build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-armeabi-v7a.apk
+            build/app/outputs/flutter-apk/Musync-v${{ env.APK_VERSION }}-${{ github.run_number }}-x86_64.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
