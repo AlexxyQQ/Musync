@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:musync/ui/home/home.dart';
 import 'package:musync/routers/router.dart';
-import 'package:musync/ui/on_boarding/on_boarding_page.dart';
+import 'package:musync/ui/on_boarding/pages/on_boarding_page.dart';
+import 'package:musync/ui/on_boarding/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -11,14 +14,13 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
+  await Firebase.initializeApp();
   runApp(
     MyApp(
       isFirstTime: isFirstTime,
     ),
   );
 }
-
-
 
 Color ourColor =
     const Color(0XFF171A9E); // color if there is no dynamic color scheme
@@ -52,18 +54,21 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Musync',
-          theme: ThemeData(
-            useMaterial3: true, // Enable Material 3
-            colorScheme: lightColorScheme,
+        return ChangeNotifierProvider(
+          create: (context) => GoogleSignInProvider(),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Musync',
+            theme: ThemeData(
+              useMaterial3: true, // Enable Material 3
+              colorScheme: lightColorScheme,
+            ),
+            darkTheme: ThemeData(
+              colorScheme: darkColorScheme,
+            ),
+            onGenerateRoute: (settings) => generateRoute(settings),
+            home: isFirstTime ? const GetStartedPage() : const HomePage(),
           ),
-          darkTheme: ThemeData(
-            colorScheme: darkColorScheme,
-          ),
-          onGenerateRoute: (settings) => generateRoute(settings),
-          home: isFirstTime ? const GetStartedPage() : const HomePage(),
         );
       },
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musync/ui/on_boarding/on_boarding_page.dart';
+import 'package:musync/ui/home/provider/auth_check.dart';
+import 'package:musync/ui/on_boarding/pages/on_boarding_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -7,10 +8,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => const GetStartedPage(),
       );
-    // case '/home':
-    //   return MaterialPageRoute<dynamic>(
-    //     builder: (BuildContext context) => const MyHomePage(),
-    //   );
+    case '/auth_check':
+      return MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const AuthCheck(),
+      );
     default:
       return MaterialPageRoute(
         settings: settings,

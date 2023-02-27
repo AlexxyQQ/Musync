@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "759352717609",
+    "project_id": "musync-bc65e",
+    "storage_bucket": "musync-bc65e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759352717609:android:4c53883e75655c4cd08738",
+        "android_client_info": {
+          "package_name": "com.alexxy.musync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759352717609-2qp5o5eg3pke76gelpj40dmca55qgcos.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexxy.musync",
+            "certificate_hash": "35a57a57f90da0da99570aa9d067b1da387f71b0"
+          }
+        },
+        {
+          "client_id": "759352717609-nbrljpccl74ur2s7huf7iao5g5biq4tk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf4aAS7glyHunq2ZruUu0yhMscPt6uB-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759352717609-nbrljpccl74ur2s7huf7iao5g5biq4tk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

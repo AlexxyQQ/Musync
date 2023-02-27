@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:musync/ui/on_boarding/provider/google_sign_in.dart';
 import 'package:musync/widgets/custom_page_indicator.dart';
 import 'package:musync/ui/on_boarding/page_builder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:musync/widgets/icon_buttons.dart';
+import 'package:provider/provider.dart';
 
 class GetStartedPage extends StatefulWidget {
   static const String routeName = '/';
@@ -29,12 +31,12 @@ class _GetStartedPageState extends State<GetStartedPage> {
         toolbarHeight: 15,
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 30),
           child: Center(
             child: CustomPageIndicator(
               controller: controller,
-              itemCount: 3,
-              dotWidth: 80,
+              itemCount: 4,
+              dotWidth: 50,
               dotHeight: 5,
               trailing: true,
               activeColor: Colors.black,
@@ -53,10 +55,12 @@ class _GetStartedPageState extends State<GetStartedPage> {
                 bgcol = const Color(0xffceeaca);
               } else if (index == 1) {
                 bgcol = const Color(0xffd6c4ee);
+              } else if (index == 2) {
+                bgcol = const Color(0xFF9EBB8E);
               } else {
                 bgcol = const Color(0xffdaccc5);
               }
-              isLastPage = index == 2;
+              isLastPage = index == 3;
             });
           },
           scrollDirection: Axis.horizontal,
@@ -76,6 +80,12 @@ class _GetStartedPageState extends State<GetStartedPage> {
               subtitle: 'Listen to your favorite music',
             ),
             OnBoardPageBuilder(
+              color: Color(0xFF9EBB8E),
+              imgUrl: 'assets/images/undraw_music.svg',
+              title: 'Listen to your favorite music3',
+              subtitle: 'Listen to your favorite music',
+            ),
+            OnBoardPageBuilder(
               color: Color(0xffdaccc5),
               imgUrl: 'assets/images/undraw_music.svg',
               title: 'Listen to your favorite music3',
@@ -86,25 +96,40 @@ class _GetStartedPageState extends State<GetStartedPage> {
       ),
       bottomSheet: isLastPage
           ? Container(
+              height: 120,
               color: bgcol,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color(0xFF000000),
-                    minimumSize: const Size.fromHeight(85),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Sign In with Google',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        IconButtons(
+                          icon: "assets/icons/google.png",
+                          onPressed: () async {
+                            try {
+                              final provider =
+                                  Provider.of<GoogleSignInProvider>(context,
+                                      listen: false);
+                              await provider.googleLogin();
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/auth_check', (route) => false);
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    prefs.setBool('isFirstTime', false);
-                  },
-                  child: const Text(
-                    'Get Started',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
+                ],
               ),
             )
           : Container(
@@ -127,8 +152,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                       ),
                       onPressed: () {
                         controller.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut);
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeIn);
                       },
                       child: const Text('Next'),
                     ),
@@ -142,9 +167,9 @@ class _GetStartedPageState extends State<GetStartedPage> {
                         minimumSize: const Size.fromHeight(50),
                       ),
                       onPressed: () {
-                        controller.animateToPage(2,
+                        controller.animateToPage(3,
                             duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut);
+                            curve: Curves.easeIn);
                       },
                       child: const Text('Skip'),
                     ),
