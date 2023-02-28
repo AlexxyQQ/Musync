@@ -131,7 +131,10 @@ class _GetStartedPageState extends State<GetStartedPage> {
                         ),
                         const SizedBox(height: 5),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/music', (route) => false);
+                          },
                           child: const Text(
                             'Sign In withot an account',
                             style: TextStyle(

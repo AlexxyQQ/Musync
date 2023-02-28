@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:musync/ui/home/home.dart';
+import 'package:musync/ui/home/pages/home.dart';
 import 'package:musync/routers/router.dart';
 import 'package:musync/ui/on_boarding/pages/on_boarding_page.dart';
 import 'package:musync/ui/on_boarding/provider/google_sign_in.dart';

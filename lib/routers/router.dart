@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musync/ui/home/provider/auth_check.dart';
+import 'package:musync/ui/music/pages/dashboard.dart';
 import 'package:musync/ui/on_boarding/pages/on_boarding_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -11,6 +12,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/auth_check':
       return MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => const AuthCheck(),
+      );
+    case '/music':
+      return MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => const MusicDashboard(),
       );
     default:
       return MaterialPageRoute(
