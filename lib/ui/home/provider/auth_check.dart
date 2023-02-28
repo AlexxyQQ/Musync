@@ -25,9 +25,8 @@ class AuthCheck extends StatelessWidget {
               child: Text('Error'),
             );
           }
-          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
           return const Center(
-            child: Text('Error'),
+            child: CircularProgressIndicator(),
           );
         },
       ),

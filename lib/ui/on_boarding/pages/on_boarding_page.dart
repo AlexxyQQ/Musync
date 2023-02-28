@@ -96,7 +96,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
       ),
       bottomSheet: isLastPage
           ? Container(
-              height: 120,
+              height: 150,
               color: bgcol,
               child: Row(
                 children: [
@@ -106,25 +106,40 @@ class _GetStartedPageState extends State<GetStartedPage> {
                         const Text(
                           'Sign In with Google',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 10),
                         IconButtons(
                           icon: "assets/icons/google.png",
-                          onPressed: () async {
+                          onPressed: () {
                             try {
+                              setState(() {});
                               final provider =
                                   Provider.of<GoogleSignInProvider>(context,
                                       listen: false);
-                              await provider.googleLogin();
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, '/auth_check', (route) => false);
+                              provider.googleLogin();
+                              if (provider.user != null) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/auth_check', (route) => false);
+                              }
                             } catch (e) {
                               print(e);
                             }
                           },
+                        ),
+                        const SizedBox(height: 5),
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Sign In withot an account',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ],
                     ),

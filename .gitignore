@@ -15,7 +15,7 @@ linux
 macos
 windows
 web
-
+android\app\google-services.json
 # IntelliJ related
 *.iml
 *.ipr

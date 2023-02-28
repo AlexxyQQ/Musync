@@ -60,6 +60,8 @@ class _HomePageState extends State<HomePage> {
               ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/', (route) => false);
                 },
                 child: const Text('Sign Out'),
               ),
