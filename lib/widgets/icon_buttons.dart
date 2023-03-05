@@ -5,6 +5,7 @@ class IconButtons extends StatelessWidget {
   final double height;
   final double width;
   final VoidCallback onPressed;
+  final Color color;
 
   const IconButtons({
     Key? key,
@@ -12,6 +13,7 @@ class IconButtons extends StatelessWidget {
     required this.onPressed,
     this.height = 60,
     this.width = 50,
+    this.color = Colors.white,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class IconButtons extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           maximumSize: const Size(500, 150),
-          backgroundColor: Colors.white,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),

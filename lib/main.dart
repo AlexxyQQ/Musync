@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:musync/ui/home/pages/home.dart';
 import 'package:musync/routers/router.dart';
+import 'package:musync/ui/home/provider/auth_check.dart';
 import 'package:musync/ui/on_boarding/pages/on_boarding_page.dart';
 import 'package:musync/ui/on_boarding/provider/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Musync',
             theme: ThemeData(
+              fontFamily: 'Sans',
               useMaterial3: true, // Enable Material 3
               colorScheme: lightColorScheme,
             ),
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
               colorScheme: darkColorScheme,
             ),
             onGenerateRoute: (settings) => generateRoute(settings),
-            home: isFirstTime ? const GetStartedPage() : const HomePage(),
+            home: isFirstTime ? const GetStartedPage() : const AuthCheck(),
           ),
         );
       },

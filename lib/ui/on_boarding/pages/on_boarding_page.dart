@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:musync/ui/on_boarding/provider/google_sign_in.dart';
 import 'package:musync/widgets/custom_page_indicator.dart';
 import 'package:musync/ui/on_boarding/page_builder.dart';
-import 'package:musync/widgets/icon_buttons.dart';
+import 'package:musync/widgets/icon_button_text.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetStartedPage extends StatefulWidget {
   static const String routeName = '/';
@@ -17,6 +18,30 @@ class _GetStartedPageState extends State<GetStartedPage> {
   static PageController controller = PageController();
   bool isLastPage = false;
   Color bgcol = const Color(0xffceeaca);
+
+  List<dynamic> pages = const [
+    OnBoardPageBuilder(
+      color: Color(0xffceeaca),
+      imgUrl: 'assets/images/undraw_music.svg',
+      title: 'Welcome to Musync',
+      subtitle:
+          'Seamlessly switch between your computer and phone without missing a beat.',
+    ),
+    OnBoardPageBuilder(
+      color: Color(0xffd6c4ee),
+      imgUrl: 'assets/images/undraw_music.svg',
+      title: 'Listen to you library offline',
+      subtitle: 'Musync support playing offline media saved in you device.',
+    ),
+    OnBoardPageBuilder(
+      color: Color(0xFF9EBB8E),
+      imgUrl: 'assets/images/undraw_music.svg',
+      title: 'Get started now!!',
+      subtitle:
+          'Login with you Google account and forget about remembering you password.',
+    ),
+  ];
+
   @override
   void dispose() {
     controller.dispose();
@@ -35,7 +60,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
           child: Center(
             child: CustomPageIndicator(
               controller: controller,
-              itemCount: 4,
+              itemCount: 3,
               dotWidth: 50,
               dotHeight: 5,
               trailing: true,
@@ -47,7 +72,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
       ),
       body: Container(
         padding: const EdgeInsets.only(bottom: 100),
-        child: PageView(
+        child: PageView.builder(
           controller: controller,
           onPageChanged: (index) {
             setState(() {
@@ -55,99 +80,51 @@ class _GetStartedPageState extends State<GetStartedPage> {
                 bgcol = const Color(0xffceeaca);
               } else if (index == 1) {
                 bgcol = const Color(0xffd6c4ee);
-              } else if (index == 2) {
-                bgcol = const Color(0xFF9EBB8E);
               } else {
-                bgcol = const Color(0xffdaccc5);
+                bgcol = const Color(0xFF9EBB8E);
               }
-              isLastPage = index == 3;
+              isLastPage = index == 2;
             });
           },
           scrollDirection: Axis.horizontal,
           reverse: false,
           physics: const BouncingScrollPhysics(),
-          children: const [
-            OnBoardPageBuilder(
-              color: Color(0xffceeaca),
-              imgUrl: 'assets/images/undraw_music.svg',
-              title: 'Listen to your favorite music',
-              subtitle: 'Listen to your favorite music',
-            ),
-            OnBoardPageBuilder(
-              color: Color(0xffd6c4ee),
-              imgUrl: 'assets/images/undraw_music.svg',
-              title: 'Listen to your favorite music2',
-              subtitle: 'Listen to your favorite music',
-            ),
-            OnBoardPageBuilder(
-              color: Color(0xFF9EBB8E),
-              imgUrl: 'assets/images/undraw_music.svg',
-              title: 'Listen to your favorite music3',
-              subtitle: 'Listen to your favorite music',
-            ),
-            OnBoardPageBuilder(
-              color: Color(0xffdaccc5),
-              imgUrl: 'assets/images/undraw_music.svg',
-              title: 'Listen to your favorite music3',
-              subtitle: 'Listen to your favorite music',
-            ),
-          ],
+          itemCount: pages.length,
+          itemBuilder: (context, index) {
+            return pages[index];
+          },
         ),
       ),
       bottomSheet: isLastPage
           ? Container(
-              height: 150,
+              height: 110,
               color: bgcol,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Sign In with Google',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        IconButtons(
-                          icon: "assets/icons/google.png",
-                          onPressed: () {
-                            try {
-                              setState(() {});
-                              final provider =
-                                  Provider.of<GoogleSignInProvider>(context,
-                                      listen: false);
-                              provider.googleLogin();
-                              if (provider.user != null) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, '/auth_check', (route) => false);
-                              }
-                            } catch (e) {
-                              print(e);
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 5),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, '/music', (route) => false);
-                          },
-                          child: const Text(
-                            'Sign In withot an account',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              child: IconButtonsText(
+                text: "Get Started",
+                textColor: Colors.white,
+                bgcolor: Colors.black,
+                width: MediaQuery.of(context).size.width * 0.85,
+                height: 70,
+                icon: "assets/icons/google.png",
+                onPressed: () async {
+                  try {
+                    setState(() {});
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    await provider.googleLogin();
+
+                    if (provider.user != null) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/auth_check', (route) => false);
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isFirstTime', false);
+                    } else {
+                      // Handle the case where the user is not signed in.
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                },
               ),
             )
           : Container(
