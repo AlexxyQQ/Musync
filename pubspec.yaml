@@ -41,6 +41,8 @@ dependencies:
   google_sign_in: ^6.0.1
   firebase_core: ^2.7.0
   flutter_native_splash: ^2.2.18
+  path_provider: ^2.0.13
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

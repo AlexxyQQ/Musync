@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musync/ui/home/provider/auth_check.dart';
-import 'package:musync/ui/music/pages/library_page.dart';
+import 'package:musync/ui/music/pages/music_list_page.dart';
 import 'package:musync/ui/on_boarding/pages/on_boarding_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -15,7 +15,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     case '/music':
       return MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => const LibraryPage(),
+        builder: (BuildContext context) => const MusicListPage(),
       );
     default:
       return MaterialPageRoute(

@@ -2,9 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:musync/routers/router.dart';
-import 'package:musync/ui/home/provider/auth_check.dart';
 import 'package:musync/ui/on_boarding/pages/on_boarding_page.dart';
 import 'package:musync/ui/on_boarding/provider/google_sign_in.dart';
+import 'package:musync/widgets/bottom_nav.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,11 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+
+  var permissionStatus = await Permission.storage.status;
+  if (permissionStatus.isDenied) {
+    await Permission.storage.request();
+  }
 
   await Firebase.initializeApp();
   runApp(
@@ -68,7 +74,7 @@ class MyApp extends StatelessWidget {
               colorScheme: darkColorScheme,
             ),
             onGenerateRoute: (settings) => generateRoute(settings),
-            home: isFirstTime ? const GetStartedPage() : const AuthCheck(),
+            home: isFirstTime ? const GetStartedPage() : const BottomNav(),
           ),
         );
       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musync/ui/music/pages/library_page.dart';
+import 'package:musync/ui/music/pages/music_folder_page.dart';
+import 'package:musync/ui/music/pages/music_list_page.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -11,8 +12,8 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
   int currentIndex = 0;
   final screens = [
-    const LibraryPage(),
-    const Placeholder(),
+    const MusicListPage(),
+    const MusicFolderPage(),
     const Placeholder(),
   ];
 
@@ -109,7 +110,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                               Theme.of(context).primaryColor.withOpacity(0.5),
                         ),
                         padding: const EdgeInsets.all(2),
-                        child: Icon(
+                        child: const Icon(
                           Icons.music_note_rounded,
                           color: Colors.black87,
                         ),
@@ -157,7 +158,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                               Theme.of(context).primaryColor.withOpacity(0.5),
                         ),
                         padding: const EdgeInsets.all(2),
-                        child: Icon(
+                        child: const Icon(
                           Icons.folder_rounded,
                           color: Colors.black87,
                         ),
@@ -205,7 +206,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                               Theme.of(context).primaryColor.withOpacity(0.5),
                         ),
                         padding: const EdgeInsets.all(2),
-                        child: Icon(
+                        child: const Icon(
                           Icons.album_rounded,
                           color: Colors.black87,
                         ),

@@ -48,6 +48,10 @@ class _GetStartedPageState extends State<GetStartedPage> {
     super.dispose();
   }
 
+  void authcheck() {
+    Navigator.pushNamedAndRemoveUntil(context, '/auth_check', (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,15 +118,14 @@ class _GetStartedPageState extends State<GetStartedPage> {
                     await provider.googleLogin();
 
                     if (provider.user != null) {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/auth_check', (route) => false);
+                      authcheck();
                       final prefs = await SharedPreferences.getInstance();
                       prefs.setBool('isFirstTime', false);
                     } else {
                       // Handle the case where the user is not signed in.
                     }
                   } catch (e) {
-                    print(e);
+                    debugPrint(e.toString());
                   }
                 },
               ),
