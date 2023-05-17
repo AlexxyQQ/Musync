@@ -1,3 +1,15 @@
+#For Commit
+lib/src/settings
+lib/src/music_library 
+lib/src/home
+lib/src/authentication
+lib/src/common
+lib/src/home
+lib/src/utils
+
+
+
+
 # Miscellaneous
 *.class
 *.log
