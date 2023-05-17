@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:http/http.dart' as http;
 import 'package:musync/src/authentication/data/providers/authentication_provider.dart';
 import 'package:musync/src/authentication/data/providers/user_provider.dart';
+import 'package:musync/src/authentication/presentation/components/main_auth_page.dart';
 import 'package:musync/src/common/custom_snackbar.dart';
 import 'package:musync/src/common/data/models/error_model.dart';
 import 'package:musync/src/common/data/repositories/local_storage_repository.dart';
@@ -153,7 +154,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
                       if (!isFirstTime && goHome) {
                         return BottomNavBar();
                       } else if (!isFirstTime) {
-                        return const Placeholder(); //MainAuthPage();
+                        return const MainAuthPage();
                       } else {
                         return const OnBoardingPage();
                       }

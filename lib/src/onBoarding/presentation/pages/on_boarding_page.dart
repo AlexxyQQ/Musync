@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musync/src/common/custom_page_indicator.dart';
 import 'package:musync/src/common/data/repositories/local_storage_repository.dart';
 import 'package:musync/src/home/presentation/pages/home.dart';
+import 'package:musync/src/music_library/data/providers/song_provider.dart';
 import 'package:musync/src/music_library/presentation/pages/library_page.dart';
 import 'package:musync/src/onBoarding/presentation/components/page_builder.dart';
 import 'package:musync/src/utils/colors.dart';
@@ -198,7 +199,7 @@ class LastPage extends ConsumerWidget {
                 boxName: 'settings', key: "isFirstTime", value: false);
             LocalStorageRepository()
                 .setValue(boxName: 'settings', key: "goHome", value: true);
-            // await ref.read(songProvider).permission();
+            await ref.read(songProvider).permission();
             navigator.pushNamedAndRemoveUntil(
               '/home',
               (route) => false,

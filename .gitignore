@@ -2,7 +2,7 @@
 lib/src/settings
 lib/src/music_library 
 lib/src/home
-lib/src/authentication
+lib/src/authentication/data
 lib/src/common
 lib/src/home
 lib/src/utils
