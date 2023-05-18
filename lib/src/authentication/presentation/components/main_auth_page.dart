@@ -133,43 +133,44 @@ class LoginSignupButton extends StatelessWidget {
                         backgroundColor: isDark ? offBlackColor : offWhiteColor,
                       ),
                       onPressed: () async {
-                        final navigator = Navigator.of(context);
-                        final sMessenger = ScaffoldMessenger.of(context);
-                        final errorModel = await ref
-                            .read(authenticationProvider)
-                            .signUpGoogle();
-                        if (errorModel.error == null) {
-                          await LocalStorageRepository().setValue(
-                            boxName: 'settings',
-                            key: "goHome",
-                            value: true,
-                          );
-                          ref
-                              .read(userProvider.notifier)
-                              .update((state) => errorModel.data);
-                          await ref.read(songProvider).permission();
-                          navigator.pushNamedAndRemoveUntil(
-                            '/home',
-                            (route) => false,
-                            arguments: {
-                              "pages": [
-                                // Home Page
-                                const HomePage(),
-                                // IDK
-                                const Placeholder(),
-                                // Library Page
-                                const LibraryPage()
-                              ],
-                              "selectedIndex": 0,
-                            },
-                          );
-                        } else {
-                          sMessenger.showSnackBar(
-                            SnackBar(
-                              content: Text(errorModel.error!),
-                            ),
-                          );
-                        }
+                        // ! UNCOMMENT THIS TO ENABLE GOOGLE SIGN IN
+                        // final navigator = Navigator.of(context);
+                        // final sMessenger = ScaffoldMessenger.of(context);
+                        // final errorModel = await ref
+                        //     .read(authenticationProvider)
+                        //     .signUpGoogle();
+                        // if (errorModel.error == null) {
+                        //   await LocalStorageRepository().setValue(
+                        //     boxName: 'settings',
+                        //     key: "goHome",
+                        //     value: true,
+                        //   );
+                        //   ref
+                        //       .read(userProvider.notifier)
+                        //       .update((state) => errorModel.data);
+                        //   await ref.read(songProvider).permission();
+                        //   navigator.pushNamedAndRemoveUntil(
+                        //     '/home',
+                        //     (route) => false,
+                        //     arguments: {
+                        //       "pages": [
+                        //         // Home Page
+                        //         const HomePage(),
+                        //         // IDK
+                        //         const Placeholder(),
+                        //         // Library Page
+                        //         const LibraryPage()
+                        //       ],
+                        //       "selectedIndex": 0,
+                        //     },
+                        //   );
+                        // } else {
+                        //   sMessenger.showSnackBar(
+                        //     SnackBar(
+                        //       content: Text(errorModel.error!),
+                        //     ),
+                        //   );
+                        // }
                       },
                       child: Image.asset(
                         'assets/icons/google.png',

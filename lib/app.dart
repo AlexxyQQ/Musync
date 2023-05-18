@@ -14,11 +14,13 @@ import 'package:musync/src/utils/routers.dart';
 
 import 'src/home/presentation/components/bottomNav/bottom_nav.dart';
 
+/// To check if device is connected to internet using connectivity package
 Future<bool> isConnectedToInternet() async {
   final connectivityResult = await Connectivity().checkConnectivity();
   return connectivityResult != ConnectivityResult.none;
 }
 
+/// To check if server is up by sending a get request to the server
 Future<bool> isServerUp() async {
   return false;
   // ! Uncomment this to check if server is up
@@ -36,11 +38,14 @@ Future<bool> isServerUp() async {
   // }
 }
 
+// scaffoldKey is used to show snackbar
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+// navigatorKey is used to navigate to a page without context
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 ErrorModel? errorModel;
 
+/// To check if device is connected to internet and server is up
 Future<void> checkConnectivityAndServer() async {
   bool connected = await isConnectedToInternet();
   if (!connected) {
@@ -82,11 +87,14 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
 
   late bool isFirstTime;
   late bool goHome;
+
+  /// To get user data from server
   Future<ErrorModel> getUserData() async {
     if (!await isConnectedToInternet()) {
       errorModel = ErrorModel(error: 'No Internet Connection', data: null);
     } else {
       if (await isServerUp()) {
+        // gets user data from server and updates userProvider
         errorModel = await ref.read(authenticationProvider).getUserData();
         if (errorModel != null && errorModel!.data != null) {
           ref.read(userProvider.notifier).update((state) => errorModel!.data);
@@ -95,6 +103,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
         errorModel = ErrorModel(error: 'Server is down', data: null);
       }
     }
+    // gets isFirstTime and goHome from local storage
     isFirstTime = await LocalStorageRepository().getValue(
       boxName: 'settings',
       key: "isFirstTime",
