@@ -6,8 +6,6 @@ import 'package:musync/src/common/formfiled.dart';
 import 'package:musync/src/utils/colors.dart';
 import 'package:musync/src/utils/text_style.dart';
 
-import 'package:permission_handler/permission_handler.dart';
-
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 

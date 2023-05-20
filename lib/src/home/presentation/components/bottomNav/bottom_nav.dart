@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musync/src/home/presentation/components/bottomNav/bottom_nav_appbar.dart';
@@ -26,7 +26,7 @@ class BottomNavBar extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   final List<Widget> pages;
-  int selectedIndex;
+  int selectedIndex; // Mark selectedIndex as final
 
   @override
   ConsumerState<BottomNavBar> createState() => _BottomNavBarState();
