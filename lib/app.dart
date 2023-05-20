@@ -9,7 +9,9 @@ import 'package:musync/src/common/custom_snackbar.dart';
 import 'package:musync/src/common/data/models/error_model.dart';
 import 'package:musync/src/common/data/repositories/local_storage_repository.dart';
 import 'package:musync/src/onBoarding/presentation/pages/on_boarding_page.dart';
+import 'package:musync/src/tab_onboarding/presentation/pages/tab_onboarding.dart';
 import 'package:musync/src/utils/colors.dart';
+import 'package:musync/src/utils/constants.dart';
 import 'package:musync/src/utils/routers.dart';
 
 import 'src/home/presentation/components/bottomNav/bottom_nav.dart';
@@ -157,19 +159,34 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
             navigatorKey: navigatorKey,
             onGenerateInitialRoutes: (initialRoute) {
               if (initialRoute == '/') {
-                return [
-                  MaterialPageRoute(
-                    builder: (context) {
-                      if (!isFirstTime && goHome) {
-                        return BottomNavBar();
-                      } else if (!isFirstTime) {
-                        return const MainAuthPage();
-                      } else {
-                        return const OnBoardingPage();
-                      }
-                    },
-                  ),
-                ];
+                if (MediaQuery.of(context).size.width >= tabletSize.width) {
+
+                  return [
+                    MaterialPageRoute(
+                      builder: (context) {
+                        if (!isFirstTime && goHome) {
+                          return BottomNavBar();
+                        } else {
+                          return const TabOnboarding();
+                        }
+                      },
+                    ),
+                  ];
+                } else {
+                  return [
+                    MaterialPageRoute(
+                      builder: (context) {
+                        if (!isFirstTime && goHome) {
+                          return BottomNavBar();
+                        } else if (!isFirstTime) {
+                          return const MainAuthPage();
+                        } else {
+                          return const OnBoardingPage();
+                        }
+                      },
+                    ),
+                  ];
+                }
               }
               return [];
             },

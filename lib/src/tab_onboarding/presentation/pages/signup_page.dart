@@ -6,16 +6,21 @@ import 'package:musync/src/common/formfiled.dart';
 import 'package:musync/src/utils/colors.dart';
 import 'package:musync/src/utils/text_style.dart';
 
-import 'package:permission_handler/permission_handler.dart';
+class TabSignupPage extends ConsumerStatefulWidget {
+  const TabSignupPage({
+    super.key,
+    required this.updateIsLogin,
+    required this.updateIsSignup,
+  });
 
-class SignupPage extends ConsumerStatefulWidget {
-  const SignupPage({super.key});
+  final Function(bool) updateIsLogin;
+  final Function(bool) updateIsSignup;
 
   @override
-  ConsumerState<SignupPage> createState() => _LoginPageState();
+  ConsumerState<TabSignupPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ConsumerState<SignupPage> {
+class _LoginPageState extends ConsumerState<TabSignupPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _usernmaeController = TextEditingController();
@@ -46,7 +51,8 @@ class _LoginPageState extends ConsumerState<SignupPage> {
         backgroundColor: isDark ? blackColor : whiteColor,
         leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/welcome');
+            widget.updateIsSignup(false);
+            widget.updateIsLogin(false);
           },
           icon: Icon(
             Icons.arrow_back_rounded,
@@ -56,11 +62,8 @@ class _LoginPageState extends ConsumerState<SignupPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/login',
-                (route) => false,
-              );
+              widget.updateIsSignup(false);
+              widget.updateIsLogin(true);
             },
             child: Text(
               'Login',
@@ -73,87 +76,81 @@ class _LoginPageState extends ConsumerState<SignupPage> {
           ),
         ],
       ),
-      body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          physics: constraints.maxHeight < MediaQuery.of(context).size.height
-              ? null
-              : const NeverScrollableScrollPhysics(),
-          controller: _scrollController,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 100,
-                    maxWidth: mediaQuerySize.width,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // SignUp
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          'Sign Up',
-                          style: textStyle(
-                            fontSize: 40,
-                            color: isDark ? whiteColor : blackColor,
-                            fontWeight: FontWeight.w700,
-                          ),
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        child: SizedBox(
+          height: mediaQuerySize.height,
+          width: mediaQuerySize.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 100,
+                  maxWidth: mediaQuerySize.width,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // SignUp
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        'Sign Up',
+                        style: textStyle(
+                          fontSize: 40,
+                          color: isDark ? whiteColor : blackColor,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      // SignUp Description
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          'Sign up to Musync to get started on all platforms.',
-                          style: textStyle(
-                            fontSize: 16,
-                            color: isDark ? whiteColor : blackColor,
-                            fontWeight: FontWeight.w600,
-                          ),
+                    ),
+                    const SizedBox(height: 20),
+                    // SignUp Description
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        'Sign up to Musync to get started on all platforms.',
+                        style: textStyle(
+                          fontSize: 16,
+                          color: isDark ? whiteColor : blackColor,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              // Signup Form
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  width: mediaQuerySize.width,
+                  height: mediaQuerySize.height * 0.65,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
+                    color: isDark ? whiteColor : blackColor,
+                  ),
+                  child: SignupForm(
+                    formKey: _formKey,
+                    usernmaeController: _usernmaeController,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    cPasswordController: _cPasswordController,
+                    ref: ref,
                   ),
                 ),
-                // Signup Form
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    width: mediaQuerySize.width,
-                    height: mediaQuerySize.height * 0.65,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
-                      ),
-                      color: isDark ? whiteColor : blackColor,
-                    ),
-                    child: SignupForm(
-                      formKey: _formKey,
-                      usernmaeController: _usernmaeController,
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      cPasswordController: _cPasswordController,
-                      ref: ref,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

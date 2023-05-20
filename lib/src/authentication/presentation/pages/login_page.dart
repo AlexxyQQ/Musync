@@ -74,78 +74,84 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: SizedBox(
-          height: mediaQuerySize.height,
-          width: mediaQuerySize.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              // Login Texts
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: 80,
-                  maxWidth: mediaQuerySize.width,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Login Text
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'Log In',
-                        style: textStyle(
-                          color: isDark ? whiteColor : blackColor,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700,
+      body: LayoutBuilder(builder: (context, constraints) {
+        return SingleChildScrollView(
+          physics: constraints.maxHeight < MediaQuery.of(context).size.height
+              ? null
+              : const NeverScrollableScrollPhysics(),
+          controller: _scrollController,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // Login Texts
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: 80,
+                    maxWidth: mediaQuerySize.width,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Login Text
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'Log In',
+                          style: textStyle(
+                            color: isDark ? whiteColor : blackColor,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                    ),
-                    // Welcome back Text
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'Welcome back, we missed you',
-                        style: textStyle(
-                          color: isDark ? whiteColor : blackColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                      // Welcome back Text
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'Welcome back, we missed you',
+                          style: textStyle(
+                            color: isDark ? whiteColor : blackColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              // Login Form
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: mediaQuerySize.height * 0.5,
-                  width: mediaQuerySize.width,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: isDark ? whiteColor : blackColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
-                  ),
-                  child: LoginForm(
-                    formKey: _formKey,
-                    emailController: _emailController,
-                    passwordController: _passwordController,
-                    ref: ref,
+                    ],
                   ),
                 ),
-              ),
-            ],
+                // Login Form
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: mediaQuerySize.height * 0.5,
+                    width: mediaQuerySize.width,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: isDark ? whiteColor : blackColor,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
+                    ),
+                    child: LoginForm(
+                      formKey: _formKey,
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                      ref: ref,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
@@ -195,7 +201,7 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           // Password Text Form Field
-          CTextFormFiled(
+          CPasswordFormField(
             controller: _passwordController,
             keyboardType: TextInputType.visiblePassword,
             hintText: 'Password',
