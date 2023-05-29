@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/app.dart';
+import 'package:musync/bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +23,10 @@ void main() async {
   await hiveOpen('uploads');
   await hiveOpen('songs');
 
+  Bloc.observer = MusyncBlocObserver();
+
   runApp(
-    const ProviderScope(
-      child: App(),
-    ),
+    const App(),
   );
 }
 

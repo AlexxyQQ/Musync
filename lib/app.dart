@@ -1,20 +1,20 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:http/http.dart' as http;
-import 'package:musync/src/authentication/data/providers/authentication_provider.dart';
-import 'package:musync/src/authentication/data/providers/user_provider.dart';
-import 'package:musync/src/authentication/presentation/components/main_auth_page.dart';
-import 'package:musync/src/common/custom_snackbar.dart';
-import 'package:musync/src/common/data/models/error_model.dart';
-import 'package:musync/src/common/data/repositories/local_storage_repository.dart';
-import 'package:musync/src/onBoarding/presentation/pages/on_boarding_page.dart';
-import 'package:musync/src/tab_onboarding/presentation/pages/tab_onboarding.dart';
-import 'package:musync/src/utils/colors.dart';
-import 'package:musync/src/utils/constants.dart';
-import 'package:musync/src/utils/routers.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/core/api.dart';
+import 'package:musync/core/common/custom_snackbar.dart';
+import 'package:musync/core/common/data/repositories/local_storage_repository.dart';
+import 'package:musync/core/common/loading_screen.dart';
+import 'package:musync/core/constants.dart';
+import 'package:musync/core/routers.dart';
+import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
+import 'package:musync/features/authentication/data/models/user_model.dart';
+import 'package:musync/features/authentication/presentation/screens/components/main_auth_page.dart';
+import 'package:musync/features/authentication/repositories/user_repositories.dart';
+import 'package:musync/features/onBoarding/pages/on_boarding_page.dart';
 
-import 'src/home/presentation/components/bottomNav/bottom_nav.dart';
+import 'features/home/presentation/components/bottomNav/bottom_nav.dart';
 
 /// To check if device is connected to internet using connectivity package
 Future<bool> isConnectedToInternet() async {
@@ -24,40 +24,40 @@ Future<bool> isConnectedToInternet() async {
 
 /// To check if server is up by sending a get request to the server
 Future<bool> isServerUp() async {
-  return false;
-  // ! Uncomment this to check if server is up
-  // try {
-  //   final res = await http.get(Uri.parse('http://192.168.1.111:3001/')).timeout(
-  //         const Duration(seconds: 5),
-  //       );
-  //   if (res.statusCode == 200) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // } catch (e) {
-  //   return false;
-  // }
+  final api = Api();
+
+  try {
+    final response = await api.sendRequest.get(
+      '/',
+    );
+    ApiResponse responseApi = ApiResponse.fromResponse(response);
+    if (responseApi.success) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
 }
 
 // scaffoldKey is used to show snackbar
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
 // navigatorKey is used to navigate to a page without context
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-ErrorModel? errorModel;
 
 /// To check if device is connected to internet and server is up
 Future<void> checkConnectivityAndServer() async {
   bool connected = await isConnectedToInternet();
   if (!connected) {
-    kShowSnackBar('No internet connection', scaffoldKey);
+    kShowSnackBar('No internet connection', scaffoldKey: scaffoldKey);
   } else {
     bool serverRunning = await isServerUp();
     if (!serverRunning) {
-      kShowSnackBar('Server is down', scaffoldKey);
+      kShowSnackBar('Server is down', scaffoldKey: scaffoldKey);
     } else {
-      kShowSnackBar('Server is up', scaffoldKey);
+      // kShowSnackBar('Server is up', scaffoldKey: scaffoldKey);
     }
   }
 }
@@ -67,44 +67,38 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        key: scaffoldKey,
-        body: const HomeWidget(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthenticationBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          key: scaffoldKey,
+          body: const HomeWidget(),
+        ),
       ),
     );
   }
 }
 
-class HomeWidget extends ConsumerStatefulWidget {
+class HomeWidget extends StatefulWidget {
   const HomeWidget({super.key});
 
   @override
-  ConsumerState<HomeWidget> createState() => _HomeWidgetState();
+  State<HomeWidget> createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends ConsumerState<HomeWidget> {
-  late Future<ErrorModel> data;
+class _HomeWidgetState extends State<HomeWidget> {
+  late bool isFirstTime = true;
+  late bool goHome = false;
 
-  late bool isFirstTime;
-  late bool goHome;
+  late Future<UserModel?> data;
 
   /// To get user data from server
-  Future<ErrorModel> getUserData() async {
-    if (!await isConnectedToInternet()) {
-      errorModel = ErrorModel(error: 'No Internet Connection', data: null);
-    } else {
-      if (await isServerUp()) {
-        // gets user data from server and updates userProvider
-        errorModel = await ref.read(authenticationProvider).getUserData();
-        if (errorModel != null && errorModel!.data != null) {
-          ref.read(userProvider.notifier).update((state) => errorModel!.data);
-        }
-      } else {
-        errorModel = ErrorModel(error: 'Server is down', data: null);
-      }
-    }
+  Future<UserModel?> getUserData() async {
     // gets isFirstTime and goHome from local storage
     isFirstTime = await LocalStorageRepository().getValue(
       boxName: 'settings',
@@ -116,8 +110,20 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
       key: "goHome",
       defaultValue: false,
     );
+    final String token = await LocalStorageRepository()
+        .getValue(boxName: 'users', key: 'token', defaultValue: '');
 
-    return errorModel!;
+    if (token == "") {
+      return null;
+    } else {
+      try {
+        final UserModel user = await UserRepositories().getUser(token: token);
+        return user;
+      } catch (e) {
+        kShowSnackBar(e.toString(), scaffoldKey: scaffoldKey);
+      }
+    }
+    return null;
   }
 
   @override
@@ -129,8 +135,7 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
-    return FutureBuilder<ErrorModel>(
+    return FutureBuilder(
       future: data,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
@@ -138,66 +143,33 @@ class _HomeWidgetState extends ConsumerState<HomeWidget> {
             title: "Musync",
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              fontFamily: 'Sans',
               useMaterial3: true, // Enable Material 3
               textTheme: Theme.of(context).textTheme.apply(
-                    bodyColor: blackColor,
-                    displayColor: blackColor,
+                    bodyColor: KColors.blackColor,
+                    displayColor: KColors.blackColor,
                   ),
             ),
             darkTheme: ThemeData(
-              fontFamily: 'Sans',
               useMaterial3: true, // Enable Material 3
               textTheme: Theme.of(context).textTheme.apply(
-                    bodyColor: whiteColor,
-                    displayColor: whiteColor,
+                    bodyColor: KColors.whiteColor,
+                    displayColor: KColors.whiteColor,
                   ),
             ),
-            routes: (user != null && user.token.isNotEmpty)
-                ? loggedinRoute
-                : loggedOutRoute,
+            routes: snapshot.data == null
+                ? Routes.loggedoutRoute
+                : Routes.loggedinRoute,
             navigatorKey: navigatorKey,
-            onGenerateInitialRoutes: (initialRoute) {
-              if (initialRoute == '/') {
-                if (MediaQuery.of(context).size.width >= tabletSize.width) {
-
-                  return [
-                    MaterialPageRoute(
-                      builder: (context) {
-                        if (!isFirstTime && goHome) {
-                          return BottomNavBar();
-                        } else {
-                          return const TabOnboarding();
-                        }
-                      },
-                    ),
-                  ];
-                } else {
-                  return [
-                    MaterialPageRoute(
-                      builder: (context) {
-                        if (!isFirstTime && goHome) {
-                          return BottomNavBar();
-                        } else if (!isFirstTime) {
-                          return const MainAuthPage();
-                        } else {
-                          return const OnBoardingPage();
-                        }
-                      },
-                    ),
-                  ];
-                }
-              }
-              return [];
-            },
-          );
-        } else {
-          return Container(
-            color: whiteColor,
-            child: const Center(
-              child: CircularProgressIndicator(),
+            onGenerateInitialRoutes: (initialRoute) =>
+                Routes.generateInitialRoutes(
+              initialRoute: '/',
+              context: context,
+              isFirstTime: isFirstTime,
+              goHome: goHome,
             ),
           );
+        } else {
+          return const LoadingScreen();
         }
       },
     );
