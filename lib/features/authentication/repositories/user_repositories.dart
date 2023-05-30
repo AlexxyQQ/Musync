@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:musync/core/api.dart';
-import 'package:musync/core/common/data/repositories/local_storage_repository.dart';
+import 'package:musync/common/api.dart';
+import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/features/authentication/data/models/user_model.dart';
 
 class UserRepositories {

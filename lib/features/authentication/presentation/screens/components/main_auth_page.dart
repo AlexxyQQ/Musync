@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musync/core/common/data/repositories/local_storage_repository.dart';
-import 'package:musync/core/constants.dart';
-import 'package:musync/core/routers.dart';
+import 'package:musync/common/local_storage_repository.dart';
+import 'package:musync/constants/constants.dart';
+import 'package:musync/routes/routers.dart';
 
 class MainAuthPage extends StatefulWidget {
   const MainAuthPage({super.key});

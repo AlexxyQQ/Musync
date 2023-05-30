@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/core/common/custom_snackbar.dart';
-import 'package:musync/core/common/formfiled.dart';
-import 'package:musync/core/constants.dart';
-import 'package:musync/core/routers.dart';
+import 'package:musync/common/custom_snackbar.dart';
+import 'package:musync/common/formfiled.dart';
+import 'package:musync/constants/constants.dart';
+import 'package:musync/constants/enums.dart';
+import 'package:musync/routes/routers.dart';
 import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
 
 class SignupPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _SignupPageState extends State<SignupPage> {
 
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
-        if (state is AuthenticationSuccess) {
+        if (state.status == Status.success) {
           kShowSnackBar("User Created Successfully", context: context);
           Navigator.pushNamedAndRemoveUntil(
             context,
@@ -59,8 +60,8 @@ class _SignupPageState extends State<SignupPage> {
             (route) => false,
           );
         }
-        if (state is AuthenticationError) {
-          kShowSnackBar(state.message, context: context);
+        if (state.status == Status.error) {
+          kShowSnackBar(state.message!, context: context);
         }
       },
       child: Scaffold(
@@ -206,7 +207,7 @@ class _SignupPageState extends State<SignupPage> {
               child: Center(
                 child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
-                    if (state is AuthenticationLoading) {
+                    if (state.status == Status.loading) {
                       return const Positioned.fill(
                         child: CircularProgressIndicator(),
                       );
@@ -260,7 +261,6 @@ class SignupForm extends StatelessWidget {
           CTextFormFiled(
             controller: _usernmaeController,
             keyboardType: TextInputType.emailAddress,
-            fillColor: isDark ? KColors.offBlackColor : KColors.whiteColor,
             hintText: 'Username',
             labelText: 'Username',
             validator: (p0) {
@@ -275,7 +275,6 @@ class SignupForm extends StatelessWidget {
           CTextFormFiled(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            fillColor: isDark ? KColors.offBlackColor : KColors.whiteColor,
             hintText: 'Email',
             labelText: 'Email',
             validator: (p0) {
@@ -296,7 +295,6 @@ class SignupForm extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             hintText: 'Password',
             labelText: 'Password',
-            fillColor: isDark ? KColors.offBlackColor : KColors.whiteColor,
             obscureText: true,
             validator: (p0) {
               if (p0!.isEmpty) {
@@ -322,7 +320,6 @@ class SignupForm extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             hintText: 'Confirm Password',
             labelText: 'Confirm Password',
-            fillColor: isDark ? KColors.offBlackColor : KColors.whiteColor,
             obscureText: true,
             validator: (p0) {
               if (p0!.isEmpty) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:musync/core/constants.dart';
+import 'package:musync/constants/constants.dart';
 
 class CTextFormFiled extends StatelessWidget {
   final String hintText;
@@ -17,7 +17,6 @@ class CTextFormFiled extends StatelessWidget {
   final void Function(String?)? onFieldSubmitted;
   final void Function()? onEditingComplete;
   final void Function()? onTap;
-  final Color? fillColor;
 
   const CTextFormFiled({
     super.key,
@@ -35,7 +34,6 @@ class CTextFormFiled extends StatelessWidget {
     this.onFieldSubmitted,
     this.onEditingComplete,
     this.onTap,
-    this.fillColor = KColors.whiteColor,
   });
 
   @override
@@ -51,32 +49,8 @@ class CTextFormFiled extends StatelessWidget {
       enableIMEPersonalizedLearning: enableIMEPersonalizedLearning!,
       decoration: InputDecoration(
         hintText: hintText,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
         labelText: labelText,
         hintTextDirection: TextDirection.ltr,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        filled: true,
-        fillColor: fillColor,
-        hintStyle: GlobalConstants.textStyle(
-          color: MediaQuery.of(context).platformBrightness == Brightness.dark
-              ? KColors.offWhiteColorThree
-              : KColors.offBlackColor,
-        ),
-        labelStyle: GlobalConstants.textStyle(
-          color: MediaQuery.of(context).platformBrightness == Brightness.dark
-              ? KColors.offWhiteColorThree
-              : KColors.offBlackColor,
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 40,
-          vertical: 25,
-        ),
-        focusColor: KColors.transparentColor,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
         suffixIconConstraints: const BoxConstraints(
           maxHeight: 10,
           maxWidth: 10,
@@ -107,7 +81,6 @@ class CPasswordFormField extends StatefulWidget {
   final void Function(String?)? onFieldSubmitted;
   final void Function()? onEditingComplete;
   final void Function()? onTap;
-  final Color? fillColor;
 
   const CPasswordFormField({
     Key? key,
@@ -125,7 +98,6 @@ class CPasswordFormField extends StatefulWidget {
     this.onFieldSubmitted,
     this.onEditingComplete,
     this.onTap,
-    this.fillColor = KColors.whiteColor,
   }) : super(key: key);
 
   @override
@@ -148,32 +120,8 @@ class _CPasswordFormFieldState extends State<CPasswordFormField> {
       enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
         labelText: widget.labelText,
         hintTextDirection: TextDirection.ltr,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        filled: true,
-        fillColor: widget.fillColor,
-        hintStyle: GlobalConstants.textStyle(
-          color: MediaQuery.of(context).platformBrightness == Brightness.dark
-              ? KColors.offWhiteColorThree
-              : KColors.offBlackColor,
-        ),
-        labelStyle: GlobalConstants.textStyle(
-          color: MediaQuery.of(context).platformBrightness == Brightness.dark
-              ? KColors.offWhiteColorThree
-              : KColors.offBlackColor,
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 40,
-          vertical: 25,
-        ),
-        focusColor: KColors.transparentColor,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
         suffixIcon: GestureDetector(
           onTap: () {
             setState(() {

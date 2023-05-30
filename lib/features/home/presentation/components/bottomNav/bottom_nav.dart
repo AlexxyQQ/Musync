@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:flutter/material.dart';
-import 'package:musync/core/constants.dart';
+import 'package:musync/constants/constants.dart';
 import 'package:musync/features/home/presentation/components/bottomNav/bottom_nav_appbar.dart';
 import 'package:musync/features/home/presentation/components/bottomNav/bottom_nav_bottomitems.dart';
 import 'package:musync/features/home/presentation/components/bottomNav/bottom_nav_drawer.dart';

@@ -1,20 +1,15 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/core/api.dart';
-import 'package:musync/core/common/custom_snackbar.dart';
-import 'package:musync/core/common/data/repositories/local_storage_repository.dart';
-import 'package:musync/core/common/loading_screen.dart';
-import 'package:musync/core/constants.dart';
-import 'package:musync/core/routers.dart';
+import 'package:musync/common/api.dart';
+import 'package:musync/common/custom_snackbar.dart';
+import 'package:musync/common/local_storage_repository.dart';
+import 'package:musync/common/loading_screen.dart';
+import 'package:musync/routes/routers.dart';
 import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
 import 'package:musync/features/authentication/data/models/user_model.dart';
-import 'package:musync/features/authentication/presentation/screens/components/main_auth_page.dart';
 import 'package:musync/features/authentication/repositories/user_repositories.dart';
-import 'package:musync/features/onBoarding/pages/on_boarding_page.dart';
-
-import 'features/home/presentation/components/bottomNav/bottom_nav.dart';
+import 'package:musync/utils/themes/app_theme.dart';
 
 /// To check if device is connected to internet using connectivity package
 Future<bool> isConnectedToInternet() async {
@@ -142,20 +137,23 @@ class _HomeWidgetState extends State<HomeWidget> {
           return MaterialApp(
             title: "Musync",
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              useMaterial3: true, // Enable Material 3
-              textTheme: Theme.of(context).textTheme.apply(
-                    bodyColor: KColors.blackColor,
-                    displayColor: KColors.blackColor,
-                  ),
-            ),
-            darkTheme: ThemeData(
-              useMaterial3: true, // Enable Material 3
-              textTheme: Theme.of(context).textTheme.apply(
-                    bodyColor: KColors.whiteColor,
-                    displayColor: KColors.whiteColor,
-                  ),
-            ),
+            theme: AppTheme.appLightTheme(),
+            darkTheme: AppTheme.appDarkTheme(),
+            themeMode: ThemeMode.system,
+            // theme: ThemeData(
+            //   useMaterial3: true, // Enable Material 3
+            //   textTheme: Theme.of(context).textTheme.apply(
+            //         bodyColor: KColors.blackColor,
+            //         displayColor: KColors.blackColor,
+            //       ),
+            // ),
+            // darkTheme: ThemeData(
+            //   useMaterial3: true, // Enable Material 3
+            //   textTheme: Theme.of(context).textTheme.apply(
+            //         bodyColor: KColors.whiteColor,
+            //         displayColor: KColors.whiteColor,
+            //       ),
+            // ),
             routes: snapshot.data == null
                 ? Routes.loggedoutRoute
                 : Routes.loggedinRoute,

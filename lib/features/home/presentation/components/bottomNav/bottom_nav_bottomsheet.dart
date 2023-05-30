@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musync/core/constants.dart';
+import 'package:musync/constants/constants.dart';
 
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musync/core/common/custom_page_indicator.dart';
-import 'package:musync/core/common/data/repositories/local_storage_repository.dart';
-import 'package:musync/core/constants.dart';
-import 'package:musync/core/routers.dart';
+import 'package:musync/common/custom_page_indicator.dart';
+import 'package:musync/common/local_storage_repository.dart';
+import 'package:musync/constants/constants.dart';
+import 'package:musync/routes/routers.dart';
 import 'package:musync/features/onBoarding/components/page_builder.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -33,25 +33,21 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     Size mediaQuerySize = MediaQuery.of(context).size;
     List<dynamic> pages = [
-      OnBoardPageBuilder(
-        color: isDark ? KColors.blackColor : KColors.whiteColor,
+      const OnBoardPageBuilder(
         lottieUrl: 'assets/lottie/4879-trumpet-music.json',
         title: 'Welcome to Musync',
         subtitle:
             'Seamlessly switch between your computer and phone without missing a beat.',
       ),
-      OnBoardPageBuilder(
-        color: isDark ? KColors.blackColor : KColors.whiteColor,
+      const OnBoardPageBuilder(
         lottieUrl: 'assets/lottie/31634-turn-music-into-audience.json',
         title: 'Listen to you library offline',
         subtitle:
             'Musync support playing offline media saved in you device or from the internet.',
       ),
-      OnBoardPageBuilder(
-          color: isDark ? KColors.blackColor : KColors.whiteColor,
+      const OnBoardPageBuilder(
           lottieUrl:
               'assets/lottie/139537-boy-avatar-listening-music-animation.json',
           title: 'Get started now!!',
@@ -60,7 +56,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
       body: SafeArea(
         child: SizedBox(
           width: mediaQuerySize.width,
@@ -87,7 +82,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 left: 0,
                 right: 0,
                 child: IconAndPageIndicator(
-                    isDark: isDark, controller: controller),
+                  controller: controller,
+                ),
               ),
               // Get Started Offline and Terms and Conditions
               Positioned(
@@ -97,11 +93,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 child: isLastPage
                     // Get Started Offline and Terms and Conditions
                     ? LastPage(
-                        isDark: isDark,
                         mediaQuerySize: mediaQuerySize,
                       )
                     // Next and Skip Button
-                    : NextAndSkip(isDark: isDark, controller: controller),
+                    : NextAndSkip(controller: controller),
               ),
             ],
           ),
@@ -114,11 +109,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 class IconAndPageIndicator extends StatelessWidget {
   const IconAndPageIndicator({
     super.key,
-    required this.isDark,
     required this.controller,
   });
 
-  final bool isDark;
   final PageController controller;
 
   @override
@@ -138,12 +131,9 @@ class IconAndPageIndicator extends StatelessWidget {
             // App Name
             Text(
               'Musync',
-              style: GlobalConstants.textStyle(
-                family: 'Sans',
-                fontSize: 23,
-                color: isDark ? KColors.whiteColor : KColors.blackColor,
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontSize: 26,
+                  ),
             ),
           ],
         ),
@@ -152,10 +142,12 @@ class IconAndPageIndicator extends StatelessWidget {
         CustomPageIndicator(
           controller: controller,
           itemCount: 3,
-          dotWidth: 50,
-          dotHeight: 12,
+          inactiveDotWidth: 12,
+          inactiveDotHeight: 12,
+          activeDotHeight: 12,
+          activeDotWidth: 70,
           dotSpacing: 15,
-          trailing: true,
+          trailing: false,
           activeColor: KColors.accentColor,
           inactiveColor: KColors.greyColor,
         ),
@@ -165,9 +157,7 @@ class IconAndPageIndicator extends StatelessWidget {
 }
 
 class LastPage extends StatelessWidget {
-  const LastPage(
-      {super.key, required this.isDark, required this.mediaQuerySize});
-  final bool isDark;
+  const LastPage({super.key, required this.mediaQuerySize});
   final Size mediaQuerySize;
 
   @override
@@ -179,12 +169,7 @@ class LastPage extends StatelessWidget {
         Text(
           "By continuing, you’re agreeing to \n Musync Privacy policy and Terms of use.",
           textAlign: TextAlign.center,
-          style: GlobalConstants.textStyle(
-            family: 'Sans',
-            fontSize: 15,
-            color: isDark ? KColors.whiteColor : KColors.blackColor,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.labelSmall,
         ),
         const SizedBox(height: 20),
         // Get Started Offline
@@ -192,7 +177,10 @@ class LastPage extends StatelessWidget {
           onPressed: () async {
             final navigator = Navigator.of(context);
             LocalStorageRepository().setValue(
-                boxName: 'settings', key: "isFirstTime", value: false);
+              boxName: 'settings',
+              key: "isFirstTime",
+              value: false,
+            );
             LocalStorageRepository()
                 .setValue(boxName: 'settings', key: "goHome", value: true);
             // await ref.read(songProvider).permission();
@@ -214,12 +202,7 @@ class LastPage extends StatelessWidget {
           },
           child: Text(
             'Get Started Offline',
-            style: GlobalConstants.textStyle(
-              family: 'Sans',
-              fontSize: 20,
-              color: isDark ? KColors.whiteColor : KColors.blackColor,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.labelLarge,
           ),
         ),
         // Get Started Online
@@ -239,9 +222,9 @@ class LastPage extends StatelessWidget {
           child: Container(
             height: 67,
             width: mediaQuerySize.width,
-            decoration: BoxDecoration(
-              color: isDark ? KColors.whiteColor : KColors.blackColor,
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              color: KColors.accentColor,
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
@@ -251,12 +234,10 @@ class LastPage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Get Started Now',
-                  style: GlobalConstants.textStyle(
-                    family: 'Sans',
-                    fontSize: 30,
-                    color: isDark ? KColors.blackColor : KColors.whiteColor,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: KColors.blackColor,
+                      ),
                 ),
               ),
             ),
@@ -270,11 +251,9 @@ class LastPage extends StatelessWidget {
 class NextAndSkip extends StatelessWidget {
   const NextAndSkip({
     super.key,
-    required this.isDark,
     required this.controller,
   });
 
-  final bool isDark;
   final PageController controller;
 
   @override
@@ -287,14 +266,13 @@ class NextAndSkip extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor:
-                  isDark ? KColors.blackColor : KColors.accentColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              backgroundColor: isDark ? KColors.whiteColor : KColors.blackColor,
-            ),
+            style: Theme.of(context).textButtonTheme.style!.copyWith(
+                  backgroundColor: MaterialStateProperty.all(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? KColors.accentColor
+                        : KColors.blackColor,
+                  ),
+                ),
             onPressed: () {
               controller.nextPage(
                 duration: const Duration(milliseconds: 800),
@@ -303,29 +281,25 @@ class NextAndSkip extends StatelessWidget {
             },
             child: Text(
               'Next',
-              style: GlobalConstants.textStyle(
-                family: 'Sans',
-                fontSize: 20,
-                color: isDark ? KColors.blackColor : KColors.accentColor,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? KColors.blackColor
+                        : KColors.whiteColor,
+                  ),
             ),
           ),
           // Skip Button
           TextButton(
             onPressed: () async {
-              controller.animateToPage(2,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut);
+              controller.animateToPage(
+                2,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
             },
             child: Text(
               'Skip',
-              style: GlobalConstants.textStyle(
-                family: 'Sans',
-                fontSize: 20,
-                color: isDark ? KColors.whiteColor : KColors.blackColor,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
         ],

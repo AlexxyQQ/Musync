@@ -1,17 +1,15 @@
 import 'dart:math';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
-import 'package:musync/core/constants.dart';
+import 'package:musync/constants/constants.dart';
 
 class OnBoardPageBuilder extends StatelessWidget {
-  final Color color;
   final String lottieUrl;
   final String title;
   final String subtitle;
 
   const OnBoardPageBuilder({
     super.key,
-    this.color = KColors.whiteColor,
     this.lottieUrl = '',
     this.title = '',
     this.subtitle = '',
@@ -19,10 +17,8 @@ class OnBoardPageBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-
     return Container(
-      color: color,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         children: [
           const SizedBox(height: 100),
@@ -30,11 +26,9 @@ class OnBoardPageBuilder extends StatelessWidget {
             padding: const EdgeInsets.only(top: 15),
             child: Text(
               title,
-              style: GlobalConstants.textStyle(
-                fontSize: 27,
-                fontWeight: FontWeight.w600,
-                color: isDark ? KColors.whiteColor : KColors.blackColor,
-              ),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontSize: 28,
+                  ),
             ),
           ),
           const SizedBox(height: 10),
@@ -45,11 +39,7 @@ class OnBoardPageBuilder extends StatelessWidget {
               child: Text(
                 subtitle,
                 textAlign: TextAlign.center,
-                style: GlobalConstants.textStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w300,
-                  color: isDark ? KColors.whiteColor : KColors.blackColor,
-                ),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
           ),
@@ -59,9 +49,10 @@ class OnBoardPageBuilder extends StatelessWidget {
             child: Container(
               height: MediaQuery.of(context).size.height * 0.465,
               decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? KColors.offWhiteColorTwo
+                    : KColors.offWhiteColor,
                 borderRadius: BorderRadius.circular(50),
-                color:
-                    isDark ? KColors.offWhiteColorTwo : KColors.offWhiteColor,
               ),
               child: Lottie.asset(
                 lottieUrl,

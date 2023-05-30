@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musync/core/constants.dart';
+import 'package:musync/constants/constants.dart';
 
 class KAppBar extends StatelessWidget implements PreferredSizeWidget {
   const KAppBar({
@@ -45,15 +45,19 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
                   // Search Bar
                   SizedBox(
                     width: mqSize.width * 0.6,
-                    child: const TextField(
+                    child: TextField(
+                      style: Theme.of(context).textTheme.bodySmall,
                       decoration: InputDecoration(
                         hintText: 'Search Music....',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(left: 10),
+                        hintStyle:
+                            Theme.of(context).textTheme.labelLarge!.copyWith(
+                                  color: KColors.greyColor,
+                                ),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        fillColor: Colors.transparent,
+                        contentPadding: const EdgeInsets.only(left: 10),
                       ),
                     ),
                   ),

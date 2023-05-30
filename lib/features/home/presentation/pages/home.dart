@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musync/core/constants.dart';
+import 'package:musync/constants/constants.dart';
 import 'package:musync/features/home/presentation/components/folder_grid.dart';
 import 'package:musync/features/home/presentation/components/horizontal_cards.dart';
 

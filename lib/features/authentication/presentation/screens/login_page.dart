@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/core/common/custom_snackbar.dart';
-import 'package:musync/core/common/formfiled.dart';
-import 'package:musync/core/constants.dart';
-import 'package:musync/core/routers.dart';
+import 'package:musync/common/custom_snackbar.dart';
+import 'package:musync/common/formfiled.dart';
+import 'package:musync/constants/constants.dart';
+import 'package:musync/constants/enums.dart';
+import 'package:musync/routes/routers.dart';
 import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
-        if (state is AuthenticationSuccess) {
+        if (state.status == Status.success) {
           kShowSnackBar("Login Successful", context: context);
           Navigator.pushNamedAndRemoveUntil(
             context,
@@ -53,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
             (route) => false,
           );
         }
-        if (state is AuthenticationError) {
-          kShowSnackBar(state.message, context: context);
+        if (state.status == Status.error) {
+          kShowSnackBar(state.message!, context: context);
         }
       },
       child: Scaffold(
@@ -193,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Center(
                 child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
-                    if (state is AuthenticationLoading) {
+                    if (state.status == Status.loading) {
                       return const Positioned.fill(
                         child: CircularProgressIndicator(),
                       );
@@ -243,7 +244,6 @@ class LoginForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             hintText: 'Email',
             labelText: 'Email',
-            fillColor: isDark ? KColors.blackColor : KColors.offWhiteColor,
             validator: (p0) {
               if (p0!.isEmpty) {
                 return 'Email is required';
@@ -262,7 +262,6 @@ class LoginForm extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             hintText: 'Password',
             labelText: 'Password',
-            fillColor: isDark ? KColors.blackColor : KColors.offWhiteColor,
             obscureText: true,
             validator: (p0) {
               if (p0!.isEmpty) {

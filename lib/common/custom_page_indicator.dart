@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:musync/core/constants.dart';
+import 'package:musync/constants/constants.dart';
 
 class CustomPageIndicator extends StatefulWidget {
   final PageController controller;
   final int itemCount;
   final Color activeColor;
   final Color inactiveColor;
-  final double dotHeight;
-  final double dotWidth;
+  final double activeDotHeight;
+  final double activeDotWidth;
+  final double inactiveDotHeight;
+  final double inactiveDotWidth;
   final double dotSpacing;
   final bool trailing;
 
@@ -17,9 +19,11 @@ class CustomPageIndicator extends StatefulWidget {
     required this.itemCount,
     this.activeColor = KColors.accentColor,
     this.inactiveColor = KColors.greyColor,
-    this.dotHeight = 8.0,
+    this.activeDotHeight = 10.0,
+    this.activeDotWidth = 20.0,
+    this.inactiveDotHeight = 8.0,
+    this.inactiveDotWidth = 20.0,
     this.dotSpacing = 8.0,
-    this.dotWidth = 20.0,
     this.trailing = false,
   }) : super(key: key);
 
@@ -76,8 +80,11 @@ class _CustomPageIndicatorState extends State<CustomPageIndicator> {
             return GestureDetector(
               onTap: () => _handleDotPressed(index),
               child: Container(
-                width: widget.dotWidth,
-                height: widget.dotHeight,
+                width:
+                    isActive ? widget.activeDotWidth : widget.inactiveDotWidth,
+                height: isActive
+                    ? widget.activeDotHeight
+                    : widget.inactiveDotHeight,
                 margin: EdgeInsets.symmetric(horizontal: widget.dotSpacing / 2),
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
