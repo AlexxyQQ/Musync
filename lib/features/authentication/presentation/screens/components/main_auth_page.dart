@@ -60,21 +60,22 @@ class LoginSignupButton extends StatelessWidget {
             // Welcome Text
             Text(
               'Welcome to Musync',
-              style: GlobalConstants.textStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.w600,
-                color: isDark ? KColors.blackColor : KColors.whiteColor,
-              ),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontSize: 32,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? KColors.blackColor
+                        : KColors.whiteColor,
+                  ),
             ),
             // Description Text
             const SizedBox(height: 6),
             Text(
               'Musync is a music streaming app that allows you to listen to your favorite music and share it with your friends.',
-              style: GlobalConstants.textStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: isDark ? KColors.blackColor : KColors.whiteColor,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? KColors.blackColor
+                        : KColors.whiteColor,
+                  ),
             ),
             const SizedBox(height: 30),
             // Login and Signup Button
@@ -87,11 +88,6 @@ class LoginSignupButton extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).popAndPushNamed('/login');
                   },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(110, 60),
-                    backgroundColor:
-                        isDark ? KColors.offBlackColor : KColors.offWhiteColor,
-                  ),
                   child: Text(
                     'LOGIN',
                     style: GlobalConstants.textStyle(
@@ -106,11 +102,6 @@ class LoginSignupButton extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).popAndPushNamed('/signup');
                   },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(110, 60),
-                    backgroundColor:
-                        isDark ? KColors.offBlackColor : KColors.offWhiteColor,
-                  ),
                   child: Text(
                     'SIGN UP',
                     style: GlobalConstants.textStyle(
@@ -122,11 +113,6 @@ class LoginSignupButton extends StatelessWidget {
                 ),
                 // Google Sign In Button
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(110, 60),
-                    backgroundColor:
-                        isDark ? KColors.offBlackColor : KColors.offWhiteColor,
-                  ),
                   onPressed: () async {
                     // ! UNCOMMENT THIS TO ENABLE GOOGLE SIGN IN
                     // final navigator = Navigator.of(context);
@@ -204,11 +190,12 @@ class LoginSignupButton extends StatelessWidget {
                 },
                 child: Text(
                   'Get Started Offline',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? KColors.blackColor : KColors.whiteColor,
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontSize: 16,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? KColors.blackColor
+                            : KColors.whiteColor,
+                      ),
                 ),
               ),
             ),
@@ -220,11 +207,21 @@ class LoginSignupButton extends StatelessWidget {
                 child: Text(
                   'By Continue, you’re agree to Musync Privacy policy and Terms of use.',
                   textAlign: TextAlign.center,
-                  style: GlobalConstants.textStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: isDark ? KColors.blackColor : KColors.whiteColor,
-                  ),
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? KColors.blackColor
+                            : KColors.whiteColor,
+                      ),
+                  // style: TextStyle(
+                  //   fontSize: 16,
+                  //   fontWeight: FontWeight.w600,
+                  //   color: isDark ? KColors.blackColor : KColors.whiteColor,
+                  // ),
+                  // style: GlobalConstants.textStyle(
+                  //   fontSize: 18,
+                  //   fontWeight: FontWeight.w400,
+                  //   color: isDark ? KColors.blackColor : KColors.whiteColor,
+                  // ),
                 ),
               ),
             ),
@@ -259,22 +256,26 @@ class LogoAndAppName extends StatelessWidget {
           // App Name
           Text(
             'Musync',
-            style: GlobalConstants.textStyle(
-              color: isDark ? KColors.whiteColor : KColors.blackColor,
-              fontSize: 40,
-              fontWeight: FontWeight.w700,
-            ),
+            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  fontSize: 40,
+                ),
+            // style: GlobalConstants.textStyle(
+            //   color: isDark ? KColors.whiteColor : KColors.blackColor,
+            //   fontSize: 40,
+            //   fontWeight: FontWeight.w700,
+            // ),
           ),
           const SizedBox(height: 10),
           // App Description
           Text(
             'Sync up and tune in with Musync - your ultimate music companion.',
             textAlign: TextAlign.center,
-            style: GlobalConstants.textStyle(
-              color: isDark ? KColors.whiteColor : KColors.blackColor,
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge,
+            // style: GlobalConstants.textStyle(
+            //   color: isDark ? KColors.whiteColor : KColors.blackColor,
+            //   fontSize: 20,
+            //   fontWeight: FontWeight.w400,
+            // ),
           ),
         ],
       ),

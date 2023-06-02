@@ -133,6 +133,7 @@ class IconAndPageIndicator extends StatelessWidget {
               'Musync',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontSize: 26,
+                    fontWeight: FontWeight.w600,
                   ),
             ),
           ],

@@ -66,19 +66,19 @@ class KTextThemes {
       // Use for Large Semi-Bold Text
       titleLarge: GoogleFonts.openSans(
         fontSize: 22,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
       titleMedium: GoogleFonts.openSans(
         fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
       titleSmall: GoogleFonts.openSans(
         fontSize: 18,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
@@ -168,19 +168,19 @@ class KTextThemes {
       // Use for Large Semi-Bold Text
       titleLarge: GoogleFonts.openSans(
         fontSize: 22,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
       titleMedium: GoogleFonts.openSans(
         fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
       titleSmall: GoogleFonts.openSans(
         fontSize: 18,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),

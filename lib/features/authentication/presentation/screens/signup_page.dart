@@ -123,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
                       children: [
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxHeight: 100,
+                            maxHeight: 120,
                             maxWidth: mediaQuerySize.width,
                           ),
                           child: Column(
@@ -135,29 +135,27 @@ class _SignupPageState extends State<SignupPage> {
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
                                   'Sign Up',
-                                  style: GlobalConstants.textStyle(
-                                    fontSize: 40,
-                                    color: isDark
-                                        ? KColors.whiteColor
-                                        : KColors.blackColor,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                        fontSize: 40,
+                                      ),
                                 ),
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 10),
                               // SignUp Description
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
                                   'Sign up to Musync to get started on all platforms.',
-                                  style: GlobalConstants.textStyle(
-                                    fontSize: 16,
-                                    color: isDark
-                                        ? KColors.whiteColor
-                                        : KColors.blackColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                 ),
                               ),
                             ],
@@ -374,12 +372,12 @@ class SignupForm extends StatelessWidget {
             child: Text(
               "By continuing, you’re agreeing to Musync Privacy policy and Terms of use.",
               textAlign: TextAlign.center,
-              style: GlobalConstants.textStyle(
-                family: 'Sans',
-                fontSize: 15,
-                color: isDark ? KColors.blackColor : KColors.whiteColor,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontSize: 15,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? KColors.blackColor
+                        : KColors.whiteColor,
+                  ),
             ),
           ),
         ],

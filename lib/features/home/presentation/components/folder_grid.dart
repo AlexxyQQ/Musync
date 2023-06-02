@@ -33,11 +33,12 @@ class HomeFolderSectionNormal extends StatelessWidget {
             children: [
               Text(
                 'Folders',
-                style: GlobalConstants.textStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
+                // style: GlobalConstants.textStyle(
+                //   color: isDark ? Colors.white : Colors.black,
+                //   fontWeight: FontWeight.bold,
+                //   fontSize: 20,
+                // ),
               ),
               const Spacer(),
               // Arrow Button

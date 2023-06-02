@@ -88,11 +88,12 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Text(
                 'Register',
-                style: GlobalConstants.textStyle(
-                  fontSize: 18,
-                  color: isDark ? KColors.whiteColor : KColors.blackColor,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(context).textTheme.titleSmall,
+                // style: GlobalConstants.textStyle(
+                //   fontSize: 18,
+                //   color: isDark ? KColors.whiteColor : KColors.blackColor,
+                //   fontWeight: FontWeight.w700,
+                // ),
               ),
             ),
           ],
@@ -129,13 +130,20 @@ class _LoginPageState extends State<LoginPage> {
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
                                   'Log In',
-                                  style: GlobalConstants.textStyle(
-                                    color: isDark
-                                        ? KColors.whiteColor
-                                        : KColors.blackColor,
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(
+                                        fontSize: 40,
+                                      ),
+
+                                  // style: GlobalConstants.textStyle(
+                                  //   color: isDark
+                                  //       ? KColors.whiteColor
+                                  //       : KColors.blackColor,
+                                  //   fontSize: 40,
+                                  //   fontWeight: FontWeight.w700,
+                                  // ),
                                 ),
                               ),
                               // Welcome back Text
@@ -144,13 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
                                   'Welcome back, we missed you',
-                                  style: GlobalConstants.textStyle(
-                                    color: isDark
-                                        ? KColors.whiteColor
-                                        : KColors.blackColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
                             ],
@@ -294,11 +296,13 @@ class LoginForm extends StatelessWidget {
                 },
                 child: Text(
                   'Forgot Password?',
-                  style: GlobalConstants.textStyle(
-                    color: isDark ? KColors.offBlackColor : KColors.whiteColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontSize: 15,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? KColors.blackColor
+                            : KColors.whiteColor,
+                        fontWeight: FontWeight.w400,
+                      ),
                 ),
               ),
             ],
@@ -327,11 +331,11 @@ class LoginForm extends StatelessWidget {
             },
             child: Text(
               'LOGIN',
-              style: GlobalConstants.textStyle(
-                color: KColors.whiteColor,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? KColors.blackColor
+                        : KColors.whiteColor,
+                  ),
             ),
           ),
           const SizedBox(height: 20),
@@ -341,12 +345,20 @@ class LoginForm extends StatelessWidget {
             child: Text(
               "By continuing, you’re agreeing to Musync Privacy policy and Terms of use.",
               textAlign: TextAlign.center,
-              style: GlobalConstants.textStyle(
-                family: 'Sans',
-                fontSize: 15,
-                color: isDark ? KColors.blackColor : KColors.whiteColor,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontSize: 15,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? KColors.blackColor
+                        : KColors.whiteColor,
+                    fontWeight: FontWeight.w400,
+                  ),
+
+              // style: GlobalConstants.textStyle(
+              //   family: 'Sans',
+              //   fontSize: 15,
+              //   color: isDark ? KColors.blackColor : KColors.whiteColor,
+              //   fontWeight: FontWeight.w500,
+              // ),
             ),
           ),
         ],
