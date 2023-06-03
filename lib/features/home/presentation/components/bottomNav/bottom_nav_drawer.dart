@@ -1,5 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/common/custom_snackbar.dart';
 import 'package:musync/constants/constants.dart';
+import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
+import 'package:musync/routes/routers.dart';
 
 class KDrawer extends StatelessWidget {
   const KDrawer({
@@ -11,6 +17,7 @@ class KDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var loggedUser = BlocProvider.of<AuthenticationBloc>(context).state.user;
     return Drawer(
       child: Container(
         color: isDark ? KColors.blackColor : KColors.whiteColor,
@@ -27,21 +34,26 @@ class KDrawer extends StatelessWidget {
                   bottomRight: Radius.circular(15),
                 ),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Profile Image
-                  // CircleAvatar(
-                  //   radius: 40,
-                  //   backgroundImage: NetworkImage(
-                  //     '${user?.profilePic}',
-                  //   ),
-                  // ),
-                  SizedBox(height: 10),
+                  Container(
+                    height: 60,
+                    width: 60,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: loggedUser != null
+                        ? Image.network(loggedUser.profilePic)
+                        : Image.asset('assets/default_profile.jpeg'),
+                  ),
+
+                  const SizedBox(height: 10),
                   // Profile Name
                   Text(
-                    // '${user?.username.toUpperCase()}',
-                    'username',
+                    loggedUser?.username.toUpperCase() ?? 'Guest',
                   ),
                 ],
               ),
@@ -53,25 +65,37 @@ class KDrawer extends StatelessWidget {
                   // Drawer Item
                   ListTile(
                     leading: const Icon(Icons.home_rounded),
-                    title: const Text('Home'),
+                    title: Text(
+                      'Home',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     onTap: () {},
                   ),
                   // Drawer Item
                   ListTile(
                     leading: const Icon(Icons.search_rounded),
-                    title: const Text('Search'),
+                    title: Text(
+                      'Search',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     onTap: () {},
                   ),
                   // Drawer Item
                   ListTile(
                     leading: const Icon(Icons.library_music_rounded),
-                    title: const Text('Library'),
+                    title: Text(
+                      'Library',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     onTap: () {},
                   ),
                   // Drawer Item
                   ListTile(
                     leading: const Icon(Icons.settings_rounded),
-                    title: const Text('Settings'),
+                    title: Text(
+                      'Settings',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     onTap: () {
                       // Navigator.push(
                       //   context,
@@ -84,8 +108,22 @@ class KDrawer extends StatelessWidget {
                   // Drawer Item
                   ListTile(
                     leading: const Icon(Icons.logout_rounded),
-                    title: const Text('Logout'),
-                    onTap: () {},
+                    title: Text(
+                      'Logout',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    onTap: () async {
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .add(LogoutEvent());
+                      kShowSnackBar(
+                        'Logged Out',
+                        context: context,
+                      );
+                      Navigator.popAndPushNamed(
+                        context,
+                        Routes.getStartedRoute,
+                      );
+                    },
                   ),
                 ],
               ),
