@@ -24,6 +24,8 @@ class SignupEvent extends AuthenticationEvent {
   });
 }
 
+class GoogleEvent extends AuthenticationEvent {}
+
 class LogoutEvent extends AuthenticationEvent {}
 
 class InitialLogin extends AuthenticationEvent {

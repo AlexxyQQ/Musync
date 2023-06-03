@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musync/common/custom_page_indicator.dart';
+import 'package:musync/common/common_widgets/custom_page_indicator.dart';
 import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/routes/routers.dart';

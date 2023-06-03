@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musync/common/shimmers.dart';
+import 'package:musync/common/common_widgets/shimmers.dart';
 import 'package:musync/constants/constants.dart';
 
 class HomeOtherSection extends StatelessWidget {

@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:musync/common/api.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:musync/common/api/api.dart';
 import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/features/authentication/data/models/user_model.dart';
 
@@ -119,5 +120,64 @@ class UserRepositories {
       boxName: 'users',
       key: 'token',
     );
+  }
+
+  Future<UserModel> google() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final user = await googleSignIn.signIn();
+    try {
+      if (user != null) {
+        // User signup
+        final response = await _api.sendRequest.post(
+          "/users/signup",
+          data: jsonEncode({
+            "username": user.displayName.toString().toLowerCase(),
+            "email": user.email,
+            "password": user.id,
+            "confirmPassword": user.id,
+            "profilePic": user.photoUrl,
+            "type": "google",
+          }),
+        );
+
+        ApiResponse responseApi = ApiResponse.fromResponse(response);
+        if (responseApi.success) {
+          // Login user
+          UserModel loggedUser =
+              await login(email: user.email, password: user.id);
+
+          return loggedUser;
+        } else {
+          throw (responseApi.message.toString());
+        }
+      } else {
+        throw ('Google sign in failed.');
+      }
+    } on DioError catch (e) {
+      if (e.response != null) {
+        var responseApi = ApiResponse.fromResponse(e.response!);
+        if (responseApi.message.toString() ==
+                'User with same USERNAME already exists!' ||
+            responseApi.message.toString() ==
+                'User with same EMAIL already exists!') {
+          //
+          if (user != null) {
+            // Login user
+            UserModel loggedUser =
+                await login(email: user.email, password: user.id);
+
+            return loggedUser;
+          } else {
+            throw ('Google sign in failed.');
+          }
+        } else {
+          throw (responseApi.message.toString());
+        }
+      } else {
+        throw ('Network error occurred.');
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

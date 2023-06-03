@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/common/custom_snackbar.dart';
+import 'package:musync/common/common_widgets/custom_snackbar.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
 import 'package:musync/routes/routers.dart';

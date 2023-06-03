@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/common/custom_snackbar.dart';
-import 'package:musync/common/formfiled.dart';
+import 'package:musync/common/common_widgets/custom_snackbar.dart';
+import 'package:musync/common/common_widgets/formfiled.dart';
 import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/constants/enums.dart';

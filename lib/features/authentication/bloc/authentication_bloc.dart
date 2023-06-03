@@ -127,5 +127,31 @@ class AuthenticationBloc
         );
       }
     });
+
+    on<GoogleEvent>((event, emit) async {
+      try {
+        emit(
+          state.copyWith(
+            message: 'Started',
+            status: Status.loading,
+          ),
+        );
+        final UserModel user = await UserRepositories().google();
+        emit(
+          state.copyWith(
+            user: user,
+            message: 'Signup Success',
+            status: Status.success,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            message: e.toString(),
+            status: Status.error,
+          ),
+        );
+      }
+    });
   }
 }

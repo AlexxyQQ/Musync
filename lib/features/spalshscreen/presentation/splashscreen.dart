@@ -1,8 +1,8 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:musync/common/api.dart';
-import 'package:musync/common/custom_snackbar.dart';
-import 'package:musync/common/loading_screen.dart';
+import 'package:musync/common/api/api.dart';
+import 'package:musync/common/common_widgets/custom_snackbar.dart';
+import 'package:musync/common/common_widgets/loading_screen.dart';
 import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/features/authentication/data/models/user_model.dart';
 import 'package:musync/features/authentication/repositories/user_repositories.dart';

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/common/common_widgets/custom_snackbar.dart';
 import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
+import 'package:musync/constants/enums.dart';
+import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
+import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
+import 'package:musync/features/authentication/repositories/user_repositories.dart';
 import 'package:musync/routes/routers.dart';
 
 class MainAuthPage extends StatefulWidget {
@@ -112,50 +118,34 @@ class LoginSignupButton extends StatelessWidget {
                   ),
                 ),
                 // Google Sign In Button
-                ElevatedButton(
-                  onPressed: () async {
-                    // ! UNCOMMENT THIS TO ENABLE GOOGLE SIGN IN
-                    // final navigator = Navigator.of(context);
-                    // final sMessenger = ScaffoldMessenger.of(context);
-                    // final errorModel = await ref
-                    //     .read(authenticationProvider)
-                    //     .signUpGoogle();
-                    // if (errorModel.error == null) {
-                    //   await LocalStorageRepository().setValue(
-                    //     boxName: 'settings',
-                    //     key: "goHome",
-                    //     value: true,
-                    //   );
-                    //   ref
-                    //       .read(userProvider.notifier)
-                    //       .update((state) => errorModel.data);
-                    //   await ref.read(songProvider).permission();
-                    //   navigator.pushNamedAndRemoveUntil(
-                    //     '/home',
-                    //     (route) => false,
-                    //     arguments: {
-                    //       "pages": [
-                    //         // Home Page
-                    //         const HomePage(),
-                    //         // IDK
-                    //         const Placeholder(),
-                    //         // Library Page
-                    //         const LibraryPage()
-                    //       ],
-                    //       "selectedIndex": 0,
-                    //     },
-                    //   );
-                    // } else {
-                    //   sMessenger.showSnackBar(
-                    //     SnackBar(
-                    //       content: Text(errorModel.error!),
-                    //     ),
-                    //   );
-                    // }
+                BlocListener<AuthenticationBloc, AuthenticationState>(
+                  listener: (context, state) {
+                    if (state.status == Status.success) {
+                      kShowSnackBar(
+                        "Logged in successfully!",
+                        context: context,
+                      );
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        Routes.homeRoute,
+                        (route) => false,
+                      );
+                    }
+                    if (state.status == Status.error) {
+                      kShowSnackBar(state.message!, context: context);
+                    }
                   },
-                  child: Image.asset(
-                    'assets/icons/google.png',
-                    height: 28,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // ! UNCOMMENT THIS TO ENABLE GOOGLE SIGN IN
+                      BlocProvider.of<AuthenticationBloc>(context).add(
+                        GoogleEvent(),
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/icons/google.png',
+                      height: 28,
+                    ),
                   ),
                 ),
               ],
