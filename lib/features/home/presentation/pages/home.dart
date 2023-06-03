@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/features/home/presentation/components/folder_grid.dart';
 import 'package:musync/features/home/presentation/components/horizontal_cards.dart';
+import 'package:musync/features/home/repositories/music_repositories.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,18 +17,20 @@ class _HomePageState extends State<HomePage> {
   Map<String, List<dynamic>> artists = {};
   bool isLoading = true;
 
-  // void checkNumbers() async {
-  //   final data = await ref.read(songProvider).getEverythingMusic();
-  //   folders = data['folders'];
-  //   albums = data['albums'];
-  //   artists = data['artists'];
-  //   isLoading = false;
-  //   setState(() {}); // Trigger a rebuild after retrieving the folders
-  // }
+  void checkNumbers() async {
+    await MusicRepository().permission();
+    var data = await MusicRepository().getEverything();
+    folders = data['folders'];
+    albums = data['albums'];
+    artists = data['artists'];
+
+    isLoading = false;
+    setState(() {}); // Trigger a rebuild after retrieving the folders
+  }
 
   @override
   void initState() {
-    // checkNumbers();
+    checkNumbers();
     super.initState();
   }
 

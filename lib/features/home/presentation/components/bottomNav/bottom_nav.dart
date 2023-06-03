@@ -5,6 +5,7 @@ import 'package:musync/features/home/presentation/components/bottomNav/bottom_na
 import 'package:musync/features/home/presentation/components/bottomNav/bottom_nav_bottomitems.dart';
 import 'package:musync/features/home/presentation/components/bottomNav/bottom_nav_drawer.dart';
 import 'package:musync/features/home/presentation/pages/home.dart';
+import 'package:musync/features/library/presentation/library_page.dart';
 
 class BottomNavBar extends StatefulWidget {
   BottomNavBar({
@@ -12,10 +13,9 @@ class BottomNavBar extends StatefulWidget {
     this.pages = const <Widget>[
       // HomePage
       HomePage(),
-      // TODO: IDK Page
       Placeholder(),
       // Library Page
-      Placeholder(), //LibraryPage(),
+      LibraryPage(),
       // Folder Page
       // * hidden initially
       Placeholder(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musync/common/common_widgets/shimmers.dart';
 import 'package:musync/constants/constants.dart';
+import 'package:musync/features/home/presentation/components/music/album_art.dart';
 
 class HomeOtherSection extends StatelessWidget {
   const HomeOtherSection({
@@ -40,12 +41,6 @@ class HomeOtherSection extends StatelessWidget {
               Text(
                 sectionTitle,
                 style: Theme.of(context).textTheme.titleMedium,
-
-                // style: GlobalConstants.textStyle(
-                //   color: isDark ? Colors.white : Colors.black,
-                //   fontWeight: FontWeight.bold,
-                //   fontSize: 20,
-                // ),
               ),
               const Spacer(),
               // Arrow Button
@@ -98,14 +93,14 @@ class HomeOtherSection extends StatelessWidget {
                                 child: CircleAvatar(
                                   radius: cardWidth / 2,
                                   backgroundColor: KColors.transparentColor,
-                                  // child: ArtWorkImage(
-                                  //   height: cardHeight,
-                                  //   width: cardWidth,
-                                  //   borderRadius: BorderRadius.circular(500),
-                                  //   id: dataValue[0]["_id"],
-                                  //   filename: dataValue[0]
-                                  //       ["_display_name_wo_ext"],
-                                  // ),
+                                  child: ArtWorkImage(
+                                    height: cardHeight,
+                                    width: cardWidth,
+                                    borderRadius: BorderRadius.circular(500),
+                                    id: dataValue[0]["_id"],
+                                    filename: dataValue[0]
+                                        ["_display_name_wo_ext"],
+                                  ),
                                 ),
                               )
                             : Container(
@@ -117,15 +112,15 @@ class HomeOtherSection extends StatelessWidget {
                                 ),
                                 width: cardWidth,
                                 height: cardHeight - 50,
-                                // child: ArtWorkImage(
-                                //   height: cardHeight,
-                                //   width: cardWidth,
-                                //   borderRadius:
-                                //       BorderRadius.circular(cardRoundness),
-                                //   id: dataValue[0]["_id"],
-                                //   filename: dataValue[0]
-                                //       ["_display_name_wo_ext"],
-                                // ),
+                                child: ArtWorkImage(
+                                  height: cardHeight,
+                                  width: cardWidth,
+                                  borderRadius:
+                                      BorderRadius.circular(cardRoundness),
+                                  id: dataValue[0]["_id"],
+                                  filename: dataValue[0]
+                                      ["_display_name_wo_ext"],
+                                ),
                               ),
                         // Card Subtitle
                         Text(

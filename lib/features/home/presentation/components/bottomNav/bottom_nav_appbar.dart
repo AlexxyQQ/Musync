@@ -25,7 +25,8 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
               width: mqSize.width * 0.8,
               height: 48,
               decoration: BoxDecoration(
-                color: isDark ? KColors.offBlackColor : KColors.offWhiteColor,
+                color:
+                    isDark ? KColors.offBlackColorTwo : KColors.offWhiteColor,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Row(
@@ -56,7 +57,7 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         errorBorder: InputBorder.none,
-                        fillColor: Colors.transparent,
+                        fillColor: KColors.offBlackColorTwo,
                         contentPadding: const EdgeInsets.only(left: 10),
                       ),
                     ),

@@ -19,14 +19,24 @@ class Routes {
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
-    homeRoute: (context) => BottomNavBar(),
+    homeRoute: (context) => BottomNavBar(
+          pages: (ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>)['pages'] as List<Widget>,
+          selectedIndex: (ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>)['selectedIndex'] as int,
+        ),
   };
   static final Map<String, Widget Function(BuildContext)> loggedoutRoute = {
     initialRoute: (context) => const OnBoardingPage(),
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
-    homeRoute: (context) => BottomNavBar(),
+    homeRoute: (context) => BottomNavBar(
+          pages: (ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>)['pages'] as List<Widget>,
+          selectedIndex: (ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>)['selectedIndex'] as int,
+        ),
   };
 
   static List<Route<dynamic>> generateInitialRoutes({

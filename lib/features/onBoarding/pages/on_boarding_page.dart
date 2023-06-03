@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:musync/common/common_widgets/custom_page_indicator.dart';
 import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
+import 'package:musync/features/home/presentation/pages/home.dart';
+import 'package:musync/features/library/presentation/library_page.dart';
 import 'package:musync/routes/routers.dart';
 import 'package:musync/features/onBoarding/components/page_builder.dart';
 
@@ -48,11 +50,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             'Musync support playing offline media saved in you device or from the internet.',
       ),
       const OnBoardPageBuilder(
-          lottieUrl:
-              'assets/lottie/139537-boy-avatar-listening-music-animation.json',
-          title: 'Get started now!!',
-          subtitle:
-              "Login to get started, if you don't have an account, you can create one."),
+        lottieUrl:
+            'assets/lottie/139537-boy-avatar-listening-music-animation.json',
+        title: 'Get started now!!',
+        subtitle:
+            "Login to get started, if you don't have an account, you can create one.",
+      ),
     ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -191,11 +194,11 @@ class LastPage extends StatelessWidget {
               arguments: {
                 "pages": [
                   // Home Page
-                  const Placeholder(),
+                  const HomePage(),
                   // IDK
                   const Placeholder(),
                   // Library Page
-                  const Placeholder()
+                  const LibraryPage()
                 ],
                 "selectedIndex": 0,
               },

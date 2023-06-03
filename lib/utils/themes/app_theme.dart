@@ -97,6 +97,9 @@ class AppTheme {
           backgroundColor: KColors.transparentColor,
         ),
       ),
+      iconTheme: const IconThemeData(
+        color: KColors.blackColor,
+      ),
     );
   }
 
@@ -194,6 +197,9 @@ class AppTheme {
           elevation: 5,
           backgroundColor: KColors.transparentColor,
         ),
+      ),
+      iconTheme: const IconThemeData(
+        color: KColors.whiteColor,
       ),
     );
   }

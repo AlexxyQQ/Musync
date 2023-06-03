@@ -23,6 +23,7 @@ class KColors {
   static const whiteColor = Color(0xFFFAFAFA);
   static const blackColor = Color(0xFF101010);
   static const offBlackColor = Color(0xFF1E1E1E);
+  static const offBlackColorTwo = Color.fromARGB(255, 56, 56, 56);
   static const offWhiteColor = Color(0xFFE1E7EC);
   static const offWhiteColorTwo = Color(0xFF696C6E);
   static const offWhiteColorThree = Color.fromARGB(255, 184, 189, 192);

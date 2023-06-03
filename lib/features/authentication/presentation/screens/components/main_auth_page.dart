@@ -7,6 +7,8 @@ import 'package:musync/constants/enums.dart';
 import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
 import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
 import 'package:musync/features/authentication/repositories/user_repositories.dart';
+import 'package:musync/features/home/presentation/pages/home.dart';
+import 'package:musync/features/library/presentation/library_page.dart';
 import 'package:musync/routes/routers.dart';
 
 class MainAuthPage extends StatefulWidget {
@@ -129,6 +131,17 @@ class LoginSignupButton extends StatelessWidget {
                         context,
                         Routes.homeRoute,
                         (route) => false,
+                        arguments: {
+                          "pages": [
+                            // Home Page
+                            const HomePage(),
+                            // IDK
+                            const Placeholder(),
+                            // Library Page
+                            const LibraryPage()
+                          ],
+                          "selectedIndex": 0,
+                        },
                       );
                     }
                     if (state.status == Status.error) {
@@ -168,11 +181,11 @@ class LoginSignupButton extends StatelessWidget {
                     arguments: {
                       "pages": [
                         // Home Page
-                        const Placeholder(),
+                        const HomePage(),
                         // IDK
                         const Placeholder(),
                         // Library Page
-                        const Placeholder()
+                        const LibraryPage()
                       ],
                       "selectedIndex": 0,
                     },

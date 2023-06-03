@@ -5,6 +5,8 @@ import 'package:musync/common/common_widgets/formfiled.dart';
 import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/constants/enums.dart';
+import 'package:musync/features/home/presentation/pages/home.dart';
+import 'package:musync/features/library/presentation/library_page.dart';
 import 'package:musync/routes/routers.dart';
 import 'package:musync/features/authentication/bloc/authentication_bloc.dart';
 
@@ -63,6 +65,17 @@ class _LoginPageState extends State<LoginPage> {
             context,
             Routes.homeRoute,
             (route) => false,
+            arguments: {
+              "pages": [
+                // Home Page
+                const HomePage(),
+                // IDK
+                const Placeholder(),
+                // Library Page
+                const LibraryPage()
+              ],
+              "selectedIndex": 0,
+            },
           );
         }
         if (state.status == Status.error) {

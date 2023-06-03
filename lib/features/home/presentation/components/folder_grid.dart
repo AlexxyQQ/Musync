@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musync/common/common_widgets/shimmers.dart';
 import 'package:musync/constants/constants.dart';
+import 'package:musync/features/home/presentation/components/music/album_art.dart';
 
 class HomeFolderSectionNormal extends StatelessWidget {
   const HomeFolderSectionNormal({
@@ -34,11 +35,6 @@ class HomeFolderSectionNormal extends StatelessWidget {
               Text(
                 'Folders',
                 style: Theme.of(context).textTheme.titleMedium,
-                // style: GlobalConstants.textStyle(
-                //   color: isDark ? Colors.white : Colors.black,
-                //   fontWeight: FontWeight.bold,
-                //   fontSize: 20,
-                // ),
               ),
               const Spacer(),
               // Arrow Button
@@ -81,8 +77,8 @@ class HomeFolderSectionNormal extends StatelessWidget {
                           margin: const EdgeInsets.all(7),
                           decoration: BoxDecoration(
                             color: isDark
-                                ? KColors.offWhiteColorThree
-                                : KColors.offBlackColor,
+                                ? KColors.offBlackColorTwo
+                                : KColors.offWhiteColorThree,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
@@ -96,12 +92,12 @@ class HomeFolderSectionNormal extends StatelessWidget {
                                 ),
                                 width: mqSize.width * 0.15,
                                 height: double.infinity,
-                                // child: ArtWorkImage(
-                                //   id: folderValue[0][
-                                //       '_id'], // Get the first song in the folder
-                                //   filename: folderValue[0]
-                                //       ['_display_name_wo_ext'],
-                                // ),
+                                child: ArtWorkImage(
+                                  id: folderValue[0][
+                                      '_id'], // Get the first song in the folder
+                                  filename: folderValue[0]
+                                      ['_display_name_wo_ext'],
+                                ),
                               ),
                               // Folder Name
                               Padding(
