@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-const String baseURL = "http://172.26.1.217:3001/api";
+const String baseURL = "http://192.168.1.78:3001/api";
 const Map<String, dynamic> defaultHeaders = {
   "Content-Type": "application/json",
   'apisecret': "Apple"
@@ -13,6 +13,7 @@ class Api {
   Api() {
     _dio.options.baseUrl = baseURL;
     _dio.options.headers = defaultHeaders;
+    _dio.options.connectTimeout = const Duration(seconds: 5);
 
     _dio.interceptors.add(
       PrettyDioLogger(

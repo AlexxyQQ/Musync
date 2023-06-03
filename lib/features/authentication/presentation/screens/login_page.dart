@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/common/custom_snackbar.dart';
 import 'package:musync/common/formfiled.dart';
+import 'package:musync/common/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/constants/enums.dart';
 import 'package:musync/routes/routers.dart';
@@ -48,6 +49,16 @@ class _LoginPageState extends State<LoginPage> {
       listener: (context, state) {
         if (state.status == Status.success) {
           kShowSnackBar("Login Successful", context: context);
+          LocalStorageRepository().setValue(
+            boxName: 'users',
+            key: 'token',
+            value: state.token!,
+          );
+          LocalStorageRepository().setValue(
+            boxName: 'settings',
+            key: "goHome",
+            value: true,
+          );
           Navigator.pushNamedAndRemoveUntil(
             context,
             Routes.homeRoute,
@@ -89,11 +100,6 @@ class _LoginPageState extends State<LoginPage> {
               child: Text(
                 'Register',
                 style: Theme.of(context).textTheme.titleSmall,
-                // style: GlobalConstants.textStyle(
-                //   fontSize: 18,
-                //   color: isDark ? KColors.whiteColor : KColors.blackColor,
-                //   fontWeight: FontWeight.w700,
-                // ),
               ),
             ),
           ],
@@ -136,14 +142,6 @@ class _LoginPageState extends State<LoginPage> {
                                       .copyWith(
                                         fontSize: 40,
                                       ),
-
-                                  // style: GlobalConstants.textStyle(
-                                  //   color: isDark
-                                  //       ? KColors.whiteColor
-                                  //       : KColors.blackColor,
-                                  //   fontSize: 40,
-                                  //   fontWeight: FontWeight.w700,
-                                  // ),
                                 ),
                               ),
                               // Welcome back Text
@@ -233,7 +231,6 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Form(
       key: _formKey,
       child: Column(

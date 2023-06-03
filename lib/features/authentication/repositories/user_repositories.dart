@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:musync/common/api.dart';
 import 'package:musync/common/local_storage_repository.dart';
@@ -34,10 +35,10 @@ class UserRepositories {
         ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
         throw Exception(responseApi.message.toString());
       } else {
-        throw Exception('Network error occurred.');
+        throw ('Network error occurred.');
       }
     } catch (e) {
-      throw Exception('An unexpected error occurred.');
+      throw ('An unexpected error occurred.');
     }
   }
 
@@ -69,7 +70,7 @@ class UserRepositories {
         var responseApi = ApiResponse.fromResponse(e.response!);
         throw (responseApi.message.toString());
       } else {
-        rethrow;
+        throw ('Network error occurred.');
       }
     } catch (e) {
       rethrow;
@@ -106,7 +107,7 @@ class UserRepositories {
         var responseApi = ApiResponse.fromResponse(e.response!);
         throw (responseApi.message.toString());
       } else {
-        rethrow;
+        throw ('Network error occurred.');
       }
     } catch (e) {
       rethrow;

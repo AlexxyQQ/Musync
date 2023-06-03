@@ -248,7 +248,6 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Form(
       key: _formKey,
       child: Column(
