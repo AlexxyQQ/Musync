@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musync/features/authentication/presentation/screens/components/main_auth_page.dart';
-import 'package:musync/features/authentication/presentation/screens/login_page.dart';
-import 'package:musync/features/authentication/presentation/screens/signup_page.dart';
-import 'package:musync/features/home/presentation/components/bottomNav/bottom_nav.dart';
-import 'package:musync/features/onBoarding/pages/on_boarding_page.dart';
+import 'package:musync/features/authentication/widgets/main_auth_page.dart';
+import 'package:musync/features/authentication/screens/login_page.dart';
+import 'package:musync/features/authentication/screens/signup_page.dart';
+import 'package:musync/features/home/components/bottomNav/bottom_nav.dart';
+import 'package:musync/features/onBoarding/screens/on_boarding_page.dart';
 
 class Routes {
   static const String initialRoute = '/';

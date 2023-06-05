@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/constants/enums.dart';
-import 'package:musync/features/authentication/data/models/user_model.dart';
-import 'package:musync/features/authentication/repositories/user_repositories.dart';
+import 'package:musync/core/models/user_model.dart';
+import 'package:musync/core/repositories/user_repositories.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
