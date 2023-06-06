@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/shared/components/loading_screen.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/shared/components/album_art.dart';
@@ -18,6 +19,8 @@ class LibraryPage extends StatefulWidget {
 }
 
 class _LibraryPageState extends State<LibraryPage> {
+  var musicRepo = GetIt.instance<MusicRepository>();
+
   changeSort(String newSortBy) {
     setState(() {
       sortBy = newSortBy;
@@ -105,7 +108,7 @@ class _LibraryPageState extends State<LibraryPage> {
         changeSort: changeSort,
       ),
       body: FutureBuilder(
-        future: MusicRepository().getEverything(),
+        future: musicRepo.getEverything(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<dynamic> items = [];

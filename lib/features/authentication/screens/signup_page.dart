@@ -207,7 +207,9 @@ class _SignupPageState extends State<SignupPage> {
                   builder: (context, state) {
                     if (state.status == Status.loading) {
                       return const Positioned.fill(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          backgroundColor: KColors.whiteColor,
+                        ),
                       );
                     } else {
                       return const SizedBox.shrink();

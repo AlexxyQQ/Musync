@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/constants/constants.dart';
 import 'package:musync/features/home/components/folder_grid.dart';
 import 'package:musync/features/home/components/horizontal_cards.dart';
@@ -17,9 +18,11 @@ class _HomePageState extends State<HomePage> {
   Map<String, List<dynamic>> artists = {};
   bool isLoading = true;
 
+  var musicRepo = GetIt.instance<MusicRepository>();
+
   void checkNumbers() async {
-    await MusicRepository().permission();
-    var data = await MusicRepository().getEverything();
+    await musicRepo.permission();
+    var data = await musicRepo.getEverything();
     folders = data['folders'];
     albums = data['albums'];
     artists = data['artists'];

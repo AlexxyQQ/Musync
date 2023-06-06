@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/shared/components/custom_snackbar.dart';
 import 'package:musync/shared/components/formfiled.dart';
 import 'package:musync/core/repositories/local_storage_repository.dart';
@@ -51,12 +52,12 @@ class _LoginPageState extends State<LoginPage> {
       listener: (context, state) {
         if (state.status == Status.success) {
           kShowSnackBar("Login Successful", context: context);
-          LocalStorageRepository().setValue(
+          GetIt.instance<LocalStorageRepository>().setValue(
             boxName: 'users',
             key: 'token',
             value: state.token!,
           );
-          LocalStorageRepository().setValue(
+          GetIt.instance<LocalStorageRepository>().setValue(
             boxName: 'settings',
             key: "goHome",
             value: true,

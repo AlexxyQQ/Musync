@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:musync/features/authentication/widgets/main_auth_page.dart';
 import 'package:musync/shared/components/custom_page_indicator.dart';
 import 'package:musync/core/repositories/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
@@ -180,12 +182,12 @@ class LastPage extends StatelessWidget {
         TextButton(
           onPressed: () async {
             final navigator = Navigator.of(context);
-            LocalStorageRepository().setValue(
+            GetIt.instance<LocalStorageRepository>().setValue(
               boxName: 'settings',
               key: "isFirstTime",
               value: false,
             );
-            LocalStorageRepository()
+            GetIt.instance<LocalStorageRepository>()
                 .setValue(boxName: 'settings', key: "goHome", value: true);
             // await ref.read(songProvider).permission();
             navigator.pushNamedAndRemoveUntil(
@@ -213,7 +215,7 @@ class LastPage extends StatelessWidget {
         InkWell(
           onTap: () async {
             final navigator = Navigator.of(context);
-            LocalStorageRepository().setValue(
+            GetIt.instance<LocalStorageRepository>().setValue(
               boxName: 'settings',
               key: "isFirstTime",
               value: false,

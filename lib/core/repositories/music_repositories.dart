@@ -8,8 +8,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 class MusicRepository {
-  static final _audioQuery = OnAudioQuery();
-  final _localStorage = LocalStorageRepository();
+  final OnAudioQuery audioQuery;
+  final LocalStorageRepository localStorage;
+
+  const MusicRepository({
+    required this.localStorage,
+    required this.audioQuery,
+  });
 
   Future<void> permission() async {
     // await requestAudioQueryPermission();
@@ -24,8 +29,8 @@ class MusicRepository {
   }
 
   Future<void> requestAudioQueryPermission() async {
-    while (!await _audioQuery.permissionsStatus()) {
-      await _audioQuery.permissionsRequest();
+    while (!await audioQuery.permissionsStatus()) {
+      await audioQuery.permissionsRequest();
     }
   }
 
@@ -80,7 +85,7 @@ class MusicRepository {
   Future<List<SongModel>> getAllSongsNoFilter({bool recheck = false}) async {
     try {
       // Check if songs are already cached
-      final cachedSongs = await _localStorage.getValue(
+      final cachedSongs = await localStorage.getValue(
         boxName: 'songs',
         key: 'allSongs',
         defaultValue: null,
@@ -98,7 +103,7 @@ class MusicRepository {
 
         final allSongs = await getSongsList();
         // Cache the songs as a list of Map<String, dynamic>
-        _localStorage.setValue(
+        localStorage.setValue(
           boxName: 'songs',
           key: 'allSongs',
           value: allSongs,
@@ -118,7 +123,7 @@ class MusicRepository {
 
   Future<List<AlbumModel>> getAlbums({bool recheck = false}) async {
     // Check if songs are already cached
-    final cachedAlbums = await _localStorage.getValue(
+    final cachedAlbums = await localStorage.getValue(
       boxName: 'songs',
       key: 'allAlbums',
       defaultValue: null,
@@ -141,7 +146,7 @@ class MusicRepository {
         },
       );
       // Cache the songs as a list of Map<String, dynamic>
-      _localStorage.setValue(
+      localStorage.setValue(
         boxName: 'songs',
         key: 'allAlbums',
         value: allAlbums,
@@ -160,7 +165,7 @@ class MusicRepository {
     bool recheck = false,
     required String path,
   }) async {
-    return await _audioQuery.querySongs(
+    return await audioQuery.querySongs(
       path: path,
       uriType: UriType.EXTERNAL,
       sortType: SongSortType.TITLE,
@@ -171,23 +176,24 @@ class MusicRepository {
   Future<List<String>> getFolders({
     bool recheck = false,
   }) async {
-    return await _audioQuery.queryAllPath();
+    return await audioQuery.queryAllPath();
   }
 
-  Future<String> saveAlbumArt(
-      {required int id,
-      required ArtworkType type,
-      required String fileName,
-      int size = 200,
-      int quality = 100,
-      ArtworkFormat format = ArtworkFormat.PNG}) async {
+  Future<String> saveAlbumArt({
+    required int id,
+    required ArtworkType type,
+    required String fileName,
+    int size = 200,
+    int quality = 100,
+    ArtworkFormat format = ArtworkFormat.PNG,
+  }) async {
     final String tempPath =
         await path_provider.getTemporaryDirectory().then((value) => value.path);
     final File file = File('$tempPath/$fileName.png');
 
     if (!await file.exists()) {
       await file.create();
-      final Uint8List? image = await _audioQuery.queryArtwork(
+      final Uint8List? image = await audioQuery.queryArtwork(
         id,
         type,
         format: format,
@@ -202,7 +208,7 @@ class MusicRepository {
   }
 
   Future<Uint8List?> artwork(int id) async {
-    return await _audioQuery.queryArtwork(
+    return await audioQuery.queryArtwork(
       id,
       ArtworkType.AUDIO,
       size: 200,
@@ -215,7 +221,7 @@ class MusicRepository {
     bool recheck = false,
   }) async {
     // Check if folders are already cached
-    final cachedFolders = await _localStorage.getValue(
+    final cachedFolders = await localStorage.getValue(
       boxName: 'songs',
       key: 'foldersWithSongs',
       defaultValue: null,
@@ -235,7 +241,7 @@ class MusicRepository {
         folderSongsMap[folder] = folderSongs;
       }
       // Cache the folders as a Map<String, List<dynamic>>
-      _localStorage.setValue(
+      localStorage.setValue(
         boxName: 'songs',
         key: 'foldersWithSongs',
         value: folderSongsMap.cast<String, List<dynamic>>(),
@@ -247,7 +253,7 @@ class MusicRepository {
   Future<Map<String, List<dynamic>>> albumsWithNumberofSongs(
       {bool recheck = false}) async {
     // Check if Albums are already cached
-    final cachedAlbums = await _localStorage.getValue(
+    final cachedAlbums = await localStorage.getValue(
       boxName: 'songs',
       key: 'albumsWithSongs',
       defaultValue: null,
@@ -276,7 +282,7 @@ class MusicRepository {
       }
 
       //Cache the folders as a Map<String, List<dynamic>>
-      _localStorage.setValue(
+      localStorage.setValue(
         boxName: 'songs',
         key: 'albumsWithSongs',
         value: albumSongsMap.cast<String, List<dynamic>>(),
@@ -288,7 +294,7 @@ class MusicRepository {
   Future<Map<String, List<dynamic>>> artistWithNumberofSongs(
       {bool recheck = false}) async {
     // Check if Artists are already cached
-    final cachedArtists = await _localStorage.getValue(
+    final cachedArtists = await localStorage.getValue(
       boxName: 'songs',
       key: 'artistsWithSongs',
       defaultValue: null,
@@ -313,7 +319,7 @@ class MusicRepository {
       }
 
       //Cache the folders as a Map<String, List<dynamic>>
-      _localStorage.setValue(
+      localStorage.setValue(
         boxName: 'songs',
         key: 'artistsWithSongs',
         value: artistSongsMap.cast<String, List<dynamic>>(),

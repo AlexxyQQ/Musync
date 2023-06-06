@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/app.dart';
+import 'package:musync/core/di/di.dart';
 import 'package:musync/shared/bloc/bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Paint.enableDithering = true; // Enable dithering for better quality
-
+  // Setup Dependency Injection
+  setupDependencyInjection();
   // Initialize Hive
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await Hive.initFlutter('Musync');

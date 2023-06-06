@@ -1,5 +1,6 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/core/services/api/api.dart';
 import 'package:musync/shared/components/custom_snackbar.dart';
 import 'package:musync/shared/components/loading_screen.dart';
@@ -69,24 +70,25 @@ class _MusyncSplashState extends State<MusyncSplash> {
   /// To get user data from server
   Future<UserModel?> getUserData() async {
     // gets isFirstTime and goHome from local storage
-    isFirstTime = await LocalStorageRepository().getValue(
+    isFirstTime = await GetIt.instance<LocalStorageRepository>().getValue(
       boxName: 'settings',
       key: "isFirstTime",
       defaultValue: true,
     );
-    goHome = await LocalStorageRepository().getValue(
+    goHome = await GetIt.instance<LocalStorageRepository>().getValue(
       boxName: 'settings',
       key: "goHome",
       defaultValue: false,
     );
-    final String token = await LocalStorageRepository()
+    final String token = await GetIt.instance<LocalStorageRepository>()
         .getValue(boxName: 'users', key: 'token', defaultValue: '');
 
     if (token == "") {
       return null;
     } else {
       try {
-        final UserModel user = await UserRepositories().getUser(token: token);
+        final UserModel user =
+            await GetIt.instance<UserRepositories>().getUser(token: token);
         return user;
       } catch (e) {
         kShowSnackBar(e.toString(), scaffoldKey: scaffoldKey);

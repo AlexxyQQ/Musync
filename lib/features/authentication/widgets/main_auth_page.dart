@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/shared/components/custom_snackbar.dart';
 import 'package:musync/core/repositories/local_storage_repository.dart';
 import 'package:musync/constants/constants.dart';
@@ -169,7 +170,7 @@ class LoginSignupButton extends StatelessWidget {
               child: TextButton(
                 onPressed: () async {
                   final navigator = Navigator.of(context);
-                  LocalStorageRepository().setValue(
+                  GetIt.instance<LocalStorageRepository>().setValue(
                     boxName: 'settings',
                     key: "goHome",
                     value: true,

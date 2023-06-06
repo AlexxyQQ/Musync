@@ -1,18 +1,21 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:musync/core/services/api/api.dart';
 import 'package:musync/core/repositories/local_storage_repository.dart';
 import 'package:musync/core/models/user_model.dart';
 
 class UserRepositories {
-  final _api = Api();
+  final Api api;
+
+  const UserRepositories({required this.api});
 
   Future<UserModel> getUser({
     required String token,
   }) async {
     try {
-      final response = await _api.sendRequest.get(
+      final response = await api.sendRequest.get(
         "/users/loginWithToken",
         options: Options(
           headers: {
@@ -47,7 +50,7 @@ class UserRepositories {
     required String password,
   }) async {
     try {
-      final response = await _api.sendRequest.post(
+      final response = await api.sendRequest.post(
         "/users/login",
         data: jsonEncode({
           "email": email,
@@ -83,7 +86,7 @@ class UserRepositories {
     required String username,
   }) async {
     try {
-      final response = await _api.sendRequest.post(
+      final response = await api.sendRequest.post(
         "/users/signup",
         data: jsonEncode({
           "username": username,
@@ -115,7 +118,7 @@ class UserRepositories {
   }
 
   Future<void> logout() async {
-    await LocalStorageRepository().deleteValue(
+    await GetIt.instance<LocalStorageRepository>().deleteValue(
       boxName: 'users',
       key: 'token',
     );
@@ -127,7 +130,7 @@ class UserRepositories {
     try {
       if (user != null) {
         // User signup
-        final response = await _api.sendRequest.post(
+        final response = await api.sendRequest.post(
           "/users/signup",
           data: jsonEncode({
             "username": user.displayName.toString().toLowerCase(),

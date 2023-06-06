@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/constants/enums.dart';
 import 'package:musync/core/models/user_model.dart';
 import 'package:musync/core/repositories/user_repositories.dart';
@@ -9,6 +10,8 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc() : super(AuthenticationState().start()) {
+    var userRepo = GetIt.instance<UserRepositories>();
+
     on<InitialLogin>((event, emit) async {
       try {
         emit(
@@ -16,7 +19,7 @@ class AuthenticationBloc
             status: Status.loading,
           ),
         );
-        final UserModel user = await UserRepositories().getUser(
+        final UserModel user = await userRepo.getUser(
           token: event.token,
         );
 
@@ -46,7 +49,7 @@ class AuthenticationBloc
             status: Status.loading,
           ),
         );
-        final UserModel user = await UserRepositories().signup(
+        final UserModel user = await userRepo.signup(
           email: event.email,
           password: event.password,
           username: event.username,
@@ -76,7 +79,7 @@ class AuthenticationBloc
             status: Status.loading,
           ),
         );
-        final UserModel user = await UserRepositories().login(
+        final UserModel user = await userRepo.login(
           email: event.email,
           password: event.password,
         );
@@ -107,7 +110,7 @@ class AuthenticationBloc
             status: Status.loading,
           ),
         );
-        await UserRepositories().logout();
+        await userRepo.logout();
 
         emit(
           state.copyWith(
@@ -136,7 +139,7 @@ class AuthenticationBloc
             status: Status.loading,
           ),
         );
-        final UserModel user = await UserRepositories().google();
+        final UserModel user = await userRepo.google();
         emit(
           state.copyWith(
             user: user,
