@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:musync/app.dart';
-import 'package:musync/core/di/di.dart';
-import 'package:musync/shared/bloc/bloc_observer.dart';
+import 'package:musync/core/app.dart';
+import 'package:musync/injection/app_injection_container.dart';
+import 'package:musync/core/bloc/bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
