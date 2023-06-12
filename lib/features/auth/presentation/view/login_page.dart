@@ -582,14 +582,7 @@ class _LoginPageState extends State<LoginPage> {
                           Routes.homeRoute,
                           (route) => false,
                           arguments: {
-                            "pages": [
-                              // Home Page
-                              const HomePage(),
-                              // IDK
-                              const Placeholder(),
-                              // Library Page
-                              const LibraryPage()
-                            ],
+                            
                             "selectedIndex": 0,
                           },
                         );

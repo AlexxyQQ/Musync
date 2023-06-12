@@ -22,12 +22,7 @@ class Routes {
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
-    homeRoute: (context) => BottomNavBar(
-          pages: (ModalRoute.of(context)?.settings.arguments
-              as Map<String, dynamic>)['pages'] as List<Widget>,
-          selectedIndex: (ModalRoute.of(context)?.settings.arguments
-              as Map<String, dynamic>)['selectedIndex'] as int,
-        ),
+    homeRoute: (context) => const BottomNavBar(),
     nowPlaying: (context) => NowPlaying(
           songList: (ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>)['songs'] as List<SongModel>,
@@ -40,12 +35,7 @@ class Routes {
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
-    homeRoute: (context) => BottomNavBar(
-          pages: (ModalRoute.of(context)?.settings.arguments
-              as Map<String, dynamic>)['pages'] as List<Widget>,
-          selectedIndex: (ModalRoute.of(context)?.settings.arguments
-              as Map<String, dynamic>)['selectedIndex'] as int,
-        ),
+    homeRoute: (context) => const BottomNavBar(),
     nowPlaying: (context) => NowPlaying(
           songList: (ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>)['songs'] as List<SongModel>,
@@ -66,7 +56,7 @@ class Routes {
           MaterialPageRoute(
             builder: (context) {
               if (!isFirstTime && goHome) {
-                return BottomNavBar();
+                return const BottomNavBar();
               } else {
                 return const Placeholder(); //TabOnboarding();
               }
@@ -78,7 +68,7 @@ class Routes {
           MaterialPageRoute(
             builder: (context) {
               if (!isFirstTime && goHome) {
-                return BottomNavBar();
+                return const BottomNavBar();
               } else if (!isFirstTime) {
                 return const MainAuthPage();
               } else {

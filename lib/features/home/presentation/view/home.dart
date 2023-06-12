@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/home/presentation/widgets/folder_grid.dart';
 import 'package:musync/features/home/presentation/widgets/horizontal_cards.dart';
-import 'package:musync/features/home/data/repository/music_query_repositories.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key, required this.data}) : super(key: key);
+
+  final Map<String, dynamic> data;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -18,23 +20,30 @@ class _HomePageState extends State<HomePage> {
   Map<String, List<dynamic>> artists = {};
   bool isLoading = true;
 
-  var musicRepo = GetIt.instance<MusicQueryRepository>();
+  var musicRepo = GetIt.instance<MusicQueryUseCase>();
 
-  void checkNumbers() async {
-    await musicRepo.permission();
-    var data = await musicRepo.getEverything();
+  Future<void> fetchData() async {
+    var data = widget.data;
     folders = data['folders'];
     albums = data['albums'];
     artists = data['artists'];
-
-    isLoading = false;
-    setState(() {}); // Trigger a rebuild after retrieving the folders
+    if (mounted) {
+      // Check if the widget is still mounted before calling setState()
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   void initState() {
-    checkNumbers();
+    fetchData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -44,6 +53,7 @@ class _HomePageState extends State<HomePage> {
     bool isTablet = mqSize.width >= GlobalConstants.tabletSize.width;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
       backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
       resizeToAvoidBottomInset: false,

@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/core/app.dart';
+import 'package:musync/core/network/hive/hive_service.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:musync/core/bloc/bloc_observer.dart';
 
@@ -12,33 +10,11 @@ void main() async {
   Paint.enableDithering = true; // Enable dithering for better quality
   // Setup Dependency Injection
   setupDependencyInjection();
-  // Initialize Hive
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    await Hive.initFlutter('Musync');
-  } else {
-    await Hive.initFlutter();
-  }
-
-  // Open Hive Boxes
-  await hiveOpen('settings');
-  await hiveOpen('users');
-  await hiveOpen('uploads');
-  await hiveOpen('songs');
+  await HiveService().init();
 
   Bloc.observer = MusyncBlocObserver();
 
   runApp(
     const App(),
-  );
-}
-
-/// Open Hive Boxes
-/// Provide a {$boxName} to open, if it fails to open, it will try again
-Future<void> hiveOpen(String boxName) async {
-  await Hive.openBox(boxName).onError(
-    (error, stackTrace) async {
-      await Hive.openBox(boxName);
-      throw 'Failed to open $boxName Box\nError: $error';
-    },
   );
 }

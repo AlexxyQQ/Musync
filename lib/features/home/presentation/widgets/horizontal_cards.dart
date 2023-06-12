@@ -97,9 +97,8 @@ class HomeOtherSection extends StatelessWidget {
                                     height: cardHeight,
                                     width: cardWidth,
                                     borderRadius: BorderRadius.circular(500),
-                                    id: dataValue[0]["_id"],
-                                    filename: dataValue[0]
-                                        ["_display_name_wo_ext"],
+                                    id: dataValue[0].id,
+                                    filename: dataValue[0].displayNameWOExt,
                                   ),
                                 ),
                               )
@@ -117,16 +116,15 @@ class HomeOtherSection extends StatelessWidget {
                                   width: cardWidth,
                                   borderRadius:
                                       BorderRadius.circular(cardRoundness),
-                                  id: dataValue[0]["_id"],
-                                  filename: dataValue[0]
-                                      ["_display_name_wo_ext"],
+                                  id: dataValue[0].id,
+                                  filename: dataValue[0].displayNameWOExt,
                                 ),
                               ),
                         // Card Subtitle
                         Text(
                           isCircular
-                              ? dataValue[0]["artist"].toString()
-                              : dataValue[0]["album"].toString(),
+                              ? dataValue[0].artist.toString()
+                              : dataValue[0].album.toString(),
                           style: GlobalConstants.textStyle(
                             color: isDark ? Colors.white : Colors.black,
                             fontWeight: FontWeight.bold,

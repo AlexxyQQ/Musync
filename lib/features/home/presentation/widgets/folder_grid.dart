@@ -92,10 +92,9 @@ class HomeFolderSectionNormal extends StatelessWidget {
                                 width: mqSize.width * 0.15,
                                 height: double.infinity,
                                 child: ArtWorkImage(
-                                  id: folderValue[0][
-                                      '_id'], // Get the first song in the folder
-                                  filename: folderValue[0]
-                                      ['_display_name_wo_ext'],
+                                  id: folderValue[0]
+                                      .id, // Get the first song in the folder
+                                  filename: folderValue[0].displayNameWOExt,
                                 ),
                               ),
                               // Folder Name

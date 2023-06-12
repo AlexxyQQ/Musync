@@ -5,21 +5,20 @@ import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/common/album_art.dart';
-import 'package:musync/features/home/presentation/view/home.dart';
-import 'package:musync/features/home/data/repository/music_query_repositories.dart';
+import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/library/presentation/widgets/library_appbar.dart';
 import 'package:musync/features/library/presentation/widgets/song_listview.dart';
 import 'package:musync/config/router/routers.dart';
 
 class LibraryPage extends StatefulWidget {
-  const LibraryPage({super.key});
-
+  const LibraryPage({super.key, required this.data});
+  final Map<String, dynamic> data;
   @override
   State<LibraryPage> createState() => _LibraryPageState();
 }
 
 class _LibraryPageState extends State<LibraryPage> {
-  var musicRepo = GetIt.instance<MusicQueryRepository>();
+  var musicRepo = GetIt.instance<MusicQueryUseCase>();
 
   changeSort(String newSortBy) {
     setState(() {
@@ -46,8 +45,8 @@ class _LibraryPageState extends State<LibraryPage> {
       data['albums'].forEach((key, value) {
         items.add({
           "type": "Album",
-          "name": key,
-          "artist": value[0]['artist'],
+          "name": value[0].artist,
+          "artist": value[0].artist,
           "numSongs": value.length,
           "songs": value
         });
@@ -77,8 +76,8 @@ class _LibraryPageState extends State<LibraryPage> {
       data['albums'].forEach((key, value) {
         items.add({
           "type": "Album",
-          "name": key,
-          "artist": value[0]['artist'],
+          "name": value[0].album,
+          "artist": value[0].artist,
           "numSongs": value.length,
           "songs": value
         });
@@ -108,7 +107,7 @@ class _LibraryPageState extends State<LibraryPage> {
         changeSort: changeSort,
       ),
       body: FutureBuilder(
-        future: musicRepo.getEverything(),
+        future: Future(() => widget.data),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<dynamic> items = [];
@@ -197,7 +196,6 @@ class ListViewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int randomInt = Random().nextInt(item["songs"].length);
-
     return InkWell(
       onTap: () {
         // * Navigate to the selected folder
@@ -207,7 +205,7 @@ class ListViewCard extends StatelessWidget {
           arguments: {
             "pages": [
               // Home Page
-              const HomePage(),
+              const Placeholder(),
               // IDK
               const Placeholder(),
               // Library Page
@@ -235,18 +233,16 @@ class ListViewCard extends StatelessWidget {
                     ),
                     child: ArtWorkImage(
                       borderRadius: BorderRadius.circular(100),
-                      id: item["songs"][randomInt]['_id'],
-                      filename: item["songs"][randomInt]
-                          ['_display_name_wo_ext'],
+                      id: item["songs"][randomInt].id,
+                      filename: item["songs"][randomInt].displayNameWOExt,
                     ),
                   )
                 : SizedBox(
                     height: 80,
                     width: 80,
                     child: ArtWorkImage(
-                      id: item["songs"][randomInt]['_id'],
-                      filename: item["songs"][randomInt]
-                          ['_display_name_wo_ext'],
+                      id: item["songs"][randomInt].id,
+                      filename: item["songs"][randomInt].displayNameWOExt,
                     ),
                   ),
             const SizedBox(width: 10),

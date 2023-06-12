@@ -38,14 +38,6 @@ class LastPage extends StatelessWidget {
               Routes.homeRoute,
               (route) => false,
               arguments: {
-                "pages": [
-                  // Home Page
-                  const HomePage(),
-                  // IDK
-                  const Placeholder(),
-                  // Library Page
-                  const LibraryPage()
-                ],
                 "selectedIndex": 0,
               },
             );

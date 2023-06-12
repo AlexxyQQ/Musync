@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/config/themes/app_theme.dart';
+import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
@@ -27,6 +31,16 @@ class _MusyncSplashState extends State<MusyncSplash> {
   late Future<UserEntity?> data;
 
   Future<UserEntity?> check() async {
+    isFirstTime = await GetIt.instance<HiveQueries>().getValue(
+      boxName: 'settings',
+      key: "isFirstTime",
+      defaultValue: true,
+    );
+    goHome = await GetIt.instance<HiveQueries>().getValue(
+      boxName: 'settings',
+      key: "goHome",
+      defaultValue: false,
+    );
     var connection = await SplashRepository().checkConnectivityAndServer();
     if (connection.status) {
       var userData = await SplashRepository().getLoggeduser();
@@ -78,7 +92,9 @@ class _MusyncSplashState extends State<MusyncSplash> {
           if (snapshot.connectionState == ConnectionState.done) {
             try {
               _authViewModel.initialLogin(snapshot.data!.token);
-            } catch (e) {}
+            } catch (e) {
+              log(e.toString());
+            }
             return MaterialApp(
               title: "Musync",
               debugShowCheckedModeBanner: false,

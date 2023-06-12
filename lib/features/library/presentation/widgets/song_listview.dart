@@ -4,18 +4,19 @@ import 'package:musync/config/constants/constants.dart';
 import 'package:musync/coreold/repositories/audio_player_repository.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_art.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongListView extends StatelessWidget {
   const SongListView({Key? key, required this.songs}) : super(key: key);
 
-  final List songs;
+  final List<SongEntity> songs;
 
   @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final mqSize = MediaQuery.of(context).size;
-    final List<SongModel> songModels = songs.map((e) => SongModel(e)).toList();
+    final List<SongEntity> songModels = songs;
     final ScrollController scrollController = ScrollController();
 
     return Scaffold(
@@ -62,7 +63,7 @@ class ListofSongs extends StatelessWidget {
   }) : super(key: key);
 
   final bool isDark;
-  final List<SongModel> songs;
+  final List<SongEntity> songs;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +83,7 @@ class ListofSongs extends StatelessWidget {
 
           return InkWell(
             onTap: () {
-              GetIt.instance<AudioPlayerRepository>().playAll(songs, index);
+              // GetIt.instance<AudioPlayerRepository>().playAll(songs, index);
               Navigator.of(context).pushNamed(
                 Routes.nowPlaying,
                 arguments: {
@@ -166,7 +167,7 @@ class SecondAppBar extends StatelessWidget {
 
   final Size mqSize;
   final bool isDark;
-  final List<SongModel> songs;
+  final List<SongEntity> songs;
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +264,7 @@ class AppBar extends StatelessWidget {
 
   final Color backgroundColor;
   final Size mqSize;
-  final List<SongModel> songs;
+  final List<SongEntity> songs;
   final bool isDark;
 
   @override

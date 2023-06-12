@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/core/failure/error_handler.dart';
@@ -13,10 +14,9 @@ class SplashRepository extends ASplashRepository {
   @override
   Future<ErrorModel> checkConnectivityAndServer() async {
     var isConnected = await isConnectedToInternet();
-    var server = await isServerUp();
     log('isConnected: ${isConnected.status}');
-    log('server: ${server.status}');
     if (isConnected.status) {
+      var server = await isServerUp();
       if (!server.status) {
         return ErrorModel(
           status: false,
@@ -81,6 +81,9 @@ class SplashRepository extends ASplashRepository {
           message: 'Server is down.',
         );
       }
+    } on DioException catch (e) {
+      log(e.toString());
+      rethrow;
     } catch (e) {
       return ErrorModel(
         status: false,

@@ -13,16 +13,16 @@ class Api {
   Api() {
     _dio.options.baseUrl = baseURL;
     _dio.options.headers = defaultHeaders;
-    _dio.options.connectTimeout = const Duration(seconds: 5);
+    _dio.options.connectTimeout = const Duration(seconds: 3);
 
-    // _dio.interceptors.add(
-    //   PrettyDioLogger(
-    //     requestBody: true,
-    //     requestHeader: true,
-    //     responseBody: true,
-    //     responseHeader: true,
-    //   ),
-    // );
+    _dio.interceptors.add(
+      PrettyDioLogger(
+        requestBody: true,
+        requestHeader: true,
+        responseBody: true,
+        responseHeader: true,
+      ),
+    );
   }
 
   Dio get sendRequest => _dio;

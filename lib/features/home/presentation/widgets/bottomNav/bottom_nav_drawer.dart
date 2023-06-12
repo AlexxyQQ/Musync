@@ -16,7 +16,6 @@ class KDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var loggedUser = BlocProvider.of<AuthenticationBloc>(context).state.user;
-    print(loggedUser);
     return Drawer(
       child: Container(
         color: isDark ? KColors.blackColor : KColors.whiteColor,
