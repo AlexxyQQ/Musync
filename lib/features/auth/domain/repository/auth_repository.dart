@@ -1,6 +1,6 @@
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
-abstract class UserRepository {
+abstract class IAuthRepository {
   Future<UserEntity> login({
     required String email,
     required String password,

@@ -24,7 +24,7 @@ class ArtWorkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: GetIt.instance<MusicQueryRepository>().saveAlbumArt(
+      future: GetIt.instance<MusicQueryRepositoryImpl>().saveAlbumArt(
         id: id,
         type: ArtworkType.AUDIO,
         fileName: filename,

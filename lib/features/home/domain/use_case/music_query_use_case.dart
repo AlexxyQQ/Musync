@@ -3,7 +3,7 @@ import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 class MusicQueryUseCase {
-  final MusicQueryRepository musicQueryRepository;
+  final MusicQueryRepositoryImpl musicQueryRepository;
   const MusicQueryUseCase({required this.musicQueryRepository});
 
   Future<void> permission() async {
@@ -77,14 +77,12 @@ class MusicQueryUseCase {
     }
   }
 
-  Future<Map<String, dynamic>> getEverything() async {
-    final folders = await getAllFolderWithSongs();
-    final albums = await getAllAlbumWithSongs();
-    final artists = await getAllArtistWithSongs();
-    return {
-      'folders': folders,
-      'albums': albums,
-      'artists': artists,
-    };
+  Future<Map<String, Map<String, List<SongEntity>>>> getEverything() async {
+    try {
+      final data = await musicQueryRepository.getEverything();
+      return data;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

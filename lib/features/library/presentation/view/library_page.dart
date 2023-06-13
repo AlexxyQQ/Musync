@@ -10,14 +10,13 @@ import 'package:musync/features/library/presentation/widgets/library_appbar.dart
 import 'package:musync/features/library/presentation/widgets/song_listview.dart';
 import 'package:musync/config/router/routers.dart';
 
-class LibraryPage extends StatefulWidget {
-  const LibraryPage({super.key, required this.data});
-  final Map<String, dynamic> data;
+class LibraryPageOG extends StatefulWidget {
+  const LibraryPageOG({super.key});
   @override
-  State<LibraryPage> createState() => _LibraryPageState();
+  State<LibraryPageOG> createState() => _LibraryPageOGState();
 }
 
-class _LibraryPageState extends State<LibraryPage> {
+class _LibraryPageOGState extends State<LibraryPageOG> {
   var musicRepo = GetIt.instance<MusicQueryUseCase>();
 
   changeSort(String newSortBy) {
@@ -107,9 +106,172 @@ class _LibraryPageState extends State<LibraryPage> {
         changeSort: changeSort,
       ),
       body: FutureBuilder(
-        future: Future(() => widget.data),
+        future: musicRepo.getEverything(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            List<dynamic> items = [];
+            _sort(items, sortBy, snapshot.data);
+            return Scrollbar(
+              controller: controller,
+              radius: const Radius.circular(10),
+              thickness: 10,
+              interactive: true,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: ListView.builder(
+                  controller: controller,
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    if (item['type'] == 'Folder') {
+                      final folderName =
+                          item["name"].toString().split('/').last;
+                      final numSongs = item["numSongs"];
+                      return ListViewCard(
+                        item: item,
+                        mqSize: mqSize,
+                        folderName: folderName,
+                        isDark: isDark,
+                        numSongs: numSongs,
+                        isCircular: false,
+                      );
+                    } else if (item['type'] == 'Artist') {
+                      final artistName = item["name"];
+                      final numSongs = item["numSongs"];
+                      return ListViewCard(
+                        item: item,
+                        mqSize: mqSize,
+                        folderName: artistName,
+                        isDark: isDark,
+                        numSongs: numSongs,
+                        isCircular: true,
+                        isArtist: true,
+                      );
+                    } else {
+                      final albumName = item["name"];
+                      final numSongs = item["numSongs"];
+                      return ListViewCard(
+                        item: item,
+                        mqSize: mqSize,
+                        folderName: albumName,
+                        isDark: isDark,
+                        numSongs: numSongs,
+                        isCircular: true,
+                      );
+                    }
+                  },
+                ),
+              ),
+            );
+          } else {
+            return const LoadingScreen();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class LibraryPage extends StatefulWidget {
+  const LibraryPage({super.key, required this.data});
+
+  final Map<String, dynamic> data;
+
+  @override
+  State<LibraryPage> createState() => _LibraryPageState();
+}
+
+class _LibraryPageState extends State<LibraryPage> {
+  changeSort(String newSortBy) {
+    setState(() {
+      sortBy = newSortBy;
+    });
+  }
+
+  String sortBy = "All";
+
+  _sort(List<dynamic> items, String sortBy, data) {
+    //* Sort the folders
+    if (sortBy == 'Folders') {
+      data['folders'].forEach((key, value) {
+        items.add({
+          "type": "Folder",
+          "name": key,
+          "numSongs": value.length,
+          "songs": value
+        });
+      });
+    }
+    //* Sort the albums
+    else if (sortBy == 'Albums') {
+      data['albums'].forEach((key, value) {
+        items.add({
+          "type": "Album",
+          "name": value[0].artist,
+          "artist": value[0].artist,
+          "numSongs": value.length,
+          "songs": value
+        });
+      });
+    }
+    //* Sort the artists
+    else if (sortBy == 'Artists') {
+      data['artists'].forEach((key, value) {
+        items.add({
+          "type": "Artist",
+          "name": key,
+          "numSongs": value.length,
+          "songs": value
+        });
+      });
+    } else {
+      //* Add the folders to the list
+      data['folders'].forEach((key, value) {
+        items.add({
+          "type": "Folder",
+          "name": key,
+          "numSongs": value.length,
+          "songs": value
+        });
+      });
+      //* Add the albums to the list
+      data['albums'].forEach((key, value) {
+        items.add({
+          "type": "Album",
+          "name": value[0].album,
+          "artist": value[0].artist,
+          "numSongs": value.length,
+          "songs": value
+        });
+      });
+      //* Add the artists to the list
+      data['artists'].forEach((key, value) {
+        items.add({
+          "type": "Artist",
+          "name": key,
+          "numSongs": value.length,
+          "songs": value
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mqSize = MediaQuery.of(context).size;
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final controller = ScrollController();
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: LibraryAppBar(
+        isDark: isDark,
+        mqSize: mqSize,
+        changeSort: changeSort,
+      ),
+      body: FutureBuilder(
+        future: Future(() => widget.data),
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
             List<dynamic> items = [];
             _sort(items, sortBy, snapshot.data);
             return Scrollbar(

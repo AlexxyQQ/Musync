@@ -14,6 +14,9 @@ class Api {
     _dio.options.baseUrl = baseURL;
     _dio.options.headers = defaultHeaders;
     _dio.options.connectTimeout = const Duration(seconds: 3);
+    _dio.options.receiveTimeout = const Duration(seconds: 8);
+    _dio.options.sendTimeout = const Duration(seconds: 8);
+    _dio.httpClientAdapter = HttpClientAdapter();
 
     _dio.interceptors.add(
       PrettyDioLogger(

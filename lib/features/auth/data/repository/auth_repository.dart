@@ -1,11 +1,11 @@
 import 'package:musync/features/auth/data/data_source/auth_data_source.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
-import 'package:musync/features/auth/domain/repository/user_repository.dart';
+import 'package:musync/features/auth/domain/repository/auth_repository.dart';
 
-class AuthRepository extends UserRepository {
+class AuthRepositoryImpl extends IAuthRepository {
   final AuthDataSource authDataSource;
 
-  AuthRepository({
+  AuthRepositoryImpl({
     required this.authDataSource,
   });
 

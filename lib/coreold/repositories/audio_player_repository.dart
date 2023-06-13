@@ -1,7 +1,7 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-import 'package:just_audio_background/just_audio_background.dart';
+// import 'package:just_audio_background/just_audio_background.dart';
 
 class AudioPlayerRepository {
   final AudioPlayer audioPlayer;
@@ -26,17 +26,17 @@ class AudioPlayerRepository {
             (song) {
               return AudioSource.uri(
                 Uri.parse(song.data),
-                tag: MediaItem(
-                  id: "${song.id}",
-                  artist: song.artist,
-                  title: song.title,
-                  artHeaders: {
-                    "User-Agent":
-                        "Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Mobile Safari/537.36"
-                  },
-                  artUri: Uri.parse(
-                      'File://$tempPath/${song.displayNameWOExt}.png'),
-                ),
+                // tag: MediaItem(
+                //   id: "${song.id}",
+                //   artist: song.artist,
+                //   title: song.title,
+                //   artHeaders: {
+                //     "User-Agent":
+                //         "Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Mobile Safari/537.36"
+                //   },
+                //   artUri: Uri.parse(
+                //       'File://$tempPath/${song.displayNameWOExt}.png'),
+                // ),
               );
             },
           ).toList(),

@@ -1,24 +1,27 @@
 // // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
-// import 'package:flutter/material.dart';
-// import 'package:musync/config/constants/constants.dart';
-// import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_appbar.dart';
-// import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomitems.dart';
-// import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_drawer.dart';
-// import 'package:musync/features/home/presentation/view/home.dart';
-// import 'package:musync/features/library/presentation/view/library_page.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:musync/config/constants/constants.dart';
+import 'package:musync/core/common/loading_screen.dart';
+import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
+import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_appbar.dart';
+import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomitems.dart';
+import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_drawer.dart';
+import 'package:musync/features/home/presentation/view/home.dart';
+import 'package:musync/features/library/presentation/view/library_page.dart';
 
-// class BottomNavBar extends StatefulWidget {
-//   BottomNavBar({
+// class BottomNavBarOG extends StatefulWidget {
+//   BottomNavBarOG({
 //     this.selectedIndex = 0,
-//     this.pages = const <Widget>[
+//     this.pages = [
 //       // HomePage
-//       HomePage(),
-//       Placeholder(),
+//       const HomePage(),
+//       const Placeholder(),
 //       // Library Page
-//       LibraryPage(),
+//       const LibraryPage(),
 //       // Folder Page
 //       // * hidden initially
-//       Placeholder(),
+//       const Placeholder(),
 //     ],
 //     Key? key,
 //   }) : super(key: key);
@@ -27,10 +30,10 @@
 //   int selectedIndex; // Mark selectedIndex as final
 
 //   @override
-//   State<BottomNavBar> createState() => _BottomNavBarState();
+//   State<BottomNavBarOG> createState() => _BottomNavBarState();
 // }
 
-// class _BottomNavBarState extends State<BottomNavBar> {
+// class _BottomNavBarOGState extends State<BottomNavBarOG> {
 //   late PageController _pageController;
 
 //   @override
@@ -103,22 +106,9 @@
 //     );
 //   }
 // }
-// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/common/loading_screen.dart';
-import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
-import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_appbar.dart';
-import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomitems.dart';
-import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_drawer.dart';
-import 'package:musync/features/home/presentation/view/home.dart';
-import 'package:musync/features/library/presentation/view/library_page.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({
-    Key? key,
-  }) : super(key: key);
+  const BottomNavBar({super.key});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -126,44 +116,64 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   late PageController _pageController;
-  int selectedIndex = 0;
-  var data;
-  List<Widget> pages = [
+  late int selectedIndex = 0;
+  late Map<String, List<dynamic>> folders = {};
+  late Map<String, List<dynamic>> albums = {};
+  late Map<String, List<dynamic>> artists = {};
+  late Map<String, dynamic> data = {};
+  late bool isLoading = true;
+  late List<Widget> pages = [
+    HomePage(
+      folders: folders,
+      albums: albums,
+      artists: artists,
+      isLoading: isLoading,
+    ),
     const LoadingScreen(),
-    const LoadingScreen(),
-    const LoadingScreen(),
-    const Placeholder(),
+    LibraryPage(
+      data: data,
+    ),
   ];
 
-  Future<void> fetchDataforHome() async {
+  Future<void> fetchData() async {
     var musicRepo = GetIt.instance<MusicQueryUseCase>();
     await musicRepo.permission();
     data = await musicRepo.getEverything();
-    setState(() {
-      pages[0] = HomePage(data: data);
-      pages[2] = LibraryPage(data: data);
-    });
+    dataForHome(data);
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void dataForHome(data) {
+    folders = data['folders'];
+    albums = data['albums'];
+    artists = data['artists'];
+    if (mounted) {
+      // Check if the widget is still mounted before calling setState()
+      setState(() {
+        isLoading = false;
+        pages[0] = HomePage(
+          folders: folders,
+          albums: albums,
+          artists: artists,
+          isLoading: isLoading,
+        );
+      });
+    }
   }
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     if (ModalRoute.of(context)?.settings.arguments != null) {
-      final arguments =
-          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-      selectedIndex = arguments['selectedIndex'] as int;
-      final newPage = arguments['newPage'] as Widget?;
-      if (newPage != null) {
-        pages[2] = newPage;
+      if ((ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>)['pages'] !=
+          null) {
+        pages = (ModalRoute.of(context)?.settings.arguments
+            as Map<String, dynamic>)['pages'] as List<Widget>;
       }
-    } else {
-      fetchDataforHome();
+      selectedIndex = (ModalRoute.of(context)?.settings.arguments
+          as Map<String, dynamic>)['selectedIndex'] as int;
     }
+    fetchData();
+    super.didChangeDependencies();
   }
 
   @override
@@ -191,18 +201,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
               return pages[index];
             },
           ),
-          // Mini Player
-          // Positioned(
-          //   bottom: 0,
-          //   left: 0,
-          //   right: 0,
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Navigator.pushNamed(context, '/nowPlaying');
-          //     },
-          //     child: const MiniPlayer(),
-          //   ),
-          // ),
         ],
       ),
       // Bottom Navigation Bar

@@ -14,13 +14,13 @@ class AuthInjectionContainer {
       ),
     );
     get.registerLazySingleton(
-      () => AuthRepository(
+      () => AuthRepositoryImpl(
         authDataSource: get<AuthDataSource>(),
       ),
     );
     get.registerLazySingleton(
       () => AuthUseCase(
-        authRepository: get<AuthRepository>(),
+        authRepository: get<AuthRepositoryImpl>(),
       ),
     );
   }

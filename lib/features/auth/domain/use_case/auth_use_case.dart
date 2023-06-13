@@ -1,10 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
-import 'package:musync/features/auth/data/repository/auth_repository.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
+import 'package:musync/features/auth/domain/repository/auth_repository.dart';
 
 class AuthUseCase {
-  final AuthRepository authRepository;
+  final IAuthRepository authRepository;
 
   const AuthUseCase({required this.authRepository});
 

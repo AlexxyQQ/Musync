@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
@@ -83,7 +83,10 @@ class SplashRepository extends ASplashRepository {
       }
     } on DioException catch (e) {
       log(e.toString());
-      rethrow;
+      return ErrorModel(
+        status: false,
+        message: 'Server is down.',
+      );
     } catch (e) {
       return ErrorModel(
         status: false,
@@ -131,6 +134,15 @@ class SplashRepository extends ASplashRepository {
             'isFirstTime': isFirstTime,
             'goHome': goHome,
             'user': user,
+          },
+        );
+      } on DioException catch (e) {
+        return ErrorModel(
+          status: false,
+          message: 'No user logged in.',
+          data: {
+            'isFirstTime': isFirstTime,
+            'goHome': goHome,
           },
         );
       } catch (e) {
