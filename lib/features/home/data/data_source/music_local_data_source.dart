@@ -1,51 +1,20 @@
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:musync/features/home/data/data_source/music_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
 import 'package:musync/features/home/data/model/album_hive_model.dart';
+import 'package:musync/features/home/data/model/playlist_hive_model.dart';
 import 'package:musync/features/home/data/model/song_hive_model.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
+import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class MusicLocalDataSource {
+class MusicLocalDataSource implements AMusicDataSource {
   final OnAudioQuery audioQuery = OnAudioQuery();
   final musicHiveDataSourse = GetIt.instance<MusicHiveDataSourse>();
 
-  /// Get all songs
-  Future<List<SongEntity>> getAllSongs() async {
-    // check if music already in hive
-    var allHiveSongs = await musicHiveDataSourse.getAllSongs();
-    if (allHiveSongs.isNotEmpty) {
-      // return song entity if songs in hive
-      var allEntitySongs = SongHiveModel.empty().toEntityList(allHiveSongs);
-      return allEntitySongs;
-    } else {
-      // if song not in hive query song and add it to hive
-      const MethodChannel channel =
-          MethodChannel('com.lucasjosino.on_audio_query');
-      var allQuerySongs = await channel.invokeMethod(
-        "querySongs",
-        {
-          "sortType": SongSortType.TITLE.index,
-          "orderType": OrderType.ASC_OR_SMALLER.index,
-          "uri": UriType.EXTERNAL.index,
-          "ignoreCase": true,
-        },
-      );
-      // Getting List of SongEntities
-      List<SongEntity> songEntityList = [];
-      if (allQuerySongs != null) {
-        for (var songMap in allQuerySongs) {
-          songEntityList.add(SongEntity.fromMap(convertMap(songMap)));
-        }
-      }
-      // Converting Entities to Hive
-      var songHiveList = SongHiveModel.empty().toHiveList(songEntityList);
-      await musicHiveDataSourse.addAllSongs(songHiveList);
-      return songEntityList;
-    }
-  }
-
+  @override
   Future<List<SongEntity>> getFolderSongs({required String path}) async {
     // check if music already in hive
     var allHiveFolderSongs =
@@ -56,31 +25,32 @@ class MusicLocalDataSource {
           SongHiveModel.empty().toEntityList(allHiveFolderSongs);
       return allEntitySongs;
     } else {
-      // if song not in hive query song and add it to hive
-      const MethodChannel channel =
-          MethodChannel('com.lucasjosino.on_audio_query');
-      var allQuerySongs = await channel.invokeMethod(
-        "querySongs",
-        {
-          "path": path,
-          "sortType": SongSortType.TITLE.index,
-          "orderType": OrderType.ASC_OR_SMALLER.index,
-          "uri": UriType.EXTERNAL.index,
-          "ignoreCase": true,
-        },
+      final List<SongModel> allQuerySongs = await audioQuery.querySongs(
+        path: path,
+        sortType: SongSortType.ALBUM,
+        orderType: OrderType.ASC_OR_SMALLER,
+        uriType: UriType.EXTERNAL,
+        ignoreCase: true,
       );
+
       // Getting List of SongEntities
       List<SongEntity> songEntityList = [];
       if (allQuerySongs != null) {
         for (var songMap in allQuerySongs) {
-          songEntityList.add(SongEntity.fromMap(convertMap(songMap)));
+          songEntityList.add(
+            SongEntity.fromModelMap(
+              convertMap(songMap.getMap),
+            ),
+          );
         }
       }
+
       return songEntityList;
     }
   }
 
   /// Get all Albums
+  @override
   Future<List<AlbumEntity>> getAllAlbums() async {
     const MethodChannel channel =
         MethodChannel('com.lucasjosino.on_audio_query');
@@ -107,6 +77,7 @@ class MusicLocalDataSource {
   }
 
   /// Get all Folders
+  @override
   Future<List<String>> getAllFolders() async {
     var allSongFolders = await musicHiveDataSourse.getAllFolders();
     if (allSongFolders.isNotEmpty) {
@@ -118,6 +89,7 @@ class MusicLocalDataSource {
     }
   }
 
+  @override
   Future<Map<String, List<SongEntity>>> getAllFolderWithSongs() async {
     final Map<String, List<SongEntity>> result = {};
     final List<String> allFolder = await getAllFolders();
@@ -129,6 +101,7 @@ class MusicLocalDataSource {
     return result;
   }
 
+  @override
   Future<Map<String, List<SongEntity>>> getAllAlbumWithSongs() async {
     final Map<String, List<SongEntity>> result = {};
     final List<AlbumEntity> allAlbums = await getAllAlbums();
@@ -144,6 +117,7 @@ class MusicLocalDataSource {
     return result;
   }
 
+  @override
   Future<Map<String, List<SongEntity>>> getAllArtistWithSongs() async {
     final Map<String, List<SongEntity>> result = {};
     final List<SongEntity> allSongs = await getAllSongs();
@@ -158,6 +132,57 @@ class MusicLocalDataSource {
     return result;
   }
 
+  @override
+  Future<void> createPlaylist({required String playlistName}) async {
+    var playlists = await getPlaylists();
+    for (var playlist in playlists) {
+      if (playlist.playlist != playlistName) {
+        await audioQuery.createPlaylist(playlistName);
+      }
+    }
+  }
+
+  @override
+  Future<void> addToPlaylist({
+    required int playlistId,
+    required int audioId,
+  }) async {
+    await audioQuery.addToPlaylist(playlistId, audioId);
+  }
+
+  @override
+  Future<List<PlaylistEntity>> getPlaylists() async {
+    audioQuery.queryPlaylists();
+    // check if music already in hive
+    var allHivePlaylists = await musicHiveDataSourse.getAllPlaylist();
+    if (allHivePlaylists.isNotEmpty) {
+      // return song entity if songs in hive
+      var allEntitySongs =
+          PlaylistHiveModel.empty().toEntityList(allHivePlaylists);
+      return allEntitySongs;
+    } else {
+      // if song not in hive query song and add it to hive
+
+      final List<PlaylistModel> allQueryPlaylists =
+          await audioQuery.queryPlaylists();
+      // Getting List of SongEntities
+      List<PlaylistEntity> songEntityList = [];
+      if (allQueryPlaylists != null) {
+        for (var playlist in allQueryPlaylists) {
+          songEntityList.add(
+            PlaylistEntity.fromMap(
+              convertMap(playlist.getMap),
+            ),
+          );
+        }
+      }
+      // Converting Entities to Hive
+      var songHiveList = PlaylistHiveModel.empty().toHiveList(songEntityList);
+      await musicHiveDataSourse.addAllPlaylist(songHiveList);
+      return songEntityList;
+    }
+  }
+
   Map<String, dynamic> convertMap(Map<dynamic, dynamic> originalMap) {
     Map<String, dynamic> convertedMap = {};
     originalMap.forEach((key, value) {
@@ -168,5 +193,61 @@ class MusicLocalDataSource {
       }
     });
     return convertedMap;
+  }
+
+  @override
+  Future<void> addAlbums() {
+    // TODO: implement addAlbums
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addFolders() {
+    // TODO: implement addFolders
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addSongs({
+    required List<SongEntity> songs,
+    String? token,
+  }) {
+    // TODO: implement addSongs
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<SongEntity>> getAllSongs({String? token}) async {
+    // check if music already in hive
+    var allHiveSongs = await musicHiveDataSourse.getAllSongs();
+
+    if (allHiveSongs.isNotEmpty) {
+      // return song entity if songs in hive
+      var allEntitySongs = SongHiveModel.empty().toEntityList(allHiveSongs);
+      return allEntitySongs;
+    } else {
+      final List<SongModel> allQuerySongs = await audioQuery.querySongs(
+        sortType: SongSortType.ALBUM,
+        orderType: OrderType.ASC_OR_SMALLER,
+        uriType: UriType.EXTERNAL,
+        ignoreCase: true,
+      );
+
+      // Getting List of SongEntities
+      List<SongEntity> songEntityList = [];
+      if (allQuerySongs != null) {
+        for (var songMap in allQuerySongs) {
+          songEntityList.add(
+            SongEntity.fromModelMap(
+              convertMap(songMap.getMap),
+            ),
+          );
+        }
+      }
+      // Converting Entities to Hive
+      var songHiveList = SongHiveModel.empty().toHiveList(songEntityList);
+      await musicHiveDataSourse.addAllSongs(songHiveList);
+      return songEntityList;
+    }
   }
 }

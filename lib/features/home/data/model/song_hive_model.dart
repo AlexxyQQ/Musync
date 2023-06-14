@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive_tabel_constant.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 part 'song_hive_model.g.dart';
 
@@ -84,6 +86,9 @@ class SongHiveModel {
   @HiveField(25)
   final bool isRingtone;
 
+  @HiveField(26)
+  final String serverUrl;
+
   SongHiveModel.empty()
       : this(
           id: 0,
@@ -112,6 +117,7 @@ class SongHiveModel {
           isNotification: false,
           isPodcast: false,
           isRingtone: false,
+          serverUrl: '',
         );
 
   SongHiveModel({
@@ -124,6 +130,7 @@ class SongHiveModel {
     String? album,
     String? albumId,
     String? artist,
+    String? serverUrl,
     String? artistId,
     String? genre,
     String? genreId,
@@ -158,11 +165,13 @@ class SongHiveModel {
         isAudioBook = isAudioBook ?? false,
         isMusic = isMusic ?? false,
         isNotification = isNotification ?? false,
-        isPodcast = isPodcast ?? false;
+        isPodcast = isPodcast ?? false,
+        serverUrl = serverUrl ?? '';
 
   SongEntity toEntity() => SongEntity(
         id: id,
         data: data,
+        serverUrl: serverUrl,
         uri: uri,
         displayName: displayName,
         displayNameWOExt: displayNameWOExt,
@@ -191,6 +200,7 @@ class SongHiveModel {
   SongHiveModel toHiveModel(SongEntity entity) => SongHiveModel(
         id: entity.id,
         data: entity.data,
+        serverUrl: entity.serverUrl,
         uri: entity.uri,
         displayName: entity.displayName,
         displayNameWOExt: entity.displayNameWOExt,
@@ -217,8 +227,100 @@ class SongHiveModel {
         isRingtone: entity.isRingtone,
       );
 
+  SongModel toSongModel(SongEntity entity) => SongModel({
+        "_id": entity.id,
+        "_data": entity.data,
+        "_uri": entity.uri,
+        "_display_name": entity.displayName,
+        "_display_name_wo_ext": entity.displayNameWOExt,
+        "_size": entity.size,
+        "album": entity.album,
+        "album_id": entity.albumId,
+        "artist": entity.artist,
+        "artist_id": entity.artistId,
+        "genre": entity.genre,
+        "genre_id": entity.genreId,
+        "bookmark": entity.bookmark,
+        "composer": entity.composer,
+        "date_added": entity.dateAdded,
+        "date_modified": entity.dateModified,
+        "duration": entity.duration,
+        "title": entity.title,
+        "track": entity.track,
+        "file_extension": entity.fileExtension,
+        "is_alarm": entity.isAlarm,
+        "is_audiobook": entity.isAudioBook,
+        "is_music": entity.isMusic,
+        "is_notification": entity.isNotification,
+        "is_podcast": entity.isPodcast,
+        "is_ringtone": entity.isRingtone,
+      });
+
   List<SongEntity> toEntityList(List<SongHiveModel> models) =>
       models.map((e) => e.toEntity()).toList();
   List<SongHiveModel> toHiveList(List<SongEntity> entities) =>
       entities.map((e) => toHiveModel(e)).toList();
+
+  List<SongModel> toModelList(List<SongEntity> entities) =>
+      entities.map((e) => toSongModel(e)).toList();
+
+  SongHiveModel copyWith({
+    int? id,
+    String? data,
+    String? uri,
+    String? displayName,
+    String? displayNameWOExt,
+    int? size,
+    String? album,
+    String? albumId,
+    String? artist,
+    String? artistId,
+    String? genre,
+    String? genreId,
+    int? bookmark,
+    String? composer,
+    int? dateAdded,
+    int? dateModified,
+    int? duration,
+    String? title,
+    int? track,
+    String? fileExtension,
+    bool? isAlarm,
+    bool? isAudioBook,
+    bool? isMusic,
+    bool? isNotification,
+    bool? isPodcast,
+    bool? isRingtone,
+    String? serverUrl,
+  }) {
+    return SongHiveModel(
+      id: id ?? this.id,
+      data: data ?? this.data,
+      uri: uri ?? this.uri,
+      displayName: displayName ?? this.displayName,
+      displayNameWOExt: displayNameWOExt ?? this.displayNameWOExt,
+      size: size ?? this.size,
+      album: album ?? this.album,
+      albumId: albumId ?? this.albumId,
+      artist: artist ?? this.artist,
+      artistId: artistId ?? this.artistId,
+      genre: genre ?? this.genre,
+      genreId: genreId ?? this.genreId,
+      bookmark: bookmark ?? this.bookmark,
+      composer: composer ?? this.composer,
+      dateAdded: dateAdded ?? this.dateAdded,
+      dateModified: dateModified ?? this.dateModified,
+      duration: duration ?? this.duration,
+      title: title ?? this.title,
+      track: track ?? this.track,
+      fileExtension: fileExtension ?? this.fileExtension,
+      isAlarm: isAlarm ?? this.isAlarm,
+      isAudioBook: isAudioBook ?? this.isAudioBook,
+      isMusic: isMusic ?? this.isMusic,
+      isNotification: isNotification ?? this.isNotification,
+      isPodcast: isPodcast ?? this.isPodcast,
+      isRingtone: isRingtone ?? this.isRingtone,
+      serverUrl: serverUrl ?? this.serverUrl,
+    );
+  }
 }

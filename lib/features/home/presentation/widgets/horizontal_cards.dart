@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musync/core/common/shimmers.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/common/album_art.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class HomeOtherSection extends StatelessWidget {
   const HomeOtherSection({
@@ -93,12 +93,22 @@ class HomeOtherSection extends StatelessWidget {
                                 child: CircleAvatar(
                                   radius: cardWidth / 2,
                                   backgroundColor: KColors.transparentColor,
-                                  child: ArtWorkImage(
-                                    height: cardHeight,
-                                    width: cardWidth,
-                                    borderRadius: BorderRadius.circular(500),
+                                  child: QueryArtworkWidget(
+                                    artworkHeight: cardHeight,
+                                    artworkWidth: cardWidth,
+                                    artworkBorder: BorderRadius.circular(500),
                                     id: dataValue[0].id,
-                                    filename: dataValue[0].displayNameWOExt,
+                                    nullArtworkWidget: const Icon(
+                                      Icons.music_note_rounded,size: 40,
+                                      color: KColors.accentColor,
+                                    ),
+                                    type: ArtworkType.AUDIO,
+                                    errorBuilder: (p0, p1, p2) {
+                                      return const Icon(
+                                        Icons.music_note_rounded,
+                                        color: KColors.accentColor,
+                                      );
+                                    },
                                   ),
                                 ),
                               )
@@ -111,13 +121,23 @@ class HomeOtherSection extends StatelessWidget {
                                 ),
                                 width: cardWidth,
                                 height: cardHeight - 50,
-                                child: ArtWorkImage(
-                                  height: cardHeight,
-                                  width: cardWidth,
-                                  borderRadius:
+                                child: QueryArtworkWidget(
+                                  artworkHeight: cardHeight,
+                                  artworkWidth: cardWidth,
+                                  nullArtworkWidget: const Icon(
+                                    Icons.music_note_rounded,size: 40,
+                                    color: KColors.accentColor,
+                                  ),
+                                  artworkBorder:
                                       BorderRadius.circular(cardRoundness),
                                   id: dataValue[0].id,
-                                  filename: dataValue[0].displayNameWOExt,
+                                  type: ArtworkType.AUDIO,
+                                  errorBuilder: (p0, p1, p2) {
+                                    return const Icon(
+                                      Icons.music_note_rounded,
+                                      color: KColors.accentColor,
+                                    );
+                                  },
                                 ),
                               ),
                         // Card Subtitle

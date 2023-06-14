@@ -6,4 +6,7 @@ class HiveTableConstant {
 
   static const int albumTableId = 1;
   static const String albumBox = "albumBox";
+
+  static const int playlistTableId = 2;
+  static const String playlistBox = "playlistBox";
 }

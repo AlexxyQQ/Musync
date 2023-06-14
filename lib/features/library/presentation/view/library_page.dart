@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/common/album_art.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/library/presentation/widgets/library_appbar.dart';
 import 'package:musync/features/library/presentation/widgets/song_listview.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class LibraryPageOG extends StatefulWidget {
   const LibraryPageOG({super.key});
@@ -17,7 +17,7 @@ class LibraryPageOG extends StatefulWidget {
 }
 
 class _LibraryPageOGState extends State<LibraryPageOG> {
-  var musicRepo = GetIt.instance<MusicQueryUseCase>();
+  var musicUseCase = GetIt.instance<MusicQueryUseCase>();
 
   changeSort(String newSortBy) {
     setState(() {
@@ -106,7 +106,7 @@ class _LibraryPageOGState extends State<LibraryPageOG> {
         changeSort: changeSort,
       ),
       body: FutureBuilder(
-        future: musicRepo.getEverything(),
+        future: musicUseCase.getEverything(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<dynamic> items = [];
@@ -393,18 +393,39 @@ class ListViewCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: ArtWorkImage(
-                      borderRadius: BorderRadius.circular(100),
+                    child: QueryArtworkWidget(
                       id: item["songs"][randomInt].id,
-                      filename: item["songs"][randomInt].displayNameWOExt,
+                      nullArtworkWidget: const Icon(
+                        Icons.music_note_rounded,
+                        size: 40,
+                        color: KColors.accentColor,
+                      ),
+                      type: ArtworkType.AUDIO,
+                      errorBuilder: (p0, p1, p2) {
+                        return const Icon(
+                          Icons.music_note_rounded,
+                          color: KColors.accentColor,
+                        );
+                      },
                     ),
                   )
                 : SizedBox(
                     height: 80,
                     width: 80,
-                    child: ArtWorkImage(
+                    child: QueryArtworkWidget(
                       id: item["songs"][randomInt].id,
-                      filename: item["songs"][randomInt].displayNameWOExt,
+                      nullArtworkWidget: const Icon(
+                        Icons.music_note_rounded,
+                        size: 40,
+                        color: KColors.accentColor,
+                      ),
+                      type: ArtworkType.AUDIO,
+                      errorBuilder: (p0, p1, p2) {
+                        return const Icon(
+                          Icons.music_note_rounded,
+                          color: KColors.accentColor,
+                        );
+                      },
                     ),
                   ),
             const SizedBox(width: 10),

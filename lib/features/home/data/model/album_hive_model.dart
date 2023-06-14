@@ -1,6 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive_tabel_constant.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 part 'album_hive_model.g.dart';
 
@@ -55,8 +56,18 @@ class AlbumHiveModel {
         numOfSongs: entity.numOfSongs,
       );
 
+  AlbumModel toAlbumModel(AlbumEntity entity) => AlbumModel({
+        "_id": entity.id,
+        "album": entity.album,
+        "artist": entity.artist,
+        "artist_id": entity.artistId,
+        "numsongs": entity.numOfSongs,
+      });
+
   List<AlbumEntity> toEntityList(List<AlbumHiveModel> models) =>
       models.map((e) => e.toEntity()).toList();
   List<AlbumHiveModel> toHiveList(List<AlbumEntity> entities) =>
       entities.map((e) => toHiveModel(e)).toList();
+  List<AlbumModel> toModelList(List<AlbumEntity> entities) =>
+      entities.map((e) => toAlbumModel(e)).toList();
 }

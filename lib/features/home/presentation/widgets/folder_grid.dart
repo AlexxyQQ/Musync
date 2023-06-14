@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musync/core/common/shimmers.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/common/album_art.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class HomeFolderSectionNormal extends StatelessWidget {
   const HomeFolderSectionNormal({
@@ -91,10 +91,26 @@ class HomeFolderSectionNormal extends StatelessWidget {
                                 ),
                                 width: mqSize.width * 0.15,
                                 height: double.infinity,
-                                child: ArtWorkImage(
-                                  id: folderValue[0]
-                                      .id, // Get the first song in the folder
-                                  filename: folderValue[0].displayNameWOExt,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: QueryArtworkWidget(
+                                    artworkBorder: BorderRadius.circular(10),
+                                    id: folderValue[0]
+                                        .id, // Get the first song in the folder
+                                    type: ArtworkType.AUDIO,
+                                    nullArtworkWidget: const Icon(
+                                      Icons.music_note_rounded,
+                                      size: 40,
+                                      color: KColors.accentColor,
+                                    ),
+
+                                    errorBuilder: (p0, p1, p2) {
+                                      return const Icon(
+                                        Icons.music_note_rounded,
+                                        color: KColors.accentColor,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               // Folder Name

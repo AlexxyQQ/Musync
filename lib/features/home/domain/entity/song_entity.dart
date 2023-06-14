@@ -1,9 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class SongEntity {
   final int id;
 
   final String data;
+
+  final String? serverUrl;
 
   final String? uri;
 
@@ -60,6 +63,7 @@ class SongEntity {
     required this.displayNameWOExt,
     required this.size,
     this.album,
+    this.serverUrl,
     this.albumId,
     this.artist,
     this.artistId,
@@ -108,6 +112,7 @@ class SongEntity {
     bool? isNotification,
     bool? isPodcast,
     bool? isRingtone,
+    String? serverUrl,
   }) {
     return SongEntity(
       id: id ?? this.id,
@@ -170,7 +175,7 @@ class SongEntity {
     };
   }
 
-  factory SongEntity.fromMap(Map<String, dynamic> map) {
+  factory SongEntity.fromModelMap(Map<String, dynamic> map) {
     return SongEntity(
       id: map['_id'] as int,
       data: map['_data'] as String,
@@ -208,11 +213,11 @@ class SongEntity {
   String toJson() => json.encode(toMap());
 
   factory SongEntity.fromJson(String source) =>
-      SongEntity.fromMap(json.decode(source) as Map<String, dynamic>);
+      SongEntity.fromApiMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'SongEntity(id: $id, data: $data, uri: $uri, displayName: $displayName, displayNameWOExt: $displayNameWOExt, size: $size, album: $album, albumId: $albumId, artist: $artist, artistId: $artistId, genre: $genre, genreId: $genreId, bookmark: $bookmark, composer: $composer, dateAdded: $dateAdded, dateModified: $dateModified, duration: $duration, title: $title, track: $track, fileExtension: $fileExtension, isAlarm: $isAlarm, isAudioBook: $isAudioBook, isMusic: $isMusic, isNotification: $isNotification, isPodcast: $isPodcast, isRingtone: $isRingtone)';
+    return 'SongEntity(id: $id, data: $data, serverUrl: $serverUrl, uri: $uri, displayName: $displayName, displayNameWOExt: $displayNameWOExt, size: $size, album: $album, albumId: $albumId, artist: $artist, artistId: $artistId, genre: $genre, genreId: $genreId, bookmark: $bookmark, composer: $composer, dateAdded: $dateAdded, dateModified: $dateModified, duration: $duration, title: $title, track: $track, fileExtension: $fileExtension, isAlarm: $isAlarm, isAudioBook: $isAudioBook, isMusic: $isMusic, isNotification: $isNotification, isPodcast: $isPodcast, isRingtone: $isRingtone)';
   }
 
   @override
@@ -221,6 +226,7 @@ class SongEntity {
 
     return other.id == id &&
         other.data == data &&
+        other.serverUrl == serverUrl &&
         other.uri == uri &&
         other.displayName == displayName &&
         other.displayNameWOExt == displayNameWOExt &&
@@ -251,6 +257,7 @@ class SongEntity {
   int get hashCode {
     return id.hashCode ^
         data.hashCode ^
+        serverUrl.hashCode ^
         uri.hashCode ^
         displayName.hashCode ^
         displayNameWOExt.hashCode ^
@@ -275,5 +282,40 @@ class SongEntity {
         isNotification.hashCode ^
         isPodcast.hashCode ^
         isRingtone.hashCode;
+  }
+
+  factory SongEntity.fromApiMap(Map<String, dynamic> map) {
+    return SongEntity(
+      id: map['id'] as int,
+      data: map['data'] as String,
+      serverUrl: map['serverUrl'] as String,
+      uri: map['uri'] != null ? map['uri'] as String : null,
+      displayName: map['displayName'] as String,
+      displayNameWOExt: map['displayNameWOExt'] as String,
+      size: map['size'] as int,
+      album: map['album'] != null ? map['album'] as String : null,
+      albumId: map['albumId'] != null ? map['albumId'] as String : null,
+      artist: map['artist'] != null ? map['artist'] as String : null,
+      artistId: map['artistId'] != null ? map['artistId'] as String : null,
+      genre: map['genre'] != null ? map['genre'] as String : null,
+      genreId: map['genreId'] != null ? map['genreId'] as String : null,
+      bookmark: map['bookmark'] != null ? map['bookmark'] as int : null,
+      composer: map['composer'] != null ? map['composer'] as String : null,
+      dateAdded: map['dateAdded'] != null ? map['dateAdded'] as int : null,
+      dateModified:
+          map['dateModified'] != null ? map['dateModified'] as int : null,
+      duration: map['duration'] != null ? map['duration'] as int : null,
+      title: map['title'] as String,
+      track: map['track'] != null ? map['track'] as int : null,
+      fileExtension: map['fileExtension'] as String,
+      isAlarm: map['isAlarm'] != null ? map['isAlarm'] as bool : null,
+      isAudioBook:
+          map['isAudioBook'] != null ? map['isAudioBook'] as bool : null,
+      isMusic: map['isMusic'] != null ? map['isMusic'] as bool : null,
+      isNotification:
+          map['isNotification'] != null ? map['isNotification'] as bool : null,
+      isPodcast: map['isPodcast'] != null ? map['isPodcast'] as bool : null,
+      isRingtone: map['isRingtone'] as bool,
+    );
   }
 }

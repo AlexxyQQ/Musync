@@ -6,6 +6,7 @@ void kShowSnackBar(
   String message, {
   BuildContext? context,
   GlobalKey<ScaffoldState>? scaffoldKey,
+  Duration duration = const Duration(milliseconds: 1200),
 }) {
   if (context != null) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -19,7 +20,7 @@ void kShowSnackBar(
                 color: KColors.blackColor,
               ),
         ),
-        duration: const Duration(milliseconds: 1200),
+        duration: duration,
       ),
     );
   } else {
@@ -37,7 +38,7 @@ void kShowSnackBar(
             color: KColors.blackColor,
           ),
         ),
-        duration: const Duration(milliseconds: 1200),
+        duration: duration,
       ),
     );
   }

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/coreold/repositories/audio_player_repository.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/nowplaying/presentation/view/queue_view.dart';
 import 'package:musync/features/nowplaying/presentation/widgets/audio_controlls.dart';
-import 'package:musync/core/common/album_art.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class NowPlaying extends StatefulWidget {
   const NowPlaying({super.key, required this.songList, required this.index});
 
-  final List<SongModel> songList;
+  final List<SongEntity> songList;
   final int index;
 
   @override
@@ -72,7 +72,7 @@ class NowPlayingPhone extends StatelessWidget {
   final bool isDark;
   final bool isTablet;
   final bool isPortrait;
-  final List<SongModel> songs;
+  final List<SongEntity> songs;
   final int index;
   @override
   Widget build(BuildContext context) {
@@ -127,9 +127,20 @@ class NowPlayingPhone extends StatelessWidget {
                               : KColors.offBlackColor,
                         ),
                         // Add Album Art Here
-                        child: ArtWorkImage(
+                        child: QueryArtworkWidget(
                           id: songs[index].id,
-                          filename: songs[index].displayNameWOExt,
+                          nullArtworkWidget: const Icon(
+                            Icons.music_note_rounded,
+                            size: 40,
+                            color: KColors.accentColor,
+                          ),
+                          type: ArtworkType.AUDIO,
+                          errorBuilder: (p0, p1, p2) {
+                            return const Icon(
+                              Icons.music_note_rounded,
+                              color: KColors.accentColor,
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -220,7 +231,7 @@ class NowPlayingTablet extends StatelessWidget {
   final bool isDark;
   final bool isTablet;
   final bool isPortrait;
-  final List<SongModel> songs;
+  final List<SongEntity> songs;
   final int index;
 
   @override

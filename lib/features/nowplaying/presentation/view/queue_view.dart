@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 class QueueView extends StatelessWidget {
-  final List<SongModel> songList;
+  final List<SongEntity> songList;
   const QueueView({super.key, required this.songList});
 
   @override

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/coreold/repositories/audio_player_repository.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/core/common/album_art.dart';
+import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongListView extends StatelessWidget {
@@ -55,7 +55,7 @@ class SongListView extends StatelessWidget {
   }
 }
 
-class ListofSongs extends StatelessWidget {
+class ListofSongs extends StatefulWidget {
   const ListofSongs({
     Key? key,
     required this.isDark,
@@ -66,92 +66,122 @@ class ListofSongs extends StatelessWidget {
   final List<SongEntity> songs;
 
   @override
+  State<ListofSongs> createState() => _ListofSongsState();
+}
+
+class _ListofSongsState extends State<ListofSongs> {
+  bool show = false;
+
+  @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final Color songNameColor =
-        isDark ? KColors.whiteColor : KColors.blackColor;
+        widget.isDark ? KColors.whiteColor : KColors.blackColor;
     final Color songArtistColor =
-        isDark ? KColors.offWhiteColor : KColors.offBlackColor;
+        widget.isDark ? KColors.offWhiteColor : KColors.offBlackColor;
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final ms = songs[index].duration!;
+          final ms = widget.songs[index].duration!;
           Duration duration = Duration(milliseconds: ms);
           int minutes = duration.inMinutes;
           int seconds = duration.inSeconds.remainder(60);
 
           return InkWell(
+            onLongPress: () {
+              print(widget.songs[index]);
+              // setState(() {
+              //   show = !show;
+              // });
+            },
             onTap: () {
               // GetIt.instance<AudioPlayerRepository>().playAll(songs, index);
               Navigator.of(context).pushNamed(
                 Routes.nowPlaying,
                 arguments: {
-                  "songs": songs,
+                  "songs": widget.songs,
                   "index": index,
                 },
               );
             },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              height: 60,
-              width: screenWidth,
-              color: KColors.transparentColor,
-              child: Row(
-                children: [
-                  // Song Image
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ArtWorkImage(
-                      id: songs[index].id,
-                      filename: songs[index].displayNameWOExt,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              children: [
+                show ? const PlaylistList() : SizedBox(),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  height: 60,
+                  width: screenWidth,
+                  color: KColors.transparentColor,
+                  child: Row(
                     children: [
-                      // Song Name
-                      SizedBox(
-                        width: screenWidth * 0.7,
-                        child: Text(
-                          songs[index].title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: songNameColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                      // Song Image
+                      Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: QueryArtworkWidget(
+                          id: widget.songs[index].id,
+                          nullArtworkWidget: const Icon(
+                            Icons.music_note_rounded,
+                            size: 40,
+                            color: KColors.accentColor,
                           ),
+                          type: ArtworkType.AUDIO,
+                          errorBuilder: (p0, p1, p2) {
+                            return const Icon(
+                              Icons.music_note_rounded,
+                              color: KColors.accentColor,
+                            );
+                          },
                         ),
                       ),
-
-                      const SizedBox(height: 5),
-                      // Song Artist
-                      RichText(
-                        text: TextSpan(
-                          text:
-                              '${songs[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            color: songArtistColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                      const SizedBox(width: 10),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Song Name
+                          SizedBox(
+                            width: screenWidth * 0.7,
+                            child: Text(
+                              widget.songs[index].title,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: songNameColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
-                        ),
+
+                          const SizedBox(height: 5),
+                          // Song Artist
+                          RichText(
+                            text: TextSpan(
+                              text:
+                                  '${widget.songs[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                              style: TextStyle(
+                                color: songArtistColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
-        childCount: songs.length,
+        childCount: widget.songs.length,
       ),
     );
   }
@@ -324,6 +354,50 @@ class AppBar extends StatelessWidget {
           },
         )
       ],
+    );
+  }
+}
+
+class PlaylistList extends StatefulWidget {
+  const PlaylistList({super.key});
+
+  @override
+  State<PlaylistList> createState() => _PlaylistListState();
+}
+
+class _PlaylistListState extends State<PlaylistList> {
+  late List<PlaylistEntity> playLists = [];
+
+  Future<void> fetchData() async {
+    playLists = await GetIt.instance<MusicQueryUseCase>().getAllPlaylist();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      builder: (context, controller) => Container(
+        height: 500,
+        width: double.infinity,
+        child: ListView.builder(
+          controller: controller,
+          itemBuilder: (context, index) {
+            if (playLists.isNotEmpty) {
+              return ListTile(
+                title: Text(playLists[index].playlist),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+      ),
     );
   }
 }

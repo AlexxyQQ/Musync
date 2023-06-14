@@ -1,20 +1,30 @@
+import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:musync/config/constants/hive_tabel_constant.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
+import 'package:musync/features/home/data/data_source/music_local_data_source.dart';
 import 'package:musync/features/home/data/model/album_hive_model.dart';
+import 'package:musync/features/home/data/model/playlist_hive_model.dart';
 import 'package:musync/features/home/data/model/song_hive_model.dart';
 
 class MusicHiveDataSourse {
   Future<void> init() async {
     Hive.registerAdapter(SongHiveModelAdapter());
     Hive.registerAdapter(AlbumHiveModelAdapter());
+    Hive.registerAdapter(PlaylistHiveModelAdapter());
   }
 
   // ------------------ All Songs Queries ------------------ //
   Future<void> addAllSongs(List<SongHiveModel> songs) async {
     var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
     for (var song in songs) {
-      await box.put(song.id, song);
+      if (box.containsKey(song.id)) {
+        var existingSong = box.get(song.id);
+        var updatedSong = existingSong!.copyWith(serverUrl: song.serverUrl);
+        await box.put(song.id, updatedSong);
+      } else {
+        await box.put(song.id, song);
+      }
     }
   }
 
@@ -61,7 +71,17 @@ class MusicHiveDataSourse {
 
   Future<List<SongHiveModel>> getFolderSongs({required String path}) async {
     var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
-    var folderSongs = box.values.where((song) => song.uri == path).toList();
+    List<SongHiveModel> folderSongs = [];
+    for (var song in box.values.toList()) {
+      if (song.data
+              .split('/')
+              .sublist(0, song.data.split('/').length - 1)
+              .join('/') ==
+          path) {
+        folderSongs.add(song);
+      }
+    }
+
     return folderSongs;
   }
 
@@ -71,5 +91,23 @@ class MusicHiveDataSourse {
       key: 'foldersWithSongs',
       defaultValue: null,
     );
+  }
+
+  // ------------------ All Playlist Queries ------------------ //
+  Future<void> addAllPlaylist(List<PlaylistHiveModel> playlists) async {
+    var box =
+        await Hive.openBox<PlaylistHiveModel>(HiveTableConstant.playlistBox);
+    for (var playlist in playlists) {
+      if (!box.containsKey(playlist.playlist)) {
+        await box.put(playlist.id, playlist);
+      }
+    }
+  }
+
+  Future<List<PlaylistHiveModel>> getAllPlaylist() async {
+    var box =
+        await Hive.openBox<PlaylistHiveModel>(HiveTableConstant.playlistBox);
+    var playlist = box.values.toList();
+    return playlist;
   }
 }

@@ -1,24 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/core/network/api/api.dart';
+import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:musync/features/home/data/data_source/music_remote_data_source.dart';
+import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 
-class KDrawer extends StatelessWidget {
+class KDrawer extends StatefulWidget {
   const KDrawer({
-    super.key,
+    Key? key,
     required this.isDark,
-  });
+    required this.syncTrue,
+  }) : super(key: key);
 
   final bool isDark;
+  final void Function() syncTrue;
+
+  @override
+  State<KDrawer> createState() => _KDrawerState();
+}
+
+class _KDrawerState extends State<KDrawer> {
+  late MusicRemoteDataSource _musicRemoteDataSource;
+
+  @override
+  void initState() {
+    super.initState();
+    _musicRemoteDataSource = MusicRemoteDataSource(api: GetIt.instance<Api>());
+  }
 
   @override
   Widget build(BuildContext context) {
-    var loggedUser = BlocProvider.of<AuthenticationBloc>(context).state.user;
+    final authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    final loggedUser = authenticationBloc.state.user;
+
     return Drawer(
       child: Container(
-        color: isDark ? KColors.blackColor : KColors.whiteColor,
+        color: widget.isDark ? KColors.blackColor : KColors.whiteColor,
         child: Column(
           children: [
             // Drawer Header
@@ -26,7 +48,9 @@ class KDrawer extends StatelessWidget {
               height: 150,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: isDark ? KColors.offBlackColor : KColors.offWhiteColor,
+                color: widget.isDark
+                    ? KColors.offBlackColor
+                    : KColors.offWhiteColor,
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15),
@@ -103,6 +127,17 @@ class KDrawer extends StatelessWidget {
                       // );
                     },
                   ),
+                  // Sync
+                  ListTile(
+                    leading: const Icon(Icons.sync_rounded),
+                    title: Text(
+                      'Sync Online',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    onTap: () {
+                      _syncOnline();
+                    },
+                  ),
                   // Drawer Item
                   ListTile(
                     leading: const Icon(Icons.logout_rounded),
@@ -110,17 +145,8 @@ class KDrawer extends StatelessWidget {
                       'Logout',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    onTap: () async {
-                      BlocProvider.of<AuthenticationBloc>(context)
-                          .add(LogoutEvent());
-                      kShowSnackBar(
-                        'Logged Out',
-                        context: context,
-                      );
-                      Navigator.popAndPushNamed(
-                        context,
-                        Routes.getStartedRoute,
-                      );
+                    onTap: () {
+                      _logout(authenticationBloc);
                     },
                   ),
                 ],
@@ -130,5 +156,37 @@ class KDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _syncOnline() async {
+    final allSongs = await GetIt.instance<MusicQueryUseCase>().getAllSongs();
+    final token = await GetIt.instance<HiveQueries>().getValue(
+      boxName: 'users',
+      key: 'token',
+      defaultValue: '',
+    );
+
+    kShowSnackBar(
+      'Your Files are being checked',
+      context: context,
+      duration: Duration(seconds: 5),
+    );
+
+    await _musicRemoteDataSource.addSongs(songs: allSongs, token: token);
+    await _musicRemoteDataSource.getAllSongs(token: token);
+
+    kShowSnackBar(
+      'Sync Completed',
+      context: context,
+      duration: const Duration(seconds: 5),
+    );
+
+    widget.syncTrue();
+  }
+
+  void _logout(AuthenticationBloc authenticationBloc) {
+    authenticationBloc.add(LogoutEvent());
+    kShowSnackBar('Logged Out', context: context);
+    Navigator.popAndPushNamed(context, Routes.getStartedRoute);
   }
 }
