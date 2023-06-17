@@ -1,16 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/config/themes/app_theme.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
+import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
-import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
-import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/splash/data/repository/splash_repository.dart';
 
 class MusyncSplash extends StatefulWidget {
@@ -41,8 +37,9 @@ class _MusyncSplashState extends State<MusyncSplash> {
       key: "goHome",
       defaultValue: false,
     );
-    var connection = await SplashRepository().checkConnectivityAndServer();
-    if (connection.status) {
+    final bool connection = await ConnectivityCheck.connectivity();
+    final bool server = await ConnectivityCheck.isServerup();
+    if (connection && server) {
       var userData = await SplashRepository().getLoggeduser();
       if (userData.status) {
         setState(() {
@@ -65,20 +62,24 @@ class _MusyncSplashState extends State<MusyncSplash> {
         );
         return null;
       }
+    } else if (connection) {
+      kShowSnackBar(
+        "Server is Down",
+        scaffoldKey: scaffoldKey,
+      );
+      return null;
     } else {
-      kShowSnackBar(connection.message.toString(), scaffoldKey: scaffoldKey);
+      kShowSnackBar(
+        "Server is Down",
+        scaffoldKey: scaffoldKey,
+      );
       return null;
     }
   }
 
-  late AuthViewModel _authViewModel;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _authViewModel = AuthViewModel(
-      authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-    );
     data = check();
   }
 
@@ -90,11 +91,6 @@ class _MusyncSplashState extends State<MusyncSplash> {
         future: data,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            try {
-              _authViewModel.initialLogin(snapshot.data!.token);
-            } catch (e) {
-              log(e.toString());
-            }
             return MaterialApp(
               title: "Musync",
               debugShowCheckedModeBanner: false,

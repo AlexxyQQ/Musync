@@ -1,32 +1,41 @@
+import 'package:dartz/dartz.dart';
+import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 abstract class AMusicDataSource {
-  Future<void> addSongs({
+  Future<Either<ErrorModel, bool>> addAllSongs({
     required List<SongEntity> songs,
-    String? token,
+    required String token,
   });
-  Future<List<SongEntity>> getAllSongs({
-    String? token,
+  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
+    required String token,
   });
-  Future<List<SongEntity>> getFolderSongs({required String path});
+  Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs({
+    required String path,
+  });
 
-  Future<void> addAlbums();
-  Future<List<AlbumEntity>> getAllAlbums();
-  Future<Map<String, List<SongEntity>>> getAllAlbumWithSongs();
+  Future<Either<ErrorModel, bool>> addAlbums();
+  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums();
+  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
+      getAllAlbumWithSongs();
 
-  Future<void> addFolders();
-  Future<List<String>> getAllFolders();
-  Future<Map<String, List<SongEntity>>> getAllFolderWithSongs();
+  Future<Either<ErrorModel, bool>> addFolders();
+  Future<Either<ErrorModel, List<String>>> getAllFolders();
+  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
+      getAllFolderWithSongs();
 
-  Future<Map<String, List<SongEntity>>> getAllArtistWithSongs();
+  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
+      getAllArtistWithSongs();
 
-  Future<void> createPlaylist({required String playlistName});
-  Future<void> addToPlaylist({
+  Future<Either<ErrorModel, bool>> createPlaylist({
+    required String playlistName,
+  });
+  Future<Either<ErrorModel, bool>> addToPlaylist({
     required int playlistId,
     required int audioId,
   });
 
-  Future<List<PlaylistEntity>> getPlaylists();
+  Future<Either<ErrorModel, List<PlaylistEntity>>> getPlaylists();
 }

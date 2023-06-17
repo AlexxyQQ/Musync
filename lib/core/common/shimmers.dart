@@ -11,6 +11,7 @@ class HomeFoldersShimmerEffect extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
       childAspectRatio: 2.6,
+      shrinkWrap: true,
       children: List.generate(
         6,
         (index) => Shimmer.fromColors(
@@ -32,14 +33,12 @@ class HomeFoldersShimmerEffect extends StatelessWidget {
 class HomeAlbumsShimmerEffect extends StatelessWidget {
   const HomeAlbumsShimmerEffect({
     Key? key,
-    required this.isDark,
     required this.cardRoundness,
     required this.mqSize,
     this.cardHeight = 240,
     this.cardWidth = 200,
     required this.isCircular,
   }) : super(key: key);
-  final bool isDark;
   final bool isCircular;
   final double cardRoundness;
   final double cardHeight;
@@ -49,7 +48,7 @@ class HomeAlbumsShimmerEffect extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.horizontal,
       itemCount: 6,
       itemBuilder: (context, index) {
@@ -62,7 +61,6 @@ class HomeAlbumsShimmerEffect extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
-                      vertical: 5,
                     ),
                     child: Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,

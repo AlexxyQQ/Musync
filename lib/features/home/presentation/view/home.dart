@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/widgets/folder_grid.dart';
 import 'package:musync/features/home/presentation/widgets/horizontal_cards.dart';
 
@@ -12,9 +13,9 @@ class HomePage extends StatelessWidget {
     this.isLoading = true,
   }) : super(key: key);
 
-  final Map<String, List<dynamic>> folders;
-  final Map<String, List<dynamic>> albums;
-  final Map<String, List<dynamic>> artists;
+  final Map<String, List<SongEntity>> folders;
+  final Map<String, List<SongEntity>> albums;
+  final Map<String, List<SongEntity>> artists;
 
   final bool isLoading;
 

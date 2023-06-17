@@ -15,14 +15,14 @@ class Api {
   );
 
   Api() {
-    // _dio.interceptors.add(
-    //   PrettyDioLogger(
-    //     requestBody: true,
-    //     requestHeader: true,
-    //     responseBody: true,
-    //     responseHeader: true,
-    //   ),
-    // );
+    _dio.interceptors.add(
+      PrettyDioLogger(
+        requestBody: true,
+        requestHeader: true,
+        responseBody: true,
+        responseHeader: true,
+      ),
+    );
     _dio.httpClientAdapter = HttpClientAdapter();
   }
 

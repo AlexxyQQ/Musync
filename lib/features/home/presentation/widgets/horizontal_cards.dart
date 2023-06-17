@@ -60,7 +60,6 @@ class HomeOtherSection extends StatelessWidget {
             ? SizedBox(
                 height: cardHeight,
                 child: HomeAlbumsShimmerEffect(
-                  isDark: isDark,
                   cardRoundness: 500,
                   cardHeight: 215,
                   cardWidth: 180,

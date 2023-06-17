@@ -84,10 +84,6 @@ class AuthenticationBloc
             status: BlocStatus.loading,
           ),
         );
-        // final UserEntity user = await userRepo.loginUser(
-        //   email: event.email,
-        //   password: event.password,
-        // );
         final UserEntity user = await authUseCase.login(
           email: event.email,
           password: event.password,

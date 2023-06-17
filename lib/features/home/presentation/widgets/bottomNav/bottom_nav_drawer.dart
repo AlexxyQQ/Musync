@@ -8,7 +8,8 @@ import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/features/home/data/data_source/music_remote_data_source.dart';
-import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
+import 'package:musync/features/home/presentation/state/music_query_state.dart';
+import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 
 class KDrawer extends StatefulWidget {
   const KDrawer({
@@ -25,12 +26,13 @@ class KDrawer extends StatefulWidget {
 }
 
 class _KDrawerState extends State<KDrawer> {
-  late MusicRemoteDataSource _musicRemoteDataSource;
+  late MusicQueryCubit musicQueryCubit;
 
   @override
   void initState() {
     super.initState();
-    _musicRemoteDataSource = MusicRemoteDataSource(api: GetIt.instance<Api>());
+    musicQueryCubit = BlocProvider.of<MusicQueryCubit>(context);
+    musicQueryCubit.getAllSongs();
   }
 
   @override
@@ -128,14 +130,26 @@ class _KDrawerState extends State<KDrawer> {
                     },
                   ),
                   // Sync
-                  ListTile(
-                    leading: const Icon(Icons.sync_rounded),
-                    title: Text(
-                      'Sync Online',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    onTap: () {
-                      _syncOnline();
+                  BlocBuilder<MusicQueryCubit, MusicQueryState>(
+                    builder: (context, state) {
+                      if (state.isUploading) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          kShowSnackBar("Uploading Songs", context: context);
+                        });
+                      }
+                      return ListTile(
+                        leading: const Icon(Icons.sync_rounded),
+                        title: Text(
+                          'Sync Online',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        onTap: () {
+                          if (!state.isLoading && state.everything.isNotEmpty) {
+                            _syncOnline(state);
+                            Scaffold.of(context).closeDrawer();
+                          }
+                        },
+                      );
                     },
                   ),
                   // Drawer Item
@@ -158,29 +172,13 @@ class _KDrawerState extends State<KDrawer> {
     );
   }
 
-  void _syncOnline() async {
-    final allSongs = await GetIt.instance<MusicQueryUseCase>().getAllSongs();
+  void _syncOnline(MusicQueryState state) async {
     final token = await GetIt.instance<HiveQueries>().getValue(
       boxName: 'users',
       key: 'token',
       defaultValue: '',
     );
-
-    kShowSnackBar(
-      'Your Files are being checked',
-      context: context,
-      duration: Duration(seconds: 5),
-    );
-
-    await _musicRemoteDataSource.addSongs(songs: allSongs, token: token);
-    await _musicRemoteDataSource.getAllSongs(token: token);
-
-    kShowSnackBar(
-      'Sync Completed',
-      context: context,
-      duration: const Duration(seconds: 5),
-    );
-
+    await musicQueryCubit.addAllSongs(songs: state.songs, token: token);
     widget.syncTrue();
   }
 

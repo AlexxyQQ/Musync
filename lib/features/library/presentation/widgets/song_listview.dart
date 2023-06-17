@@ -369,7 +369,7 @@ class _PlaylistListState extends State<PlaylistList> {
   late List<PlaylistEntity> playLists = [];
 
   Future<void> fetchData() async {
-    playLists = await GetIt.instance<MusicQueryUseCase>().getAllPlaylist();
+    // playLists = await GetIt.instance<MusicQueryUseCase>().getAllPlaylist();
     setState(() {});
   }
 
