@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
+import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/home/data/data_source/music_remote_data_source.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -75,10 +76,48 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
   }
 
   @override
-  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs() async {
+  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
+    required String token,
+  }) async {
     try {
-      final data = await musicLocalDataSource.getAllSongs();
-      return data;
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        final remoteSongsList =
+            await musicRemoteDataSource.getAllSongs(token: token);
+        final localSongsList = await musicLocalDataSource.getAllSongs();
+
+        return remoteSongsList.fold(
+          (error) => Left(error),
+          (remoteSongs) {
+            final List<SongEntity> mergedSongs = localSongsList.fold(
+              (_) => remoteSongs.cast<SongEntity>(),
+              (localSongs) {
+                final List<SongEntity> merged = [];
+
+                merged.addAll(localSongs);
+
+                for (var remoteSong in remoteSongs.cast<SongEntity>()) {
+                  final isLocalSongExists = localSongs.any((localSong) =>
+                      localSong.id == remoteSong.id &&
+                      localSong.data == remoteSong.data &&
+                      localSong.displayName == remoteSong.displayName);
+
+                  if (!isLocalSongExists) {
+                    merged.add(remoteSong);
+                  }
+                }
+
+                return merged;
+              },
+            );
+
+            return Right(mergedSongs);
+          },
+        );
+      } else {
+        final data = await musicLocalDataSource.getAllSongs();
+        return data;
+      }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
     }

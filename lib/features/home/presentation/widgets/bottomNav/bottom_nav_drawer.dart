@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/features/home/data/data_source/music_remote_data_source.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 
@@ -32,7 +30,6 @@ class _KDrawerState extends State<KDrawer> {
   void initState() {
     super.initState();
     musicQueryCubit = BlocProvider.of<MusicQueryCubit>(context);
-    musicQueryCubit.getAllSongs();
   }
 
   @override
@@ -143,7 +140,7 @@ class _KDrawerState extends State<KDrawer> {
                           'Sync Online',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        onTap: () {
+                        onTap: () async {
                           if (!state.isLoading && state.everything.isNotEmpty) {
                             _syncOnline(state);
                             Scaffold.of(context).closeDrawer();
@@ -178,6 +175,7 @@ class _KDrawerState extends State<KDrawer> {
       key: 'token',
       defaultValue: '',
     );
+
     await musicQueryCubit.addAllSongs(songs: state.songs, token: token);
     widget.syncTrue();
   }

@@ -6,7 +6,9 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 abstract class IMusicQueryRepository {
   Future<Either<ErrorModel, bool>> permission();
-  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs();
+  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
+    required String token,
+  });
   Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs(
       {required String path});
   Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums();

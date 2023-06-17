@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive_tabel_constant.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
@@ -258,6 +260,17 @@ class SongHiveModel {
 
   List<SongEntity> toEntityList(List<SongHiveModel> models) =>
       models.map((e) => e.toEntity()).toList();
+  List<SongEntity> toCheckEntityList(List<SongHiveModel> models) {
+    List<SongEntity> songEntityList = [];
+    for (var model in models) {
+      SongEntity songEntity = model.toEntity();
+      if (File(songEntity.data).existsSync()) {
+        songEntityList.add(songEntity);
+      }
+    }
+    return songEntityList;
+  }
+
   List<SongHiveModel> toHiveList(List<SongEntity> entities) =>
       entities.map((e) => toHiveModel(e)).toList();
 

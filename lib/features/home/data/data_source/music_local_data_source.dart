@@ -273,7 +273,8 @@ class MusicLocalDataSource implements AMusicDataSource {
   }) async {
     var allHiveSongs = await musicHiveDataSource.getAllSongs();
     if (allHiveSongs.isNotEmpty) {
-      var allEntitySongs = SongHiveModel.empty().toEntityList(allHiveSongs);
+      var allEntitySongs =
+          SongHiveModel.empty().toCheckEntityList(allHiveSongs);
       return Right(allEntitySongs);
     } else {
       final List<SongModel> allQuerySongs = await audioQuery.querySongs(

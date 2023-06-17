@@ -78,9 +78,11 @@ class MusicQueryCubit extends Cubit<MusicQueryState> {
     );
   }
 
-  Future<void> getAllSongs() async {
+  Future<void> getAllSongs({
+    required String token,
+  }) async {
     emit(state.copyWith(isLoading: true));
-    final data = await _musicQueryUseCase.getAllSongs();
+    final data = await _musicQueryUseCase.getAllSongs(token: token);
     data.fold(
       (l) => emit(state.copyWith(isLoading: false, error: l.message)),
       (r) => emit(

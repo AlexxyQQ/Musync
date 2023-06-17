@@ -98,7 +98,8 @@ class HomeOtherSection extends StatelessWidget {
                                     artworkBorder: BorderRadius.circular(500),
                                     id: dataValue[0].id,
                                     nullArtworkWidget: const Icon(
-                                      Icons.music_note_rounded,size: 40,
+                                      Icons.music_note_rounded,
+                                      size: 40,
                                       color: KColors.accentColor,
                                     ),
                                     type: ArtworkType.AUDIO,
@@ -124,7 +125,8 @@ class HomeOtherSection extends StatelessWidget {
                                   artworkHeight: cardHeight,
                                   artworkWidth: cardWidth,
                                   nullArtworkWidget: const Icon(
-                                    Icons.music_note_rounded,size: 40,
+                                    Icons.music_note_rounded,
+                                    size: 40,
                                     color: KColors.accentColor,
                                   ),
                                   artworkBorder:
@@ -140,14 +142,21 @@ class HomeOtherSection extends StatelessWidget {
                                 ),
                               ),
                         // Card Subtitle
-                        Text(
-                          isCircular
-                              ? dataValue[0].artist.toString()
-                              : dataValue[0].album.toString(),
-                          style: GlobalConstants.textStyle(
-                            color: isDark ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                        SizedBox(
+                          width: cardWidth,
+                          child: Center(
+                            child: Text(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              isCircular
+                                  ? dataValue[0].artist.toString()
+                                  : dataValue[0].album.toString(),
+                              style: GlobalConstants.textStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
                         ),
                       ],

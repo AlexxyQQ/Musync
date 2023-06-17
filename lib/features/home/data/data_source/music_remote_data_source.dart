@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
+import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/home/data/data_source/music_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
 import 'package:musync/features/home/data/model/song_hive_model.dart';
@@ -38,6 +39,9 @@ class MusicRemoteDataSource implements AMusicDataSource {
       final Either<ErrorModel, List<SongEntity>> fetchedSongs =
           await getAllSongs(token: token);
 
+      final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
+      final model = device.model;
+
       List<SongEntity> filteredSongs = [];
 
       for (var song in songs) {
@@ -60,7 +64,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
       for (var song in filteredSongs) {
         // Create a FormData object
         final formData = FormData.fromMap({
-          'mainFolder': 'Music',
+          'mainFolder': '$model/Music',
           'subFolder': song.data,
           'songModelMap': song.toMap(),
           'files': await MultipartFile.fromFile(
@@ -74,7 +78,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
           data: formData,
           options: Options(
             headers: {
-              "Authorization": 'Bearer ${token!}',
+              "Authorization": 'Bearer ${token}',
             },
           ),
         );

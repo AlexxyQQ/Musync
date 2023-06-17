@@ -134,8 +134,10 @@ class MusicQueryUseCase {
     return data;
   }
 
-  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs() async {
-    final data = await musicQueryRepository.getAllSongs();
+  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
+    required String token,
+  }) async {
+    final data = await musicQueryRepository.getAllSongs(token: token);
     return data;
   }
 
