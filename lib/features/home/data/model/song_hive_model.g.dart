@@ -44,13 +44,14 @@ class SongHiveModelAdapter extends TypeAdapter<SongHiveModel> {
       isNotification: fields[23] as bool?,
       isPodcast: fields[24] as bool?,
       isRingtone: fields[25] as bool,
+      albumArt: fields[27] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, SongHiveModel obj) {
     writer
-      ..writeByte(27)
+      ..writeByte(28)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -104,7 +105,9 @@ class SongHiveModelAdapter extends TypeAdapter<SongHiveModel> {
       ..writeByte(25)
       ..write(obj.isRingtone)
       ..writeByte(26)
-      ..write(obj.serverUrl);
+      ..write(obj.serverUrl)
+      ..writeByte(27)
+      ..write(obj.albumArt);
   }
 
   @override

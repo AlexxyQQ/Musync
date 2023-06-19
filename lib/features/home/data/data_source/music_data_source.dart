@@ -6,7 +6,6 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 abstract class AMusicDataSource {
   Future<Either<ErrorModel, bool>> addAllSongs({
-    required List<SongEntity> songs,
     required String token,
   });
   Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({

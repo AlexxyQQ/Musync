@@ -95,12 +95,10 @@ class MusicQueryCubit extends Cubit<MusicQueryState> {
   }
 
   Future<void> addAllSongs({
-    required List<SongEntity> songs,
     required String token,
   }) async {
     emit(state.copyWith(isUploading: true));
     final data = await _musicQueryUseCase.addAllSongs(
-      songs: songs,
       token: token,
     );
 

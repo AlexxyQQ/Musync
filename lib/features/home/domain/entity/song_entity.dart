@@ -55,6 +55,8 @@ class SongEntity {
   final bool? isPodcast;
 
   final bool isRingtone;
+
+  final String albumArt;
   SongEntity({
     required this.id,
     required this.data,
@@ -62,6 +64,7 @@ class SongEntity {
     required this.displayName,
     required this.displayNameWOExt,
     required this.size,
+    required this.albumArt,
     this.album,
     this.serverUrl,
     this.albumId,
@@ -113,6 +116,7 @@ class SongEntity {
     bool? isPodcast,
     bool? isRingtone,
     String? serverUrl,
+    String? albumArt,
   }) {
     return SongEntity(
       id: id ?? this.id,
@@ -141,6 +145,8 @@ class SongEntity {
       isNotification: isNotification ?? this.isNotification,
       isPodcast: isPodcast ?? this.isPodcast,
       isRingtone: isRingtone ?? this.isRingtone,
+      serverUrl: serverUrl ?? this.serverUrl,
+      albumArt: albumArt ?? this.albumArt,
     );
   }
 
@@ -172,6 +178,8 @@ class SongEntity {
       'isNotification': isNotification,
       'isPodcast': isPodcast,
       'isRingtone': isRingtone,
+      'serverUrl': serverUrl,
+      'albumArt': albumArt,
     };
   }
 
@@ -207,6 +215,8 @@ class SongEntity {
           : null,
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
+      serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
+      albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
     );
   }
 
@@ -316,6 +326,7 @@ class SongEntity {
           map['isNotification'] != null ? map['isNotification'] as bool : null,
       isPodcast: map['isPodcast'] != null ? map['isPodcast'] as bool : null,
       isRingtone: map['isRingtone'] as bool,
+      albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
     );
   }
 }

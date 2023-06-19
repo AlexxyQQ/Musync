@@ -191,11 +191,10 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
 
   @override
   Future<Either<ErrorModel, bool>> addAllSongs({
-    required List<SongEntity> songs,
     required String token,
   }) async {
     try {
-      await musicRemoteDataSource.addAllSongs(songs: songs, token: token);
+      await musicRemoteDataSource.addAllSongs(token: token);
       return right(true);
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));

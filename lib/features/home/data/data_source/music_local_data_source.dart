@@ -1,6 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:musync/config/constants/hive_tabel_constant.dart';
+import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/data/data_source/music_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
@@ -39,10 +42,18 @@ class MusicLocalDataSource implements AMusicDataSource {
         List<SongEntity> songEntityList = [];
         if (allQuerySongs != null) {
           for (var songMap in allQuerySongs) {
+            // query and save album art in directory and return the path
+            final String albumArt =
+                await AlbumArtQuerySave(audioQuery: audioQuery).saveAlbumArt(
+              id: songMap.id,
+              type: ArtworkType.AUDIO,
+              fileName: songMap.displayNameWOExt,
+            );
+            final convertedMap = convertMap(songMap.getMap);
+            // add album art path to converted map
+            convertedMap["albumArt"] = albumArt;
             songEntityList.add(
-              SongEntity.fromModelMap(
-                convertMap(songMap.getMap),
-              ),
+              SongEntity.fromModelMap(convertedMap),
             );
           }
         }
@@ -257,13 +268,9 @@ class MusicLocalDataSource implements AMusicDataSource {
 
   @override
   Future<Either<ErrorModel, bool>> addAllSongs({
-    required List<SongEntity> songs,
     required String? token,
   }) async {
-    if (songs.isNotEmpty) {
-      var songHiveList = SongHiveModel.empty().toHiveList(songs);
-      await musicHiveDataSource.addAllSongs(songHiveList);
-    }
+    // await musicHiveDataSource.addAllSongs();
     return const Right(true);
   }
 
@@ -286,13 +293,22 @@ class MusicLocalDataSource implements AMusicDataSource {
       List<SongEntity> songEntityList = [];
       if (allQuerySongs != null) {
         for (var songMap in allQuerySongs) {
+          // query and save album art in directory and return the path
+          final String albumArt =
+              await AlbumArtQuerySave(audioQuery: audioQuery).saveAlbumArt(
+            id: songMap.id,
+            type: ArtworkType.AUDIO,
+            fileName: songMap.displayNameWOExt,
+          );
+          final convertedMap = convertMap(songMap.getMap);
+          // add album art path to converted map
+          convertedMap["albumArt"] = albumArt;
           songEntityList.add(
-            SongEntity.fromModelMap(
-              convertMap(songMap.getMap),
-            ),
+            SongEntity.fromModelMap(convertedMap),
           );
         }
       }
+
       var songHiveList = SongHiveModel.empty().toHiveList(songEntityList);
       await musicHiveDataSource.addAllSongs(songHiveList);
       return Right(songEntityList);

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 
@@ -15,7 +16,7 @@ class AuthDataSource {
   }) async {
     try {
       final response = await api.sendRequest.get(
-        "/users/loginWithToken",
+        ApiEndpoints.loginWithTokenRoute,
         options: Options(
           headers: {
             "Authorization": 'Bearer $token',
@@ -50,7 +51,7 @@ class AuthDataSource {
   }) async {
     try {
       final response = await api.sendRequest.post(
-        "/users/login",
+        ApiEndpoints.loginRoute,
         data: jsonEncode({
           "email": email,
           "password": password,
@@ -86,7 +87,7 @@ class AuthDataSource {
   }) async {
     try {
       final response = await api.sendRequest.post(
-        "/users/signup",
+        ApiEndpoints.signupRoute,
         data: jsonEncode({
           "username": username,
           "email": email,
@@ -130,7 +131,7 @@ class AuthDataSource {
       if (user != null) {
         // User signup
         final response = await api.sendRequest.post(
-          "/users/signup",
+          ApiEndpoints.signupRoute,
           data: jsonEncode({
             "username": user.displayName.toString().toLowerCase(),
             "email": user.email,

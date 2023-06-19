@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
@@ -67,7 +68,7 @@ class SplashRepository extends ASplashRepository {
     final api = GetIt.instance.get<Api>();
     try {
       final response = await api.sendRequest.get(
-        '/',
+        ApiEndpoints.baseRoute,
       );
       ApiResponse responseApi = ApiResponse.fromResponse(response);
       if (responseApi.success) {

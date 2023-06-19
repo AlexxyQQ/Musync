@@ -172,9 +172,8 @@ class MusicQueryUseCase {
   }
 
   Future<Either<ErrorModel, bool>> addAllSongs({
-    required List<SongEntity> songs,
     required String token,
   }) async {
-    return await musicQueryRepository.addAllSongs(songs: songs, token: token);
+    return await musicQueryRepository.addAllSongs(token: token);
   }
 }

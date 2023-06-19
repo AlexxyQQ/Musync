@@ -24,7 +24,6 @@ abstract class IMusicQueryRepository {
     required String playlistName,
   });
   Future<Either<ErrorModel, bool>> addAllSongs({
-    required List<SongEntity> songs,
     required String token,
   });
   Future<Either<ErrorModel, Map<String, Map<String, List<SongEntity>>>>>

@@ -175,8 +175,7 @@ class _KDrawerState extends State<KDrawer> {
       key: 'token',
       defaultValue: '',
     );
-
-    await musicQueryCubit.addAllSongs(songs: state.songs, token: token);
+    await musicQueryCubit.addAllSongs(token: token);
     widget.syncTrue();
   }
 

@@ -91,6 +91,9 @@ class SongHiveModel {
   @HiveField(26)
   final String serverUrl;
 
+  @HiveField(27)
+  final String? albumArt;
+
   SongHiveModel.empty()
       : this(
           id: 0,
@@ -120,6 +123,7 @@ class SongHiveModel {
           isPodcast: false,
           isRingtone: false,
           serverUrl: '',
+          albumArt: '',
         );
 
   SongHiveModel({
@@ -150,6 +154,7 @@ class SongHiveModel {
     bool? isNotification,
     bool? isPodcast,
     required this.isRingtone,
+    required this.albumArt,
   })  : uri = uri ?? "",
         album = album ?? '',
         albumId = albumId ?? '',
@@ -198,6 +203,7 @@ class SongHiveModel {
         isNotification: isNotification,
         isPodcast: isPodcast,
         isRingtone: isRingtone,
+        albumArt: albumArt ?? '',
       );
   SongHiveModel toHiveModel(SongEntity entity) => SongHiveModel(
         id: entity.id,
@@ -227,6 +233,7 @@ class SongHiveModel {
         isNotification: entity.isNotification,
         isPodcast: entity.isPodcast,
         isRingtone: entity.isRingtone,
+        albumArt: entity.albumArt,
       );
 
   SongModel toSongModel(SongEntity entity) => SongModel({
@@ -305,6 +312,7 @@ class SongHiveModel {
     bool? isPodcast,
     bool? isRingtone,
     String? serverUrl,
+    String? albumArt,
   }) {
     return SongHiveModel(
       id: id ?? this.id,
@@ -334,6 +342,7 @@ class SongHiveModel {
       isPodcast: isPodcast ?? this.isPodcast,
       isRingtone: isRingtone ?? this.isRingtone,
       serverUrl: serverUrl ?? this.serverUrl,
+      albumArt: albumArt ?? this.albumArt,
     );
   }
 }

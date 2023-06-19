@@ -72,65 +72,70 @@ class HomeFolderSectionNormal extends StatelessWidget {
                         final folderEntry = shuffledFolders[index];
                         final folderKey = folderEntry.key;
                         final folderValue = folderEntry.value;
-                        return Container(
-                          margin: const EdgeInsets.all(7),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? KColors.offBlackColorTwo
-                                : KColors.offWhiteColorThree,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // Folder Cover
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                width: mqSize.width * 0.15,
-                                height: double.infinity,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: QueryArtworkWidget(
-                                    artworkBorder: BorderRadius.circular(10),
-                                    id: folderValue[0]
-                                        .id, // Get the first song in the folder
-                                    type: ArtworkType.AUDIO,
-                                    nullArtworkWidget: const Icon(
-                                      Icons.music_note_rounded,
-                                      size: 40,
-                                      color: KColors.accentColor,
-                                    ),
-
-                                    errorBuilder: (p0, p1, p2) {
-                                      return const Icon(
+                        return InkWell(
+                          onTap: () {
+                            print(folderEntry.value[0]);
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(7),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? KColors.offBlackColorTwo
+                                  : KColors.offWhiteColorThree,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Folder Cover
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  width: mqSize.width * 0.15,
+                                  height: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: QueryArtworkWidget(
+                                      artworkBorder: BorderRadius.circular(10),
+                                      id: folderValue[0]
+                                          .id, // Get the first song in the folder
+                                      type: ArtworkType.AUDIO,
+                                      nullArtworkWidget: const Icon(
                                         Icons.music_note_rounded,
+                                        size: 40,
                                         color: KColors.accentColor,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              // Folder Name
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: SizedBox(
-                                  width: mqSize.width * 0.2,
-                                  child: Text(
-                                    folderKey.toString().split('/').last,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GlobalConstants.textStyle(
-                                      color: KColors.whiteColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                      ),
+
+                                      errorBuilder: (p0, p1, p2) {
+                                        return const Icon(
+                                          Icons.music_note_rounded,
+                                          color: KColors.accentColor,
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                // Folder Name
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: SizedBox(
+                                    width: mqSize.width * 0.2,
+                                    child: Text(
+                                      folderKey.toString().split('/').last,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GlobalConstants.textStyle(
+                                        color: KColors.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
