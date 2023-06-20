@@ -269,8 +269,9 @@ class MusicLocalDataSource implements AMusicDataSource {
   @override
   Future<Either<ErrorModel, bool>> addAllSongs({
     required String? token,
+    List<SongHiveModel>? songs,
   }) async {
-    // await musicHiveDataSource.addAllSongs();
+    await musicHiveDataSource.addAllSongs(songs ?? []);
     return const Right(true);
   }
 
@@ -278,6 +279,8 @@ class MusicLocalDataSource implements AMusicDataSource {
   Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
     String? token,
   }) async {
+    final box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    box.clear();
     var allHiveSongs = await musicHiveDataSource.getAllSongs();
     if (allHiveSongs.isNotEmpty) {
       var allEntitySongs =
@@ -303,6 +306,7 @@ class MusicLocalDataSource implements AMusicDataSource {
           final convertedMap = convertMap(songMap.getMap);
           // add album art path to converted map
           convertedMap["albumArt"] = albumArt;
+
           songEntityList.add(
             SongEntity.fromModelMap(convertedMap),
           );

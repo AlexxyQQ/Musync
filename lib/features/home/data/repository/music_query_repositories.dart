@@ -82,38 +82,37 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
     try {
       if (await ConnectivityCheck.connectivity() &&
           await ConnectivityCheck.isServerup()) {
-        final remoteSongsList =
+        final remoteSongsListEither =
             await musicRemoteDataSource.getAllSongs(token: token);
-        final localSongsList = await musicLocalDataSource.getAllSongs();
-
-        return remoteSongsList.fold(
-          (error) => Left(error),
-          (remoteSongs) {
-            final List<SongEntity> mergedSongs = localSongsList.fold(
-              (_) => remoteSongs.cast<SongEntity>(),
-              (localSongs) {
-                final List<SongEntity> merged = [];
-
-                merged.addAll(localSongs);
-
-                for (var remoteSong in remoteSongs.cast<SongEntity>()) {
-                  final isLocalSongExists = localSongs.any((localSong) =>
-                      localSong.id == remoteSong.id &&
-                      localSong.data == remoteSong.data &&
-                      localSong.displayName == remoteSong.displayName);
-
-                  if (!isLocalSongExists) {
-                    merged.add(remoteSong);
-                  }
-                }
-
-                return merged;
-              },
-            );
-
-            return Right(mergedSongs);
-          },
+        final remoteSongsList = remoteSongsListEither.fold(
+          (error) => [],
+          (remoteSongs) => remoteSongs,
         );
+
+        final localSongsListEither = await musicLocalDataSource.getAllSongs();
+        final localSongsList = localSongsListEither.fold(
+          (error) => [],
+          (localSongs) => localSongs,
+        );
+
+        // if remote songs is in the local songs list then show the remote songs
+
+        if (remoteSongsList.isNotEmpty) {
+          final List<SongEntity> mergedSongs = [];
+
+          for (var remoteSong in remoteSongsList.cast<SongEntity>()) {
+            final isLocalSongExists = localSongsList
+                .any((localSong) => localSong.id == remoteSong.id);
+            if (!isLocalSongExists) {
+
+              mergedSongs.add(remoteSong);
+            }
+          }
+
+          return Right(mergedSongs); // Return mergedSongs if it's not empty
+        } else {
+          return localSongsListEither;
+        }
       } else {
         final data = await musicLocalDataSource.getAllSongs();
         return data;

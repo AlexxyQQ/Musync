@@ -1,8 +1,6 @@
-import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:musync/config/constants/hive_tabel_constant.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
-import 'package:musync/features/home/data/data_source/music_local_data_source.dart';
 import 'package:musync/features/home/data/model/album_hive_model.dart';
 import 'package:musync/features/home/data/model/playlist_hive_model.dart';
 import 'package:musync/features/home/data/model/song_hive_model.dart';
@@ -20,12 +18,20 @@ class MusicHiveDataSourse {
     for (var song in songs) {
       if (box.containsKey(song.id)) {
         var existingSong = box.get(song.id);
-        var updatedSong = existingSong!.copyWith(serverUrl: song.serverUrl);
+        var updatedSong = existingSong!
+            .copyWith(serverUrl: song.serverUrl, albumArtUrl: song.albumArtUrl);
         await box.put(song.id, updatedSong);
       } else {
         await box.put(song.id, song);
       }
     }
+  }
+
+  Future<void> updateSong(SongHiveModel song) async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    // print('Updating Song: ${song.albumArtUrl}');
+
+    await box.put(song.id, song);
   }
 
   Future<List<SongHiveModel>> getAllSongs() async {

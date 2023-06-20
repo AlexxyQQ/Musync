@@ -57,6 +57,8 @@ class SongEntity {
   final bool isRingtone;
 
   final String albumArt;
+
+  final String? albumArtUrl;
   SongEntity({
     required this.id,
     required this.data,
@@ -86,6 +88,7 @@ class SongEntity {
     this.isNotification,
     this.isPodcast,
     required this.isRingtone,
+    this.albumArtUrl,
   });
 
   SongEntity copyWith({
@@ -117,6 +120,7 @@ class SongEntity {
     bool? isRingtone,
     String? serverUrl,
     String? albumArt,
+    String? albumArtUrl,
   }) {
     return SongEntity(
       id: id ?? this.id,
@@ -147,6 +151,7 @@ class SongEntity {
       isRingtone: isRingtone ?? this.isRingtone,
       serverUrl: serverUrl ?? this.serverUrl,
       albumArt: albumArt ?? this.albumArt,
+      albumArtUrl: albumArtUrl ?? this.albumArtUrl,
     );
   }
 
@@ -180,6 +185,7 @@ class SongEntity {
       'isRingtone': isRingtone,
       'serverUrl': serverUrl,
       'albumArt': albumArt,
+      'albumArtUrl': albumArtUrl,
     };
   }
 
@@ -217,6 +223,8 @@ class SongEntity {
       isRingtone: map['is_ringtone'] as bool,
       serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
       albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
+      albumArtUrl:
+          map['albumArtUrl'] != null ? map['albumArtUrl'] as String : null,
     );
   }
 
@@ -260,6 +268,8 @@ class SongEntity {
         other.isMusic == isMusic &&
         other.isNotification == isNotification &&
         other.isPodcast == isPodcast &&
+        other.albumArt == albumArt &&
+        other.albumArtUrl == albumArtUrl &&
         other.isRingtone == isRingtone;
   }
 
@@ -291,6 +301,8 @@ class SongEntity {
         isMusic.hashCode ^
         isNotification.hashCode ^
         isPodcast.hashCode ^
+        albumArt.hashCode ^
+        albumArtUrl.hashCode ^
         isRingtone.hashCode;
   }
 
@@ -326,6 +338,8 @@ class SongEntity {
           map['isNotification'] != null ? map['isNotification'] as bool : null,
       isPodcast: map['isPodcast'] != null ? map['isPodcast'] as bool : null,
       isRingtone: map['isRingtone'] as bool,
+      albumArtUrl:
+          map['albumArtUrl'] != null ? map['albumArtUrl'] as String : '',
       albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -6,7 +8,9 @@ import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/home/data/data_source/music_data_source.dart';
+import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_local_data_source.dart';
+import 'package:musync/features/home/data/model/song_hive_model.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
@@ -31,6 +35,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
   @override
   Future<Either<ErrorModel, bool>> addAllSongs({
     required String token,
+    List<SongHiveModel>? songs,
   }) async {
     try {
       /// This code is calling the `getAllSongs` method from the `MusicLocalDataSource` class to get a
@@ -59,14 +64,17 @@ class MusicRemoteDataSource implements AMusicDataSource {
       List<SongEntity> filteredSongs = [];
 
       for (var song in localSongs) {
-        if (apiSongs.isEmpty) {
-          filteredSongs.add(song);
-        } else {
-          for (var apiSong in apiSongs) {
-            if (song.id != apiSong.id) {
-              filteredSongs.add(song);
-            }
+        bool found = false;
+
+        for (var apiSong in apiSongs) {
+          if (song.id == apiSong.id) {
+            found = true;
+            break;
           }
+        }
+
+        if (!found) {
+          filteredSongs.add(song);
         }
       }
 
@@ -98,15 +106,21 @@ class MusicRemoteDataSource implements AMusicDataSource {
           throw Exception(apiSongResponse.message.toString());
         } else {
           if (song.albumArt != '') {
+            final List<String> musicPath = song.data.split('/');
+            final List<String> albumArtPath = song.albumArt.split('/');
+            musicPath[musicPath.length - 1] =
+                albumArtPath[albumArtPath.length - 1];
+            final String newPath = musicPath.join('/');
+
             final albumformData = FormData.fromMap({
               'mainFolder': '$model/Music',
-              'subFolder': song.data,
-              'files': await MultipartFile.fromFile(
+              'subFolder': newPath,
+              'albumArtUP': await MultipartFile.fromFile(
                 song.albumArt,
                 filename: '${song.displayNameWOExt}.png',
               ),
             });
-            final albumResponse = await api.sendRequest.post(
+            await api.sendRequest.post(
               ApiEndpoints.uploadAlbumArtRoute,
               data: albumformData,
               options: Options(
@@ -115,9 +129,6 @@ class MusicRemoteDataSource implements AMusicDataSource {
                 },
               ),
             );
-
-            ApiResponse apialbumResponse =
-                ApiResponse.fromResponse(albumResponse);
           }
         }
       }
@@ -200,6 +211,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
     required String token,
   }) async {
     try {
+      log("Getting all songs from API");
       final response = await api.sendRequest.get(
         ApiEndpoints.getAllSongsRoute,
         options: Options(
@@ -213,9 +225,8 @@ class MusicRemoteDataSource implements AMusicDataSource {
       if (apiResponse.success) {
         final List<dynamic> responseData = apiResponse.data;
         if (responseData.isNotEmpty) {
-          final List<SongEntity> apiSongs = responseData
-              .map((songData) => SongEntity.fromApiMap(songData))
-              .toList();
+          final List<SongEntity> apiSongs =
+              responseData.map((e) => SongEntity.fromApiMap(e)).toList();
           return Right(apiSongs); // Wrap songs list in Right and return
         } else {
           return const Right([]);

@@ -13,14 +13,14 @@ class Api {
       ..options.connectTimeout = ApiEndpoints.connectionTimeout
       ..options.receiveTimeout = ApiEndpoints.receiveTimeout
       ..httpClientAdapter = HttpClientAdapter()
-      ..interceptors.add(
-        PrettyDioLogger(
-          requestBody: true,
-          requestHeader: true,
-          responseBody: true,
-          responseHeader: true,
-        ),
-      )
+      // ..interceptors.add(
+      //   PrettyDioLogger(
+      //     requestBody: true,
+      //     requestHeader: true,
+      //     responseBody: true,
+      //     responseHeader: true,
+      //   ),
+      // )
       ..interceptors.add(DioErrorInterceptor());
   }
 
