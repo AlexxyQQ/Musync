@@ -154,6 +154,7 @@ import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_a
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomitems.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_drawer.dart';
 import 'package:musync/features/home/presentation/widgets/home_view_shimmer.dart';
+import 'package:musync/features/home/presentation/widgets/music/music_not_found.dart';
 import 'package:musync/features/library/presentation/view/library_page.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -254,9 +255,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
             );
           } else {
             var pages = [
-              const LoadingScreen(),
-              const LoadingScreen(),
-              const LoadingScreen(),
+              const MusicNotFound(),
+              const MusicNotFound(),
+              const MusicNotFound(),
             ];
             return PageView.builder(
               itemCount: pages.length,

@@ -10,9 +10,9 @@ class Api {
     _dio
       ..options.baseUrl = ApiEndpoints.baseURL
       ..options.headers = ApiEndpoints.defaultHeaders
-      ..options.connectTimeout = ApiEndpoints.connectionTimeout
-      ..options.receiveTimeout = ApiEndpoints.receiveTimeout
-      ..httpClientAdapter = HttpClientAdapter()
+      ..options.connectTimeout = 3000
+      ..options.receiveTimeout = 10000
+      // ..httpClientAdapter = HttpClientAdapter()
       // ..interceptors.add(
       //   PrettyDioLogger(
       //     requestBody: true,

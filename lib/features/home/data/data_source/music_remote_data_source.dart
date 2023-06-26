@@ -134,7 +134,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
       }
       return const Right(true); // Return success indication
     } catch (e) {
-      if (e is DioException) {
+      if (e is DioError) {
         if (e.response != null) {
           ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
           return Left(
@@ -234,7 +234,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
       } else {
         throw Exception(apiResponse.message.toString());
       }
-    } on DioException catch (e) {
+    } on DioError catch (e) {
       if (e.response != null) {
         ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
         return Left(
@@ -308,7 +308,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
   //         throw Exception(apiResponse.message.toString());
   //       }
   //     }
-  //   } on DioException catch (e) {
+  //   } on DioError catch (e) {
   //     if (e.response != null) {
   //       ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
   //       throw Exception(responseApi.message.toString());
@@ -347,7 +347,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
   //     } else {
   //       throw Exception(apiResponse.message.toString());
   //     }
-  //   } on DioException catch (e) {
+  //   } on DioError catch (e) {
   //     if (e.response != null) {
   //       ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
   //       throw Exception(responseApi.message.toString());

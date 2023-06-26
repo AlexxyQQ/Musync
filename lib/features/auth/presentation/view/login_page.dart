@@ -444,7 +444,7 @@ class _LoginPageState extends State<LoginPage> {
         // Back Button
         leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, Routes.getStartedRoute);
+            Navigator.pushNamed(context, AppRoutes.getStartedRoute);
           },
           icon: Icon(
             Icons.arrow_back_rounded,
@@ -457,7 +457,7 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                Routes.signupRoute,
+                AppRoutes.signupRoute,
                 (route) => false,
               );
             },
@@ -579,10 +579,9 @@ class _LoginPageState extends State<LoginPage> {
                         );
                         Navigator.pushNamedAndRemoveUntil(
                           context,
-                          Routes.homeRoute,
+                          AppRoutes.homeRoute,
                           (route) => false,
                           arguments: {
-                            
                             "selectedIndex": 0,
                           },
                         );
@@ -674,7 +673,7 @@ class LoginForm extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    Routes.forgotPasswordRoute,
+                    AppRoutes.forgotPasswordRoute,
                   );
                 },
                 child: Text(

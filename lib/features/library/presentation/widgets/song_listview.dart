@@ -98,7 +98,7 @@ class _ListofSongsState extends State<ListofSongs> {
             onTap: () {
               // GetIt.instance<AudioPlayerRepository>().playAll(songs, index);
               Navigator.of(context).pushNamed(
-                Routes.nowPlaying,
+                AppRoutes.nowPlaying,
                 arguments: {
                   "songs": widget.songs,
                   "index": index,

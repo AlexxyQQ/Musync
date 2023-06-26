@@ -182,6 +182,6 @@ class _KDrawerState extends State<KDrawer> {
   void _logout(AuthenticationBloc authenticationBloc) {
     authenticationBloc.add(LogoutEvent());
     kShowSnackBar('Logged Out', context: context);
-    Navigator.popAndPushNamed(context, Routes.getStartedRoute);
+    Navigator.popAndPushNamed(context, AppRoutes.getStartedRoute);
   }
 }

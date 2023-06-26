@@ -35,7 +35,7 @@ class LastPage extends StatelessWidget {
                 .setValue(boxName: 'settings', key: "goHome", value: true);
             // await ref.read(songProvider).permission();
             navigator.pushNamedAndRemoveUntil(
-              Routes.homeRoute,
+              AppRoutes.homeRoute,
               (route) => false,
               arguments: {
                 "selectedIndex": 0,
@@ -57,7 +57,7 @@ class LastPage extends StatelessWidget {
               value: false,
             );
             navigator.pushNamedAndRemoveUntil(
-              Routes.getStartedRoute,
+              AppRoutes.getStartedRoute,
               (route) => false,
             );
           },

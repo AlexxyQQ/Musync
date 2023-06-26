@@ -109,7 +109,8 @@ class LoginSignupButton extends StatelessWidget {
                 // Signup Button
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).popAndPushNamed('/signup');
+                    Navigator.of(context)
+                        .popAndPushNamed(AppRoutes.signupRoute);
                   },
                   child: Text(
                     'SIGN UP',
@@ -130,7 +131,7 @@ class LoginSignupButton extends StatelessWidget {
                       );
                       Navigator.pushNamedAndRemoveUntil(
                         context,
-                        Routes.homeRoute,
+                        AppRoutes.homeRoute,
                         (route) => false,
                         arguments: {
                           "selectedIndex": 0,
@@ -169,7 +170,7 @@ class LoginSignupButton extends StatelessWidget {
                   );
                   // await ref.read(songProvider).permission();
                   navigator.pushNamedAndRemoveUntil(
-                    Routes.homeRoute,
+                    AppRoutes.homeRoute,
                     (route) => false,
                     arguments: {
                       "selectedIndex": 0,

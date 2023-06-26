@@ -82,7 +82,7 @@ class SplashRepository extends ASplashRepository {
           message: 'Server is down.',
         );
       }
-    } on DioException catch (e) {
+    } on DioError catch (e) {
       log(e.toString());
       return ErrorModel(
         status: false,
@@ -137,7 +137,7 @@ class SplashRepository extends ASplashRepository {
             'user': user,
           },
         );
-      } on DioException catch (e) {
+      } on DioError catch (e) {
         return ErrorModel(
           status: false,
           message: 'No user logged in.',

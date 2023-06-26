@@ -56,10 +56,7 @@ class _MusyncSplashState extends State<MusyncSplash> {
           isFirstTime = userData.data['isFirstTime'];
           goHome = userData.data['goHome'];
         });
-        kShowSnackBar(
-          "Welcome, You are logged in as Guest",
-          scaffoldKey: scaffoldKey,
-        );
+
         return null;
       }
     } else if (connection) {
@@ -98,10 +95,10 @@ class _MusyncSplashState extends State<MusyncSplash> {
               darkTheme: AppTheme.appDarkTheme(),
               themeMode: ThemeMode.system,
               routes: snapshot.data == null
-                  ? Routes.loggedoutRoute
-                  : Routes.loggedinRoute,
+                  ? AppRoutes.loggedoutRoute
+                  : AppRoutes.loggedinRoute,
               onGenerateInitialRoutes: (initialRoute) =>
-                  Routes.generateInitialRoutes(
+                  AppRoutes.generateInitialRoutes(
                 initialRoute: '/',
                 context: context,
                 isFirstTime: isFirstTime,

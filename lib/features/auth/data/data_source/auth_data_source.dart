@@ -33,7 +33,7 @@ class AuthDataSource {
       } else {
         throw Exception(responseApi.message.toString());
       }
-    } on DioException catch (e) {
+    } on DioError catch (e) {
       if (e.response != null) {
         ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
         throw Exception(responseApi.message.toString());
@@ -68,7 +68,7 @@ class AuthDataSource {
       } else {
         throw (responseApi.message.toString());
       }
-    } on DioException catch (e) {
+    } on DioError catch (e) {
       if (e.response != null) {
         var responseApi = ApiResponse.fromResponse(e.response!);
         throw (responseApi.message.toString());
@@ -105,7 +105,7 @@ class AuthDataSource {
       } else {
         throw (responseApi.message.toString());
       }
-    } on DioException catch (e) {
+    } on DioError catch (e) {
       if (e.response != null) {
         var responseApi = ApiResponse.fromResponse(e.response!);
         throw (responseApi.message.toString());
@@ -155,7 +155,7 @@ class AuthDataSource {
       } else {
         throw ('Google sign in failed.');
       }
-    } on DioException catch (e) {
+    } on DioError catch (e) {
       if (e.response != null) {
         var responseApi = ApiResponse.fromResponse(e.response!);
         if (responseApi.message.toString() ==

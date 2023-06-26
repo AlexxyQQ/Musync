@@ -6,6 +6,7 @@ class AuthenticationState {
   final String? userId;
   final String? message;
   BlocStatus? status;
+  final String? profilePic;
 
   AuthenticationState({
     this.user,
@@ -13,6 +14,7 @@ class AuthenticationState {
     this.userId,
     this.status,
     this.message,
+    this.profilePic,
   });
 
   AuthenticationState start() {
@@ -22,6 +24,7 @@ class AuthenticationState {
       userId: null,
       message: 'Started',
       status: BlocStatus.created,
+      profilePic: null,
     );
   }
 
@@ -32,6 +35,7 @@ class AuthenticationState {
     String? userId,
     BlocStatus? status,
     String? message,
+    String? profilePic,
   }) {
     return AuthenticationState(
       user: user ?? this.user,
@@ -39,6 +43,7 @@ class AuthenticationState {
       userId: userId ?? this.userId,
       status: status ?? this.status,
       message: message ?? this.message,
+      profilePic: profilePic ?? this.profilePic,
     );
   }
 }

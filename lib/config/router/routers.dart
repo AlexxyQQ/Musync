@@ -6,9 +6,8 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav.dart';
 import 'package:musync/features/nowplaying/presentation/view/nowplaying.dart';
 import 'package:musync/features/onboarding/presentation/view/on_boarding_page.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
-class Routes {
+class AppRoutes {
   static const String initialRoute = '/';
   static const String loginRoute = '/login';
   static const String signupRoute = '/signup';
@@ -23,7 +22,7 @@ class Routes {
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
-    homeRoute: (context) => BottomNavBar(
+    homeRoute: (context) => const BottomNavBar(
         // pages: (ModalRoute.of(context)?.settings.arguments
         //     as Map<String, dynamic>)['pages'] as List<Widget>,
         // selectedIndex: (ModalRoute.of(context)?.settings.arguments
@@ -41,7 +40,7 @@ class Routes {
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
-    homeRoute: (context) => BottomNavBar(
+    homeRoute: (context) => const BottomNavBar(
         // pages: (ModalRoute.of(context)?.settings.arguments
         //     as Map<String, dynamic>)['pages'] as List<Widget>,
         // selectedIndex: (ModalRoute.of(context)?.settings.arguments
@@ -67,9 +66,9 @@ class Routes {
           MaterialPageRoute(
             builder: (context) {
               if (!isFirstTime && goHome) {
-                return BottomNavBar();
+                return const BottomNavBar();
               } else {
-                return const Placeholder(); //TabOnboarding();
+                return const OnBoardingPage(); //TabOnboarding();
               }
             },
           ),
@@ -79,7 +78,7 @@ class Routes {
           MaterialPageRoute(
             builder: (context) {
               if (!isFirstTime && goHome) {
-                return BottomNavBar();
+                return const BottomNavBar();
               } else if (!isFirstTime) {
                 return const MainAuthPage();
               } else {

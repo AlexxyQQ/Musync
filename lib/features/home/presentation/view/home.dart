@@ -32,7 +32,6 @@ class HomePage extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
-      backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
       resizeToAvoidBottomInset: false,
       body: RefreshIndicator(
         onRefresh: () async {
