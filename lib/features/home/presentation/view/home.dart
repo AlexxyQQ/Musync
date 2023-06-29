@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: RefreshIndicator(
         onRefresh: () async {
-          var musicQueryCubit = BlocProvider.of<MusicQueryCubit>(context);
+          var musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
           var token = await GetIt.instance
               .get<HiveQueries>()
               .getValue(boxName: 'users', key: 'token', defaultValue: '');

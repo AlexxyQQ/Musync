@@ -1,18 +1,18 @@
+import 'package:dartz/dartz.dart';
+import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
 abstract class IAuthRepository {
-  Future<UserEntity> login({
+  Future<Either<ErrorModel, UserEntity>> login({
     required String email,
     required String password,
   });
-  Future<UserEntity> signup({
+  Future<Either<ErrorModel, UserEntity>> signup({
     required String email,
     required String password,
     required String username,
   });
-  Future<UserEntity> googleLogin();
-  Future<void> logout();
-  Future<UserEntity> initialLogin({
-    required String token,
-  });
+  Future<Either<ErrorModel, UserEntity>> googleLogin();
+  Future<Either<ErrorModel, void>> logout();
+  
 }

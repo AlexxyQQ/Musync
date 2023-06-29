@@ -17,7 +17,7 @@ class MusyncBlocObserver extends BlocObserver {
 
   @override
   void onChange(BlocBase bloc, Change change) {
-    log("Change in $bloc: $change");
+    log('Change in $bloc: $change');
     super.onChange(bloc, change);
   }
 

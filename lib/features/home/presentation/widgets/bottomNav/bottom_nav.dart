@@ -172,7 +172,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   void initState() {
     super.initState();
-    var musicQueryCubit = BlocProvider.of<MusicQueryCubit>(context);
+    var musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
     musicQueryCubit.getEverything();
   }
 
@@ -195,7 +195,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         isDark: isDark,
         syncTrue: syncTrue,
       ),
-      body: BlocBuilder<MusicQueryCubit, MusicQueryState>(
+      body: BlocBuilder<MusicQueryViewModel, MusicQueryState>(
         builder: (context, state) {
           if (state.isLoading) {
             var pages = [

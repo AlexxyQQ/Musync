@@ -4,10 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
-import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:musync/features/auth/domain/entity/user_entity.dart';
+import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
+import 'package:musync/features/splash/presentation/viewmodel/splash_view_model.dart';
 
 class KDrawer extends StatefulWidget {
   const KDrawer({
@@ -24,19 +26,19 @@ class KDrawer extends StatefulWidget {
 }
 
 class _KDrawerState extends State<KDrawer> {
-  late MusicQueryCubit musicQueryCubit;
+  late MusicQueryViewModel musicQueryCubit;
 
   @override
   void initState() {
     super.initState();
-    musicQueryCubit = BlocProvider.of<MusicQueryCubit>(context);
+    musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-    final loggedUser = authenticationBloc.state.user;
-
+    final authenticationBloc = BlocProvider.of<AuthViewModel>(context);
+    final loggedUser = authenticationBloc.state.loggedUser;
+    print('loggedUser: $loggedUser');
     return Drawer(
       child: Container(
         color: widget.isDark ? KColors.blackColor : KColors.whiteColor,
@@ -66,15 +68,15 @@ class _KDrawerState extends State<KDrawer> {
                       shape: BoxShape.circle,
                     ),
                     clipBehavior: Clip.antiAlias,
-                    child: loggedUser != null
+                    child: loggedUser!.profilePic.contains('http')
                         ? Image.network(loggedUser.profilePic)
-                        : Image.asset('assets/default_profile.jpeg'),
+                        : Image.asset(loggedUser.profilePic),
                   ),
 
                   const SizedBox(height: 10),
                   // Profile Name
                   Text(
-                    loggedUser?.username.toUpperCase() ?? 'Guest',
+                    loggedUser.username.toUpperCase(),
                   ),
                 ],
               ),
@@ -127,7 +129,7 @@ class _KDrawerState extends State<KDrawer> {
                     },
                   ),
                   // Sync
-                  BlocBuilder<MusicQueryCubit, MusicQueryState>(
+                  BlocBuilder<MusicQueryViewModel, MusicQueryState>(
                     builder: (context, state) {
                       if (state.isUploading) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -179,8 +181,8 @@ class _KDrawerState extends State<KDrawer> {
     widget.syncTrue();
   }
 
-  void _logout(AuthenticationBloc authenticationBloc) {
-    authenticationBloc.add(LogoutEvent());
+  void _logout(AuthViewModel authViewModel) {
+    authViewModel.logoutUser();
     kShowSnackBar('Logged Out', context: context);
     Navigator.popAndPushNamed(context, AppRoutes.getStartedRoute);
   }

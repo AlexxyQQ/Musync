@@ -1,13 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/formfiled.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/constants/enums.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
+import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
 class SignupPage extends StatefulWidget {
@@ -30,14 +27,10 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _cPasswordController =
       TextEditingController(text: "VerySecretPassword@100");
 
-  late AuthViewModel _authViewModel;
-
   @override
   void initState() {
     super.initState();
-    _authViewModel = AuthViewModel(
-      authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
@@ -51,6 +44,19 @@ class _SignupPageState extends State<SignupPage> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _handleSignupButtonPressed(BuildContext context) {
+    if (formKey.currentState!.validate()) {
+      String username = _usernameController.text;
+      String email = _emailController.text;
+      String password = _passwordController.text;
+      BlocProvider.of<AuthViewModel>(context).signupUser(
+        email: email,
+        password: password,
+        username: username,
+      );
+    }
   }
 
   @override
@@ -177,18 +183,7 @@ class _SignupPageState extends State<SignupPage> {
                           emailController: _emailController,
                           passwordController: _passwordController,
                           cPasswordController: _cPasswordController,
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              String username = _usernameController.text;
-                              String email = _emailController.text;
-                              String password = _passwordController.text;
-                              _authViewModel.signupUser(
-                                email: email,
-                                password: password,
-                                username: username,
-                              );
-                            }
-                          },
+                          onPressed: () => _handleSignupButtonPressed(context),
                         ),
                       ),
                     ],
@@ -198,34 +193,32 @@ class _SignupPageState extends State<SignupPage> {
             },
           ),
           Positioned(
-            child: Center(
-              child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                builder: (context, state) {
-                  if (state.status == BlocStatus.loading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state.status == BlocStatus.error) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      kShowSnackBar(
-                        state.message!,
-                        context: context,
-                      );
-                    });
-                  } else if (state.status == BlocStatus.success) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      kShowSnackBar(
-                        state.message!,
-                        context: context,
-                      );
-                      // Navigator.pushNamedAndRemoveUntil(
-                      //   context,
-                      //   AppRoutes.loginRoute,
-                      //   (route) => false,
-                      // );
-                    });
+            child: BlocBuilder<AuthViewModel, AuthState>(
+              builder: (blocBuilderContext, state) {
+                if (state.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (state.isSignUp) {
+                    Navigator.popAndPushNamed(
+                      blocBuilderContext,
+                      AppRoutes.loginRoute,
+                    );
+                    kShowSnackBar(
+                      'Sign up successful!',
+                      context: context,
+                    );
+                  } else if (state.isError) {
+                    kShowSnackBar(
+                      state.authError!,
+                      context: context,
+                    );
                   }
-                  return const SizedBox.shrink();
-                },
-              ),
+                });
+                return const SizedBox.shrink();
+              },
             ),
           ),
         ],
@@ -289,8 +282,8 @@ class SignupForm extends StatelessWidget {
               if (p0!.isEmpty) {
                 return 'Email is required';
               } else if (!RegExp(
-                      r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$')
-                  .hasMatch(p0)) {
+                r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$',
+              ).hasMatch(p0)) {
                 return 'Email is invalid';
               }
               return null;

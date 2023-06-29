@@ -1,11 +1,9 @@
+import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
+import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
-abstract class ASplashRepository {
-  Future<ErrorModel> isConnectedToInternet();
-  Future<ErrorModel> isServerUp();
-  Future<ErrorModel> checkConnectivityAndServer();
-  Future<ErrorModel> getLoggeduser({
-    bool isFirstTime = false,
-    bool goHome = false,
+abstract class ISplashRepository {
+  Future<Either<ErrorModel, UserEntity>> initialLogin({
+    required String token,
   });
 }

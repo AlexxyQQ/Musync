@@ -1,36 +1,31 @@
-import 'package:get_it/get_it.dart';
+import 'package:dartz/dartz.dart';
+import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/domain/repository/auth_repository.dart';
 
 class AuthUseCase {
   final IAuthRepository authRepository;
+  final HiveQueries hiveQueries;
 
-  const AuthUseCase({required this.authRepository});
+  const AuthUseCase({
+    required this.authRepository,
+    required this.hiveQueries,
+  });
 
-  Future<UserEntity> logout() async {
+  Future<Either<ErrorModel, UserEntity>> logout() async {
     try {
       await authRepository.logout();
-      return UserEntity.empty();
+      await hiveQueries.deleteValue(boxName: 'users', key: 'token');
+      return Right(UserEntity.empty());
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<UserEntity> initialLogin({
-    required String token,
-  }) async {
-    try {
-      final response = await authRepository.initialLogin(
-        token: token,
-      );
-      return response;
-    } catch (e) {
-      rethrow;
-    }
-  }
+  
 
-  Future<UserEntity> login({
+  Future<Either<ErrorModel, UserEntity>> login({
     required String email,
     required String password,
   }) async {
@@ -39,23 +34,31 @@ class AuthUseCase {
         email: email,
         password: password,
       );
-      GetIt.instance<HiveQueries>().setValue(
-        boxName: 'users',
-        key: 'token',
-        value: response.token,
+
+      return response.fold(
+        (l) {
+          return Left(l);
+        },
+        (r) {
+          hiveQueries.setValue(
+            boxName: 'users',
+            key: 'token',
+            value: r.token,
+          );
+          hiveQueries.setValue(
+            boxName: 'settings',
+            key: "goHome",
+            value: true,
+          );
+          return response;
+        },
       );
-      GetIt.instance<HiveQueries>().setValue(
-        boxName: 'settings',
-        key: "goHome",
-        value: true,
-      );
-      return response;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<UserEntity> signup({
+  Future<Either<ErrorModel, UserEntity>> signup({
     required String email,
     required String password,
     required String username,
@@ -72,10 +75,27 @@ class AuthUseCase {
     }
   }
 
-  Future<UserEntity> googleLogin() async {
+  Future<Either<ErrorModel, UserEntity>> googleLogin() async {
     try {
       final response = await authRepository.googleLogin();
-      return response;
+      return response.fold(
+        (l) {
+          return Left(l);
+        },
+        (r) {
+          hiveQueries.setValue(
+            boxName: 'users',
+            key: 'token',
+            value: r.token,
+          );
+          hiveQueries.setValue(
+            boxName: 'settings',
+            key: "goHome",
+            value: true,
+          );
+          return response;
+        },
+      );
     } catch (e) {
       rethrow;
     }

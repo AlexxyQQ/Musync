@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive_tabel_constant.dart';
 import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/features/home/data/data_source/music_data_source.dart';
+import 'package:musync/features/home/data/data_source/i_music_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
 import 'package:musync/features/home/data/model/album_hive_model.dart';
 import 'package:musync/features/home/data/model/playlist_hive_model.dart';

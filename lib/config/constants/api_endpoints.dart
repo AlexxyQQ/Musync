@@ -1,5 +1,5 @@
 class ApiEndpoints {
-  static const String baseURL = "http://172.26.1.5:3001/api";
+  static const String baseURL = "http://192.168.1.74:3001/api";
   static const Map<String, dynamic> defaultHeaders = {
     'apisecret': "Apple",
     'Accept': 'application/json',
