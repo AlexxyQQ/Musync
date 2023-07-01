@@ -8,4 +8,9 @@ class ErrorModel {
     required this.status,
     this.data,
   });
+
+  @override
+  String toString() {
+    return 'ErrorModel(message: $message, data: $data, status: $status)';
+  }
 }

@@ -38,7 +38,6 @@ class _KDrawerState extends State<KDrawer> {
   Widget build(BuildContext context) {
     final authenticationBloc = BlocProvider.of<AuthViewModel>(context);
     final loggedUser = authenticationBloc.state.loggedUser;
-    print('loggedUser: $loggedUser');
     return Drawer(
       child: Container(
         color: widget.isDark ? KColors.blackColor : KColors.whiteColor,

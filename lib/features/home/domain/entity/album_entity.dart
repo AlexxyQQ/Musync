@@ -48,10 +48,20 @@ class AlbumEntity {
 
   factory AlbumEntity.fromMap(Map<String, dynamic> map) {
     return AlbumEntity(
+      id: "${map['id']}",
+      album: map['album'] as String,
+      artist: map['artist'] != null ? map['artist'] as String : null,
+      artistId: map['artistId'] != null ? "${map['artistId']}" : null,
+      numOfSongs: map['numOfSongs'] as int,
+    );
+  }
+
+  factory AlbumEntity.fromAlbumModel(Map<String, dynamic> map) {
+    return AlbumEntity(
       id: "${map['_id']}",
       album: map['album'] as String,
       artist: map['artist'] != null ? map['artist'] as String : null,
-      artistId: map['artist_id'] != null ? "${map['artist_id']}" : null,
+      artistId: map['album_id'] != null ? "${map['album_id']}" : null,
       numOfSongs: map['numsongs'] as int,
     );
   }

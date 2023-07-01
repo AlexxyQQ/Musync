@@ -8,7 +8,6 @@ import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/home/data/data_source/i_music_data_source.dart';
-import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_local_data_source.dart';
 import 'package:musync/features/home/data/model/song_hive_model.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
@@ -20,17 +19,107 @@ class MusicRemoteDataSource implements AMusicDataSource {
 
   const MusicRemoteDataSource({required this.api});
 
+// ----- Album -----
   @override
-  Future<Either<ErrorModel, bool>> addAlbums() {
+  Future<Either<ErrorModel, bool>> addAlbums({
+    required String token,
+  }) {
     // TODO: implement addAlbums
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<ErrorModel, bool>> addFolders() {
-    // TODO: implement addFolders
-    throw UnimplementedError();
+  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
+      getAllAlbumWithSongs({
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllAlbumWithSongsRoute,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (!apiResponse.success) {
+        throw Exception(apiResponse.message.toString());
+      } else {
+        final Map<String, dynamic> data = apiResponse.data;
+        final Map<String, List<SongEntity>> albumWithSongs = {};
+
+        for (var key in data.keys) {
+          final List<SongEntity> songs = [];
+          for (var song in data[key]) {
+            songs.add(
+              SongEntity.fromApiMap(
+                song,
+              ),
+            );
+          }
+          albumWithSongs[key] = songs;
+        }
+
+        return Right(albumWithSongs);
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
   }
+
+  @override
+  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums({
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllAlbumsRoute,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (!apiResponse.success) {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      } else {
+        final List<AlbumEntity> albums = [];
+
+        for (var album in apiResponse.data) {
+          albums.add(
+            AlbumEntity.fromMap(album),
+          );
+        }
+
+        return Right(albums);
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+//  ----- All Songs -----
 
   @override
   Future<Either<ErrorModel, bool>> addAllSongs({
@@ -38,11 +127,6 @@ class MusicRemoteDataSource implements AMusicDataSource {
     List<SongHiveModel>? songs,
   }) async {
     try {
-      /// This code is calling the `getAllSongs` method from the `MusicLocalDataSource` class to get a
-      /// list of local songs. The method returns an `Either` object that can contain either an
-      /// `ErrorModel` or a list of `SongEntity`. The `fold` method is then used to extract the list of
-      /// songs from the `Either` object. If the `Either` object contains an `ErrorModel`, an empty list
-      /// is returned, otherwise the list of songs is returned.
       Either<ErrorModel, List<SongEntity>> localSongsEither =
           await GetIt.instance<MusicLocalDataSource>()
               .getAllSongs(token: token);
@@ -160,58 +244,10 @@ class MusicRemoteDataSource implements AMusicDataSource {
   }
 
   @override
-  Future<Either<ErrorModel, bool>> addToPlaylist(
-      {required int playlistId, required int audioId}) {
-    // TODO: implement addToPlaylist
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<ErrorModel, bool>> createPlaylist(
-      {required String playlistName}) {
-    // TODO: implement createPlaylist
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllAlbumWithSongs() {
-    // TODO: implement getAllAlbumWithSongs
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums() {
-    // TODO: implement getAllAlbums
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllArtistWithSongs() {
-    // TODO: implement getAllArtistWithSongs
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllFolderWithSongs() {
-    // TODO: implement getAllFolderWithSongs
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<ErrorModel, List<String>>> getAllFolders() {
-    // TODO: implement getAllFolders
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
     required String token,
   }) async {
     try {
-      log("Getting all songs from API");
       final response = await api.sendRequest.get(
         ApiEndpoints.getAllSongsRoute,
         options: Options(
@@ -261,101 +297,227 @@ class MusicRemoteDataSource implements AMusicDataSource {
     }
   }
 
+// ----- Folder -----
+
   @override
-  Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs(
-      {required String path}) {
-    // TODO: implement getFolderSongs
+  Future<Either<ErrorModel, List<String>>> getAllFolders({
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllFoldersRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        final List<dynamic> responseData = apiResponse.data;
+        if (responseData.isNotEmpty) {
+          final List<String> apiFolders =
+              responseData.map((e) => e.toString()).toList();
+          return Right(apiFolders); // Wrap folders list in Right and return
+        } else {
+          return const Right([]);
+        }
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
+      getAllFolderWithSongs({required String token}) async {
+    try {
+      final response = api.sendRequest.get(
+        ApiEndpoints.getAllFolderWithSongsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(await response);
+
+      if (apiResponse.success) {
+        final Map<String, dynamic> responseData = apiResponse.data;
+        if (responseData.isNotEmpty) {
+          final Map<String, List<SongEntity>> apiFolders = {};
+          responseData.forEach((key, value) {
+            apiFolders[key] =
+                value.map<SongEntity>((e) => SongEntity.fromApiMap(e)).toList();
+          });
+          return Right(apiFolders); // Wrap folders list in Right and return
+        } else {
+          return const Right({});
+        }
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs({
+    required String path,
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.getFolderSongsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+        data: {
+          "folderUrl": path,
+        },
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        final List<dynamic> responseData = apiResponse.data;
+
+        if (responseData.isNotEmpty) {
+          final List<SongEntity> apiSongs =
+              responseData.map((e) => SongEntity.fromApiMap(e)).toList();
+          return Right(apiSongs); // Wrap songs list in Right and return
+        } else {
+          return const Right([]);
+        }
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, bool>> addFolders({
+    required String token,
+  }) {
+    // TODO: implement addFolders
+    throw UnimplementedError();
+  }
+
+// ----- Artist -----
+
+  @override
+  Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
+      getAllArtistWithSongs({
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllArtistWithSongsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        final Map<String, dynamic> responseData = apiResponse.data;
+        if (responseData.isNotEmpty) {
+          final Map<String, List<SongEntity>> apiArtists = {};
+          responseData.forEach((key, value) {
+            apiArtists[key] =
+                value.map<SongEntity>((e) => SongEntity.fromApiMap(e)).toList();
+          });
+          return Right(apiArtists); // Wrap artists list in Right and return
+        } else {
+          return const Right({});
+        }
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  // ----- Playlist -----
+
+  @override
+  Future<Either<ErrorModel, bool>> addToPlaylist({
+    required int playlistId,
+    required int audioId,
+    required String token,
+  }) {
+    // TODO: implement addToPlaylist
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<ErrorModel, List<PlaylistEntity>>> getPlaylists() {
+  Future<Either<ErrorModel, bool>> createPlaylist({
+    required String playlistName,
+    required String token,
+  }) {
+    // TODO: implement createPlaylist
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<ErrorModel, List<PlaylistEntity>>> getPlaylists({
+    required String token,
+  }) {
     // TODO: implement getPlaylists
     throw UnimplementedError();
   }
-
-  // @override
-  // Future<void> addSongs({
-  //   required List<SongEntity> songs,
-  //   String? token,
-  // }) async {
-  //   try {
-  //     for (var song in songs) {
-  //       // Create a FormData object
-  //       final formData = FormData.fromMap({
-  //         'mainFolder': 'Music',
-  //         'subFolder': song.data,
-  //         'songModelMap': song.toMap(),
-  //         'files': await MultipartFile.fromFile(
-  //           song.data,
-  //           filename: song.displayName,
-  //         ),
-  //       });
-  //       // Make a multipart request
-  //       final response = await api.sendRequest.post(
-  //         '/music/upload',
-  //         data: formData,
-  //         options: Options(
-  //           headers: {
-  //             "Authorization": 'Bearer ${token!}',
-  //           },
-  //         ),
-  //       );
-  //       ApiResponse apiResponse = ApiResponse.fromResponse(response);
-
-  //       if (apiResponse.success) {
-  //       } else {
-  //         throw Exception(apiResponse.message.toString());
-  //       }
-  //     }
-  //   } on DioError catch (e) {
-  //     if (e.response != null) {
-  //       ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
-  //       throw Exception(responseApi.message.toString());
-  //     } else {
-  //       throw ('Network error occurred.');
-  //     }
-  //   } catch (e) {
-  //     throw ('An unexpected error occurred.');
-  //   }
-  // }
-
-  // @override
-  // Future<List<SongEntity>> getAllSongs({String? token}) async {
-  //   try {
-  //     final response = await api.sendRequest.get(
-  //       '/music/files',
-  //       options: Options(
-  //         headers: {
-  //           "Authorization": 'Bearer $token',
-  //         },
-  //       ),
-  //     );
-
-  //     ApiResponse apiResponse = ApiResponse.fromResponse(response);
-  //     if (apiResponse.success) {
-  //       final List<SongEntity> songs = [];
-  //       for (var song in apiResponse.data) {
-  //         songs.add(SongEntity.fromApiMap(song));
-  //       }
-  //       await GetIt.instance<MusicHiveDataSourse>().addAllSongs(
-  //         SongHiveModel.empty().toHiveList(songs),
-  //       );
-  //       await GetIt.instance<MusicHiveDataSourse>().getAllSongs();
-
-  //       return songs;
-  //     } else {
-  //       throw Exception(apiResponse.message.toString());
-  //     }
-  //   } on DioError catch (e) {
-  //     if (e.response != null) {
-  //       ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
-  //       throw Exception(responseApi.message.toString());
-  //     } else {
-  //       throw ('Network error occurred.');
-  //     }
-  //   } catch (e) {
-  //     throw ('An unexpected error occurred.');
-  //   }
-  // }
 }

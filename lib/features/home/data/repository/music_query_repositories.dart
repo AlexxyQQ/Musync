@@ -24,55 +24,396 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
 
   @override
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllAlbumWithSongs() async {
+      getAllAlbumWithSongs({required String token}) async {
     try {
-      final data = await musicLocalDataSource.getAllAlbumWithSongs();
-      return data;
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        final remoteAlbumWithSongsEither =
+            await musicRemoteDataSource.getAllAlbumWithSongs(token: token);
+        final remoteAlbumWithSongs = remoteAlbumWithSongsEither.fold(
+          (error) => {},
+          (remoteSongs) => remoteSongs,
+        );
+
+        final localAlbumWithSongsEither =
+            await musicLocalDataSource.getAllAlbumWithSongs(token: token);
+
+        final localAlbumWithSongs = localAlbumWithSongsEither.fold(
+          (error) => {},
+          (localSongs) => localSongs,
+        );
+
+        if (remoteAlbumWithSongs.isNotEmpty) {
+          final mergedAlbumWithSongs = <String, List<SongEntity>>{};
+
+          // Merge remote and local songs
+          for (final entry in remoteAlbumWithSongs.entries) {
+            //  if remote is in local then show remote
+            if (localAlbumWithSongs.containsKey(entry.key)) {
+              mergedAlbumWithSongs[entry.key] = entry.value;
+            } else {
+              mergedAlbumWithSongs[entry.key] = entry.value;
+            }
+          }
+
+          return Right(mergedAlbumWithSongs);
+        } else {
+          return localAlbumWithSongsEither;
+        }
+      } else {
+        final localAlbumWithSongsEither =
+            await musicLocalDataSource.getAllAlbumWithSongs(token: token);
+        final localAlbumWithSongs = localAlbumWithSongsEither.fold(
+          (error) => {} as Map<String, List<SongEntity>>,
+          (localSongs) => localSongs,
+        );
+
+        return Right(localAlbumWithSongs);
+      }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
   }
 
   @override
-  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums() async {
+  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums({
+    required String token,
+  }) async {
     try {
-      final data = await musicLocalDataSource.getAllAlbums();
-      return data;
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        final remoteAllAlbumsEither =
+            await musicRemoteDataSource.getAllAlbumWithSongs(token: token);
+        final remoteAllAlbums = remoteAllAlbumsEither.fold(
+          (error) => {},
+          (remoteSongs) => remoteSongs,
+        );
+
+        final localAllAlbumsEither =
+            await musicLocalDataSource.getAllAlbumWithSongs(token: token);
+        final locaAllAlbums = localAllAlbumsEither.fold(
+          (error) => {},
+          (localSongs) => localSongs,
+        );
+
+        if (remoteAllAlbums != {}) {
+          final List<AlbumEntity> mergedSongs = [];
+
+          //  if remote is in local then show remote
+          for (final entry in remoteAllAlbums.entries) {
+            //  if remote is in local then show remote
+            if (locaAllAlbums.containsKey(entry.key)) {
+              mergedSongs.add(
+                AlbumEntity(
+                  album: entry.key,
+                  artist: entry.value[0].artist,
+                  id: entry.value[0].albumId,
+                  artistId: entry.value[0].artistId,
+                  numOfSongs: entry.value.length,
+                ),
+              );
+            } else {
+              mergedSongs.add(
+                AlbumEntity(
+                  album: entry.key,
+                  artist: entry.value[0].artist,
+                  id: entry.value[0].albumId,
+                  artistId: entry.value[0].artistId,
+                  numOfSongs: entry.value.length,
+                ),
+              );
+            }
+          }
+
+          return Right(mergedSongs);
+        } else {
+          final List<AlbumEntity> mergedSongs = [];
+
+          //  if remote is in local then show remote
+          for (final entry in locaAllAlbums.entries) {
+            //  if remote is in local then show remote
+            if (remoteAllAlbums.containsKey(entry.key)) {
+              mergedSongs.add(
+                AlbumEntity(
+                  album: entry.key,
+                  artist: entry.value[0].artist,
+                  id: entry.value[0].albumId,
+                  artistId: entry.value[0].artistId,
+                  numOfSongs: entry.value.length,
+                ),
+              );
+            } else {
+              mergedSongs.add(
+                AlbumEntity(
+                  album: entry.key,
+                  artist: entry.value[0].artist,
+                  id: entry.value[0].albumId,
+                  artistId: entry.value[0].artistId,
+                  numOfSongs: entry.value.length,
+                ),
+              );
+            }
+          }
+          return Right(mergedSongs);
+        }
+      } else {
+        // If the connectivity or server is not available, return local songs only
+        final localAllAlbumsEither =
+            await musicLocalDataSource.getAllAlbumWithSongs(token: '');
+        final localAllAlbums = localAllAlbumsEither.fold(
+          (error) => {},
+          (localSongs) => localSongs,
+        );
+
+        final List<AlbumEntity> mergedSongs = [];
+
+        //  if remote is in local then show remote
+        for (final entry in localAllAlbums.entries) {
+          //  if remote is in local then show remote
+          if (localAllAlbums.containsKey(entry.key)) {
+            mergedSongs.add(
+              AlbumEntity(
+                album: entry.key,
+                artist: entry.value[0].artist,
+                id: entry.value[0].albumId,
+                artistId: entry.value[0].artistId,
+                numOfSongs: entry.value.length,
+              ),
+            );
+          } else {
+            mergedSongs.add(
+              AlbumEntity(
+                album: entry.key,
+                artist: entry.value[0].artist,
+                id: entry.value[0].albumId,
+                artistId: entry.value[0].artistId,
+                numOfSongs: entry.value.length,
+              ),
+            );
+          }
+        }
+        return Right(mergedSongs);
+      }
     } catch (e) {
-      return Left(ErrorModel(message: e.toString(), status: false));
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
     }
   }
 
   @override
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllArtistWithSongs() async {
+      getAllArtistWithSongs({
+    required String token,
+  }) async {
     try {
-      final data = await musicLocalDataSource.getAllArtistWithSongs();
-      return data;
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        final remoteAllArtistWithSongsEither =
+            await musicRemoteDataSource.getAllArtistWithSongs(token: token);
+        final remoteAllArtistWithSongs = remoteAllArtistWithSongsEither.fold(
+          (error) => {},
+          (remoteSongs) => remoteSongs,
+        );
+
+        final localAllArtistWithSongsEither =
+            await musicLocalDataSource.getAllArtistWithSongs(token: token);
+        final locaAllArtistWithSongs = localAllArtistWithSongsEither.fold(
+          (error) => {},
+          (localSongs) => localSongs,
+        );
+
+        if (remoteAllArtistWithSongs.isNotEmpty) {
+          final Map<String, List<SongEntity>> mergedSongs = {};
+
+          //  if remote is in local then show remote
+          for (final entry in remoteAllArtistWithSongs.entries) {
+            //  if remote is in local then show remote
+            if (locaAllArtistWithSongs.containsKey(entry.key)) {
+              mergedSongs[entry.key] = entry.value;
+            } else {
+              mergedSongs[entry.key] = entry.value;
+            }
+          }
+
+          return Right(mergedSongs);
+        } else {
+          return localAllArtistWithSongsEither;
+        }
+      } else {
+        final localAllArtistWithSongsEither =
+            await musicLocalDataSource.getAllArtistWithSongs(token: token);
+
+        return localAllArtistWithSongsEither;
+      }
     } catch (e) {
-      return Left(ErrorModel(message: e.toString(), status: false));
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
     }
+
+    // try {
+    //   final data =
+    //       await musicLocalDataSource.getAllArtistWithSongs(token: token);
+    //   return data;
+    // } catch (e) {
+    //   return Left(ErrorModel(message: e.toString(), status: false));
+    // }
   }
 
   @override
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllFolderWithSongs() async {
+      getAllFolderWithSongs({
+    required String token,
+  }) async {
     try {
-      final data = await musicLocalDataSource.getAllFolderWithSongs();
-      return data;
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        final remoteAllFolderWithSongsEither =
+            await musicRemoteDataSource.getAllFolderWithSongs(token: token);
+        final remoteAllFolderWithSongs = remoteAllFolderWithSongsEither.fold(
+          (error) => {},
+          (remoteSongs) => remoteSongs,
+        );
+
+        final localAllFolderWithSongsEither =
+            await musicLocalDataSource.getAllFolderWithSongs(token: token);
+        final locaAllFolderWithSongs = localAllFolderWithSongsEither.fold(
+          (error) => {},
+          (localSongs) => localSongs,
+        );
+
+        if (remoteAllFolderWithSongs.isNotEmpty) {
+          final Map<String, List<SongEntity>> mergedSongs = {};
+
+          //  if remote is in local then show remote
+          for (final entry in remoteAllFolderWithSongs.entries) {
+            //  if remote is in local then show remote
+            if (locaAllFolderWithSongs.containsKey(entry.key)) {
+              mergedSongs[entry.key] = entry.value;
+            } else {
+              mergedSongs[entry.key] = entry.value;
+            }
+          }
+
+          return Right(mergedSongs);
+        } else {
+          return localAllFolderWithSongsEither;
+        }
+      } else {
+        final localAllFolderWithSongsEither =
+            await musicLocalDataSource.getAllFolderWithSongs(token: token);
+        return localAllFolderWithSongsEither;
+      }
     } catch (e) {
-      return Left(ErrorModel(message: e.toString(), status: false));
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
     }
+
+    // try {
+    //   final data =
+    //       await musicLocalDataSource.getAllFolderWithSongs(token: token);
+    //   return data;
+    // } catch (e) {
+    //   return Left(ErrorModel(message: e.toString(), status: false));
+    // }
   }
 
   @override
-  Future<Either<ErrorModel, List<String>>> getAllFolders() async {
+  Future<Either<ErrorModel, List<String>>> getAllFolders({
+    required String token,
+  }) async {
     try {
-      final data = await musicLocalDataSource.getAllFolders();
-      return data;
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        final remoteFoldersListEither =
+            await musicRemoteDataSource.getAllFolders(token: token);
+        final remoteFoldersList = remoteFoldersListEither.fold(
+          (error) => [],
+          (remoteFolders) => remoteFolders,
+        );
+
+        final localFoldersListEither =
+            await musicLocalDataSource.getAllFolders(token: token);
+        final localFoldersList = localFoldersListEither.fold(
+          (error) => [],
+          (localFolders) => localFolders,
+        );
+
+        if (remoteFoldersList != []) {
+          final List<String> mergedFolders = [];
+
+          //  if remote is in local then show remote
+          for (final entry in remoteFoldersList) {
+            //  if remote is in local then show remote
+            if (localFoldersList.contains(entry)) {
+              mergedFolders.add(entry);
+            } else {
+              mergedFolders.add(entry);
+            }
+          }
+
+          return Right(mergedFolders);
+        } else {
+          final List<String> mergedFolders = [];
+
+          //  if remote is in local then show remote
+          for (final entry in localFoldersList) {
+            //  if remote is in local then show remote
+            if (remoteFoldersList.contains(entry)) {
+              mergedFolders.add(entry);
+            } else {
+              mergedFolders.add(entry);
+            }
+          }
+          return Right(mergedFolders);
+        }
+      } else {
+        final localFoldersListEither =
+            await musicLocalDataSource.getAllFolders(token: token);
+        final localFoldersList = localFoldersListEither.fold(
+          (error) => [],
+          (localFolders) => localFolders,
+        );
+
+        final List<String> mergedFolders = [];
+
+        //  if remote is in local then show remote
+        for (final entry in localFoldersList) {
+          //  if remote is in local then show remote
+          if (localFoldersList.contains(entry)) {
+            mergedFolders.add(entry);
+          } else {
+            mergedFolders.add(entry);
+          }
+        }
+        return Right(mergedFolders);
+      }
     } catch (e) {
-      return Left(ErrorModel(message: e.toString(), status: false));
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
     }
+
+    // try {
+    //   final data = await musicLocalDataSource.getAllFolders(token: token);
+    //   return data;
+    // } catch (e) {
+    //   return Left(ErrorModel(message: e.toString(), status: false));
+    // }
   }
 
   @override
@@ -104,7 +445,6 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
             final isLocalSongExists = localSongsList
                 .any((localSong) => localSong.id == remoteSong.id);
             if (!isLocalSongExists) {
-
               mergedSongs.add(remoteSong);
             }
           }
@@ -125,23 +465,72 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
   @override
   Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs({
     required String path,
+    required String token,
   }) async {
     try {
-      final data = await musicLocalDataSource.getFolderSongs(path: path);
-      return data;
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        final remoteSongsListEither = await musicRemoteDataSource
+            .getFolderSongs(path: path, token: token);
+        final remoteSongsList = remoteSongsListEither.fold(
+          (error) => [],
+          (remoteSongs) => remoteSongs,
+        );
+
+        final localSongsListEither =
+            await musicLocalDataSource.getFolderSongs(path: path, token: token);
+        final localSongsList = localSongsListEither.fold(
+          (error) => [],
+          (localSongs) => localSongs,
+        );
+
+        // if remote songs is in the local songs list then show the remote songs
+
+        if (remoteSongsList.isNotEmpty) {
+          final List<SongEntity> mergedSongs = [];
+
+          for (var remoteSong in remoteSongsList.cast<SongEntity>()) {
+            final isLocalSongExists = localSongsList
+                .any((localSong) => localSong.id == remoteSong.id);
+            if (!isLocalSongExists) {
+              mergedSongs.add(remoteSong);
+            }
+          }
+
+          return Right(mergedSongs); // Return mergedSongs if it's not empty
+        } else {
+          return localSongsListEither;
+        }
+      } else {
+        final data =
+            await musicLocalDataSource.getFolderSongs(path: path, token: token);
+        return data;
+      }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
+
+    // try {
+    //   final data =
+    //       await musicLocalDataSource.getFolderSongs(path: path, token: token);
+    //   return data;
+    // } catch (e) {
+    //   return Left(ErrorModel(message: e.toString(), status: false));
+    // }
   }
 
   @override
   Future<Either<ErrorModel, Map<String, Map<String, List<SongEntity>>>>>
-      getEverything() async {
+      getEverything({
+    required String token,
+  }) async {
     try {
       await permission();
-      final folders = await getAllFolderWithSongs();
-      final albums = await getAllAlbumWithSongs();
-      final artists = await getAllArtistWithSongs();
+      final folders = await getAllFolderWithSongs(token: token);
+      final albums = await getAllAlbumWithSongs(token: token);
+      final artists = await getAllArtistWithSongs(token: token);
+      print('artists: $artists');
+
       return Right({
         'folders': folders.fold((l) => {}, (r) => r),
         'albums': albums.fold((l) => {}, (r) => r),
@@ -153,9 +542,11 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
   }
 
   @override
-  Future<Either<ErrorModel, List<PlaylistEntity>>> getAllPlaylists() async {
+  Future<Either<ErrorModel, List<PlaylistEntity>>> getAllPlaylists({
+    required String token,
+  }) async {
     try {
-      final data = await musicLocalDataSource.getPlaylists();
+      final data = await musicLocalDataSource.getPlaylists(token: token);
       return data;
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
@@ -165,9 +556,13 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
   @override
   Future<Either<ErrorModel, bool>> createPlaylist({
     required String playlistName,
+    required String token,
   }) async {
     try {
-      await musicLocalDataSource.createPlaylist(playlistName: playlistName);
+      await musicLocalDataSource.createPlaylist(
+        playlistName: playlistName,
+        token: token,
+      );
       return right(true);
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));

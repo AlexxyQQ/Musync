@@ -233,6 +233,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           } else if (state.everything.isNotEmpty) {
             final Map<String, Map<String, List<SongEntity>>> data =
                 state.everything;
+
             var pages = [
               HomePage(
                 folders: data['folders']!,

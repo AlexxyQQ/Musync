@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'dart:convert';
 
 class SongEntity {
@@ -59,6 +60,7 @@ class SongEntity {
   final String albumArt;
 
   final String? albumArtUrl;
+
   SongEntity({
     required this.id,
     required this.data,
@@ -310,6 +312,9 @@ class SongEntity {
     return SongEntity(
       id: map['id'] as int,
       data: map['data'] as String,
+      albumArt: map['albumArt'] as String,
+      albumArtUrl:
+          map['albumArtUrl'] != null ? map['albumArtUrl'] as String : null,
       serverUrl: map['serverUrl'] as String,
       uri: map['uri'] != null ? map['uri'] as String : null,
       displayName: map['displayName'] as String,
@@ -338,9 +343,6 @@ class SongEntity {
           map['isNotification'] != null ? map['isNotification'] as bool : null,
       isPodcast: map['isPodcast'] != null ? map['isPodcast'] as bool : null,
       isRingtone: map['isRingtone'] as bool,
-      albumArtUrl:
-          map['albumArtUrl'] != null ? map['albumArtUrl'] as String : '',
-      albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
     );
   }
 }
