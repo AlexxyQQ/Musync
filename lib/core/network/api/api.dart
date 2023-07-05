@@ -10,17 +10,17 @@ class Api {
     _dio
       ..options.baseUrl = ApiEndpoints.baseURL
       ..options.headers = ApiEndpoints.defaultHeaders
-      ..options.connectTimeout = 3000
-      ..options.receiveTimeout = 10000
+      ..options.connectTimeout = ApiEndpoints.connectionTimeout
+      ..options.receiveTimeout = ApiEndpoints.receiveTimeout
       // ..httpClientAdapter = HttpClientAdapter()
-      // ..interceptors.add(
-      //   PrettyDioLogger(
-      //     requestBody: true,
-      //     requestHeader: true,
-      //     responseBody: true,
-      //     responseHeader: true,
-      //   ),
-      // )
+      ..interceptors.add(
+        PrettyDioLogger(
+          requestBody: true,
+          requestHeader: true,
+          responseBody: true,
+          responseHeader: true,
+        ),
+      )
       ..interceptors.add(DioErrorInterceptor());
   }
 

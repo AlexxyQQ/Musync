@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:musync/config/constants/api_endpoints.dart';
+import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 
@@ -11,41 +13,7 @@ class AuthDataSource {
 
   const AuthDataSource({required this.api});
 
-  Future<Map<String, dynamic>> getUser({
-    required String token,
-  }) async {
-    try {
-      final response = await api.sendRequest.get(
-        ApiEndpoints.loginWithTokenRoute,
-        options: Options(
-          headers: {
-            "Authorization": 'Bearer $token',
-          },
-        ),
-      );
-      ApiResponse responseApi = ApiResponse.fromResponse(response);
-
-      if (responseApi.success) {
-        Map<String, dynamic> userData = responseApi.data['user'];
-        String token = responseApi.data['token'];
-        userData['token'] = token;
-        return userData;
-      } else {
-        throw Exception(responseApi.message.toString());
-      }
-    } on DioError catch (e) {
-      if (e.response != null) {
-        ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
-        throw Exception(responseApi.message.toString());
-      } else {
-        throw ('Network error occurred.');
-      }
-    } catch (e) {
-      throw ('An unexpected error occurred.');
-    }
-  }
-
-  Future<Map<String, dynamic>> loginUser({
+  Future<Either<ErrorModel, Map<String, dynamic>>> loginUser({
     required String email,
     required String password,
   }) async {
@@ -64,23 +32,43 @@ class AuthDataSource {
         Map<String, dynamic> userData = responseApi.data['user'];
         String token = responseApi.data['token'];
         userData['token'] = token;
-        return userData;
+        return Right(userData);
       } else {
-        throw (responseApi.message.toString());
+        return Left(
+          ErrorModel(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
       }
     } on DioError catch (e) {
       if (e.response != null) {
         var responseApi = ApiResponse.fromResponse(e.response!);
-        throw (responseApi.message.toString());
+        return Left(
+          ErrorModel(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
       } else {
-        throw ('Network error occurred.');
+        return Left(
+          ErrorModel(
+            message: 'An unexpected error occurred.',
+            status: false,
+          ),
+        );
       }
     } catch (e) {
-      rethrow;
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
     }
   }
 
-  Future<Map<String, dynamic>> signupUser({
+  Future<Either<ErrorModel, Map<String, dynamic>>> signupUser({
     required String email,
     required String password,
     required String username,
@@ -101,30 +89,60 @@ class AuthDataSource {
       if (responseApi.success) {
         Map<String, dynamic> userData = responseApi.data;
         userData['token'] = '';
-        return userData;
+        return Right(userData);
       } else {
-        throw (responseApi.message.toString());
+        return Left(
+          ErrorModel(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
       }
     } on DioError catch (e) {
       if (e.response != null) {
         var responseApi = ApiResponse.fromResponse(e.response!);
-        throw (responseApi.message.toString());
+        return Left(
+          ErrorModel(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
       } else {
-        throw ('Network error occurred.');
+        return Left(
+          ErrorModel(
+            message: "Network error occurred.",
+            status: false,
+          ),
+        );
       }
     } catch (e) {
-      rethrow;
+      return Left(
+        ErrorModel(
+          message: 'An unexpected error occurred.',
+          status: false,
+        ),
+      );
     }
   }
 
-  Future<void> logout() async {
-    await GetIt.instance<HiveQueries>().deleteValue(
-      boxName: 'users',
-      key: 'token',
-    );
+  Future<Either<ErrorModel, void>> logout() async {
+    try {
+      await GetIt.instance<HiveQueries>().deleteValue(
+        boxName: 'users',
+        key: 'token',
+      );
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
   }
 
-  Future<Map<String, dynamic>> google() async {
+  Future<Either<ErrorModel, Map<String, dynamic>>> google() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final user = await googleSignIn.signIn();
     try {
@@ -145,15 +163,25 @@ class AuthDataSource {
         ApiResponse responseApi = ApiResponse.fromResponse(response);
         if (responseApi.success) {
           // Login user
-          Map<String, dynamic> loggedUser =
+          var loggedUser =
               await loginUser(email: user.email, password: user.id);
 
           return loggedUser;
         } else {
-          throw (responseApi.message.toString());
+          return Left(
+            ErrorModel(
+              message: responseApi.message.toString(),
+              status: false,
+            ),
+          );
         }
       } else {
-        throw ('Google sign in failed.');
+        return Left(
+          ErrorModel(
+            message: 'Google sign in failed.',
+            status: false,
+          ),
+        );
       }
     } on DioError catch (e) {
       if (e.response != null) {
@@ -165,21 +193,41 @@ class AuthDataSource {
           //
           if (user != null) {
             // Login user
-            Map<String, dynamic> loggedUser =
+            var loggedUser =
                 await loginUser(email: user.email, password: user.id);
 
             return loggedUser;
           } else {
-            throw ('Google sign in failed.');
+            return Left(
+              ErrorModel(
+                message: 'Google sign in failed.',
+                status: false,
+              ),
+            );
           }
         } else {
-          throw (responseApi.message.toString());
+          return Left(
+            ErrorModel(
+              message: responseApi.message.toString(),
+              status: false,
+            ),
+          );
         }
       } else {
-        throw ('Network error occurred.');
+        return Left(
+          ErrorModel(
+            message: 'An unexpected error occurred.',
+            status: false,
+          ),
+        );
       }
     } catch (e) {
-      rethrow;
+      return Left(
+        ErrorModel(
+          message: 'An unexpected error occurred.',
+          status: false,
+        ),
+      );
     }
   }
 }

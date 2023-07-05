@@ -46,7 +46,7 @@ class AudioPlayerRepository {
 
       await audioPlayer.play();
     } catch (e) {
-      // print(e.toString());
+      rethrow;
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
@@ -123,21 +124,26 @@ class _ListofSongsState extends State<ListofSongs> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: QueryArtworkWidget(
-                          id: widget.songs[index].id,
-                          nullArtworkWidget: const Icon(
-                            Icons.music_note_rounded,
-                            size: 40,
-                            color: KColors.accentColor,
-                          ),
-                          type: ArtworkType.AUDIO,
-                          errorBuilder: (p0, p1, p2) {
-                            return const Icon(
-                              Icons.music_note_rounded,
-                              color: KColors.accentColor,
-                            );
-                          },
-                        ),
+                        child: widget.songs[index].albumArtUrl == null
+                            ? QueryArtworkWidget(
+                                id: widget.songs[index].id,
+                                nullArtworkWidget: const Icon(
+                                  Icons.music_note_rounded,
+                                  size: 40,
+                                  color: KColors.accentColor,
+                                ),
+                                type: ArtworkType.AUDIO,
+                                errorBuilder: (p0, p1, p2) {
+                                  return const Icon(
+                                    Icons.music_note_rounded,
+                                    color: KColors.accentColor,
+                                  );
+                                },
+                              )
+                            : QueryArtworkFromApi(
+                                data: widget.songs,
+                                index: index,
+                              ),
                       ),
                       const SizedBox(width: 10),
                       Column(

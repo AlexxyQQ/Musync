@@ -9,23 +9,40 @@ abstract class IMusicQueryRepository {
   Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
     required String token,
   });
-  Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs(
-      {required String path});
-  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums();
-  Future<Either<ErrorModel, List<String>>> getAllFolders();
+  Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs({
+    required String path,
+    required String token,
+  });
+  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums({
+    required String token,
+  });
+  Future<Either<ErrorModel, List<String>>> getAllFolders({
+    required String token,
+  });
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllFolderWithSongs();
+      getAllFolderWithSongs({
+    required String token,
+  });
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllAlbumWithSongs();
+      getAllAlbumWithSongs({
+    required String token,
+  });
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllArtistWithSongs();
-  Future<Either<ErrorModel, List<PlaylistEntity>>> getAllPlaylists();
+      getAllArtistWithSongs({
+    required String token,
+  });
+  Future<Either<ErrorModel, List<PlaylistEntity>>> getAllPlaylists({
+    required String token,
+  });
   Future<Either<ErrorModel, bool>> createPlaylist({
     required String playlistName,
+    required String token,
   });
   Future<Either<ErrorModel, bool>> addAllSongs({
     required String token,
   });
   Future<Either<ErrorModel, Map<String, Map<String, List<SongEntity>>>>>
-      getEverything();
+      getEverything({
+    required String token,
+  });
 }

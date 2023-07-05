@@ -4,12 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/constants/enums.dart';
-import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
-import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
-import 'package:musync/features/auth/data/data_source/auth_data_source.dart';
-import 'package:musync/features/home/presentation/view/home.dart';
-import 'package:musync/features/library/presentation/view/library_page.dart';
+import 'package:musync/features/auth/presentation/state/authentication_state.dart';
+import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/config/router/routers.dart';
 
 class MainAuthPage extends StatefulWidget {
@@ -122,9 +118,9 @@ class LoginSignupButton extends StatelessWidget {
                   ),
                 ),
                 // Google Sign In Button
-                BlocListener<AuthenticationBloc, AuthenticationState>(
+                BlocListener<AuthViewModel, AuthState>(
                   listener: (context, state) {
-                    if (state.status == BlocStatus.success) {
+                    if (state.isLogin) {
                       kShowSnackBar(
                         "Logged in successfully!",
                         context: context,
@@ -138,16 +134,14 @@ class LoginSignupButton extends StatelessWidget {
                         },
                       );
                     }
-                    if (state.status == BlocStatus.error) {
-                      kShowSnackBar(state.message!, context: context);
+                    if (state.authError != null) {
+                      kShowSnackBar(state.authError!, context: context);
                     }
                   },
                   child: ElevatedButton(
                     onPressed: () async {
                       // ! UNCOMMENT THIS TO ENABLE GOOGLE SIGN IN
-                      BlocProvider.of<AuthenticationBloc>(context).add(
-                        GoogleEvent(),
-                      );
+                      BlocProvider.of<AuthViewModel>(context).googleLoginUser();
                     },
                     child: Image.asset(
                       'assets/icons/google.png',

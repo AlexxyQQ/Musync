@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 
-class MusicQueryCubit extends Cubit<MusicQueryState> {
+class MusicQueryViewModel extends Cubit<MusicQueryState> {
   final MusicQueryUseCase _musicQueryUseCase;
 
-  MusicQueryCubit(this._musicQueryUseCase) : super(MusicQueryState.initial()) {}
+  MusicQueryViewModel(this._musicQueryUseCase)
+      : super(MusicQueryState.initial());
 
   Future<void> getAllAlbumWithSongs() async {
     emit(state.copyWith(isLoading: true));

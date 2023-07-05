@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
@@ -91,5 +95,72 @@ class MusicQueryState {
       isLoading: isLoading ?? this.isLoading,
       isUploading: isUploading ?? this.isUploading,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'albumWithSongs': albumWithSongs,
+      'albums': albums.map((x) => x.toMap()).toList(),
+      'artistWithSongs': artistWithSongs,
+      'folderWithSongs': folderWithSongs,
+      'folders': folders,
+      'songs': songs.map((x) => x.toMap()).toList(),
+      'folderSongs': folderSongs.map((x) => x.toMap()).toList(),
+      'permission': permission,
+      'everything': everything,
+      'playlists': playlists.map((x) => x.toMap()).toList(),
+      'createPlaylist': createPlaylist,
+      'addAllSongs': addAllSongs,
+      'error': error,
+      'isLoading': isLoading,
+      'isUploading': isUploading,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
+
+  @override
+  String toString() {
+    return 'MusicQueryState(albumWithSongs: $albumWithSongs, albums: $albums, artistWithSongs: $artistWithSongs, folderWithSongs: $folderWithSongs, folders: $folders, songs: $songs, folderSongs: $folderSongs, permission: $permission, everything: $everything, playlists: $playlists, createPlaylist: $createPlaylist, addAllSongs: $addAllSongs, error: $error, isLoading: $isLoading, isUploading: $isUploading)';
+  }
+
+  @override
+  bool operator ==(covariant MusicQueryState other) {
+    if (identical(this, other)) return true;
+
+    return mapEquals(other.albumWithSongs, albumWithSongs) &&
+        listEquals(other.albums, albums) &&
+        mapEquals(other.artistWithSongs, artistWithSongs) &&
+        mapEquals(other.folderWithSongs, folderWithSongs) &&
+        listEquals(other.folders, folders) &&
+        listEquals(other.songs, songs) &&
+        listEquals(other.folderSongs, folderSongs) &&
+        other.permission == permission &&
+        mapEquals(other.everything, everything) &&
+        listEquals(other.playlists, playlists) &&
+        other.createPlaylist == createPlaylist &&
+        other.addAllSongs == addAllSongs &&
+        other.error == error &&
+        other.isLoading == isLoading &&
+        other.isUploading == isUploading;
+  }
+
+  @override
+  int get hashCode {
+    return albumWithSongs.hashCode ^
+        albums.hashCode ^
+        artistWithSongs.hashCode ^
+        folderWithSongs.hashCode ^
+        folders.hashCode ^
+        songs.hashCode ^
+        folderSongs.hashCode ^
+        permission.hashCode ^
+        everything.hashCode ^
+        playlists.hashCode ^
+        createPlaylist.hashCode ^
+        addAllSongs.hashCode ^
+        error.hashCode ^
+        isLoading.hashCode ^
+        isUploading.hashCode;
   }
 }

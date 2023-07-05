@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
@@ -393,40 +394,48 @@ class ListViewCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: QueryArtworkWidget(
-                      id: item["songs"][randomInt].id,
-                      nullArtworkWidget: const Icon(
-                        Icons.music_note_rounded,
-                        size: 40,
-                        color: KColors.accentColor,
-                      ),
-                      type: ArtworkType.AUDIO,
-                      errorBuilder: (p0, p1, p2) {
-                        return const Icon(
-                          Icons.music_note_rounded,
-                          color: KColors.accentColor,
-                        );
-                      },
-                    ),
+                    child: item["songs"][randomInt].albumArtUrl == null
+                        ? QueryArtworkWidget(
+                            id: item["songs"][randomInt].id,
+                            nullArtworkWidget: const Icon(
+                              Icons.music_note_rounded,
+                              color: KColors.accentColor,
+                            ),
+                            type: ArtworkType.AUDIO,
+                            errorBuilder: (p0, p1, p2) {
+                              return const Icon(
+                                Icons.music_note_rounded,
+                                color: KColors.accentColor,
+                              );
+                            },
+                          )
+                        : QueryArtworkFromApi(
+                            index: randomInt,
+                            data: item["songs"],
+                          ),
                   )
                 : SizedBox(
                     height: 80,
                     width: 80,
-                    child: QueryArtworkWidget(
-                      id: item["songs"][randomInt].id,
-                      nullArtworkWidget: const Icon(
-                        Icons.music_note_rounded,
-                        size: 40,
-                        color: KColors.accentColor,
-                      ),
-                      type: ArtworkType.AUDIO,
-                      errorBuilder: (p0, p1, p2) {
-                        return const Icon(
-                          Icons.music_note_rounded,
-                          color: KColors.accentColor,
-                        );
-                      },
-                    ),
+                    child: item["songs"][randomInt].albumArtUrl == null
+                        ? QueryArtworkWidget(
+                            id: item["songs"][randomInt].id,
+                            nullArtworkWidget: const Icon(
+                              Icons.music_note_rounded,
+                              color: KColors.accentColor,
+                            ),
+                            type: ArtworkType.AUDIO,
+                            errorBuilder: (p0, p1, p2) {
+                              return const Icon(
+                                Icons.music_note_rounded,
+                                color: KColors.accentColor,
+                              );
+                            },
+                          )
+                        : QueryArtworkFromApi(
+                            index: randomInt,
+                            data: item["songs"],
+                          ),
                   ),
             const SizedBox(width: 10),
             Column(

@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive_tabel_constant.dart';
 import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/features/home/data/data_source/music_data_source.dart';
+import 'package:musync/features/home/data/data_source/i_music_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
 import 'package:musync/features/home/data/model/album_hive_model.dart';
 import 'package:musync/features/home/data/model/playlist_hive_model.dart';
@@ -22,6 +22,7 @@ class MusicLocalDataSource implements AMusicDataSource {
   @override
   Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs({
     required String path,
+    required String token,
   }) async {
     try {
       var allHiveFolderSongs =
@@ -65,24 +66,21 @@ class MusicLocalDataSource implements AMusicDataSource {
   }
 
   @override
-  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums() async {
+  Future<Either<ErrorModel, List<AlbumEntity>>> getAllAlbums({
+    required String token,
+  }) async {
     try {
-      const MethodChannel channel =
-          MethodChannel('com.lucasjosino.on_audio_query');
-
-      var allQueryAlbums = await channel.invokeMethod(
-        "queryAlbums",
-        {
-          "albumSortType": AlbumSortType.ALBUM.index,
-          "orderType": OrderType.ASC_OR_SMALLER.index,
-          "uri": UriType.EXTERNAL.index,
-          "ignoreCase": true,
-        },
+      var allQueryAlbums = await audioQuery.queryAlbums(
+        sortType: AlbumSortType.ALBUM,
+        orderType: OrderType.ASC_OR_SMALLER,
+        uriType: UriType.EXTERNAL,
+        ignoreCase: true,
       );
       List<AlbumEntity> albumEntityList = [];
       if (allQueryAlbums != null) {
         for (var albumMap in allQueryAlbums) {
-          albumEntityList.add(AlbumEntity.fromMap(convertMap(albumMap)));
+          albumEntityList
+              .add(AlbumEntity.fromAlbumModel(convertMap(albumMap.getMap)));
         }
       }
       var albumHiveList = AlbumHiveModel.empty().toHiveList(albumEntityList);
@@ -94,7 +92,9 @@ class MusicLocalDataSource implements AMusicDataSource {
   }
 
   @override
-  Future<Either<ErrorModel, List<String>>> getAllFolders() async {
+  Future<Either<ErrorModel, List<String>>> getAllFolders({
+    required String token,
+  }) async {
     try {
       var allSongFolders = await musicHiveDataSource.getAllFolders();
       if (allSongFolders.isNotEmpty) {
@@ -111,17 +111,19 @@ class MusicLocalDataSource implements AMusicDataSource {
 
   @override
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllFolderWithSongs() async {
+      getAllFolderWithSongs({
+    required String token,
+  }) async {
     try {
       final Map<String, List<SongEntity>> result = {};
       final Either<ErrorModel, List<String>> foldersEither =
-          await getAllFolders();
+          await getAllFolders(token: token);
       return foldersEither.fold(
         (error) => Left(error),
         (allFolder) async {
           for (String folderPath in allFolder) {
             final Either<ErrorModel, List<SongEntity>> songsEither =
-                await getFolderSongs(path: folderPath);
+                await getFolderSongs(path: folderPath, token: token);
             songsEither.fold(
               (error) => Left(error),
               (folderSongEntityList) =>
@@ -138,7 +140,9 @@ class MusicLocalDataSource implements AMusicDataSource {
 
   @override
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllArtistWithSongs() async {
+      getAllArtistWithSongs({
+    required String token,
+  }) async {
     try {
       final Map<String, List<SongEntity>> result = {};
       final Either<ErrorModel, List<SongEntity>> allSongsEither =
@@ -162,11 +166,13 @@ class MusicLocalDataSource implements AMusicDataSource {
   }
 
   @override
-  Future<Either<ErrorModel, bool>> createPlaylist(
-      {required String playlistName}) async {
+  Future<Either<ErrorModel, bool>> createPlaylist({
+    required String playlistName,
+    required String token,
+  }) async {
     try {
       final Either<ErrorModel, List<PlaylistEntity>> playlists =
-          await getPlaylists();
+          await getPlaylists(token: token);
       bool playlistExists = playlists.fold(
         (error) => false,
         (playlistList) =>
@@ -184,14 +190,19 @@ class MusicLocalDataSource implements AMusicDataSource {
   }
 
   @override
-  Future<Either<ErrorModel, bool>> addToPlaylist(
-      {required int playlistId, required int audioId}) async {
+  Future<Either<ErrorModel, bool>> addToPlaylist({
+    required int playlistId,
+    required int audioId,
+    required String token,
+  }) async {
     await audioQuery.addToPlaylist(playlistId, audioId);
     return const Right(true);
   }
 
   @override
-  Future<Either<ErrorModel, List<PlaylistEntity>>> getPlaylists() async {
+  Future<Either<ErrorModel, List<PlaylistEntity>>> getPlaylists({
+    required String token,
+  }) async {
     audioQuery.queryPlaylists();
     var allHivePlaylists = await musicHiveDataSource.getAllPlaylist();
     if (allHivePlaylists.isNotEmpty) {
@@ -230,7 +241,9 @@ class MusicLocalDataSource implements AMusicDataSource {
   }
 
   @override
-  Future<Either<ErrorModel, bool>> addAlbums() async {
+  Future<Either<ErrorModel, bool>> addAlbums({
+    required String token,
+  }) async {
     try {
       var allAlbums = await audioQuery.queryAlbums(
         sortType: AlbumSortType.ALBUM,
@@ -258,7 +271,9 @@ class MusicLocalDataSource implements AMusicDataSource {
   }
 
   @override
-  Future<Either<ErrorModel, bool>> addFolders() async {
+  Future<Either<ErrorModel, bool>> addFolders({
+    required String token,
+  }) async {
     var allSongFolders = await audioQuery.queryAllPath();
     if (allSongFolders.isNotEmpty) {
       await musicHiveDataSource.addAllFolders(allSongFolders);
@@ -321,13 +336,14 @@ class MusicLocalDataSource implements AMusicDataSource {
 
   @override
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
-      getAllAlbumWithSongs() async {
+      getAllAlbumWithSongs({required String token}) async {
     try {
       final Map<String, List<SongEntity>> result = {};
       final Either<ErrorModel, List<AlbumEntity>> albumsEither =
-          await getAllAlbums();
+          await getAllAlbums(token: token);
       final Either<ErrorModel, List<SongEntity>> songsEither =
           await getAllSongs();
+
       return albumsEither.fold(
         (error) => Left(error),
         (allAlbums) {

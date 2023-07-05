@@ -380,15 +380,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/config/constants/enums.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/formfiled.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
+import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
-import 'package:musync/features/home/presentation/view/home.dart';
-import 'package:musync/features/library/presentation/view/library_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -406,14 +403,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController =
       TextEditingController(text: "VerySecretPassword@100");
 
-  late AuthViewModel _authViewModel;
   bool isPressed = false;
+
   @override
   void initState() {
     super.initState();
-    _authViewModel = AuthViewModel(
-      authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -544,7 +538,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                               String email = _emailController.text;
                               String password = _passwordController.text;
-                              _authViewModel.loginUser(
+                              BlocProvider.of<AuthViewModel>(context).loginUser(
                                 email: email,
                                 password: password,
                               );
@@ -560,31 +554,32 @@ class _LoginPageState extends State<LoginPage> {
           ),
           // Loading Indicator and ScaffoldMessenger
           isPressed
-              ? BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              ? BlocBuilder<AuthViewModel, AuthState>(
                   builder: (context, state) {
-                    if (state.status == BlocStatus.loading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state.status == BlocStatus.error) {
+                    if (state.isLoading) {
+                      return authLoading(mediaQuerySize, context);
+                    } else if (state.isError) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         kShowSnackBar(
-                          state.message!,
+                          state.authError!,
                           context: context,
                         );
                       });
-                    } else if (state.status == BlocStatus.success) {
+                    } else if (state.isLogin) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         kShowSnackBar(
-                          state.message!,
+                          "Login Successful",
                           context: context,
                         );
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.homeRoute,
-                          (route) => false,
-                          arguments: {
-                            "selectedIndex": 0,
-                          },
-                        );
+                        // ! This is for testing purpose uncomment it later after testing
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //   context,
+                        //   AppRoutes.homeRoute,
+                        //   (route) => false,
+                        //   arguments: {
+                        //     "selectedIndex": 0,
+                        //   },
+                        // );
                       });
                     }
                     return const SizedBox.shrink();
@@ -592,6 +587,33 @@ class _LoginPageState extends State<LoginPage> {
                 )
               : const SizedBox.shrink(),
         ],
+      ),
+    );
+  }
+
+  Center authLoading(Size mediaQuerySize, BuildContext context) {
+    return Center(
+      child: Container(
+        height: mediaQuerySize.height * 0.2,
+        width: mediaQuerySize.width * 0.4,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text(
+              'Loading...',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: KColors.whiteColor,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }

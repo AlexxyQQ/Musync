@@ -1,13 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/formfiled.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/constants/enums.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/features/auth/presentation/state/bloc/authentication_bloc.dart';
+import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
 class SignupPage extends StatefulWidget {
@@ -30,14 +27,10 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _cPasswordController =
       TextEditingController(text: "VerySecretPassword@100");
 
-  late AuthViewModel _authViewModel;
-
   @override
   void initState() {
     super.initState();
-    _authViewModel = AuthViewModel(
-      authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
@@ -51,6 +44,19 @@ class _SignupPageState extends State<SignupPage> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _handleSignupButtonPressed(BuildContext context) {
+    if (formKey.currentState!.validate()) {
+      String username = _usernameController.text;
+      String email = _emailController.text;
+      String password = _passwordController.text;
+      BlocProvider.of<AuthViewModel>(context).signupUser(
+        email: email,
+        password: password,
+        username: username,
+      );
+    }
   }
 
   @override
@@ -177,18 +183,7 @@ class _SignupPageState extends State<SignupPage> {
                           emailController: _emailController,
                           passwordController: _passwordController,
                           cPasswordController: _cPasswordController,
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              String username = _usernameController.text;
-                              String email = _emailController.text;
-                              String password = _passwordController.text;
-                              _authViewModel.signupUser(
-                                email: email,
-                                password: password,
-                                username: username,
-                              );
-                            }
-                          },
+                          onPressed: () => _handleSignupButtonPressed(context),
                         ),
                       ),
                     ],
@@ -198,37 +193,60 @@ class _SignupPageState extends State<SignupPage> {
             },
           ),
           Positioned(
-            child: Center(
-              child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                builder: (context, state) {
-                  if (state.status == BlocStatus.loading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state.status == BlocStatus.error) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      kShowSnackBar(
-                        state.message!,
-                        context: context,
-                      );
-                    });
-                  } else if (state.status == BlocStatus.success) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      kShowSnackBar(
-                        state.message!,
-                        context: context,
-                      );
-                      // Navigator.pushNamedAndRemoveUntil(
-                      //   context,
-                      //   AppRoutes.loginRoute,
-                      //   (route) => false,
-                      // );
-                    });
+            child: BlocBuilder<AuthViewModel, AuthState>(
+              builder: (blocBuilderContext, state) {
+                if (state.isLoading) {
+                  return authLoading(mediaQuerySize, context);
+                }
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (state.isSignUp) {
+                    Navigator.popAndPushNamed(
+                      blocBuilderContext,
+                      AppRoutes.loginRoute,
+                    );
+                    kShowSnackBar(
+                      'Sign up successful!',
+                      context: context,
+                    );
+                  } else if (state.isError) {
+                    kShowSnackBar(
+                      state.authError!,
+                      context: context,
+                    );
                   }
-                  return const SizedBox.shrink();
-                },
-              ),
+                });
+                return const SizedBox.shrink();
+              },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Center authLoading(Size mediaQuerySize, BuildContext context) {
+    return Center(
+      child: Container(
+        height: mediaQuerySize.height * 0.2,
+        width: mediaQuerySize.width * 0.4,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text(
+              'Loading...',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: KColors.whiteColor,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -259,138 +277,140 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Username
-          CTextFormFiled(
-            controller: _usernmaeController,
-            keyboardType: TextInputType.emailAddress,
-            hintText: 'Username',
-            labelText: 'Username',
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'USername is required';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 10),
-          // Email
-          CTextFormFiled(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            hintText: 'Email',
-            labelText: 'Email',
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'Email is required';
-              } else if (!RegExp(
-                      r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$')
-                  .hasMatch(p0)) {
-                return 'Email is invalid';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 10),
-          //  Password
-          CPasswordFormField(
-            controller: _passwordController,
-            keyboardType: TextInputType.visiblePassword,
-            hintText: 'Password',
-            labelText: 'Password',
-            obscureText: true,
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'Password is required';
-              } else if (p0.length < 8) {
-                return 'Password must be at least 8 characters';
-              } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
-                return 'Password must contain at least one uppercase letter';
-              } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
-                return 'Password must contain at least one lowercase letter';
-              } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
-                return 'Password must contain at least one number';
-              } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
-                return 'Password must contain at least one special character';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 10),
-          // Confirm Password
-          CPasswordFormField(
-            controller: _cPasswordController,
-            keyboardType: TextInputType.visiblePassword,
-            hintText: 'Confirm Password',
-            labelText: 'Confirm Password',
-            obscureText: true,
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'Password is required';
-              } else if (p0.length < 8) {
-                return 'Password must be at least 8 characters';
-              } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
-                return 'Password must contain at least one uppercase letter';
-              } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
-                return 'Password must contain at least one lowercase letter';
-              } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
-                return 'Password must contain at least one number';
-              } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
-                return 'Password must contain at least one special character';
-              } else if (p0 != _passwordController.text) {
-                return 'Password does not match';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 40),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: KColors.accentColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 50,
-                vertical: 15,
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Username
+            CTextFormFiled(
+              controller: _usernmaeController,
+              keyboardType: TextInputType.emailAddress,
+              hintText: 'Username',
+              labelText: 'Username',
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Username is required';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            // Email
+            CTextFormFiled(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              hintText: 'Email',
+              labelText: 'Email',
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Email is required';
+                } else if (!RegExp(
+                  r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$',
+                ).hasMatch(p0)) {
+                  return 'Email is invalid';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            //  Password
+            CPasswordFormField(
+              controller: _passwordController,
+              keyboardType: TextInputType.visiblePassword,
+              hintText: 'Password',
+              labelText: 'Password',
+              obscureText: true,
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Password is required';
+                } else if (p0.length < 8) {
+                  return 'Password must be at least 8 characters';
+                } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
+                  return 'Password must contain at least one uppercase letter';
+                } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
+                  return 'Password must contain at least one lowercase letter';
+                } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
+                  return 'Password must contain at least one number';
+                } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
+                  return 'Password must contain at least one special character';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            // Confirm Password
+            CPasswordFormField(
+              controller: _cPasswordController,
+              keyboardType: TextInputType.visiblePassword,
+              hintText: 'Confirm Password',
+              labelText: 'Confirm Password',
+              obscureText: true,
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Password is required';
+                } else if (p0.length < 8) {
+                  return 'Password must be at least 8 characters';
+                } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
+                  return 'Password must contain at least one uppercase letter';
+                } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
+                  return 'Password must contain at least one lowercase letter';
+                } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
+                  return 'Password must contain at least one number';
+                } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
+                  return 'Password must contain at least one special character';
+                } else if (p0 != _passwordController.text) {
+                  return 'Password does not match';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: KColors.accentColor,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
+                  vertical: 15,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                minimumSize: Size(
+                  MediaQuery.of(context).size.width,
+                  50,
+                ),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              minimumSize: Size(
-                MediaQuery.of(context).size.width,
-                50,
+              onPressed: () {
+                _onPressed();
+              },
+              child: Text(
+                'SIGN UP',
+                style: GlobalConstants.textStyle(
+                  color: KColors.whiteColor,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            onPressed: () {
-              _onPressed();
-            },
-            child: Text(
-              'SIGN UP',
-              style: GlobalConstants.textStyle(
-                color: KColors.whiteColor,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                "By continuing, you’re agreeing to Musync Privacy policy and Terms of use.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      fontSize: 15,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? KColors.blackColor
+                          : KColors.whiteColor,
+                    ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Text(
-              "By continuing, you’re agreeing to Musync Privacy policy and Terms of use.",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    fontSize: 15,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? KColors.blackColor
-                        : KColors.whiteColor,
-                  ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

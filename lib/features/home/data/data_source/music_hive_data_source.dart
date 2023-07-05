@@ -29,7 +29,6 @@ class MusicHiveDataSourse {
 
   Future<void> updateSong(SongHiveModel song) async {
     var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
-    // print('Updating Song: ${song.albumArtUrl}');
 
     await box.put(song.id, song);
   }
