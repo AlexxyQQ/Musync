@@ -557,7 +557,7 @@ class _LoginPageState extends State<LoginPage> {
               ? BlocBuilder<AuthViewModel, AuthState>(
                   builder: (context, state) {
                     if (state.isLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return authLoading(mediaQuerySize, context);
                     } else if (state.isError) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         kShowSnackBar(
@@ -571,14 +571,15 @@ class _LoginPageState extends State<LoginPage> {
                           "Login Successful",
                           context: context,
                         );
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.homeRoute,
-                          (route) => false,
-                          arguments: {
-                            "selectedIndex": 0,
-                          },
-                        );
+                        // ! This is for testing purpose uncomment it later after testing
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //   context,
+                        //   AppRoutes.homeRoute,
+                        //   (route) => false,
+                        //   arguments: {
+                        //     "selectedIndex": 0,
+                        //   },
+                        // );
                       });
                     }
                     return const SizedBox.shrink();
@@ -586,6 +587,33 @@ class _LoginPageState extends State<LoginPage> {
                 )
               : const SizedBox.shrink(),
         ],
+      ),
+    );
+  }
+
+  Center authLoading(Size mediaQuerySize, BuildContext context) {
+    return Center(
+      child: Container(
+        height: mediaQuerySize.height * 0.2,
+        width: mediaQuerySize.width * 0.4,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text(
+              'Loading...',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: KColors.whiteColor,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }

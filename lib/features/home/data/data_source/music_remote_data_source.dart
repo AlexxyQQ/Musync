@@ -187,13 +187,11 @@ class MusicRemoteDataSource implements AMusicDataSource {
         ApiResponse apiSongResponse = ApiResponse.fromResponse(songResponse);
 
         if (!apiSongResponse.success) {
-          throw Exception(apiSongResponse.message.toString());
+          continue;
         } else {
           if (song.albumArt != '') {
             final List<String> musicPath = song.data.split('/');
-            final List<String> albumArtPath = song.albumArt.split('/');
-            musicPath[musicPath.length - 1] =
-                albumArtPath[albumArtPath.length - 1];
+            musicPath[musicPath.length - 1] = "${song.id}.png";
             final String newPath = musicPath.join('/');
 
             final albumformData = FormData.fromMap({
@@ -201,7 +199,7 @@ class MusicRemoteDataSource implements AMusicDataSource {
               'subFolder': newPath,
               'albumArtUP': await MultipartFile.fromFile(
                 song.albumArt,
-                filename: '${song.displayNameWOExt}.png',
+                filename: '${song.id}.png',
               ),
             });
             await api.sendRequest.post(

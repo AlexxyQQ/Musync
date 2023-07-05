@@ -20,71 +20,6 @@ class _MusyncSplashState extends State<MusyncSplash> {
     BlocProvider.of<SplashViewModel>(context).initialLogin();
     super.initState();
   }
-  // // scaffoldKey is used to show snackbar
-  // final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  // // navigatorKey is used to navigate to a page without context
-  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-  // bool isFirstTime = true;
-  // bool goHome = false;
-  // late Future<UserEntity?> data;
-
-  // Future<UserEntity?> check() async {
-  //   var authProvider = BlocProvider.of<AuthViewModel>(context);
-
-  //   final bool connection = await ConnectivityCheck.connectivity();
-  //   final bool server = await ConnectivityCheck.isServerup();
-  //   isFirstTime = await GetIt.instance<HiveQueries>().getValue(
-  //     boxName: 'settings',
-  //     key: "isFirstTime",
-  //     defaultValue: true,
-  //   );
-  //   goHome = await GetIt.instance<HiveQueries>().getValue(
-  //     boxName: 'settings',
-  //     key: "goHome",
-  //     defaultValue: false,
-  //   );
-  //   if (connection && server) {
-  //     var userData = await authProvider.initialLogin();
-
-  //     if (userData.isRight()) {
-  //       setState(() {
-  //         isFirstTime = isFirstTime;
-  //         goHome = goHome;
-  //       });
-  //       kShowSnackBar(
-  //         "Welcome back",
-  //         scaffoldKey: scaffoldKey,
-  //       );
-  //       return userData.fold((l) => null, (r) => r);
-  //     } else {
-  //       setState(() {
-  //         isFirstTime = isFirstTime;
-  //         goHome = goHome;
-  //       });
-
-  //       return null;
-  //     }
-  //   } else if (connection) {
-  //     kShowSnackBar(
-  //       "Server is Down",
-  //       scaffoldKey: scaffoldKey,
-  //     );
-  //     return null;
-  //   } else {
-  //     kShowSnackBar(
-  //       "Server is Down",
-  //       scaffoldKey: scaffoldKey,
-  //     );
-  //     return null;
-  //   }
-  // }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   data = check();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +36,45 @@ class _MusyncSplashState extends State<MusyncSplash> {
                   context: blocContext,
                 );
               });
+              return const Scaffold(
+                body: Center(
+                  child: Text('404'),
+                ),
+              );
             }
-            return SplashMaterial(
-              state: state,
-              blocContext: blocContext,
+            if (state.isFirstTime) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                kShowSnackBar(
+                  "Welcome to Musync!",
+                  context: blocContext,
+                );
+              });
+            }
+
+            if (state.goHome && state.loggedUser != null && !state.isError) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                kShowSnackBar(
+                  "Welcome back ${state.loggedUser!.username}!",
+                  context: blocContext,
+                );
+              });
+              return const Scaffold(
+                body: Center(
+                  child: Text('Home Page'),
+                ),
+              );
+            }
+
+            return const Scaffold(
+              body: Center(
+                child: Text(''),
+              ),
             );
+            // ! This is the original code
+            // return SplashMaterial(
+            //   state: state,
+            //   blocContext: blocContext,
+            // );
           }
         },
       ),

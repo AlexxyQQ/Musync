@@ -75,24 +75,4 @@ class AlbumEntity {
   String toString() {
     return 'AlbumEntity(id: $id, album: $album, artist: $artist, artistId: $artistId, numOfSongs: $numOfSongs)';
   }
-
-  @override
-  bool operator ==(covariant AlbumEntity other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.album == album &&
-        other.artist == artist &&
-        other.artistId == artistId &&
-        other.numOfSongs == numOfSongs;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        album.hashCode ^
-        artist.hashCode ^
-        artistId.hashCode ^
-        numOfSongs.hashCode;
-  }
 }

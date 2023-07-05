@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/shimmers.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -97,24 +98,43 @@ class HomeFolderSectionNormal extends StatelessWidget {
                                   height: double.infinity,
                                   child: Padding(
                                     padding: const EdgeInsets.all(4),
-                                    child: QueryArtworkWidget(
-                                      artworkBorder: BorderRadius.circular(10),
-                                      id: folderValue[0]
-                                          .id, // Get the first song in the folder
-                                      type: ArtworkType.AUDIO,
-                                      nullArtworkWidget: const Icon(
-                                        Icons.music_note_rounded,
-                                        size: 40,
-                                        color: KColors.accentColor,
-                                      ),
+                                    child: folderValue[0].albumArtUrl == null
+                                        ? QueryArtworkWidget(
+                                            artworkBorder:
+                                                BorderRadius.circular(10),
+                                            id: folderValue[0]
+                                                .id, // Get the first song in the folder
+                                            type: ArtworkType.AUDIO,
 
-                                      errorBuilder: (p0, p1, p2) {
-                                        return const Icon(
-                                          Icons.music_note_rounded,
-                                          color: KColors.accentColor,
-                                        );
-                                      },
-                                    ),
+                                            nullArtworkWidget: const Icon(
+                                              Icons.music_note_rounded,
+                                              color: KColors.accentColor,
+                                            ),
+
+                                            errorBuilder: (p0, p1, p2) {
+                                              return const Icon(
+                                                Icons.music_note_rounded,
+                                                color: KColors.accentColor,
+                                              );
+                                            },
+                                          )
+                                        : QueryArtworkFromApi(
+                                          index:0,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            data: folderValue,
+                                          ),
+
+                                    // Container(
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10),
+                                    //     ),
+                                    //     child: Image.network(
+                                    //       folderValue[0].albumArtUrl,
+                                    //       fit: BoxFit.cover,
+                                    //     ),
+                                    //   ),
                                   ),
                                 ),
                                 // Folder Name

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/coreold/repositories/audio_player_repository.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/nowplaying/presentation/view/queue_view.dart';
@@ -127,21 +128,26 @@ class NowPlayingPhone extends StatelessWidget {
                               : KColors.offBlackColor,
                         ),
                         // Add Album Art Here
-                        child: QueryArtworkWidget(
-                          id: songs[index].id,
-                          nullArtworkWidget: const Icon(
-                            Icons.music_note_rounded,
-                            size: 40,
-                            color: KColors.accentColor,
-                          ),
-                          type: ArtworkType.AUDIO,
-                          errorBuilder: (p0, p1, p2) {
-                            return const Icon(
-                              Icons.music_note_rounded,
-                              color: KColors.accentColor,
-                            );
-                          },
-                        ),
+                        child: songs[index].albumArtUrl == null
+                            ? QueryArtworkWidget(
+                                id: songs[index].id,
+                                nullArtworkWidget: const Icon(
+                                  Icons.music_note_rounded,
+                                  size: 40,
+                                  color: KColors.accentColor,
+                                ),
+                                type: ArtworkType.AUDIO,
+                                errorBuilder: (p0, p1, p2) {
+                                  return const Icon(
+                                    Icons.music_note_rounded,
+                                    color: KColors.accentColor,
+                                  );
+                                },
+                              )
+                            : QueryArtworkFromApi(
+                                data: songs,
+                                index: index,
+                              ),
                       ),
                     ),
                   ),

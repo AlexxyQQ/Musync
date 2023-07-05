@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/utils/connectivity_check.dart';
@@ -284,34 +286,61 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
 
         final localAllFolderWithSongsEither =
             await musicLocalDataSource.getAllFolderWithSongs(token: token);
-        final locaAllFolderWithSongs = localAllFolderWithSongsEither.fold(
+        final localAllFolderWithSongs = localAllFolderWithSongsEither.fold(
           (error) => {},
           (localSongs) => localSongs,
         );
 
-        if (remoteAllFolderWithSongs.isNotEmpty) {
-          final Map<String, List<SongEntity>> mergedSongs = {};
+        final Map<String, List<SongEntity>> mergedSongs = {};
 
-          //  if remote is in local then show remote
-          for (final entry in remoteAllFolderWithSongs.entries) {
-            //  if remote is in local then show remote
-            if (locaAllFolderWithSongs.containsKey(entry.key)) {
-              mergedSongs[entry.key] = entry.value;
-            } else {
-              mergedSongs[entry.key] = entry.value;
+        // Add local songs to mergedSongs
+        for (final localValues in localAllFolderWithSongs.values) {
+          String folderPath = localValues[0]
+              .data
+              .split('/')
+              .sublist(0, localValues[0].data.split('/').length - 1)
+              .join('/');
+          mergedSongs[folderPath] = localValues;
+        }
+
+        // Add remote songs to mergedSongs if they are not present in local songs
+        for (final remoteValues in remoteAllFolderWithSongs.values) {
+          for (var remoteSongs in remoteValues) {
+            bool foundInLocal = false;
+            for (final localValues in localAllFolderWithSongs.values) {
+              for (var localSongs in localValues) {
+                if (localSongs.id == remoteSongs.id) {
+                  foundInLocal = true;
+                  break;
+                }
+              }
+              if (foundInLocal) {
+                break;
+              }
+            }
+
+            if (!foundInLocal) {
+              // var folderPath =
+              //     remoteSongs.data.split('/').sublist(0, -1).join('/');
+              String folderPath = remoteSongs.data
+                  .split('/')
+                  .sublist(0, remoteSongs.data.split('/').length - 1)
+                  .join('/');
+
+              mergedSongs[folderPath] = remoteValues;
             }
           }
-
-          return Right(mergedSongs);
-        } else {
-          return localAllFolderWithSongsEither;
         }
+        print("mergedSongs $mergedSongs");
+
+        return Right(mergedSongs);
       } else {
         final localAllFolderWithSongsEither =
             await musicLocalDataSource.getAllFolderWithSongs(token: token);
         return localAllFolderWithSongsEither;
       }
     } catch (e) {
+      print("error $e");
       return Left(
         ErrorModel(
           message: e.toString(),
@@ -319,13 +348,54 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
         ),
       );
     }
-
     // try {
-    //   final data =
-    //       await musicLocalDataSource.getAllFolderWithSongs(token: token);
-    //   return data;
+    //   if (await ConnectivityCheck.connectivity() &&
+    //       await ConnectivityCheck.isServerup()) {
+    //     final remoteAllFolderWithSongsEither =
+    //         await musicRemoteDataSource.getAllFolderWithSongs(token: token);
+    //     final remoteAllFolderWithSongs = remoteAllFolderWithSongsEither.fold(
+    //       (error) => {},
+    //       (remoteSongs) => remoteSongs,
+    //     );
+
+    //     final localAllFolderWithSongsEither =
+    //         await musicLocalDataSource.getAllFolderWithSongs(token: token);
+    //     final locaAllFolderWithSongs = localAllFolderWithSongsEither.fold(
+    //       (error) => {},
+    //       (localSongs) => localSongs,
+    //     );
+
+    //     if (remoteAllFolderWithSongs.isNotEmpty) {
+    //       final Map<String, List<SongEntity>> mergedSongs = {};
+
+    //       //  if remote is in local then show remote
+    //       for (final remoteValues in remoteAllFolderWithSongs.values) {
+    //         for (var localValues in locaAllFolderWithSongs.values) {
+    //           if (remoteValues[0].id == localValues[0].id) {
+    //             mergedSongs[remoteValues[0].folder] = remoteValues;
+    //           } else {
+    //             mergedSongs[remoteValues[0].folder] = remoteValues;
+    //           }
+    //         }
+    //       }
+    //       print('mergedSongs: $mergedSongs');
+
+    //       return Right(mergedSongs);
+    //     } else {
+    //       return localAllFolderWithSongsEither;
+    //     }
+    //   } else {
+    //     final localAllFolderWithSongsEither =
+    //         await musicLocalDataSource.getAllFolderWithSongs(token: token);
+    //     return localAllFolderWithSongsEither;
+    //   }
     // } catch (e) {
-    //   return Left(ErrorModel(message: e.toString(), status: false));
+    //   return Left(
+    //     ErrorModel(
+    //       message: e.toString(),
+    //       status: false,
+    //     ),
+    //   );
     // }
   }
 
@@ -529,7 +599,6 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       final folders = await getAllFolderWithSongs(token: token);
       final albums = await getAllAlbumWithSongs(token: token);
       final artists = await getAllArtistWithSongs(token: token);
-      print('artists: $artists');
 
       return Right({
         'folders': folders.fold((l) => {}, (r) => r),

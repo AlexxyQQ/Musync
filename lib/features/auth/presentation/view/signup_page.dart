@@ -196,9 +196,7 @@ class _SignupPageState extends State<SignupPage> {
             child: BlocBuilder<AuthViewModel, AuthState>(
               builder: (blocBuilderContext, state) {
                 if (state.isLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return authLoading(mediaQuerySize, context);
                 }
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (state.isSignUp) {
@@ -222,6 +220,33 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Center authLoading(Size mediaQuerySize, BuildContext context) {
+    return Center(
+      child: Container(
+        height: mediaQuerySize.height * 0.2,
+        width: mediaQuerySize.width * 0.4,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text(
+              'Loading...',
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: KColors.whiteColor,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -252,138 +277,140 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Username
-          CTextFormFiled(
-            controller: _usernmaeController,
-            keyboardType: TextInputType.emailAddress,
-            hintText: 'Username',
-            labelText: 'Username',
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'USername is required';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 10),
-          // Email
-          CTextFormFiled(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            hintText: 'Email',
-            labelText: 'Email',
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'Email is required';
-              } else if (!RegExp(
-                r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$',
-              ).hasMatch(p0)) {
-                return 'Email is invalid';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 10),
-          //  Password
-          CPasswordFormField(
-            controller: _passwordController,
-            keyboardType: TextInputType.visiblePassword,
-            hintText: 'Password',
-            labelText: 'Password',
-            obscureText: true,
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'Password is required';
-              } else if (p0.length < 8) {
-                return 'Password must be at least 8 characters';
-              } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
-                return 'Password must contain at least one uppercase letter';
-              } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
-                return 'Password must contain at least one lowercase letter';
-              } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
-                return 'Password must contain at least one number';
-              } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
-                return 'Password must contain at least one special character';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 10),
-          // Confirm Password
-          CPasswordFormField(
-            controller: _cPasswordController,
-            keyboardType: TextInputType.visiblePassword,
-            hintText: 'Confirm Password',
-            labelText: 'Confirm Password',
-            obscureText: true,
-            validator: (p0) {
-              if (p0!.isEmpty) {
-                return 'Password is required';
-              } else if (p0.length < 8) {
-                return 'Password must be at least 8 characters';
-              } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
-                return 'Password must contain at least one uppercase letter';
-              } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
-                return 'Password must contain at least one lowercase letter';
-              } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
-                return 'Password must contain at least one number';
-              } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
-                return 'Password must contain at least one special character';
-              } else if (p0 != _passwordController.text) {
-                return 'Password does not match';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 40),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: KColors.accentColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 50,
-                vertical: 15,
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Username
+            CTextFormFiled(
+              controller: _usernmaeController,
+              keyboardType: TextInputType.emailAddress,
+              hintText: 'Username',
+              labelText: 'Username',
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Username is required';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            // Email
+            CTextFormFiled(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              hintText: 'Email',
+              labelText: 'Email',
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Email is required';
+                } else if (!RegExp(
+                  r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$',
+                ).hasMatch(p0)) {
+                  return 'Email is invalid';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            //  Password
+            CPasswordFormField(
+              controller: _passwordController,
+              keyboardType: TextInputType.visiblePassword,
+              hintText: 'Password',
+              labelText: 'Password',
+              obscureText: true,
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Password is required';
+                } else if (p0.length < 8) {
+                  return 'Password must be at least 8 characters';
+                } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
+                  return 'Password must contain at least one uppercase letter';
+                } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
+                  return 'Password must contain at least one lowercase letter';
+                } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
+                  return 'Password must contain at least one number';
+                } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
+                  return 'Password must contain at least one special character';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            // Confirm Password
+            CPasswordFormField(
+              controller: _cPasswordController,
+              keyboardType: TextInputType.visiblePassword,
+              hintText: 'Confirm Password',
+              labelText: 'Confirm Password',
+              obscureText: true,
+              validator: (p0) {
+                if (p0!.isEmpty) {
+                  return 'Password is required';
+                } else if (p0.length < 8) {
+                  return 'Password must be at least 8 characters';
+                } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(p0)) {
+                  return 'Password must contain at least one uppercase letter';
+                } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(p0)) {
+                  return 'Password must contain at least one lowercase letter';
+                } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(p0)) {
+                  return 'Password must contain at least one number';
+                } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(p0)) {
+                  return 'Password must contain at least one special character';
+                } else if (p0 != _passwordController.text) {
+                  return 'Password does not match';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: KColors.accentColor,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
+                  vertical: 15,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                minimumSize: Size(
+                  MediaQuery.of(context).size.width,
+                  50,
+                ),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              minimumSize: Size(
-                MediaQuery.of(context).size.width,
-                50,
+              onPressed: () {
+                _onPressed();
+              },
+              child: Text(
+                'SIGN UP',
+                style: GlobalConstants.textStyle(
+                  color: KColors.whiteColor,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            onPressed: () {
-              _onPressed();
-            },
-            child: Text(
-              'SIGN UP',
-              style: GlobalConstants.textStyle(
-                color: KColors.whiteColor,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                "By continuing, you’re agreeing to Musync Privacy policy and Terms of use.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      fontSize: 15,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? KColors.blackColor
+                          : KColors.whiteColor,
+                    ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Text(
-              "By continuing, you’re agreeing to Musync Privacy policy and Terms of use.",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    fontSize: 15,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? KColors.blackColor
-                        : KColors.whiteColor,
-                  ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

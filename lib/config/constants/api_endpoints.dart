@@ -1,5 +1,6 @@
 class ApiEndpoints {
-  static const String baseURL = "http://192.168.0.110:3001/api";
+  static const String baseURL = "http://192.168.1.74:3001/api";
+  static const String baseImageUrl = 'http://192.168.1.74:3001/';
   static const Map<String, dynamic> defaultHeaders = {
     'apisecret': "Apple",
     'Accept': 'application/json',

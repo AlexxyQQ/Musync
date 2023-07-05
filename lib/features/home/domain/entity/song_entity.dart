@@ -1,8 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-class SongEntity {
+import 'package:dartz/dartz.dart';
+import 'package:musync/config/constants/api_endpoints.dart';
+
+class SongEntity extends Equatable {
   final int id;
 
   final String data;
@@ -240,81 +244,14 @@ class SongEntity {
     return 'SongEntity(id: $id, data: $data, serverUrl: $serverUrl, uri: $uri, displayName: $displayName, displayNameWOExt: $displayNameWOExt, size: $size, album: $album, albumId: $albumId, artist: $artist, artistId: $artistId, genre: $genre, genreId: $genreId, bookmark: $bookmark, composer: $composer, dateAdded: $dateAdded, dateModified: $dateModified, duration: $duration, title: $title, track: $track, fileExtension: $fileExtension, isAlarm: $isAlarm, isAudioBook: $isAudioBook, isMusic: $isMusic, isNotification: $isNotification, isPodcast: $isPodcast, isRingtone: $isRingtone)';
   }
 
-  @override
-  bool operator ==(covariant SongEntity other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.data == data &&
-        other.serverUrl == serverUrl &&
-        other.uri == uri &&
-        other.displayName == displayName &&
-        other.displayNameWOExt == displayNameWOExt &&
-        other.size == size &&
-        other.album == album &&
-        other.albumId == albumId &&
-        other.artist == artist &&
-        other.artistId == artistId &&
-        other.genre == genre &&
-        other.genreId == genreId &&
-        other.bookmark == bookmark &&
-        other.composer == composer &&
-        other.dateAdded == dateAdded &&
-        other.dateModified == dateModified &&
-        other.duration == duration &&
-        other.title == title &&
-        other.track == track &&
-        other.fileExtension == fileExtension &&
-        other.isAlarm == isAlarm &&
-        other.isAudioBook == isAudioBook &&
-        other.isMusic == isMusic &&
-        other.isNotification == isNotification &&
-        other.isPodcast == isPodcast &&
-        other.albumArt == albumArt &&
-        other.albumArtUrl == albumArtUrl &&
-        other.isRingtone == isRingtone;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        data.hashCode ^
-        serverUrl.hashCode ^
-        uri.hashCode ^
-        displayName.hashCode ^
-        displayNameWOExt.hashCode ^
-        size.hashCode ^
-        album.hashCode ^
-        albumId.hashCode ^
-        artist.hashCode ^
-        artistId.hashCode ^
-        genre.hashCode ^
-        genreId.hashCode ^
-        bookmark.hashCode ^
-        composer.hashCode ^
-        dateAdded.hashCode ^
-        dateModified.hashCode ^
-        duration.hashCode ^
-        title.hashCode ^
-        track.hashCode ^
-        fileExtension.hashCode ^
-        isAlarm.hashCode ^
-        isAudioBook.hashCode ^
-        isMusic.hashCode ^
-        isNotification.hashCode ^
-        isPodcast.hashCode ^
-        albumArt.hashCode ^
-        albumArtUrl.hashCode ^
-        isRingtone.hashCode;
-  }
-
   factory SongEntity.fromApiMap(Map<String, dynamic> map) {
     return SongEntity(
       id: map['id'] as int,
       data: map['data'] as String,
       albumArt: map['albumArt'] as String,
-      albumArtUrl:
-          map['albumArtUrl'] != null ? map['albumArtUrl'] as String : null,
+      albumArtUrl: map['albumArtUrl'] != null
+          ? "${ApiEndpoints.baseImageUrl}${map['albumArtUrl']}"
+          : null,
       serverUrl: map['serverUrl'] as String,
       uri: map['uri'] != null ? map['uri'] as String : null,
       displayName: map['displayName'] as String,
@@ -345,4 +282,38 @@ class SongEntity {
       isRingtone: map['isRingtone'] as bool,
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        id,
+        data,
+        serverUrl,
+        uri,
+        displayName,
+        displayNameWOExt,
+        size,
+        album,
+        albumId,
+        artist,
+        artistId,
+        genre,
+        genreId,
+        bookmark,
+        composer,
+        dateAdded,
+        dateModified,
+        duration,
+        title,
+        track,
+        fileExtension,
+        isAlarm,
+        isAudioBook,
+        isMusic,
+        isNotification,
+        isPodcast,
+        isRingtone,
+        albumArt,
+        albumArtUrl,
+      ];
 }

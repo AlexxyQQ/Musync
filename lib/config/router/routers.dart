@@ -6,9 +6,11 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav.dart';
 import 'package:musync/features/nowplaying/presentation/view/nowplaying.dart';
 import 'package:musync/features/onboarding/presentation/view/on_boarding_page.dart';
+import 'package:musync/features/splash/presentation/view/splashscreen.dart';
 
 class AppRoutes {
   static const String initialRoute = '/';
+  static const String splashRoute = '/splash';
   static const String loginRoute = '/login';
   static const String signupRoute = '/signup';
   static const String homeRoute = '/home';
@@ -19,6 +21,7 @@ class AppRoutes {
 
   static final Map<String, Widget Function(BuildContext)> loggedinRoute = {
     initialRoute: (context) => const OnBoardingPage(),
+    splashRoute: (context) => const MusyncSplash(),
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
@@ -36,6 +39,7 @@ class AppRoutes {
         ),
   };
   static final Map<String, Widget Function(BuildContext)> loggedoutRoute = {
+    splashRoute: (context) => const MusyncSplash(),
     initialRoute: (context) => const OnBoardingPage(),
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
