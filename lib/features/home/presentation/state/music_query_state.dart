@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
@@ -23,6 +24,8 @@ class MusicQueryState {
   final String? error;
   final bool isLoading;
   final bool isUploading;
+  final bool inLibrary;
+  final List<Widget> pages = [];
   MusicQueryState({
     required this.albumWithSongs,
     required this.albums,
@@ -39,6 +42,7 @@ class MusicQueryState {
     this.error,
     required this.isLoading,
     required this.isUploading,
+    required this.inLibrary,
   });
 
   factory MusicQueryState.initial() {
@@ -58,6 +62,7 @@ class MusicQueryState {
       error: null,
       isLoading: false,
       isUploading: false,
+      inLibrary: false,
     );
   }
 
@@ -77,6 +82,7 @@ class MusicQueryState {
     String? error,
     bool? isLoading,
     bool? isUploading,
+    bool? inLibrary,
   }) {
     return MusicQueryState(
       albumWithSongs: albumWithSongs ?? this.albumWithSongs,
@@ -94,6 +100,7 @@ class MusicQueryState {
       error: error ?? this.error,
       isLoading: isLoading ?? this.isLoading,
       isUploading: isUploading ?? this.isUploading,
+      inLibrary: inLibrary ?? this.inLibrary,
     );
   }
 
@@ -114,6 +121,7 @@ class MusicQueryState {
       'error': error,
       'isLoading': isLoading,
       'isUploading': isUploading,
+      'inLibrary': inLibrary,
     };
   }
 
@@ -142,6 +150,7 @@ class MusicQueryState {
         other.addAllSongs == addAllSongs &&
         other.error == error &&
         other.isLoading == isLoading &&
+        other.inLibrary == inLibrary &&
         other.isUploading == isUploading;
   }
 
@@ -161,6 +170,7 @@ class MusicQueryState {
         addAllSongs.hashCode ^
         error.hashCode ^
         isLoading.hashCode ^
+        inLibrary.hashCode ^
         isUploading.hashCode;
   }
 }

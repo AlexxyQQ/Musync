@@ -98,7 +98,8 @@ class HomeFolderSectionNormal extends StatelessWidget {
                                   height: double.infinity,
                                   child: Padding(
                                     padding: const EdgeInsets.all(4),
-                                    child: folderValue[0].albumArtUrl == null
+                                    child: folderValue[0].albumArtUrl == null ||
+                                            folderValue[0].albumArtUrl == ''
                                         ? QueryArtworkWidget(
                                             artworkBorder:
                                                 BorderRadius.circular(10),
@@ -119,7 +120,7 @@ class HomeFolderSectionNormal extends StatelessWidget {
                                             },
                                           )
                                         : QueryArtworkFromApi(
-                                          index:0,
+                                            index: 0,
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             data: folderValue,

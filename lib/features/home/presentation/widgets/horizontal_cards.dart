@@ -93,7 +93,8 @@ class HomeOtherSection extends StatelessWidget {
                                 child: CircleAvatar(
                                   radius: cardWidth / 2,
                                   backgroundColor: KColors.transparentColor,
-                                  child: dataValue[0].albumArtUrl == null
+                                  child: dataValue[0].albumArtUrl == null ||
+                                          dataValue[0].albumArtUrl == ''
                                       ? QueryArtworkWidget(
                                           artworkHeight: cardHeight,
                                           artworkWidth: cardWidth,
@@ -131,7 +132,8 @@ class HomeOtherSection extends StatelessWidget {
                                 ),
                                 width: cardWidth,
                                 height: cardHeight - 50,
-                                child: dataValue[0].albumArtUrl == null
+                                child: dataValue[0].albumArtUrl == null ||
+                                        dataValue[0].albumArtUrl == ''
                                     ? QueryArtworkWidget(
                                         artworkHeight: cardHeight,
                                         artworkWidth: cardWidth,

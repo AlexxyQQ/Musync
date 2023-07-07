@@ -572,14 +572,14 @@ class _LoginPageState extends State<LoginPage> {
                           context: context,
                         );
                         // ! This is for testing purpose uncomment it later after testing
-                        // Navigator.pushNamedAndRemoveUntil(
-                        //   context,
-                        //   AppRoutes.homeRoute,
-                        //   (route) => false,
-                        //   arguments: {
-                        //     "selectedIndex": 0,
-                        //   },
-                        // );
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.homeRoute,
+                          (route) => false,
+                          arguments: {
+                            "selectedIndex": 0,
+                          },
+                        );
                       });
                     }
                     return const SizedBox.shrink();

@@ -9,7 +9,6 @@ import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
-import 'package:musync/features/splash/presentation/viewmodel/splash_view_model.dart';
 
 class KDrawer extends StatefulWidget {
   const KDrawer({
@@ -26,18 +25,19 @@ class KDrawer extends StatefulWidget {
 }
 
 class _KDrawerState extends State<KDrawer> {
-  late MusicQueryViewModel musicQueryCubit;
+  late MusicQueryViewModel musicQueryBlocProvider;
+  late AuthViewModel authenticationBlocProvider;
 
   @override
   void initState() {
     super.initState();
-    musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
+    musicQueryBlocProvider = BlocProvider.of<MusicQueryViewModel>(context);
+    authenticationBlocProvider = BlocProvider.of<AuthViewModel>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final authenticationBloc = BlocProvider.of<AuthViewModel>(context);
-    final loggedUser = authenticationBloc.state.loggedUser;
+    final loggedUser = authenticationBlocProvider.state.loggedUser;
     return Drawer(
       child: Container(
         color: widget.isDark ? KColors.blackColor : KColors.whiteColor,
@@ -158,7 +158,7 @@ class _KDrawerState extends State<KDrawer> {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     onTap: () {
-                      _logout(authenticationBloc);
+                      _logout(authenticationBlocProvider);
                     },
                   ),
                 ],
@@ -176,7 +176,7 @@ class _KDrawerState extends State<KDrawer> {
       key: 'token',
       defaultValue: '',
     );
-    await musicQueryCubit.addAllSongs(token: token);
+    await musicQueryBlocProvider.addAllSongs(token: token);
     widget.syncTrue();
   }
 

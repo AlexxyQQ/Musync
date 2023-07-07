@@ -124,7 +124,8 @@ class _ListofSongsState extends State<ListofSongs> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: widget.songs[index].albumArtUrl == null
+                        child: widget.songs[index].albumArtUrl == null ||
+                                widget.songs[index].albumArtUrl == ''
                             ? QueryArtworkWidget(
                                 id: widget.songs[index].id,
                                 nullArtworkWidget: const Icon(
