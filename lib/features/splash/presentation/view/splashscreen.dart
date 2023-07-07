@@ -5,7 +5,7 @@ import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/config/themes/app_theme.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
-import 'package:musync/features/splash/presentation/viewmodel/splash_view_model.dart';
+import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
 class MusyncSplash extends StatefulWidget {
   const MusyncSplash({super.key});
@@ -17,14 +17,14 @@ class MusyncSplash extends StatefulWidget {
 class _MusyncSplashState extends State<MusyncSplash> {
   @override
   void initState() {
-    BlocProvider.of<SplashViewModel>(context).initialLogin();
+    BlocProvider.of<AuthViewModel>(context).initialLogin();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<SplashViewModel, AuthState>(
+      body: BlocBuilder<AuthViewModel, AuthState>(
         builder: (blocContext, state) {
           if (state.isLoading) {
             return const LoadingScreen();
@@ -36,11 +36,6 @@ class _MusyncSplashState extends State<MusyncSplash> {
                   context: blocContext,
                 );
               });
-              return const Scaffold(
-                body: Center(
-                  child: Text('404'),
-                ),
-              );
             }
             if (state.isFirstTime) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -58,23 +53,13 @@ class _MusyncSplashState extends State<MusyncSplash> {
                   context: blocContext,
                 );
               });
-              return const Scaffold(
-                body: Center(
-                  child: Text('Home Page'),
-                ),
-              );
             }
 
-            return const Scaffold(
-              body: Center(
-                child: Text(''),
-              ),
-            );
             // ! This is the original code
-            // return SplashMaterial(
-            //   state: state,
-            //   blocContext: blocContext,
-            // );
+            return SplashMaterial(
+              state: state,
+              blocContext: blocContext,
+            );
           }
         },
       ),

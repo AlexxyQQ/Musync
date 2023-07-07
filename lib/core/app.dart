@@ -7,7 +7,6 @@ import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 import 'package:musync/features/splash/domain/use_case/splash_use_case.dart';
 import 'package:musync/features/splash/presentation/view/splashscreen.dart';
-import 'package:musync/features/splash/presentation/viewmodel/splash_view_model.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,10 +18,6 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthViewModel(
             authUseCase: GetIt.instance<AuthUseCase>(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => SplashViewModel(
             splashUseCase: GetIt.instance<SplashUseCase>(),
           ),
         ),
