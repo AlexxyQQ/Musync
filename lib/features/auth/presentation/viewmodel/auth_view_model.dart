@@ -79,7 +79,7 @@ class AuthViewModel extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
-    emit(state.copyWith(isLoading: true, authError: null));
+    emit(state.copyWith(isLoading: true, authError: null, isError: null));
 
     final data = await authUseCase.login(
       email: email,

@@ -128,7 +128,8 @@ class NowPlayingPhone extends StatelessWidget {
                               : KColors.offBlackColor,
                         ),
                         // Add Album Art Here
-                        child: songs[index].albumArtUrl == null
+                        child: songs[index].albumArtUrl == null ||
+                                songs[index].albumArtUrl == ''
                             ? QueryArtworkWidget(
                                 id: songs[index].id,
                                 nullArtworkWidget: const Icon(

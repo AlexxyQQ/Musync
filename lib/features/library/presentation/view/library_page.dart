@@ -394,7 +394,8 @@ class ListViewCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: item["songs"][randomInt].albumArtUrl == null
+                    child: item["songs"][randomInt].albumArtUrl == null ||
+                            item["songs"][randomInt].albumArtUrl == ""
                         ? QueryArtworkWidget(
                             id: item["songs"][randomInt].id,
                             nullArtworkWidget: const Icon(
@@ -417,7 +418,8 @@ class ListViewCard extends StatelessWidget {
                 : SizedBox(
                     height: 80,
                     width: 80,
-                    child: item["songs"][randomInt].albumArtUrl == null
+                    child: item["songs"][randomInt].albumArtUrl == null ||
+                            item["songs"][randomInt].albumArtUrl == ""
                         ? QueryArtworkWidget(
                             id: item["songs"][randomInt].id,
                             nullArtworkWidget: const Icon(

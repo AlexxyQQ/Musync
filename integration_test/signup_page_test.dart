@@ -10,6 +10,7 @@ import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
 import '../test/features/auth/presentation/viewmodel/login_unit_test.mocks.dart';
+import '../test/features/splash/presentation/viewmodel/splash_view_model_test.mocks.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +43,7 @@ void main() {
             BlocProvider<AuthViewModel>(
               create: (context) => AuthViewModel(
                 authUseCase: mockAuthUseCase,
+                splashUseCase: MockSplashUseCase(),
               ),
             ),
           ],
@@ -126,6 +128,7 @@ void main() {
             BlocProvider<AuthViewModel>(
               create: (context) => AuthViewModel(
                 authUseCase: mockAuthUseCase,
+                splashUseCase: MockSplashUseCase(),
               ),
             ),
           ],
@@ -209,6 +212,7 @@ void main() {
             BlocProvider<AuthViewModel>(
               create: (context) => AuthViewModel(
                 authUseCase: mockAuthUseCase,
+                splashUseCase: MockSplashUseCase(),
               ),
             ),
           ],
@@ -314,6 +318,7 @@ void main() {
             BlocProvider<AuthViewModel>(
               create: (context) => AuthViewModel(
                 authUseCase: mockAuthUseCase,
+                splashUseCase: MockSplashUseCase(),
               ),
             ),
           ],

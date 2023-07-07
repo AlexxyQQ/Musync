@@ -8,8 +8,9 @@ import 'package:musync/config/router/routers.dart';
 import 'package:musync/config/themes/app_theme.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
-import 'package:musync/features/splash/presentation/viewmodel/splash_view_model.dart';
+import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
+import '../test/features/auth/presentation/viewmodel/login_unit_test.mocks.dart';
 import '../test/features/splash/presentation/viewmodel/splash_view_model_test.mocks.dart';
 
 void main() {
@@ -43,9 +44,10 @@ void main() {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider<SplashViewModel>(
-              create: (context) => SplashViewModel(
+            BlocProvider<AuthViewModel>(
+              create: (context) => AuthViewModel(
                 splashUseCase: mockSplashUseCase,
+                authUseCase: MockAuthUseCase(),
               ),
             ),
           ],
@@ -75,9 +77,10 @@ void main() {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider<SplashViewModel>(
-              create: (context) => SplashViewModel(
+            BlocProvider<AuthViewModel>(
+              create: (context) => AuthViewModel(
                 splashUseCase: mockSplashUseCase,
+                authUseCase: MockAuthUseCase(),
               ),
             ),
           ],
@@ -109,9 +112,10 @@ void main() {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
-            BlocProvider<SplashViewModel>(
-              create: (context) => SplashViewModel(
+            BlocProvider<AuthViewModel>(
+              create: (context) => AuthViewModel(
                 splashUseCase: mockSplashUseCase,
+                authUseCase: MockAuthUseCase(),
               ),
             ),
           ],
