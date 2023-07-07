@@ -3,8 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/features/home/presentation/view/home.dart';
-import 'package:musync/features/library/presentation/view/library_page.dart';
 
 class LastPage extends StatelessWidget {
   const LastPage({super.key, required this.mediaQuerySize});

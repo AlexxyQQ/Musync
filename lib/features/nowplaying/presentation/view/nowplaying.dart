@@ -318,7 +318,8 @@ class NowPlayingTablet extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.12,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1),
+                        horizontal: MediaQuery.of(context).size.width * 0.1,
+                      ),
                       child: Center(
                         child: Column(
                           children: [

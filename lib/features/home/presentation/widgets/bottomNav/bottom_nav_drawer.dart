@@ -5,7 +5,6 @@ import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';

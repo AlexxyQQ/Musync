@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
-import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongListView extends StatelessWidget {
@@ -108,7 +106,7 @@ class _ListofSongsState extends State<ListofSongs> {
             },
             child: Stack(
               children: [
-                show ? const PlaylistList() : SizedBox(),
+                show ? const PlaylistList() : const SizedBox(),
                 Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -242,7 +240,7 @@ class SecondAppBar extends StatelessWidget {
             // Creator of Playlist or (Path of folder)
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 180),
-              child: SizedBox(
+              child: const SizedBox(
                 width: 150,
                 child: Text(
                   ' • Mobile',
@@ -260,7 +258,7 @@ class SecondAppBar extends StatelessWidget {
             const Spacer(),
             // Shuffle all songs
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.shuffle_rounded,
                 // color: isDark ? whiteColor : blackColor,
               ),
@@ -276,7 +274,7 @@ class SecondAppBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
               ),
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.play_arrow_rounded,
                   // color: isDark ? whiteColor : blackColor,
                 ),
@@ -330,7 +328,7 @@ class AppBar extends StatelessWidget {
       centerTitle: true,
       // Back button
       leading: IconButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_back_rounded,
           // color: isDark ? whiteColor : blackColor,
         ),
@@ -352,7 +350,7 @@ class AppBar extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.sort_rounded,
             // color: isDark ? whiteColor : blackColor,
           ),
@@ -389,7 +387,7 @@ class _PlaylistListState extends State<PlaylistList> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      builder: (context, controller) => Container(
+      builder: (context, controller) => SizedBox(
         height: 500,
         width: double.infinity,
         child: ListView.builder(

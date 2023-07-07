@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
-import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_local_data_source.dart';
 import 'package:musync/features/home/data/data_source/music_remote_data_source.dart';

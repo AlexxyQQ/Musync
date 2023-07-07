@@ -6,7 +6,6 @@ import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/features/library/presentation/widgets/library_appbar.dart';
 import 'package:musync/features/library/presentation/widgets/song_listview.dart';
-import 'package:musync/config/router/routers.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -184,11 +183,11 @@ class ListViewCard extends StatelessWidget {
     this.isArtist = false,
   });
 
-  final item;
+  final dynamic item;
   final Size mqSize;
   final String folderName;
   final bool isDark;
-  final numSongs;
+  final int numSongs;
   final bool isCircular;
   final bool isArtist;
 

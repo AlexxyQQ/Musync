@@ -16,8 +16,8 @@ class HomeFolderSectionNormal extends StatelessWidget {
   });
   final bool isDark;
   final Size mqSize;
-  final isTablet;
-  final isPortrait;
+  final bool isTablet;
+  final bool isPortrait;
   final bool isLoading;
   final Map<String, List<dynamic>> folders;
 

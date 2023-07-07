@@ -1,9 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
-import 'package:dartz/dartz.dart';
 import 'package:musync/config/constants/api_endpoints.dart';
 
 class SongEntity extends Equatable {
@@ -65,7 +62,7 @@ class SongEntity extends Equatable {
 
   final String? albumArtUrl;
 
-  SongEntity({
+  const SongEntity({
     required this.id,
     required this.data,
     required this.uri,
@@ -284,7 +281,6 @@ class SongEntity extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         id,
         data,
