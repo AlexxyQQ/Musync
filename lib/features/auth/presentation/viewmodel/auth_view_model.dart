@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/domain/use_case/auth_use_case.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
@@ -15,11 +17,14 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> initialLogin() async {
     emit(state.copyWith(isLoading: true, authError: null));
     final data = await splashUseCase.initialLogin();
+
+    final goHomeHive = await GetIt.instance<HiveQueries>()
+        .getValue(boxName: 'settings', key: 'goHome', defaultValue: false);
     data.fold(
       (l) => emit(
         state.copyWith(
           isFirstTime: false,
-          goHome: false,
+          goHome: goHomeHive,
           isError: true,
           isLoading: false,
           authError: l.message,
