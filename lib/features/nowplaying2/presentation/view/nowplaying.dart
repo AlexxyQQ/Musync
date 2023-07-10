@@ -174,8 +174,9 @@ class NowPlayingPhone extends StatelessWidget {
                           Text(
                             state.currentSong.title,
                             softWrap: true,
+                            overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
-                            maxLines: 2,
+                            maxLines: 1,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Text(

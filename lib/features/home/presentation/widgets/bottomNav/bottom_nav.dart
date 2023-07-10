@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
@@ -36,8 +38,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Get selectedIndex from the router
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (ModalRoute.of(context)?.settings.arguments != null) {
-        print(
-            'Asses${ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>}');
         try {
           pages = (ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>)['pages'] as List<Widget>;
@@ -75,6 +75,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       ),
       body: BlocBuilder<MusicQueryViewModel, MusicQueryState>(
         builder: (context, state) {
+          log("crap: ${state.everything}");
           if (state.isLoading) {
             return PageView.builder(
               itemCount: pages.length,
@@ -105,6 +106,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
           } else if (state.everything.isNotEmpty) {
             final Map<String, Map<String, List<SongEntity>>> data =
                 state.everything;
+
+            if (state.onSearch) {
+              pages = [
+                HomePage(
+                  folders: data['folders']!,
+                  albums: data['albums']!,
+                  artists: data['artists']!,
+                  isLoading: state.isLoading,
+                ),
+                const LoadingScreen(),
+                LibraryPage(
+                  data: data,
+                ),
+              ];
+            }
 
             pages = [
               HomePage(

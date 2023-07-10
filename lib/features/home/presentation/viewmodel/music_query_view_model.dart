@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 
@@ -187,5 +190,68 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
         ),
       ),
     );
+  }
+
+  Future<void> filterSongSearch({required String query}) async {
+    emit(state.copyWith(isLoading: true));
+
+    final filteredFoldersWithSongs = <String, List<SongEntity>>{};
+    final filteredAlbumsWithSongs = <String, List<SongEntity>>{};
+    final filteredArtistWithSongs = <String, List<SongEntity>>{};
+
+    if (query.isNotEmpty && query != ' ') {
+      final foldersWithSongs = state.everything['folders']!;
+      final albumsWithSongs = state.everything['albums']!;
+      final artistWithSongs = state.everything['artists']!;
+
+      foldersWithSongs.forEach((key, value) {
+        final filterdKeys = key.split('/').last.toLowerCase().contains(
+              query.toLowerCase(),
+            );
+
+        if (filterdKeys) {
+          filteredFoldersWithSongs[key] = value;
+        }
+      });
+
+      albumsWithSongs.forEach((key, value) {
+        final filterdKeys = key.toLowerCase().contains(
+              query.toLowerCase(),
+            );
+
+        if (filterdKeys) {
+          filteredAlbumsWithSongs[key] = value;
+        }
+      });
+
+      artistWithSongs.forEach((key, value) {
+        final filterdKeys = key.toLowerCase().contains(
+              query.toLowerCase(),
+            );
+
+        if (filterdKeys) {
+          filteredArtistWithSongs[key] = value;
+        }
+      });
+    } else {
+      filteredFoldersWithSongs.addAll(state.folderWithSongs);
+      filteredAlbumsWithSongs.addAll(state.albumWithSongs);
+      filteredArtistWithSongs.addAll(state.artistWithSongs);
+    }
+
+    emit(
+      state.copyWith(
+        isLoading: false,
+        filteredEverything: {
+          'folders': filteredFoldersWithSongs,
+          'albums': filteredAlbumsWithSongs,
+          'artists': filteredArtistWithSongs,
+        },
+      ),
+    );
+  }
+
+  Future<void> toggleOnSearch() async {
+    emit(state.copyWith(onSearch: !state.onSearch));
   }
 }

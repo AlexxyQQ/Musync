@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_appbar.dart';
 import 'package:musync/features/library/presentation/widgets/library_appbar.dart';
 import 'package:musync/features/library/presentation/widgets/song_listview.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class LibraryPage extends StatefulWidget {
-  const LibraryPage({super.key, required this.data});
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key, required this.data});
 
   final Map<String, dynamic> data;
 
   @override
-  State<LibraryPage> createState() => _LibraryPageState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _LibraryPageState extends State<LibraryPage> {
+class _SearchScreenState extends State<SearchScreen> {
   changeSort(String newSortBy) {
     setState(() {
       sortBy = newSortBy;
@@ -58,16 +59,6 @@ class _LibraryPageState extends State<LibraryPage> {
           "name": key,
           "numSongs": value.length,
           "songs": value
-        });
-      });
-    } else if (sortBy == 'Songs') {
-      data['songs'].forEach((key, value) {
-        print(' valuesss: $value ');
-        items.add({
-          "type": "Song",
-          "name": key,
-          "songs": value,
-          'numSongs': value.length
         });
       });
     } else {
@@ -155,11 +146,6 @@ class _LibraryPageState extends State<LibraryPage> {
                         numSongs: numSongs,
                         isCircular: true,
                         isArtist: true,
-                      );
-                    } else if (item['type'] == 'Song') {
-                      return ListofSongs(
-                        songs: item['songs'],
-                        isDark: isDark,
                       );
                     } else {
                       final albumName = item["name"];

@@ -20,6 +20,8 @@ class MusicQueryState {
   final List<PlaylistEntity> playlists;
   final bool createPlaylist;
   final bool addAllSongs;
+  final bool onSearch;
+  final Map<String, Map<String, List<SongEntity>>> filteredEverything;
 
   final String? error;
   final bool isLoading;
@@ -28,6 +30,7 @@ class MusicQueryState {
   final List<Widget> pages = [];
   MusicQueryState({
     required this.albumWithSongs,
+    required this.onSearch,
     required this.albums,
     required this.artistWithSongs,
     required this.folderWithSongs,
@@ -43,6 +46,7 @@ class MusicQueryState {
     required this.isLoading,
     required this.isUploading,
     required this.inLibrary,
+    required this.filteredEverything,
   });
 
   factory MusicQueryState.initial() {
@@ -63,6 +67,8 @@ class MusicQueryState {
       isLoading: false,
       isUploading: false,
       inLibrary: false,
+      onSearch: false,
+      filteredEverything: {},
     );
   }
 
@@ -83,6 +89,8 @@ class MusicQueryState {
     bool? isLoading,
     bool? isUploading,
     bool? inLibrary,
+    bool? onSearch,
+    Map<String, Map<String, List<SongEntity>>>? filteredEverything,
   }) {
     return MusicQueryState(
       albumWithSongs: albumWithSongs ?? this.albumWithSongs,
@@ -101,6 +109,8 @@ class MusicQueryState {
       isLoading: isLoading ?? this.isLoading,
       isUploading: isUploading ?? this.isUploading,
       inLibrary: inLibrary ?? this.inLibrary,
+      onSearch: onSearch ?? this.onSearch,
+      filteredEverything: filteredEverything ?? this.filteredEverything,
     );
   }
 
@@ -122,6 +132,8 @@ class MusicQueryState {
       'isLoading': isLoading,
       'isUploading': isUploading,
       'inLibrary': inLibrary,
+      'onSearch': onSearch,
+      'filteredEverything': filteredEverything,
     };
   }
 
@@ -151,6 +163,8 @@ class MusicQueryState {
         other.error == error &&
         other.isLoading == isLoading &&
         other.inLibrary == inLibrary &&
+        other.onSearch == onSearch &&
+        mapEquals(other.filteredEverything, filteredEverything) &&
         other.isUploading == isUploading;
   }
 
@@ -171,6 +185,8 @@ class MusicQueryState {
         error.hashCode ^
         isLoading.hashCode ^
         inLibrary.hashCode ^
+        filteredEverything.hashCode ^
+        onSearch.hashCode ^
         isUploading.hashCode;
   }
 }
