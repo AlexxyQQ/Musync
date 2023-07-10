@@ -10,7 +10,9 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
   final NowPlayingUseCase nowPlayingUseCase;
   NowPlayingViewModel(
     this.nowPlayingUseCase,
-  ) : super(NowPlayingState.initial());
+  ) : super(NowPlayingState.initial()) {
+    init();
+  }
 
   // Init
   Future<void> init() async {

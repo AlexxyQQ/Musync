@@ -142,8 +142,8 @@ class MoreControlls extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {},
-            child: Row(
-              children: const [
+            child: const Row(
+              children: [
                 Icon(
                   Icons.phone_android_rounded,
                   color: Colors.amber,
@@ -195,7 +195,7 @@ class DurationSlider extends StatefulWidget {
 
   const DurationSlider({
     Key? key,
-    // required this.audioPlayer,
+    required this.audioPlayer,
     required this.height,
     this.duration = true,
     required this.activeColor,
@@ -204,7 +204,7 @@ class DurationSlider extends StatefulWidget {
     required this.inactiveColor,
   }) : super(key: key);
 
-  // final AudioPlayerController audioPlayer;
+  final AudioPlayer audioPlayer;
 
   @override
   State<DurationSlider> createState() => _DurationSliderState();
@@ -219,19 +219,22 @@ class _DurationSliderState extends State<DurationSlider> {
   @override
   void initState() {
     super.initState();
-    // _durationSubscription =
-    //     widget.audioPlayer.player.durationStream.listen((duration) {
-    //   setState(() {
-    //     _maxValue = duration?.inSeconds.toDouble() ?? 1.0;
-    //   });
-    // });
+    _durationSubscription =
+        widget.audioPlayer.durationStream.listen((duration) {
+      setState(() {
+        _maxValue = duration?.inSeconds.toDouble() ?? 1.0;
+      });
+    });
 
-    // _positionSubscription =
-    //     widget.audioPlayer.player.positionStream.listen((position) {
-    //   setState(() {
-    //     _sliderValue = position.inSeconds.toDouble();
-    //   });
-    // });
+    _positionSubscription =
+        widget.audioPlayer.positionStream.listen((position) {
+      setState(() {
+        _sliderValue = position.inSeconds.toDouble();
+        if (position == widget.audioPlayer.duration) {
+          context.read<NowPlayingViewModel>().next();
+        }
+      });
+    });
   }
 
   @override
@@ -279,8 +282,8 @@ class _DurationSliderState extends State<DurationSlider> {
                 _sliderValue = value;
               });
               final position = Duration(seconds: value.toInt());
-              // widget.audioPlayer.player.seek(position);
-              // widget.audioPlayer.player.play();
+              widget.audioPlayer.seek(position);
+              widget.audioPlayer.play();
             },
           ),
         ),

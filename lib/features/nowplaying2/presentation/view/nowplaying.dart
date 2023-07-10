@@ -201,16 +201,9 @@ class NowPlayingPhone extends StatelessWidget {
                   thumbRadius: 6,
                   overlayRadius: 20,
                   inactiveColor: KColors.greyColor,
+                  audioPlayer: state.audioPlayer,
                 ),
                 // Audio Controls
-                // BlocBuilder<NowPlayingViewModel, NowPlayingState>(
-                //   builder: (context, state) {
-                //     return AudioControlls(
-                //       audioController: state.audioPlayer,
-                //       processingState: state.audioPlayer.processingState,
-                //     );
-                //   },
-                // ),
                 const AudioControlls(),
                 // More Controls
                 MoreControlls(
@@ -364,28 +357,6 @@ class NowPlayingTablet extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Duration Slider
-                  // DurationSlider(
-                  //   height: 4,
-                  //   activeColor: isDark ? accentColor : blackColor,
-                  //   thumbRadius: 6,
-                  //   overlayRadius: 20,
-                  //   inactiveColor: greyColor,
-                  // ),
-                  // // Audio Controls
-                  // const AudioControlls(playing: true),
-                  // // More Controls
-                  // MoreControlls(
-                  //   bottomSheetCallback: () {
-                  //     showModalBottomSheet(
-                  //       isScrollControlled: true,
-                  //       context: context,
-                  //       useSafeArea: true,
-                  //       enableDrag: true,
-                  //       builder: (context) => const QueueView(),
-                  //     );
-                  //   },
-                  // )
                 ],
               ),
             ),
