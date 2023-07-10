@@ -98,6 +98,6 @@ class NowPlayingState {
 
   @override
   String toString() {
-    return 'NowPlayingState(audioPlayer: $audioPlayer, isLoading: $isLoading, isPlaying: $isPlaying, isPaused: $isPaused, isStopped: $isStopped, errorMessage: $errorMessage, currentIndex: $currentIndex, isShuffle: $isShuffle, isRepaeatOne: $isRepeatOne, isRepeatAll: $isRepeatAll, position: $position)';
+    return 'NowPlayingState(audioPlayer: $audioPlayer, isLoading: $isLoading, isPlaying: $isPlaying, isPaused: $isPaused, isStopped: $isStopped, errorMessage: $errorMessage, currentIndex: $currentIndex, isShuffle: $isShuffle, isRepaeatOne: $isRepeatOne, isRepeatAll: $isRepeatAll, position: $position, currentSong: $currentSong)';
   }
 }
