@@ -24,11 +24,32 @@ class _BottomNavBarState extends State<BottomNavBar> {
   late PageController _pageController;
   late int selectedIndex = 0;
   bool sync = false;
-  List<Widget> pages = [];
+  var pages = [
+    const HomePageShimmer(),
+    const LoadingScreen(),
+    const LoadingScreen(),
+  ];
 
   @override
   void initState() {
     super.initState();
+    // Get selectedIndex from the router
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (ModalRoute.of(context)?.settings.arguments != null) {
+        print(
+            'Asses${ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>}');
+        try {
+          pages = (ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>)['pages'] as List<Widget>;
+        } catch (e) {}
+        try {
+          selectedIndex = (ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>)['selectedIndex'] as int;
+          _pageController = PageController(initialPage: selectedIndex);
+        } catch (e) {}
+      }
+    });
+
     var musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
     musicQueryCubit.getEverything();
   }
@@ -54,7 +75,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       ),
       body: BlocBuilder<MusicQueryViewModel, MusicQueryState>(
         builder: (context, state) {
-          if (pages.isNotEmpty) {
+          if (state.isLoading) {
             return PageView.builder(
               itemCount: pages.length,
               controller: _pageController,
@@ -63,13 +84,24 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 return pages[index];
               },
             );
-          } else if (state.isLoading) {
-            return const HomePageShimmer();
-          } else if (state.error != null) {
+          }
+          if (state.error != null) {
+            pages = [
+              const HomePageShimmer(),
+              const LoadingScreen(),
+              const LoadingScreen(),
+            ];
             WidgetsBinding.instance.addPostFrameCallback((_) {
               kShowSnackBar(state.error!, context: context);
             });
-            return const LoadingScreen();
+            return PageView.builder(
+              itemCount: pages.length,
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return pages[index];
+              },
+            );
           } else if (state.everything.isNotEmpty) {
             final Map<String, Map<String, List<SongEntity>>> data =
                 state.everything;
@@ -82,7 +114,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 isLoading: state.isLoading,
               ),
               const LoadingScreen(),
-              LibraryPage(data: data)
+              LibraryPage(
+                data: data,
+              ),
             ];
             return PageView.builder(
               itemCount: pages.length,
@@ -93,7 +127,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
               },
             );
           } else {
-            return const MusicNotFound();
+            pages = [
+              const MusicNotFound(),
+              const MusicNotFound(),
+              const MusicNotFound(),
+            ];
+            return PageView.builder(
+              itemCount: pages.length,
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return pages[index];
+              },
+            );
           }
         },
       ),
@@ -106,7 +152,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
             selectedIndex = index;
             if (index == 2) {
               try {
-                // pages[2] = LibraryPage(data: data);
+                // pages[2] = LibraryPage(
+                //   data: data,
+                // );
               } catch (e) {
                 debugPrint(e.toString());
               }

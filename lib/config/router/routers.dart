@@ -4,7 +4,7 @@ import 'package:musync/features/auth/presentation/view/login_page.dart';
 import 'package:musync/features/auth/presentation/view/signup_page.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav.dart';
-import 'package:musync/features/nowplaying/presentation/view/nowplaying.dart';
+import 'package:musync/features/nowplaying2/presentation/view/nowplaying.dart';
 import 'package:musync/features/onboarding/presentation/view/on_boarding_page.dart';
 import 'package:musync/features/splash/presentation/view/splashscreen.dart';
 
@@ -66,6 +66,8 @@ class AppRoutes {
   }) {
     if (initialRoute == '/') {
       if (MediaQuery.of(context).size.width >= 900) {
+        print('isFirstTime: $isFirstTime');
+        print('goHome: $goHome');
         return [
           MaterialPageRoute(
             builder: (context) {

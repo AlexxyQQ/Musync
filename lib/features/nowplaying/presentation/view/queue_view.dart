@@ -1,5 +1,3 @@
-// Queue View
-
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
