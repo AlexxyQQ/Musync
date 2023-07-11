@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:musync/features/auth/presentation/widgets/main_auth_page.dart';
 import 'package:musync/features/auth/presentation/view/login_page.dart';
@@ -10,7 +12,6 @@ import 'package:musync/features/splash/presentation/view/splashscreen.dart';
 
 class AppRoutes {
   static const String initialRoute = '/';
-  static const String splashRoute = '/splash';
   static const String loginRoute = '/login';
   static const String signupRoute = '/signup';
   static const String homeRoute = '/home';
@@ -20,8 +21,8 @@ class AppRoutes {
   static const String nowPlaying = '/nowPlaying';
 
   static final Map<String, Widget Function(BuildContext)> loggedinRoute = {
-    initialRoute: (context) => const OnBoardingPage(),
-    splashRoute: (context) => const MusyncSplash(),
+    initialRoute: (context) => const MusyncSplash(),
+    onBoardingRoute: (context) => const OnBoardingPage(),
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
@@ -39,8 +40,8 @@ class AppRoutes {
         ),
   };
   static final Map<String, Widget Function(BuildContext)> loggedoutRoute = {
-    splashRoute: (context) => const MusyncSplash(),
-    initialRoute: (context) => const OnBoardingPage(),
+    onBoardingRoute: (context) => const OnBoardingPage(),
+    initialRoute: (context) => const MusyncSplash(),
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
@@ -66,8 +67,9 @@ class AppRoutes {
   }) {
     if (initialRoute == '/') {
       if (MediaQuery.of(context).size.width >= 900) {
-        print('isFirstTime: $isFirstTime');
-        print('goHome: $goHome');
+        log('assaws');
+        print('isFirstTimesss: $isFirstTime');
+        print('goHomess: $goHome');
         return [
           MaterialPageRoute(
             builder: (context) {

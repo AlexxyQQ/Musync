@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
@@ -17,14 +19,18 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> initialLogin() async {
     emit(state.copyWith(isLoading: true, authError: null));
     final data = await splashUseCase.initialLogin();
-
     final goHomeHive = await GetIt.instance<HiveQueries>()
         .getValue(boxName: 'settings', key: 'goHome', defaultValue: false);
+    final isFirstTime = await GetIt.instance<HiveQueries>()
+        .getValue(boxName: 'settings', key: 'isFirstTime', defaultValue: false);
+
+    log('this ran $goHomeHive  $isFirstTime');
+
     data.fold(
       (l) => emit(
         state.copyWith(
-          isFirstTime: false,
-          goHome: goHomeHive,
+          isFirstTime: isFirstTime,
+          goHome: true,
           isError: true,
           isLoading: false,
           authError: l.message,
@@ -32,8 +38,8 @@ class AuthViewModel extends Cubit<AuthState> {
       ),
       (r) => emit(
         state.copyWith(
-          isFirstTime: false,
-          goHome: true,
+          isFirstTime: isFirstTime,
+          goHome: goHomeHive,
           isError: false,
           authError: null,
           isLoading: false,
