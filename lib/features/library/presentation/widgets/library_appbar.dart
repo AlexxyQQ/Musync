@@ -19,7 +19,7 @@ class LibraryAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<LibraryAppBar> createState() => _LibraryAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(80);
+  Size get preferredSize => const Size.fromHeight(40);
 }
 
 class _LibraryAppBarState extends State<LibraryAppBar> {

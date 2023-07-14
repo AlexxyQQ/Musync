@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/shimmers.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/library/presentation/widgets/song_listview.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class HomeFolderSectionNormal extends StatelessWidget {
@@ -74,8 +76,15 @@ class HomeFolderSectionNormal extends StatelessWidget {
                         final folderKey = folderEntry.key;
                         final folderValue = folderEntry.value;
                         return InkWell(
-                          onTap: () {
-                            print(folderEntry.value[0]);
+                          onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SongListView(
+                                  songs: folderValue as List<SongEntity>,
+                                ),
+                              ),
+                            );
                           },
                           child: Container(
                             margin: const EdgeInsets.all(7),

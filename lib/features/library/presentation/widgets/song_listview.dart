@@ -92,11 +92,12 @@ class _ListofSongsState extends State<ListofSongs> {
 
           return InkWell(
             onTap: () async {
-              BlocProvider.of<NowPlayingViewModel>(context).playAll(
+              final nav = Navigator.of(context);
+              await BlocProvider.of<NowPlayingViewModel>(context).playAll(
                 songs: widget.songs,
                 index: index,
               );
-              Navigator.of(context).pushNamed(
+              nav.pushNamed(
                 AppRoutes.nowPlaying,
                 arguments: {
                   "songs": widget.songs,

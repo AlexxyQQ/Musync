@@ -2,6 +2,6 @@
 <network-security-config>
 <base-config cleartextTrafficPermitted="true" />
 <domain-config cleartextTrafficPermitted="true">
-	<domain includeSubdomains="true">http://172.26.0.107:3001</domain>
+	<domain includeSubdomains="true">http://172.26.2.14:3001</domain>
 </domain-config>
 </network-security-config>

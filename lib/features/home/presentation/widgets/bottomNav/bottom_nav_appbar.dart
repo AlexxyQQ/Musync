@@ -80,13 +80,15 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
                             // from the list of songs, filter the songs that match the query
                             context
                                 .read<MusicQueryViewModel>()
-                                .filterSongSearch(query: value);
+                                .filterSongSearch(
+                                  query: value.toLowerCase().trim(),
+                                );
 
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SearchScreen(
-                                  data: state.filteredEverything,
+                                  data: state.filteredSongs,
                                 ),
                               ),
                             );

@@ -10,10 +10,13 @@ import 'package:musync/features/home/presentation/view/home.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_appbar.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomitems.dart';
+import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomsheet.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_drawer.dart';
 import 'package:musync/features/home/presentation/widgets/home_view_shimmer.dart';
 import 'package:musync/features/home/presentation/widgets/music/music_not_found.dart';
 import 'package:musync/features/library/presentation/view/library_page.dart';
+import 'package:musync/features/nowplaying2/presentation/state/now_playing_state.dart';
+import 'package:musync/features/nowplaying2/presentation/view_model/now_playing_view_model.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -157,6 +160,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
               },
             );
           }
+        },
+      ),
+      bottomSheet: BlocBuilder<NowPlayingViewModel, NowPlayingState>(
+        builder: (context, state) {
+          return state.isPlaying ? const MiniPlayer() : const SizedBox.shrink();
         },
       ),
       bottomNavigationBar: BottomItems(

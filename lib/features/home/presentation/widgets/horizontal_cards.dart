@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/shimmers.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/library/presentation/widgets/song_listview.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class HomeOtherSection extends StatelessWidget {
@@ -85,26 +87,89 @@ class HomeOtherSection extends StatelessWidget {
                       children: [
                         // Card
                         isCircular
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 5,
+                            ? InkWell(
+                                onTap: () async {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SongListView(
+                                        songs: dataValue as List<SongEntity>,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 5,
+                                  ),
+                                  child: CircleAvatar(
+                                    radius: cardWidth / 2,
+                                    backgroundColor: KColors.transparentColor,
+                                    child: dataValue[0].albumArtUrl == null ||
+                                            dataValue[0].albumArtUrl == ''
+                                        ? QueryArtworkWidget(
+                                            artworkHeight: cardHeight,
+                                            artworkWidth: cardWidth,
+                                            artworkBorder:
+                                                BorderRadius.circular(500),
+                                            id: dataValue[0].id,
+                                            nullArtworkWidget: const Icon(
+                                              Icons.music_note_rounded,
+                                              color: KColors.accentColor,
+                                            ),
+                                            type: ArtworkType.AUDIO,
+                                            errorBuilder: (p0, p1, p2) {
+                                              return const Icon(
+                                                Icons.music_note_rounded,
+                                                color: KColors.accentColor,
+                                              );
+                                            },
+                                          )
+                                        : QueryArtworkFromApi(
+                                            index: 0,
+                                            height: cardHeight,
+                                            width: cardWidth,
+                                            borderRadius:
+                                                BorderRadius.circular(500),
+                                            data: dataValue,
+                                          ),
+                                  ),
                                 ),
-                                child: CircleAvatar(
-                                  radius: cardWidth / 2,
-                                  backgroundColor: KColors.transparentColor,
+                              )
+                            : InkWell(
+                                onTap: () async {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SongListView(
+                                        songs: dataValue as List<SongEntity>,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: KColors.transparentColor,
+                                    borderRadius:
+                                        BorderRadius.circular(cardRoundness),
+                                  ),
+                                  width: cardWidth,
+                                  height: cardHeight - 50,
                                   child: dataValue[0].albumArtUrl == null ||
                                           dataValue[0].albumArtUrl == ''
                                       ? QueryArtworkWidget(
                                           artworkHeight: cardHeight,
                                           artworkWidth: cardWidth,
-                                          artworkBorder:
-                                              BorderRadius.circular(500),
-                                          id: dataValue[0].id,
                                           nullArtworkWidget: const Icon(
                                             Icons.music_note_rounded,
                                             color: KColors.accentColor,
                                           ),
+                                          artworkBorder: BorderRadius.circular(
+                                            cardRoundness,
+                                          ),
+                                          id: dataValue[0].id,
                                           type: ArtworkType.AUDIO,
                                           errorBuilder: (p0, p1, p2) {
                                             return const Icon(
@@ -115,53 +180,14 @@ class HomeOtherSection extends StatelessWidget {
                                         )
                                       : QueryArtworkFromApi(
                                           index: 0,
+                                          data: dataValue,
+                                          borderRadius: BorderRadius.circular(
+                                            cardRoundness,
+                                          ),
                                           height: cardHeight,
                                           width: cardWidth,
-                                          borderRadius:
-                                              BorderRadius.circular(500),
-                                          data: dataValue,
                                         ),
                                 ),
-                              )
-                            : Container(
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: KColors.transparentColor,
-                                  borderRadius:
-                                      BorderRadius.circular(cardRoundness),
-                                ),
-                                width: cardWidth,
-                                height: cardHeight - 50,
-                                child: dataValue[0].albumArtUrl == null ||
-                                        dataValue[0].albumArtUrl == ''
-                                    ? QueryArtworkWidget(
-                                        artworkHeight: cardHeight,
-                                        artworkWidth: cardWidth,
-                                        nullArtworkWidget: const Icon(
-                                          Icons.music_note_rounded,
-                                          color: KColors.accentColor,
-                                        ),
-                                        artworkBorder: BorderRadius.circular(
-                                          cardRoundness,
-                                        ),
-                                        id: dataValue[0].id,
-                                        type: ArtworkType.AUDIO,
-                                        errorBuilder: (p0, p1, p2) {
-                                          return const Icon(
-                                            Icons.music_note_rounded,
-                                            color: KColors.accentColor,
-                                          );
-                                        },
-                                      )
-                                    : QueryArtworkFromApi(
-                                        index: 0,
-                                        data: dataValue,
-                                        borderRadius: BorderRadius.circular(
-                                          cardRoundness,
-                                        ),
-                                        height: cardHeight,
-                                        width: cardWidth,
-                                      ),
                               ),
                         // Card Subtitle
                         SizedBox(

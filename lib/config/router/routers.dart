@@ -67,9 +67,6 @@ class AppRoutes {
   }) {
     if (initialRoute == '/') {
       if (MediaQuery.of(context).size.width >= 900) {
-        log('assaws');
-        print('isFirstTimesss: $isFirstTime');
-        print('goHomess: $goHome');
         return [
           MaterialPageRoute(
             builder: (context) {

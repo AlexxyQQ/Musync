@@ -21,6 +21,12 @@ class NowPlaying extends StatefulWidget {
 
 class _NowPlayingState extends State<NowPlaying> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     bool isTablet =
@@ -86,9 +92,17 @@ class NowPlayingPhone extends StatelessWidget {
             elevation: 0,
             scrolledUnderElevation: 0,
             backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
+            centerTitle: true,
             title: Text(
-              state.currentSong.data,
+              state.currentSong.data
+                  .split('/')[state.currentSong.data.split('/').length - 2],
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
+
             // Back Button
             leading: IconButton(
               onPressed: () {
@@ -134,6 +148,7 @@ class NowPlayingPhone extends StatelessWidget {
                             child: state.currentSong.albumArtUrl == null ||
                                     state.currentSong.albumArtUrl == ''
                                 ? QueryArtworkWidget(
+                                    artworkBorder: BorderRadius.circular(20),
                                     id: state.currentSong.id,
                                     nullArtworkWidget: const Icon(
                                       Icons.music_note_rounded,
@@ -149,6 +164,7 @@ class NowPlayingPhone extends StatelessWidget {
                                     },
                                   )
                                 : QueryArtworkFromApi(
+                                    borderRadius: BorderRadius.circular(20),
                                     data: songs,
                                     index: index,
                                   ),

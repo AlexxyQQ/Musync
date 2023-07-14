@@ -1,11 +1,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/loading_screen.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/library/presentation/widgets/library_appbar.dart';
 import 'package:musync/features/library/presentation/widgets/song_listview.dart';
+import 'package:musync/features/nowplaying2/presentation/view_model/now_playing_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -62,7 +66,6 @@ class _LibraryPageState extends State<LibraryPage> {
       });
     } else if (sortBy == 'Songs') {
       data['songs'].forEach((key, value) {
-        print(' valuesss: $value ');
         items.add({
           "type": "Song",
           "name": key,
@@ -157,9 +160,102 @@ class _LibraryPageState extends State<LibraryPage> {
                         isArtist: true,
                       );
                     } else if (item['type'] == 'Song') {
-                      return ListofSongs(
-                        songs: item['songs'],
-                        isDark: isDark,
+                      final Color songNameColor =
+                          isDark ? KColors.whiteColor : KColors.blackColor;
+                      final Color songArtistColor = isDark
+                          ? KColors.offWhiteColor
+                          : KColors.offBlackColor;
+                      final List<SongEntity> song = item['songs'];
+                      song.sort((a, b) => a.title.compareTo(b.title));
+                      return SizedBox(
+                        width: mqSize.width,
+                        height: mqSize.height,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            final ms = song[index].duration!;
+                            Duration duration = Duration(milliseconds: ms);
+                            int minutes = duration.inMinutes;
+                            int seconds = duration.inSeconds.remainder(60);
+                            return InkWell(
+                              onTap: () async {
+                                final nav = Navigator.of(context);
+                                BlocProvider.of<NowPlayingViewModel>(
+                                  context,
+                                ).playAll(
+                                  songs: song,
+                                  index: index,
+                                );
+                                nav.pushNamed(
+                                  AppRoutes.nowPlaying,
+                                  arguments: {
+                                    "songs": song,
+                                    "index": index,
+                                  },
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 3,
+                                  vertical: 5,
+                                ),
+                                child: ListTile(
+                                  leading: Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: song[index].albumArtUrl == null ||
+                                            song[index].albumArtUrl == ''
+                                        ? QueryArtworkWidget(
+                                            id: song[index].id,
+                                            nullArtworkWidget: const Icon(
+                                              Icons.music_note_rounded,
+                                              size: 40,
+                                              color: KColors.accentColor,
+                                            ),
+                                            type: ArtworkType.AUDIO,
+                                            errorBuilder: (p0, p1, p2) {
+                                              return const Icon(
+                                                Icons.music_note_rounded,
+                                                color: KColors.accentColor,
+                                              );
+                                            },
+                                          )
+                                        : QueryArtworkFromApi(
+                                            data: song,
+                                            index: index,
+                                          ),
+                                  ),
+                                  title: SizedBox(
+                                    width: mqSize.width * 0.7,
+                                    child: Text(
+                                      song[index].title,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: songNameColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  subtitle: RichText(
+                                    text: TextSpan(
+                                      text:
+                                          '${song[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                                      style: TextStyle(
+                                        color: songArtistColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     } else {
                       final albumName = item["name"];

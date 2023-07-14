@@ -45,19 +45,6 @@ class HomePage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  // var token = await GetIt.instance.get<HiveQueries>().getValue(
-                  //       boxName: 'users',
-                  //       key: 'token',
-                  //       defaultValue: '',
-                  //     );
-
-                  // print(
-                  //     " Sth: ${await GetIt.instance.get<MusicQueryRepositoryImpl>().getFolderSongs(token: token, path: 'uploads/alexxy/M2101K6G/Music/ello Mate')}");
-                },
-                child: const Text('Test'),
-              ),
               // Folders Section
               isTablet
                   ? isPortrait
