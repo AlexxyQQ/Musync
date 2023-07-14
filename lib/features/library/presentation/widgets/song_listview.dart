@@ -5,8 +5,8 @@ import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
-import 'package:musync/features/nowplaying2/presentation/state/now_playing_state.dart';
-import 'package:musync/features/nowplaying2/presentation/view_model/now_playing_view_model.dart';
+import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongListView extends StatelessWidget {

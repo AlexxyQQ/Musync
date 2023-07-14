@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
-import 'package:musync/features/nowplaying2/data/data_source/now_playing_local_data_source.dart';
-import 'package:musync/features/nowplaying2/data/data_source/now_playing_remote_data_source.dart';
-import 'package:musync/features/nowplaying2/domain/repository/now_playing_repository_a.dart';
+import 'package:musync/features/nowplaying/data/data_source/now_playing_local_data_source.dart';
+import 'package:musync/features/nowplaying/data/data_source/now_playing_remote_data_source.dart';
+import 'package:musync/features/nowplaying/domain/repository/now_playing_repository_a.dart';
 
 class NowPlayignRepositiryImpl extends INowPlayingRepository {
   final NowPlayingLocalDataSource nowPlayingLocalDataSource;

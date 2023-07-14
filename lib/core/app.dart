@@ -8,8 +8,8 @@ import 'package:musync/features/auth/presentation/state/authentication_state.dar
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
-import 'package:musync/features/nowplaying2/domain/use_case/now_playing_use_case.dart';
-import 'package:musync/features/nowplaying2/presentation/view_model/now_playing_view_model.dart';
+import 'package:musync/features/nowplaying/domain/use_case/now_playing_use_case.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:musync/features/splash/domain/use_case/splash_use_case.dart';
 
 class App extends StatelessWidget {

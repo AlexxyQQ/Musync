@@ -1,5 +1,5 @@
 import 'package:musync/features/home/domain/entity/song_entity.dart';
-import 'package:musync/features/nowplaying2/data/repository/now_playing_repositories.dart';
+import 'package:musync/features/nowplaying/data/repository/now_playing_repositories.dart';
 
 class NowPlayingUseCase {
   final NowPlayignRepositiryImpl nowPlayingRepository;

@@ -1,19 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 
 class AudioControlls extends StatefulWidget {
   const AudioControlls({
     super.key,
-    required this.audioController,
-    required this.processingState,
     this.iconSize = 40.0,
   });
 
-  final AudioPlayer audioController;
-  final ProcessingState processingState;
   final double iconSize;
 
   @override
@@ -23,139 +22,106 @@ class AudioControlls extends StatefulWidget {
 class _AudioControllsState extends State<AudioControlls> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        // Shuffle Button
-        IconButton(
-          onPressed: () {
-            //TODO: Shuffle
-          },
-          color: true //* if shuffle is on
-              ? KColors.accentColor
-              : MediaQuery.of(context).platformBrightness == Brightness.dark
-                  ? KColors.whiteColor
-                  : KColors.blackColor,
-          icon: Icon(
-            Icons.shuffle_rounded,
-            size: widget.iconSize,
-          ),
-        ),
-        // Previous Button
-        IconButton(
-          onPressed: () {
-            // TODO Previous
-            widget.audioController.seekToPrevious();
-          },
-          icon: Icon(
-            Icons.skip_previous_rounded,
-            size: widget.iconSize,
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
-                ? KColors.whiteColor
-                : KColors.blackColor,
-          ),
-        ),
-        // Play/Pause Button
-        if (widget.processingState == ProcessingState.ready)
-          CircleAvatar(
-            radius: 35,
-            backgroundColor:
-                MediaQuery.of(context).platformBrightness == Brightness.dark
-                    ? KColors.whiteColor
-                    : KColors.blackColor,
-            child: IconButton(
-              onPressed: () {
-                widget.audioController.pause();
+    return BlocBuilder<NowPlayingViewModel, NowPlayingState>(
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            // Shuffle Button
+            IconButton(
+              onPressed: () async {
+                state.isShuffle
+                    ? await context.read<NowPlayingViewModel>().shuffle()
+                    : await context.read<NowPlayingViewModel>().unShuffle();
               },
+              color: state.isShuffle //* if shuffle is on
+                  ? KColors.accentColor
+                  : MediaQuery.of(context).platformBrightness == Brightness.dark
+                      ? KColors.whiteColor
+                      : KColors.blackColor,
               icon: Icon(
-                Icons.play_arrow_rounded,
-                color: KColors.accentColor,
+                Icons.shuffle_rounded,
                 size: widget.iconSize,
               ),
             ),
-          )
-        else if (widget.processingState != ProcessingState.completed)
-          CircleAvatar(
-            radius: 35,
-            backgroundColor:
-                MediaQuery.of(context).platformBrightness == Brightness.dark
-                    ? KColors.whiteColor
-                    : KColors.blackColor,
-            child: IconButton(
-              onPressed: () {
-                // TODO Play
-                widget.audioController.play();
+            // Previous Button
+            IconButton(
+              onPressed: () async {
+                await context.read<NowPlayingViewModel>().previous();
               },
               icon: Icon(
-                Icons.pause,
-                color: KColors.accentColor,
+                Icons.skip_previous_rounded,
                 size: widget.iconSize,
+                color:
+                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                        ? KColors.whiteColor
+                        : KColors.blackColor,
               ),
             ),
-          )
-        else
-          CircleAvatar(
-            radius: 35,
-            backgroundColor:
-                MediaQuery.of(context).platformBrightness == Brightness.dark
-                    ? KColors.whiteColor
-                    : KColors.blackColor,
-            child: IconButton(
-              onPressed: () {
-                widget.audioController.pause();
+            // Play/Pause Button
+            CircleAvatar(
+              radius: 35,
+              backgroundColor:
+                  MediaQuery.of(context).platformBrightness == Brightness.dark
+                      ? KColors.whiteColor
+                      : KColors.blackColor,
+              child: IconButton(
+                onPressed: () async {
+                  (state.isPaused || state.isStopped)
+                      ? await context.read<NowPlayingViewModel>().play()
+                      : await context.read<NowPlayingViewModel>().pause();
+                },
+                icon: Icon(
+                  (state.isPaused || state.isStopped) //* if paused or stopped
+                      ? Icons.play_arrow_rounded
+                      : Icons.pause_rounded,
+                  color: KColors.accentColor,
+                  size: widget.iconSize,
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () async {
+                await context.read<NowPlayingViewModel>().next();
               },
               icon: Icon(
-                Icons.play_arrow,
-                color: KColors.accentColor,
+                Icons.skip_next_rounded,
                 size: widget.iconSize,
+                color:
+                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                        ? KColors.whiteColor
+                        : KColors.blackColor,
               ),
             ),
-          ),
-        // Next Button
-        IconButton(
-          onPressed: () {
-            // TODO Next
-            widget.audioController.seekToNext();
-          },
-          icon: Icon(
-            Icons.skip_next_rounded,
-            size: widget.iconSize,
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
-                ? KColors.whiteColor
-                : KColors.blackColor,
-          ),
-        ),
-        // Repeat Button
-        IconButton(
-          onPressed: () {
-            // TODO Repeat Logic
-            if (widget.audioController.loopMode == LoopMode.off) {
-              widget.audioController.setLoopMode(LoopMode.all);
-              setState(() {});
-            } else if (widget.audioController.loopMode == LoopMode.all) {
-              widget.audioController.setLoopMode(LoopMode.one);
-              setState(() {});
-            } else if (widget.audioController.loopMode == LoopMode.one) {
-              setState(() {
-                widget.audioController.setLoopMode(LoopMode.off);
-              });
-            }
-          },
-          icon: Icon(
-            widget.audioController.loopMode == LoopMode.off
-                ? Icons.repeat_rounded
-                : widget.audioController.loopMode == LoopMode.all
+            // Repeat Button
+            IconButton(
+              onPressed: () {
+                if (!state.isRepeatOne && !state.isRepeatAll) {
+                  context.read<NowPlayingViewModel>().repeatAll();
+                } else if (state.isRepeatAll) {
+                  context.read<NowPlayingViewModel>().repeatOne();
+                } else if (state.isRepeatOne) {
+                  context.read<NowPlayingViewModel>().repeatOff();
+                }
+              },
+              icon: Icon(
+                !state.isRepeatOne && !state.isRepeatAll
                     ? Icons.repeat_rounded
-                    : Icons.repeat_one_rounded,
-            size: widget.iconSize,
-            color: widget.audioController.loopMode == LoopMode.off
-                ? MediaQuery.of(context).platformBrightness == Brightness.dark
-                    ? KColors.whiteColor
-                    : KColors.blackColor
-                : KColors.accentColor,
-          ),
-        ),
-      ],
+                    : state.isRepeatAll
+                        ? Icons.repeat_rounded
+                        : Icons.repeat_one_rounded,
+                size: widget.iconSize,
+                color: !state.isRepeatOne && !state.isRepeatAll
+                    ? MediaQuery.of(context).platformBrightness ==
+                            Brightness.dark
+                        ? KColors.whiteColor
+                        : KColors.blackColor
+                    : KColors.accentColor,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -176,8 +142,8 @@ class MoreControlls extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {},
-            child: Row(
-              children: const [
+            child: const Row(
+              children: [
                 Icon(
                   Icons.phone_android_rounded,
                   color: Colors.amber,
@@ -229,7 +195,7 @@ class DurationSlider extends StatefulWidget {
 
   const DurationSlider({
     Key? key,
-    // required this.audioPlayer,
+    required this.audioPlayer,
     required this.height,
     this.duration = true,
     required this.activeColor,
@@ -238,7 +204,7 @@ class DurationSlider extends StatefulWidget {
     required this.inactiveColor,
   }) : super(key: key);
 
-  // final AudioPlayerController audioPlayer;
+  final AudioPlayer audioPlayer;
 
   @override
   State<DurationSlider> createState() => _DurationSliderState();
@@ -253,19 +219,22 @@ class _DurationSliderState extends State<DurationSlider> {
   @override
   void initState() {
     super.initState();
-    // _durationSubscription =
-    //     widget.audioPlayer.player.durationStream.listen((duration) {
-    //   setState(() {
-    //     _maxValue = duration?.inSeconds.toDouble() ?? 1.0;
-    //   });
-    // });
+    _durationSubscription =
+        widget.audioPlayer.durationStream.listen((duration) {
+      setState(() {
+        _maxValue = duration?.inSeconds.toDouble() ?? 1.0;
+      });
+    });
 
-    // _positionSubscription =
-    //     widget.audioPlayer.player.positionStream.listen((position) {
-    //   setState(() {
-    //     _sliderValue = position.inSeconds.toDouble();
-    //   });
-    // });
+    _positionSubscription =
+        widget.audioPlayer.positionStream.listen((position) {
+      setState(() {
+        _sliderValue = position.inSeconds.toDouble();
+        if (position == widget.audioPlayer.duration) {
+          context.read<NowPlayingViewModel>().next();
+        }
+      });
+    });
   }
 
   @override
@@ -313,8 +282,8 @@ class _DurationSliderState extends State<DurationSlider> {
                 _sliderValue = value;
               });
               final position = Duration(seconds: value.toInt());
-              // widget.audioPlayer.player.seek(position);
-              // widget.audioPlayer.player.play();
+              widget.audioPlayer.seek(position);
+              widget.audioPlayer.play();
             },
           ),
         ),

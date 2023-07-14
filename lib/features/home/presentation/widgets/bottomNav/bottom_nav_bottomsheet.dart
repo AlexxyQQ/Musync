@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_query_widget.dart';
-import 'package:musync/features/nowplaying/presentation/view/nowplaying.dart';
-import 'package:musync/features/nowplaying2/presentation/state/now_playing_state.dart';
-import 'package:musync/features/nowplaying2/presentation/view_model/now_playing_view_model.dart';
-import 'package:musync/features/nowplaying2/presentation/widgets/audio_controlls.dart';
+import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
+import 'package:musync/features/nowplaying/presentation/widgets/audio_controlls.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MiniPlayer extends StatelessWidget {

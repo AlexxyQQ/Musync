@@ -3,8 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
-import 'package:musync/features/nowplaying2/domain/use_case/now_playing_use_case.dart';
-import 'package:musync/features/nowplaying2/presentation/state/now_playing_state.dart';
+import 'package:musync/features/nowplaying/domain/use_case/now_playing_use_case.dart';
+import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 
 class NowPlayingViewModel extends Cubit<NowPlayingState> {
   final NowPlayingUseCase nowPlayingUseCase;
@@ -126,9 +126,10 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
 
   // Next
   Future<void> next() async {
-    if (state.queue.length >= state.currentIndex + 1 && !state.isRepeatOne) {
+    if (state.queue.length > state.currentIndex + 1 && !state.isRepeatOne) {
       await state.audioPlayer.seek(Duration.zero);
       await state.audioPlayer.seekToNext();
+
       emit(
         state.copyWith(
           isPlaying: true,

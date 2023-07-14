@@ -9,7 +9,7 @@ import 'package:musync/config/constants/constants.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/library/presentation/widgets/library_appbar.dart';
 import 'package:musync/features/library/presentation/widgets/song_listview.dart';
-import 'package:musync/features/nowplaying2/presentation/view_model/now_playing_view_model.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class LibraryPage extends StatefulWidget {
