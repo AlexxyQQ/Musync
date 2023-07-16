@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
@@ -31,7 +30,7 @@ class QueueView extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text(' Q U E U E'),
+              title: const Text(' Q U E U E'),
             ),
             body: Scrollbar(
               controller: controller,
@@ -39,6 +38,7 @@ class QueueView extends StatelessWidget {
               thickness: 10,
               interactive: true,
               child: ListView.builder(
+                controller: controller,
                 itemCount: songList.length,
                 itemBuilder: (context, index) {
                   return ListTile(

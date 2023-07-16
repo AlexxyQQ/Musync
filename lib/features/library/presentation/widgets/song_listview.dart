@@ -9,16 +9,67 @@ import 'package:musync/features/nowplaying/presentation/state/now_playing_state.
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class SongListView extends StatelessWidget {
+class SongListView extends StatefulWidget {
   const SongListView({Key? key, required this.songs}) : super(key: key);
 
   final List<SongEntity> songs;
 
   @override
+  State<SongListView> createState() => _SongListViewState();
+}
+
+class _SongListViewState extends State<SongListView> {
+  void onMenuItemSelected(String option) {
+    // Implement functionality for each option
+    switch (option) {
+      case 'A-Z':
+        // Call function for Option 1
+        _handleOption1();
+        break;
+      case 'Z-A':
+        // Call function for Option 2
+        _handleOption2();
+        break;
+      case 'Date':
+        // Call function for Option 3
+        _handleOption3();
+        break;
+      case 'Duration':
+        // Call function for Option 4
+        _handleOption4();
+        break;
+    }
+  }
+
+  // Function to handle Option 1
+  void _handleOption1() {
+    widget.songs.sort((a, b) => a.title.compareTo(b.title));
+    setState(() {});
+  }
+
+  // Function to handle Option 2
+  void _handleOption2() {
+    widget.songs.sort((a, b) => b.title.compareTo(a.title));
+    setState(() {});
+  }
+
+  // Function to handle Option 3
+  void _handleOption3() {
+    widget.songs.sort((a, b) => a.dateAdded!.compareTo(b.dateAdded!));
+    setState(() {});
+  }
+
+  // Function to handle Option 4
+  void _handleOption4() {
+    widget.songs.sort((a, b) => a.duration!.compareTo(b.duration!));
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final mqSize = MediaQuery.of(context).size;
-    final List<SongEntity> songModels = songs;
+    final List<SongEntity> songModels = widget.songs;
     final ScrollController scrollController = ScrollController();
 
     return Scaffold(
@@ -38,6 +89,7 @@ class SongListView extends StatelessWidget {
               backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
               mqSize: mqSize,
               isDark: isDark,
+              onMenuItemSelected: onMenuItemSelected,
             ),
             // More options
             SecondAppBar(
@@ -275,11 +327,19 @@ class SecondAppBar extends StatelessWidget {
                       // color: isDark ? whiteColor : blackColor,
                     ),
                     onPressed: () async {
-                      if (state.isPlaying) {
-                        await context.read<NowPlayingViewModel>().pause();
-                      } else {
-                        await context.read<NowPlayingViewModel>().play();
-                      }
+                      final nav = Navigator.of(context);
+                      await BlocProvider.of<NowPlayingViewModel>(context)
+                          .playAll(
+                        songs: songs,
+                        index: 0,
+                      );
+                      nav.pushNamed(
+                        AppRoutes.nowPlaying,
+                        arguments: {
+                          "songs": songs,
+                          "index": 0,
+                        },
+                      );
                     },
                   ),
                 );
@@ -299,12 +359,14 @@ class AppBar extends StatelessWidget {
     required this.mqSize,
     required this.isDark,
     required this.songs,
+    required this.onMenuItemSelected,
   });
 
   final Color backgroundColor;
   final Size mqSize;
   final List<SongEntity> songs;
   final bool isDark;
+  final Function(String)? onMenuItemSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -353,15 +415,35 @@ class AppBar extends StatelessWidget {
             // ),
           ),
         ),
-        IconButton(
-          icon: const Icon(
-            Icons.sort_rounded,
-            // color: isDark ? whiteColor : blackColor,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: PopupMenuButton<String>(
+            onSelected: onMenuItemSelected,
+            icon: const Icon(
+              Icons.more_vert_rounded,
+            ),
+            itemBuilder: (BuildContext context) {
+              return [
+                const PopupMenuItem<String>(
+                  value: 'A-Z',
+                  child: Text('A-Z'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Z-A',
+                  child: Text('Z-A'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Date',
+                  child: Text('Date'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Duration',
+                  child: Text('Duration'),
+                ),
+              ];
+            },
           ),
-          onPressed: () {
-            // TODO: Sort the songs
-          },
-        )
+        ),
       ],
     );
   }

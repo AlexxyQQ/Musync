@@ -18,19 +18,18 @@ class AuthViewModel extends Cubit<AuthState> {
 
   Future<void> initialLogin() async {
     emit(state.copyWith(isLoading: true, authError: null));
+    log('this ran 1');
     final data = await splashUseCase.initialLogin();
     final goHomeHive = await GetIt.instance<HiveQueries>()
         .getValue(boxName: 'settings', key: 'goHome', defaultValue: false);
     final isFirstTime = await GetIt.instance<HiveQueries>()
-        .getValue(boxName: 'settings', key: 'isFirstTime', defaultValue: false);
-
-    log('this ran $goHomeHive  $isFirstTime');
+        .getValue(boxName: 'settings', key: 'isFirstTime', defaultValue: true);
 
     data.fold(
       (l) => emit(
         state.copyWith(
           isFirstTime: isFirstTime,
-          goHome: true,
+          goHome: goHomeHive,
           isError: true,
           isLoading: false,
           authError: l.message,

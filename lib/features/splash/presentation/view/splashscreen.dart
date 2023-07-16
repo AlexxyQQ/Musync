@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/router/routers.dart';
@@ -16,8 +18,12 @@ class MusyncSplash extends StatefulWidget {
 class _MusyncSplashState extends State<MusyncSplash> {
   @override
   void initState() {
-    BlocProvider.of<AuthViewModel>(context).initialLogin();
     super.initState();
+    sothing();
+  }
+
+  Future<void> sothing() async {
+    await BlocProvider.of<AuthViewModel>(context).initialLogin();
   }
 
   @override
@@ -53,6 +59,11 @@ class _MusyncSplashState extends State<MusyncSplash> {
                   context: blocContext,
                 );
                 Navigator.popAndPushNamed(context, AppRoutes.homeRoute);
+              });
+            }
+            if (!state.goHome && !state.isFirstTime) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.popAndPushNamed(context, AppRoutes.getStartedRoute);
               });
             }
 

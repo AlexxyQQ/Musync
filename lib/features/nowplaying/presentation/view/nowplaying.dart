@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/presentation/state/music_query_state.dart';
+import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
+import 'package:musync/features/library/presentation/widgets/song_listview.dart'
+    as slv;
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view/queue_view.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
@@ -20,10 +24,39 @@ class NowPlaying extends StatefulWidget {
 }
 
 class _NowPlayingState extends State<NowPlaying> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  void onMenuItemSelected(String option) {
+    // Implement functionality for each option
+    switch (option) {
+      case 'Delete':
+        // Call function for Option 1
+        _handleOption1();
+        break;
+      case 'Info':
+        // Call function for Option 2
+        _handleOption2();
+        break;
+      case 'Clear Queue':
+        // Call function for Option 3
+        _handleOption3();
+        break;
+    }
+  }
+
+  // Function to handle Option 1
+  void _handleOption1() {
+    setState(() {});
+  }
+
+  // Function to handle Option 2
+  void _handleOption2() {
+    setState(() {});
+  }
+
+  // Function to handle Option 3
+  void _handleOption3() async {
+    await BlocProvider.of<NowPlayingViewModel>(context).clearQueue();
+    widget.songList.clear();
+    setState(() {});
   }
 
   @override
@@ -114,10 +147,50 @@ class NowPlayingPhone extends StatelessWidget {
             ),
             actions: [
               // More Options Button
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.more_vert,
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: const Icon(
+              //     Icons.more_vert,
+              //   ),
+              // ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: PopupMenuButton<String>(
+                  // onSelected: onMenuItemSelected,
+                  icon: const Icon(
+                    Icons.more_vert_rounded,
+                  ),
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      const PopupMenuItem<String>(
+                        value: 'Info',
+                        child: Row(
+                          children: [
+                            Icon(Icons.info_rounded),
+                            Text('Info'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'Delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete_rounded),
+                            Text('Delete'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'Clear Queue',
+                        child: Row(
+                          children: [
+                            Icon(Icons.clear_all_rounded),
+                            Text('Clear Queue'),
+                          ],
+                        ),
+                      ),
+                    ];
+                  },
                 ),
               ),
             ],
@@ -195,15 +268,39 @@ class NowPlayingPhone extends StatelessWidget {
                             maxLines: 1,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          Text(
-                            ("• ${state.currentSong.artist} •"),
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge!
-                                .copyWith(color: KColors.greyColor),
+                          BlocBuilder<MusicQueryViewModel, MusicQueryState>(
+                            builder: (context, musicQueryState) {
+                              return InkWell(
+                                onTap: () {
+                                  // if there is the artist in the artist list then go to the artist page
+                                  (musicQueryState.everything['artists']!
+                                          .containsKey(
+                                              state.currentSong.artist))
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                slv.SongListView(
+                                              songs: musicQueryState
+                                                      .everything['artists']![
+                                                  state.currentSong.artist]!,
+                                            ),
+                                          ),
+                                        )
+                                      : null;
+                                },
+                                child: Text(
+                                  ("• ${state.currentSong.artist} •"),
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(color: KColors.greyColor),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),

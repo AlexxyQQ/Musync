@@ -135,8 +135,12 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
           isPlaying: true,
           isPaused: false,
           isStopped: false,
-          currentSong: state.queue[state.currentIndex + 1],
-          currentIndex: state.currentIndex + 1,
+          currentSong:
+              state.queue[state.audioPlayer.sequenceState!.currentIndex],
+          currentIndex: state.audioPlayer.sequenceState!.currentIndex,
+          queue: state.audioPlayer.sequenceState!.sequence
+              .map((e) => e.tag as SongEntity)
+              .toList(),
         ),
       );
     } else {
@@ -161,8 +165,12 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
           isPlaying: true,
           isPaused: false,
           isStopped: false,
-          currentSong: state.queue[state.currentIndex - 1],
-          currentIndex: state.currentIndex - 1,
+          currentSong:
+              state.queue[state.audioPlayer.sequenceState!.currentIndex],
+          currentIndex: state.audioPlayer.sequenceState!.currentIndex,
+          queue: state.audioPlayer.sequenceState!.sequence
+              .map((e) => e.tag as SongEntity)
+              .toList(),
         ),
       );
     } else {
@@ -208,6 +216,26 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
       state.copyWith(
         isRepeatAll: false,
         isRepaeatOne: false,
+      ),
+    );
+  }
+
+  Future<void> clearQueue() async {
+    await state.audioPlayer.setAudioSource(
+      AudioSource.uri(
+        Uri.parse(state.currentSong.data),
+        tag: state.currentSong,
+      ),
+    );
+    emit(
+      state.copyWith(
+        isPlaying: false,
+        isPaused: false,
+        isStopped: true,
+        // remove all songs except the current song
+        currentSong: state.queue[state.audioPlayer.sequenceState!.currentIndex],
+        currentIndex: 0,
+        queue: [state.queue[state.audioPlayer.sequenceState!.currentIndex]],
       ),
     );
   }
