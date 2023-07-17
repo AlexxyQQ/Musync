@@ -44,12 +44,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
         try {
           pages = (ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>)['pages'] as List<Widget>;
-        } catch (e) {}
+        } catch (e) {
+          log(e.toString());
+        }
         try {
           selectedIndex = (ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>)['selectedIndex'] as int;
           _pageController = PageController(initialPage: selectedIndex);
-        } catch (e) {}
+        } catch (e) {
+          log(e.toString());
+        }
       }
     });
 
@@ -76,98 +80,109 @@ class _BottomNavBarState extends State<BottomNavBar> {
         isDark: isDark,
         syncTrue: syncTrue,
       ),
-      body: BlocBuilder<MusicQueryViewModel, MusicQueryState>(
-        builder: (context, state) {
-          log("crap: ${state.everything}");
-          if (state.isLoading) {
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          }
-          if (state.error != null) {
-            pages = [
-              const HomePageShimmer(),
-              const LoadingScreen(),
-              const LoadingScreen(),
-            ];
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              kShowSnackBar(state.error!, context: context);
-            });
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          } else if (state.everything.isNotEmpty) {
-            final Map<String, Map<String, List<SongEntity>>> data =
-                state.everything;
+      body: Stack(
+        children: [
+          BlocBuilder<MusicQueryViewModel, MusicQueryState>(
+            builder: (context, state) {
+              log("crap: ${state.everything}");
+              if (state.isLoading) {
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              }
+              if (state.error != null) {
+                pages = [
+                  const HomePageShimmer(),
+                  const LoadingScreen(),
+                  const LoadingScreen(),
+                ];
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  kShowSnackBar(state.error!, context: context);
+                });
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              } else if (state.everything.isNotEmpty) {
+                final Map<String, Map<String, List<SongEntity>>> data =
+                    state.everything;
 
-            if (state.onSearch) {
-              pages = [
-                HomePage(
-                  folders: data['folders']!,
-                  albums: data['albums']!,
-                  artists: data['artists']!,
-                  isLoading: state.isLoading,
-                ),
-                const LoadingScreen(),
-                LibraryPage(
-                  data: data,
-                ),
-              ];
-            }
+                if (state.onSearch) {
+                  pages = [
+                    HomePage(
+                      folders: data['folders']!,
+                      albums: data['albums']!,
+                      artists: data['artists']!,
+                      isLoading: state.isLoading,
+                    ),
+                    const LoadingScreen(),
+                    LibraryPage(
+                      data: data,
+                    ),
+                  ];
+                }
 
-            pages = [
-              HomePage(
-                folders: data['folders']!,
-                albums: data['albums']!,
-                artists: data['artists']!,
-                isLoading: state.isLoading,
+                pages = [
+                  HomePage(
+                    folders: data['folders']!,
+                    albums: data['albums']!,
+                    artists: data['artists']!,
+                    isLoading: state.isLoading,
+                  ),
+                  const LoadingScreen(),
+                  LibraryPage(
+                    data: data,
+                  ),
+                ];
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              } else {
+                pages = [
+                  const MusicNotFound(),
+                  const MusicNotFound(),
+                  const MusicNotFound(),
+                ];
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              }
+            },
+          ),
+          Positioned(
+            bottom: 0,
+            child: SizedBox(
+              width: mqSize.width,
+              height: 120,
+              child: BlocBuilder<NowPlayingViewModel, NowPlayingState>(
+                builder: (context, state) {
+                  return (state.isPlaying || state.isPaused)
+                      ? const MiniPlayer()
+                      : const SizedBox.shrink();
+                },
               ),
-              const LoadingScreen(),
-              LibraryPage(
-                data: data,
-              ),
-            ];
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          } else {
-            pages = [
-              const MusicNotFound(),
-              const MusicNotFound(),
-              const MusicNotFound(),
-            ];
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          }
-        },
-      ),
-      bottomSheet: BlocBuilder<NowPlayingViewModel, NowPlayingState>(
-        builder: (context, state) {
-          return (state.isPlaying || state.isPaused)
-              ? const MiniPlayer()
-              : const SizedBox.shrink();
-        },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomItems(
         showFolder: false,

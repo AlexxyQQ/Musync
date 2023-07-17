@@ -144,6 +144,7 @@ class _ListofSongsState extends State<ListofSongs> {
 
           return InkWell(
             onTap: () async {
+              print('asss: ${widget.songs[index].serverUrl}');
               final nav = Navigator.of(context);
               await BlocProvider.of<NowPlayingViewModel>(context).playAll(
                 songs: widget.songs,
@@ -219,16 +220,29 @@ class _ListofSongsState extends State<ListofSongs> {
 
                           const SizedBox(height: 5),
                           // Song Artist
-                          RichText(
-                            text: TextSpan(
-                              text:
-                                  '${widget.songs[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                              style: TextStyle(
-                                color: songArtistColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                          Row(
+                            children: [
+                              // if from web show web icon
+                              if (widget.songs[index].serverUrl != '' &&
+                                  widget.songs[index].serverUrl != null)
+                                const Icon(
+                                  Icons.cloud,
+                                  size: 20,
+                                  color: KColors.accentColor,
+                                ),
+                              const SizedBox(width: 5),
+                              RichText(
+                                text: TextSpan(
+                                  text:
+                                      '${widget.songs[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    color: songArtistColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
@@ -279,14 +293,16 @@ class SecondAppBar extends StatelessWidget {
             const Icon(
               Icons.hourglass_full_rounded,
             ),
+            // Total duration of the songs in the folder/playlist
             Text(
-              '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')} H',
-              // style: TextStyle(
-              //   color: isDark ? whiteColor : blackColor,
-              //   fontSize: 16,
-              //   fontWeight: FontWeight.w600,
-              // ),
+              '$hours hr $minutes min',
+              style: TextStyle(
+                color: isDark ? KColors.whiteColor : KColors.blackColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
+
             const SizedBox(
               width: 10,
             ),

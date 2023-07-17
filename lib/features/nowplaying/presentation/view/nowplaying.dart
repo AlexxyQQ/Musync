@@ -49,7 +49,73 @@ class _NowPlayingState extends State<NowPlaying> {
 
   // Function to handle Option 2
   void _handleOption2() {
-    setState(() {});
+    // Show bottom sheet with song info
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: 400,
+          child: Column(
+            children: [
+              ListTile(
+                leading: const Icon(
+                  Icons.album,
+                  size: 16,
+                ),
+                title: Text(
+                  'Album',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                subtitle: Text(
+                  widget.songList[widget.index].album!,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  size: 16,
+                ),
+                title: Text(
+                  'Artist',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                subtitle: Text(
+                  widget.songList[widget.index].artist!,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.music_note,
+                  size: 16,
+                ),
+                title:
+                    Text('Genre', style: Theme.of(context).textTheme.bodySmall),
+                subtitle: Text(
+                  widget.songList[widget.index].genre ?? 'Unknown',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.music_note,
+                  size: 16,
+                ),
+                title: Text(
+                  'Duration',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                subtitle: Text(
+                  "${Duration(milliseconds: widget.songList[widget.index].duration!).toString().split('.').first.split(':')[1]}:${Duration(milliseconds: widget.songList[widget.index].duration!).toString().split('.').first.split(':')[2]}",
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   // Function to handle Option 3
@@ -74,6 +140,7 @@ class _NowPlayingState extends State<NowPlaying> {
                 isPortrait: isPortrait,
                 songs: widget.songList,
                 index: widget.index,
+                onMenuItemSelected: onMenuItemSelected,
               )
             : NowPlayingTablet(
                 isDark: isDark,
@@ -81,6 +148,7 @@ class _NowPlayingState extends State<NowPlaying> {
                 isPortrait: isPortrait,
                 songs: widget.songList,
                 index: widget.index,
+                onMenuItemSelected: onMenuItemSelected,
               )
         : isPortrait
             ? NowPlayingPhone(
@@ -89,6 +157,7 @@ class _NowPlayingState extends State<NowPlaying> {
                 isPortrait: isPortrait,
                 songs: widget.songList,
                 index: widget.index,
+                onMenuItemSelected: onMenuItemSelected,
               )
             : NowPlayingTablet(
                 isDark: isDark,
@@ -96,6 +165,7 @@ class _NowPlayingState extends State<NowPlaying> {
                 isPortrait: isPortrait,
                 songs: widget.songList,
                 index: widget.index,
+                onMenuItemSelected: onMenuItemSelected,
               );
   }
 }
@@ -108,6 +178,7 @@ class NowPlayingPhone extends StatelessWidget {
     required this.isPortrait,
     required this.songs,
     required this.index,
+    required this.onMenuItemSelected,
   });
 
   final bool isDark;
@@ -115,6 +186,7 @@ class NowPlayingPhone extends StatelessWidget {
   final bool isPortrait;
   final List<SongEntity> songs;
   final int index;
+  final Function(String)? onMenuItemSelected;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NowPlayingViewModel, NowPlayingState>(
@@ -156,7 +228,7 @@ class NowPlayingPhone extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: PopupMenuButton<String>(
-                  // onSelected: onMenuItemSelected,
+                  onSelected: onMenuItemSelected,
                   icon: const Icon(
                     Icons.more_vert_rounded,
                   ),
@@ -350,6 +422,7 @@ class NowPlayingTablet extends StatelessWidget {
     required this.isPortrait,
     required this.songs,
     required this.index,
+    required this.onMenuItemSelected,
   });
 
   final bool isDark;
@@ -357,126 +430,188 @@ class NowPlayingTablet extends StatelessWidget {
   final bool isPortrait;
   final List<SongEntity> songs;
   final int index;
+  final Function(String)? onMenuItemSelected;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // AppBar
-      appBar: AppBar(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
-        title: const Text(
-          'Name of the Folder/Playlist playing from',
-        ),
-        // Back Button
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.keyboard_arrow_down,
-            color: isDark ? KColors.whiteColor : KColors.blackColor,
-          ),
-        ),
-        actions: [
-          // More Options Button
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.more_vert,
-              color: isDark ? KColors.whiteColor : KColors.blackColor,
+    return BlocBuilder<NowPlayingViewModel, NowPlayingState>(
+      builder: (context, state) {
+        return Scaffold(
+          // AppBar
+          appBar: AppBar(
+            elevation: 0,
+            scrolledUnderElevation: 0,
+            backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
+            title: Text(
+              state.currentSong.data
+                  .split('/')[state.currentSong.data.split('/').length - 2],
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-          ),
-        ],
-      ),
-      // Body
-      body: Container(
-        color: isDark ? KColors.blackColor : KColors.whiteColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Album Art
-            Expanded(
-              child: Hero(
-                tag: 'albumArt',
-                child: Align(
-                  alignment: Alignment.center,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: isDark
-                              ? KColors.offBlackColor
-                              : KColors.offBlackColor,
+            // Back Button
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                color: isDark ? KColors.whiteColor : KColors.blackColor,
+              ),
+            ),
+            actions: [
+              // More Options Button
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: PopupMenuButton<String>(
+                  onSelected: onMenuItemSelected,
+                  icon: const Icon(
+                    Icons.more_vert_rounded,
+                  ),
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      const PopupMenuItem<String>(
+                        value: 'Info',
+                        child: Row(
+                          children: [
+                            Icon(Icons.info_rounded),
+                            Text('Info'),
+                          ],
                         ),
-                        child: Icon(
-                          Icons.music_note,
-                          size: 100,
-                          color:
-                              isDark ? KColors.accentColor : KColors.blackColor,
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'Delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete_rounded),
+                            Text('Delete'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'Clear Queue',
+                        child: Row(
+                          children: [
+                            Icon(Icons.clear_all_rounded),
+                            Text('Clear Queue'),
+                          ],
+                        ),
+                      ),
+                    ];
+                  },
+                ),
+              ),
+            ],
+          ),
+          // Body
+          body: Container(
+            color: isDark ? KColors.blackColor : KColors.whiteColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Album Art
+                Expanded(
+                  child: Hero(
+                    tag: 'albumArt',
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: isDark
+                                  ? KColors.offBlackColor
+                                  : KColors.offBlackColor,
+                            ),
+                            // Add Album Art Here
+                            child: state.currentSong.albumArtUrl == null ||
+                                    state.currentSong.albumArtUrl == ''
+                                ? QueryArtworkWidget(
+                                    artworkBorder: BorderRadius.circular(20),
+                                    id: state.currentSong.id,
+                                    nullArtworkWidget: const Icon(
+                                      Icons.music_note_rounded,
+                                      size: 40,
+                                      color: KColors.accentColor,
+                                    ),
+                                    type: ArtworkType.AUDIO,
+                                    errorBuilder: (p0, p1, p2) {
+                                      return const Icon(
+                                        Icons.music_note_rounded,
+                                        color: KColors.accentColor,
+                                      );
+                                    },
+                                  )
+                                : QueryArtworkFromApi(
+                                    borderRadius: BorderRadius.circular(20),
+                                    data: songs,
+                                    index: index,
+                                  ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Song Title and Artist
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.12,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.1,
-                      ),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              "Song Title",
-                              softWrap: true,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color:
-                                    MediaQuery.of(context).platformBrightness ==
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Song Title and Artist
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: MediaQuery.of(context).size.width * 0.1,
+                          ),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Song Title",
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: MediaQuery.of(context)
+                                                .platformBrightness ==
                                             Brightness.dark
                                         ? KColors.whiteColor
                                         : KColors.blackColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Text(
+                                  ("• Artist •"),
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const Text(
-                              ("• Artist •"),
-                              softWrap: true,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

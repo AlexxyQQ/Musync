@@ -4,6 +4,8 @@ import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/home/data/model/album_hive_model.dart';
 import 'package:musync/features/home/data/model/playlist_hive_model.dart';
 import 'package:musync/features/home/data/model/song_hive_model.dart';
+import 'package:musync/features/home/domain/entity/album_entity.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 class MusicHiveDataSourse {
   Future<void> init() async {
@@ -33,10 +35,9 @@ class MusicHiveDataSourse {
     await box.put(song.id, song);
   }
 
-  Future<List<SongHiveModel>> getAllSongs() async {
+  Future<List<SongEntity>> getAllSongs() async {
     var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
-    var songs = box.values.toList();
-
+    var songs = box.values.toList().map((e) => e.toEntity()).toList();
     return songs;
   }
 
@@ -49,10 +50,35 @@ class MusicHiveDataSourse {
     }
   }
 
-  Future<List<AlbumHiveModel>> getAllAlbums() async {
+  Future<List<AlbumEntity>> getAllAlbums() async {
     var box = await Hive.openBox<AlbumHiveModel>(HiveTableConstant.albumBox);
-    var albums = box.values.toList();
+    var albums = box.values.toList().map((e) => e.toEntity()).toList();
     return albums;
+  }
+
+  Future<void> addAllAlbumWithSongs({
+    required Map<String, List<SongEntity>> albumWithSongs,
+  }) async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    for (var album in albumWithSongs.keys) {
+      for (var song in albumWithSongs[album]!) {
+        await box.put(song.id, SongHiveModel.empty().toHiveModel(song));
+      }
+    }
+  }
+
+  Future<Map<String, List<SongEntity>>> getAllAlbumsWithSongs() async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    Map<String, List<SongEntity>> albumsWithSongs = {};
+    for (var song in box.values.toList()) {
+      if (albumsWithSongs.containsKey(song.album)) {
+        albumsWithSongs[song.album]!.add(song.toEntity());
+      } else {
+        albumsWithSongs[song.album] = [song.toEntity()];
+      }
+    }
+
+    return albumsWithSongs;
   }
 
   // ------------------ All Folder Queries ------------------ //
@@ -74,28 +100,85 @@ class MusicHiveDataSourse {
     return value;
   }
 
-  Future<List<SongHiveModel>> getFolderSongs({required String path}) async {
+  Future<List<SongEntity>> getFolderSongs({required String path}) async {
     var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
-    List<SongHiveModel> folderSongs = [];
+    List<SongEntity> folderSongs = [];
     for (var song in box.values.toList()) {
       if (song.data
               .split('/')
               .sublist(0, song.data.split('/').length - 1)
               .join('/') ==
           path) {
-        folderSongs.add(song);
+        folderSongs.add(song.toEntity());
       }
     }
 
     return folderSongs;
   }
 
-  Future<List<String>> getAllFoldersWithSongs() async {
-    return await HiveQueries().getValue(
-      boxName: 'songs',
-      key: 'foldersWithSongs',
-      defaultValue: null,
-    );
+  Future<Map<String, List<SongEntity>>> getAllFoldersWithSongs() async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    Map<String, List<SongEntity>> foldersWithSongs = {};
+    for (var song in box.values.toList()) {
+      var folder = song.data
+          .split('/')
+          .sublist(0, song.data.split('/').length - 1)
+          .join('/');
+      if (foldersWithSongs.containsKey(folder)) {
+        foldersWithSongs[folder]!.add(song.toEntity());
+      } else {
+        foldersWithSongs[folder] = [song.toEntity()];
+      }
+    }
+
+    return foldersWithSongs;
+
+    // return await HiveQueries().getValue(
+    //   boxName: 'songs',
+    //   key: 'foldersWithSongs',
+    //   defaultValue: null,
+    // );
+  }
+
+  // add folder with songs
+  Future<void> addFolderWithSongs({
+    required Map<String, List<SongEntity>> foldersWithSongs,
+  }) async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+
+    for (var folder in foldersWithSongs.keys) {
+      for (var song in foldersWithSongs[folder]!) {
+        await box.put(song.id, SongHiveModel.empty().toHiveModel(song));
+      }
+    }
+  }
+
+  // ------------------ All Artist Queries ------------------ //
+  Future<Map<String, List<SongEntity>>> getAllArtistsWithSongs() async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    Map<String, List<SongEntity>> artistsWithSongs = {};
+    for (var song in box.values.toList()) {
+      var artist = song.artist;
+      if (artistsWithSongs.containsKey(artist)) {
+        artistsWithSongs[artist]!.add(song.toEntity());
+      } else {
+        artistsWithSongs[artist] = [song.toEntity()];
+      }
+    }
+
+    return artistsWithSongs;
+  }
+
+  Future<void> addAllArtistsWithSongs({
+    required Map<String, List<SongEntity>> artistsWithSongs,
+  }) async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+
+    for (var artist in artistsWithSongs.keys) {
+      for (var song in artistsWithSongs[artist]!) {
+        await box.put(song.id, SongHiveModel.empty().toHiveModel(song));
+      }
+    }
   }
 
   // ------------------ All Playlist Queries ------------------ //

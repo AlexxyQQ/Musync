@@ -62,12 +62,8 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       } else {
         final localAlbumWithSongsEither =
             await musicLocalDataSource.getAllAlbumWithSongs(token: token);
-        final localAlbumWithSongs = localAlbumWithSongsEither.fold(
-          (error) => <String, List<SongEntity>>{},
-          (localSongs) => localSongs,
-        );
 
-        return Right(localAlbumWithSongs);
+        return localAlbumWithSongsEither;
       }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
@@ -301,12 +297,8 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       } else {
         final localAllFolderWithSongsEither =
             await musicLocalDataSource.getAllFolderWithSongs(token: token);
-        final localAllFolderWithSongs = localAllFolderWithSongsEither.fold(
-          (error) => <String, List<SongEntity>>{},
-          (localSongs) => localSongs,
-        );
 
-        return Right(localAllFolderWithSongs);
+        return localAllFolderWithSongsEither;
       }
     } catch (e) {
       return Left(
@@ -359,12 +351,8 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       } else {
         final localFoldersListEither =
             await musicLocalDataSource.getAllFolders(token: token);
-        final localFoldersList = localFoldersListEither.fold(
-          (error) => <String>[],
-          (localFolders) => localFolders,
-        );
 
-        return Right(localFoldersList);
+        return localFoldersListEither;
       }
     } catch (e) {
       return Left(

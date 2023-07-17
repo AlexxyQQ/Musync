@@ -193,32 +193,6 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
   Future<void> filterSongSearch({required String query}) async {
     emit(state.copyWith(isLoading: true));
 
-    // final filteredSongs = <SongEntity>[];
-    // print('asas:query $query');
-
-    // if (query.isNotEmpty && query != '') {
-    //   final songs = state.songs;
-    //   print('asasaaa : ${songs}');
-
-    //   for (var element in songs) {
-    //     final filterdKeys = element.title.toLowerCase().contains(
-    //           query.toLowerCase(),
-    //         );
-
-    //     if (filterdKeys) {
-    //       filteredSongs.add(element);
-    //     }
-    //   }
-    // }
-
-    // print('asas: ${filteredSongs.length}');
-
-    // emit(
-    //   state.copyWith(
-    //     isLoading: false,
-    //     filteredSongs: filteredSongs,
-    //   ),
-    // );
     final songs = <SongEntity>[];
 
     if (query.isNotEmpty && query != ' ') {

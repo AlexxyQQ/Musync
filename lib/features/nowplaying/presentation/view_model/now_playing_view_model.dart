@@ -221,12 +221,6 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
   }
 
   Future<void> clearQueue() async {
-    await state.audioPlayer.setAudioSource(
-      AudioSource.uri(
-        Uri.parse(state.currentSong.data),
-        tag: state.currentSong,
-      ),
-    );
     emit(
       state.copyWith(
         isPlaying: false,

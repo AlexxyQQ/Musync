@@ -18,7 +18,6 @@ class AuthViewModel extends Cubit<AuthState> {
 
   Future<void> initialLogin() async {
     emit(state.copyWith(isLoading: true, authError: null));
-    log('this ran 1');
     final data = await splashUseCase.initialLogin();
     final goHomeHive = await GetIt.instance<HiveQueries>()
         .getValue(boxName: 'settings', key: 'goHome', defaultValue: false);

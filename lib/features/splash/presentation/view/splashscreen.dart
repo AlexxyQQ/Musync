@@ -44,20 +44,20 @@ class _MusyncSplashState extends State<MusyncSplash> {
             }
             if (state.isFirstTime) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                kShowSnackBar(
-                  "Welcome to Musync!",
-                  context: blocContext,
-                );
+                // kShowSnackBar(
+                //   "Welcome to Musync!",
+                //   context: blocContext,
+                // );
                 Navigator.popAndPushNamed(context, AppRoutes.onBoardingRoute);
               });
             }
 
             if (state.goHome && state.loggedUser != null) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                kShowSnackBar(
-                  "Welcome back ${state.loggedUser!.username}!",
-                  context: blocContext,
-                );
+                // kShowSnackBar(
+                //   "Welcome back ${state.loggedUser!.username}!",
+                //   context: blocContext,
+                // );
                 Navigator.popAndPushNamed(context, AppRoutes.homeRoute);
               });
             }

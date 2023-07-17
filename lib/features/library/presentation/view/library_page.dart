@@ -400,6 +400,7 @@ class ListViewCard extends StatelessWidget {
                   width: mqSize.width - 150,
                   child: Row(
                     children: [
+                      const SizedBox(width: 5),
                       // switch case for type with icon
                       Icon(
                         item['type'] == 'Folder'

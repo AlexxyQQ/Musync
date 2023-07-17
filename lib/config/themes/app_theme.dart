@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/themes/widget_themes.dart/text_thems.dart';
+import 'package:musync/config/themes/widget_themes/text_themes.dart';
 
 class AppTheme {
   static appLightTheme() {
