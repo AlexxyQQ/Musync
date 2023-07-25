@@ -516,4 +516,45 @@ class MusicRemoteDataSource implements AMusicDataSource {
     // TODO: implement getPlaylists
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> tooglePublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.toogleSongPublicRoute,
+        data: {
+          "songId": songID,
+          'toggleValue': isPublic,
+        },
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        return Right(isPublic);
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

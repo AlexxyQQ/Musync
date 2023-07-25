@@ -45,4 +45,10 @@ abstract class IMusicQueryRepository {
       getEverything({
     required String token,
   });
+
+  Future<Either<ErrorModel, bool>> makeSongPublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  });
 }

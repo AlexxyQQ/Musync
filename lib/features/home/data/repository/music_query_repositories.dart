@@ -536,4 +536,35 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> makeSongPublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  }) async {
+    try {
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        return await musicRemoteDataSource.tooglePublic(
+          songID: songID,
+          token: token,
+          isPublic: isPublic,
+        );
+      } else {
+        return await musicLocalDataSource.tooglePublic(
+          songID: songID,
+          token: token,
+          isPublic: isPublic,
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

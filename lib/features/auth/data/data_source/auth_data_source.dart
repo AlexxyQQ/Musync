@@ -7,17 +7,35 @@ import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 
 class AuthDataSource {
   final Api api;
 
-  const AuthDataSource({required this.api});
+  AuthDataSource({
+    required this.api,
+  });
 
   Future<Either<ErrorModel, Map<String, dynamic>>> loginUser({
     required String email,
     required String password,
   }) async {
     try {
+      final socket = socket_io.io(ApiEndpoints.baseURL, <String, dynamic>{
+        'transports': ['websocket'],
+      });
+      // Handle the connection event (optional).
+      socket.onConnect((_) {
+        print('WebSocket connected!');
+      });
+      // Handle custom authentication event.
+      socket.on('authenticated', (_) {
+        print('WebSocket authenticated!');
+        // Now you can start listening for other events or sending messages.
+        // For example: socket.on('message', (data) => print(data));
+      });
+      // Send the session token to authenticate the WebSocket connection.
+
       final response = await api.sendRequest.post(
         ApiEndpoints.loginRoute,
         data: jsonEncode({
@@ -32,6 +50,8 @@ class AuthDataSource {
         Map<String, dynamic> userData = responseApi.data['user'];
         String token = responseApi.data['token'];
         userData['token'] = token;
+        // Replace 'your_received_token_here' with the token received after successful login.
+        socket.emit('authenticate', token);
         return Right(userData);
       } else {
         return Left(

@@ -238,4 +238,20 @@ class MusicQueryUseCase {
     );
     return await musicQueryRepository.addAllSongs(token: token);
   }
+
+  Future<Either<ErrorModel, bool>> toggleSongPublic({
+    required int songID,
+    required bool isPublic,
+  }) async {
+    final token = await hiveQueries.getValue(
+      boxName: 'users',
+      key: 'token',
+      defaultValue: '',
+    );
+    return await musicQueryRepository.makeSongPublic(
+      songID: songID,
+      token: token,
+      isPublic: isPublic,
+    );
+  }
 }

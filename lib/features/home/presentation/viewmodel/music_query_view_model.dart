@@ -197,6 +197,7 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
 
     if (query.isNotEmpty && query != ' ') {
       final songsWithSongs = state.everything['songs']!['all'];
+      print('asss: ${songsWithSongs!.length}');
       songs.addAll(
         songsWithSongs!.where(
           (element) => element.title.toLowerCase().contains(
@@ -205,6 +206,8 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
         ),
       );
     }
+    print('asss: ${songs!.length}');
+
     emit(
       state.copyWith(
         isLoading: false,
@@ -215,5 +218,15 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
 
   Future<void> toggleOnSearch() async {
     emit(state.copyWith(onSearch: !state.onSearch));
+  }
+
+  Future<void> tooglePublic({
+    required int songID,
+    required bool isPublic,
+  }) async {
+    await _musicQueryUseCase.toggleSongPublic(
+      songID: songID,
+      isPublic: isPublic,
+    );
   }
 }

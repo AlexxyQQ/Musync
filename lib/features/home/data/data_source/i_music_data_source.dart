@@ -56,4 +56,10 @@ abstract class AMusicDataSource {
   Future<Either<ErrorModel, List<PlaylistEntity>>> getPlaylists({
     required String token,
   });
+
+  Future<Either<ErrorModel, bool>> tooglePublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  });
 }

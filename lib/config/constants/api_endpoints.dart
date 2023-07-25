@@ -1,6 +1,6 @@
 class ApiEndpoints {
-  static const String baseURL = "http://192.168.1.79:3001/api";
-  static const String baseImageUrl = 'http://192.168.1.79:3001/';
+  static const String baseURL = "http://192.168.1.75:3001/api";
+  static const String baseImageUrl = 'http://192.168.1.75:3001/';
   static const Map<String, dynamic> defaultHeaders = {
     'apisecret': "Apple",
     'Accept': 'application/json',
@@ -31,4 +31,5 @@ class ApiEndpoints {
   static const String addToPlaylistRoute = '/music/addToPlaylist';
   static const String createPlaylistRoute = '/music/createPlaylist';
   static const String getPlaylistsRoute = '/music/getPlaylists';
+  static const String toogleSongPublicRoute = '/music/tooglePublic';
 }

@@ -310,8 +310,8 @@ class NowPlayingPhone extends StatelessWidget {
                                   )
                                 : QueryArtworkFromApi(
                                     borderRadius: BorderRadius.circular(20),
-                                    data: songs,
-                                    index: index,
+                                    data: state.queue,
+                                    index: state.currentIndex,
                                   ),
                           ),
                         ),

@@ -84,7 +84,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         children: [
           BlocBuilder<MusicQueryViewModel, MusicQueryState>(
             builder: (context, state) {
-              log("crap: ${state.everything}");
               if (state.isLoading) {
                 return PageView.builder(
                   itemCount: pages.length,

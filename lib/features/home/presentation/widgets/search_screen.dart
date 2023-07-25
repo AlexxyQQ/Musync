@@ -10,27 +10,35 @@ import 'package:musync/features/library/presentation/widgets/song_listview.dart'
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key, required this.data});
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({Key? key, required this.data}) : super(key: key);
 
   final List<SongEntity> data;
 
-  @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
+  void _onSongTap(BuildContext context, int index) {
+    final nav = Navigator.of(context);
+    BlocProvider.of<NowPlayingViewModel>(context).playAll(
+      songs: data,
+      index: index,
+    );
+    nav.pushNamed(
+      AppRoutes.nowPlaying,
+      arguments: {
+        "songs": data,
+        "index": index,
+      },
+    );
+  }
 
-class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final mqSize = MediaQuery.of(context).size;
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    final controller = ScrollController();
-    final Color songNameColor =
-        isDark ? KColors.whiteColor : KColors.blackColor;
-    final Color songArtistColor =
+    final songNameColor = isDark ? KColors.whiteColor : KColors.blackColor;
+    final songArtistColor =
         isDark ? KColors.offWhiteColor : KColors.offBlackColor;
-    // compare if the widget.data is empty or not
-    if (widget.data.isEmpty) {
+
+    if (data.isEmpty) {
       return Scaffold(
         body: Center(
           child: Text(
@@ -41,95 +49,87 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     } else {
       return Scaffold(
-        body: SizedBox(
-          width: mqSize.width,
-          height: mqSize.height,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              final ms = widget.data[index].duration!;
-              Duration duration = Duration(milliseconds: ms);
-              int minutes = duration.inMinutes;
-              int seconds = duration.inSeconds.remainder(60);
-              return InkWell(
-                onTap: () async {
-                  final nav = Navigator.of(context);
-                  BlocProvider.of<NowPlayingViewModel>(
-                    context,
-                  ).playAll(
-                    songs: widget.data,
-                    index: index,
-                  );
-                  nav.pushNamed(
-                    AppRoutes.nowPlaying,
-                    arguments: {
-                      "songs": widget.data,
-                      "index": index,
-                    },
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 3,
-                    vertical: 5,
-                  ),
-                  child: ListTile(
-                    leading: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: widget.data[index].albumArtUrl == null ||
-                              widget.data[index].albumArtUrl == ''
-                          ? QueryArtworkWidget(
-                              id: widget.data[index].id,
-                              nullArtworkWidget: const Icon(
-                                Icons.music_note_rounded,
-                                size: 40,
-                                color: KColors.accentColor,
-                              ),
-                              type: ArtworkType.AUDIO,
-                              errorBuilder: (p0, p1, p2) {
-                                return const Icon(
-                                  Icons.music_note_rounded,
-                                  color: KColors.accentColor,
-                                );
-                              },
-                            )
-                          : QueryArtworkFromApi(
-                              data: widget.data,
-                              index: index,
+        body: ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            final ms = data[index].duration!;
+            final duration = Duration(milliseconds: ms);
+            final minutes = duration.inMinutes;
+            final seconds = duration.inSeconds.remainder(60);
+
+            return InkWell(
+              onTap: () => _onSongTap(context, index),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+                child: ListTile(
+                  leading: Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: data[index].albumArtUrl == null ||
+                            data[index].albumArtUrl == ''
+                        ? QueryArtworkWidget(
+                            id: data[index].id,
+                            nullArtworkWidget: const Icon(
+                              Icons.music_note_rounded,
+                              size: 40,
+                              color: KColors.accentColor,
                             ),
-                    ),
-                    title: SizedBox(
-                      width: mqSize.width * 0.7,
-                      child: Text(
-                        widget.data[index].title,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: songNameColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            type: ArtworkType.AUDIO,
+                            errorBuilder: (p0, p1, p2) {
+                              return const Icon(
+                                Icons.music_note_rounded,
+                                color: KColors.accentColor,
+                              );
+                            },
+                          )
+                        : QueryArtworkFromApi(
+                            data: data,
+                            index: index,
+                          ),
+                  ),
+                  title: SizedBox(
+                    width: mqSize.width * 0.7,
+                    child: Text(
+                      data[index].title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: songNameColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    subtitle: RichText(
-                      text: TextSpan(
-                        text:
-                            '${widget.data[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                        style: TextStyle(
-                          color: songArtistColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                  ),
+                  subtitle: Row(
+                    children: [
+                      if (data[index].serverUrl != '' &&
+                          data[index].serverUrl != null)
+                        const Icon(
+                          Icons.cloud,
+                          size: 20,
+                          color: KColors.accentColor,
+                        ),
+                      const SizedBox(width: 5),
+                      RichText(
+                        text: TextSpan(
+                          text:
+                              '${data[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                          style: TextStyle(
+                            color: songArtistColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       );
     }

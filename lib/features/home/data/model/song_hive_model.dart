@@ -97,6 +97,9 @@ class SongHiveModel {
   @HiveField(28)
   final String? albumArtUrl;
 
+  @HiveField(29)
+  final bool isPublic;
+
   SongHiveModel.empty()
       : this(
           id: 0,
@@ -128,6 +131,7 @@ class SongHiveModel {
           serverUrl: '',
           albumArt: '',
           albumArtUrl: '',
+          isPublic: false,
         );
 
   SongHiveModel({
@@ -160,6 +164,7 @@ class SongHiveModel {
     required this.isRingtone,
     required this.albumArt,
     String? albumArtUrl,
+    bool? isPublic,
   })  : uri = uri ?? "",
         album = album ?? '',
         albumId = albumId ?? '',
@@ -179,6 +184,7 @@ class SongHiveModel {
         isNotification = isNotification ?? false,
         isPodcast = isPodcast ?? false,
         albumArtUrl = albumArtUrl ?? '',
+        isPublic = isPublic ?? false,
         serverUrl = serverUrl ?? '';
 
   SongEntity toEntity() => SongEntity(
@@ -211,6 +217,7 @@ class SongHiveModel {
         isRingtone: isRingtone,
         albumArt: albumArt ?? '',
         albumArtUrl: albumArtUrl ?? '',
+        isPublic: isPublic,
       );
   SongHiveModel toHiveModel(SongEntity entity) => SongHiveModel(
         id: entity.id,
@@ -242,6 +249,7 @@ class SongHiveModel {
         isRingtone: entity.isRingtone,
         albumArt: entity.albumArt,
         albumArtUrl: entity.albumArtUrl,
+        isPublic: entity.isPublic,
       );
 
   SongModel toSongModel(SongEntity entity) => SongModel({
@@ -322,6 +330,7 @@ class SongHiveModel {
     String? serverUrl,
     String? albumArt,
     String? albumArtUrl,
+    bool? isPublic,
   }) {
     return SongHiveModel(
       id: id ?? this.id,
@@ -353,6 +362,7 @@ class SongHiveModel {
       serverUrl: serverUrl ?? this.serverUrl,
       albumArt: albumArt ?? this.albumArt,
       albumArtUrl: albumArtUrl ?? this.albumArtUrl,
+      isPublic: isPublic ?? this.isPublic,
     );
   }
 }
