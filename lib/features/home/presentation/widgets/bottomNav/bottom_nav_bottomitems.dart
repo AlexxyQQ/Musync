@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musync/config/constants/constants.dart';
 
 class BottomItems extends StatelessWidget {
@@ -33,8 +34,8 @@ class BottomItems extends StatelessWidget {
 
           // Search
           _iconButton(
-            text: "Search",
-            icon: Icons.search_rounded,
+            text: "Browse",
+            icon: Icons.travel_explore_rounded,
             onPressed: () => onIndexChanged(1),
             isSelected: selectedIndex == 1,
           ),

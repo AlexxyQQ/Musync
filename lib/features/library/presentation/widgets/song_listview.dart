@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_query_widget.dart';
+import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -144,7 +146,6 @@ class _ListofSongsState extends State<ListofSongs> {
 
           return InkWell(
             onTap: () async {
-              print('asss: ${widget.songs[index].serverUrl}');
               final nav = Navigator.of(context);
               await BlocProvider.of<NowPlayingViewModel>(context).playAll(
                 songs: widget.songs,
@@ -326,38 +327,126 @@ class SecondAppBar extends StatelessWidget {
 
             const Spacer(),
 
-            const SizedBox(width: 20),
             // Play all songs
             BlocBuilder<NowPlayingViewModel, NowPlayingState>(
               builder: (context, state) {
-                return Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: KColors.accentColor,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      state.isPlaying ? Icons.pause : Icons.play_arrow_rounded,
-                      // color: isDark ? whiteColor : blackColor,
-                    ),
-                    onPressed: () async {
-                      final nav = Navigator.of(context);
-                      await BlocProvider.of<NowPlayingViewModel>(context)
-                          .playAll(
-                        songs: songs,
-                        index: 0,
-                      );
-                      nav.pushNamed(
-                        AppRoutes.nowPlaying,
-                        arguments: {
-                          "songs": songs,
-                          "index": 0,
+                return Row(
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: KColors.accentColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: GestureDetector(
+                        onTap: () async {
+                          kShowSnackBar(
+                            'Songs are being Uploaded',
+                            context: context,
+                          );
+                          await BlocProvider.of<MusicQueryViewModel>(context)
+                              .addListOfSongs(songs: songs);
                         },
-                      );
-                    },
-                  ),
+                        onLongPress: () async {
+                          final RenderBox overlay = Overlay.of(context)
+                              .context
+                              .findRenderObject() as RenderBox;
+                          final buttonPosition =
+                              (context.findRenderObject() as RenderBox)
+                                  .localToGlobal(Offset.zero);
+                          final buttonSize =
+                              (context.findRenderObject() as RenderBox).size;
+                          const menuWidth =
+                              150.0; // Customize the menu width as needed
+
+                          double dx = buttonPosition.dx +
+                              buttonSize.width +
+                              10.0; // Adjust the horizontal position as needed
+                          double dy = buttonPosition.dy +
+                              buttonSize.height +
+                              10.0; // Adjust the vertical position as needed
+
+                          String? selectedOption = await showMenu(
+                            context: context,
+                            position: RelativeRect.fromLTRB(
+                              dx,
+                              dy,
+                              overlay.size.width - dx - menuWidth,
+                              overlay.size.height - dy,
+                            ),
+                            items: <PopupMenuEntry<String>>[
+                              const PopupMenuItem<String>(
+                                value: 'Public',
+                                child: Text('Public Upload'),
+                              ),
+                              const PopupMenuItem<String>(
+                                value: 'Private',
+                                child: Text('Private Upload'),
+                              ),
+                            ],
+                          );
+
+                          // Check the selected option and run the corresponding function
+                          if (selectedOption == 'Public') {
+                            // ignore: use_build_context_synchronously
+                            kShowSnackBar(
+                              'Songs are being Uploaded',
+                              context: context,
+                            );
+                            // ignore: use_build_context_synchronously
+                            await BlocProvider.of<MusicQueryViewModel>(context)
+                                .addListOfSongs(songs: songs, isPublic: true);
+                          } else if (selectedOption == 'Private') {
+                            // ignore: use_build_context_synchronously
+                            kShowSnackBar(
+                              'Songs are being Uploaded',
+                              context: context,
+                            );
+                            // ignore: use_build_context_synchronously
+                            await BlocProvider.of<MusicQueryViewModel>(context)
+                                .addListOfSongs(songs: songs);
+                          }
+                        },
+                        child: const Icon(
+                          Icons.sync_rounded,
+                          // color: isDark ? whiteColor : blackColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: KColors.accentColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          state.isPlaying
+                              ? Icons.pause
+                              : Icons.play_arrow_rounded,
+                          // color: isDark ? whiteColor : blackColor,
+                        ),
+                        onPressed: () async {
+                          final nav = Navigator.of(context);
+                          await BlocProvider.of<NowPlayingViewModel>(context)
+                              .playAll(
+                            songs: songs,
+                            index: 0,
+                          );
+                          nav.pushNamed(
+                            AppRoutes.nowPlaying,
+                            arguments: {
+                              "songs": songs,
+                              "index": 0,
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 );
               },
             ),

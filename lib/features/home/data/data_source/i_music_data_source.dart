@@ -13,6 +13,7 @@ abstract class AMusicDataSource {
   Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
     required String token,
   });
+  Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs();
   Future<Either<ErrorModel, List<SongEntity>>> getFolderSongs({
     required String path,
     required String token,

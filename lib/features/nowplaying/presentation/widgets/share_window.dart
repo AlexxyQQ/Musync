@@ -82,6 +82,10 @@ class _SharePageState extends State<SharePage> {
                                     songID: state.currentSong.id,
                                     isPublic: !(state.currentSong.isPublic!),
                                   );
+                              // ignore: use_build_context_synchronously
+                              await context
+                                  .read<MusicQueryViewModel>()
+                                  .getAllPublicSongs();
                             },
                           )
                         : const Text(

@@ -18,6 +18,7 @@ class ApiEndpoints {
   static const String uploadAlbumArtRoute = '/music/uploadAlbumArt';
   static const String addAllSongsRoute = '/music/addAllSongs';
   static const String getAllSongsRoute = '/music/getAllSongs';
+  static const String getAllPublicSongsRoute = '/music/getAllPublicSongs';
   static const String getAllFolderWithSongsRoute =
       '/music/getAllFolderWithSongs';
   static const String getAllFoldersRoute = '/music/getAllFolders';

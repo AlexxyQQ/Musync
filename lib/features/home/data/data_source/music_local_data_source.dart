@@ -426,4 +426,18 @@ class MusicLocalDataSource implements AMusicDataSource {
       );
     }
   }
+
+  @override
+  Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs() async {
+    try {
+      return const Right([]);
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

@@ -23,6 +23,7 @@ class MusicQueryState {
   final bool onSearch;
   final Map<String, Map<String, List<SongEntity>>> filteredEverything;
   final List<SongEntity> filteredSongs;
+  final List<SongEntity> publicSongs;
 
   final String? error;
   final bool isLoading;
@@ -49,6 +50,7 @@ class MusicQueryState {
     required this.isUploading,
     required this.inLibrary,
     required this.filteredEverything,
+    required this.publicSongs,
   });
 
   factory MusicQueryState.initial() {
@@ -72,6 +74,7 @@ class MusicQueryState {
       onSearch: false,
       filteredEverything: {},
       filteredSongs: [],
+      publicSongs: [],
     );
   }
 
@@ -95,6 +98,7 @@ class MusicQueryState {
     bool? onSearch,
     List<SongEntity>? filteredSongs,
     Map<String, Map<String, List<SongEntity>>>? filteredEverything,
+    List<SongEntity>? publicSongs,
   }) {
     return MusicQueryState(
       albumWithSongs: albumWithSongs ?? this.albumWithSongs,
@@ -116,6 +120,7 @@ class MusicQueryState {
       onSearch: onSearch ?? this.onSearch,
       filteredEverything: filteredEverything ?? this.filteredEverything,
       filteredSongs: filteredSongs ?? this.filteredSongs,
+      publicSongs: publicSongs ?? this.publicSongs,
     );
   }
 
@@ -140,6 +145,7 @@ class MusicQueryState {
       'onSearch': onSearch,
       'filteredEverything': filteredEverything,
       'filteredSongs': filteredSongs.map((x) => x.toMap()).toList(),
+      'publicSongs': publicSongs.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -172,6 +178,7 @@ class MusicQueryState {
         other.onSearch == onSearch &&
         listEquals(other.filteredSongs, filteredSongs) &&
         mapEquals(other.filteredEverything, filteredEverything) &&
+        listEquals(other.publicSongs, publicSongs) &&
         other.isUploading == isUploading;
   }
 
@@ -194,6 +201,7 @@ class MusicQueryState {
         filteredSongs.hashCode ^
         inLibrary.hashCode ^
         filteredEverything.hashCode ^
+        publicSongs.hashCode ^
         onSearch.hashCode ^
         isUploading.hashCode;
   }
