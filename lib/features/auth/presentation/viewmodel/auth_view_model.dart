@@ -16,6 +16,33 @@ class AuthViewModel extends Cubit<AuthState> {
     required this.splashUseCase,
   }) : super(AuthState.initial());
 
+  Future<void> socketConnection() async {
+    emit(state.copyWith(isLoading: true, authError: null));
+    if (state.loggedUser != null) {
+      final data = await authUseCase.socketConnection(
+        loggedUserEmail: state.loggedUser!.email,
+      );
+      data.fold(
+        (l) => emit(
+          state.copyWith(
+            isError: true,
+            isLoading: false,
+            authError: l.message,
+          ),
+        ),
+        (r) => emit(
+          state.copyWith(
+            isError: false,
+            authError: null,
+            isLoading: false,
+            isLogin: true,
+            
+          ),
+        ),
+      );
+    }
+  }
+
   Future<void> initialLogin() async {
     emit(state.copyWith(isLoading: true, authError: null));
     final data = await splashUseCase.initialLogin();

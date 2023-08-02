@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/loading_screen.dart';
+import 'package:musync/core/network/api/socket_service.dart';
+import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
@@ -22,8 +24,15 @@ class _MusyncSplashState extends State<MusyncSplash> {
     sothing();
   }
 
+  late SocketService socketService; // Declare the SocketService instance
+
   Future<void> sothing() async {
     await BlocProvider.of<AuthViewModel>(context).initialLogin();
+    final userEmail =
+        BlocProvider.of<AuthViewModel>(context).state.loggedUser!.email;
+    final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
+    final model = device.model;
+    socketService = SocketService(userEmail, model);
   }
 
   @override

@@ -60,7 +60,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     var musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
     musicQueryCubit.getEverything();
-    musicQueryCubit.getAllPublicSongs();
+    // musicQueryCubit.getAllPublicSongs();
   }
 
   void syncTrue() {

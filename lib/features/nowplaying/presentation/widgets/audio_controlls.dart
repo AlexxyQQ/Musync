@@ -1,13 +1,20 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/core/network/api/socket_service.dart';
+import 'package:musync/core/utils/device_info.dart';
+import 'package:musync/features/auth/presentation/state/authentication_state.dart';
+import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:musync/features/nowplaying/presentation/widgets/share_window.dart';
-import 'package:palette_generator/palette_generator.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class AudioControlls extends StatefulWidget {
   const AudioControlls({
@@ -22,8 +29,45 @@ class AudioControlls extends StatefulWidget {
 }
 
 class _AudioControllsState extends State<AudioControlls> {
+  late SocketService socketService; // Declare the SocketService instance
+
+  void c() async {
+    super.initState();
+    final userEmail = context.read<AuthViewModel>().state.loggedUser!.email;
+    final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
+    final model = device.model;
+    socketService =
+        SocketService(userEmail, model); // Initialize the SocketService
+
+    socketService.getSocket
+        .onDisconnect((_) => print('Disconnected from server'));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    c();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    try {
+      socketService.dispose();
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
+    socketService.getSocket.on('shared-song', (data) async {
+      log('Shared Song: ${data['timeProgress']}');
+      final List<SongEntity> songs = data['songList']
+          .map<SongEntity>((song) => SongEntity.fromApiMap(song))
+          .toList();
+      await BlocProvider.of<NowPlayingViewModel>(context)
+          .playAll(songs: songs, index: data['songIndex']);
+    });
     return BlocBuilder<NowPlayingViewModel, NowPlayingState>(
       builder: (context, state) {
         return Row(
@@ -144,20 +188,55 @@ class MoreControlls extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {},
-            child: const Row(
+            child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.phone_android_rounded,
                   color: Colors.amber,
                   size: 24,
                 ),
-                SizedBox(width: 5),
-                Text(
-                  'Phone',
-                  style: TextStyle(
-                    color: Colors.amber,
-                    fontSize: 19,
-                  ),
+                const SizedBox(width: 5),
+                BlocBuilder<AuthViewModel, AuthState>(
+                  builder: (context, state) {
+                    return InkWell(
+                      onTap: () async {
+                        final device =
+                            await GetDeviceInfo.deviceInfoPlugin.androidInfo;
+                        final model = device.model;
+                        final io.Socket socket = io.io(
+                          'http://192.168.1.65:3002',
+                          io.OptionBuilder()
+                              .setTransports(['websocket']).setQuery({
+                            'userEmail': state.loggedUser!.email,
+                            'uid': model
+                          }).build(),
+                        );
+
+                        socket.connect();
+
+                        socket.onConnect((data) {
+                          socket.emit('connection', {
+                            'userEmail': state.loggedUser!.email,
+                            'uid': model,
+                          });
+                        });
+                        socket.on('shared-song', (data) {
+                          // Handle received data from server
+                          print('Received data: $data');
+                        });
+
+                        socket.onDisconnect(
+                            (_) => print('Disconnected from server'));
+                      },
+                      child: const Text(
+                        'Phone',
+                        style: TextStyle(
+                          color: Colors.amber,
+                          fontSize: 19,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

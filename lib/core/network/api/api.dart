@@ -2,9 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/network/api/dio_error_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class Api {
   final Dio _dio = Dio();
+
+  final io.Socket _socket = io.io(
+    ApiEndpoints.socketURL,
+    <String, dynamic>{
+      'transports': ['websocket']
+    },
+  );
 
   Api() {
     _dio
@@ -25,6 +33,8 @@ class Api {
   }
 
   Dio get sendRequest => _dio;
+
+  io.Socket get getSocket => _socket;
 }
 
 class ApiResponse {

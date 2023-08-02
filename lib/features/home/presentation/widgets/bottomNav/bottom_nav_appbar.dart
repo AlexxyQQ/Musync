@@ -81,7 +81,7 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
                             context
                                 .read<MusicQueryViewModel>()
                                 .filterSongSearch(
-                                  query: value.toLowerCase().trim(),
+                                  query: value.toLowerCase().trim(), //apple
                                 );
 
                             Navigator.push(
