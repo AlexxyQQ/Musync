@@ -51,6 +51,7 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
         currentIndex: index,
       ),
     );
+    log('this ran ff');
   }
 
   // Play

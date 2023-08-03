@@ -99,19 +99,4 @@ class AuthUseCase {
       rethrow;
     }
   }
-
-  Future<Either<ErrorModel, bool>> socketConnection({
-    required String loggedUserEmail,
-  }) async {
-    try {
-      final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
-      final model = device.model;
-      return await authRepository.socketConnection(
-        loggedUserEmail: loggedUserEmail,
-        loggedUserDevice: model,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
 }

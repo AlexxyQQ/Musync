@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/network/api/socket_service.dart';
 import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
-import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:musync/features/nowplaying/presentation/widgets/share_window.dart';
@@ -29,45 +26,47 @@ class AudioControlls extends StatefulWidget {
 }
 
 class _AudioControllsState extends State<AudioControlls> {
-  late SocketService socketService; // Declare the SocketService instance
-
-  void c() async {
-    super.initState();
-    final userEmail = context.read<AuthViewModel>().state.loggedUser!.email;
-    final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
-    final model = device.model;
-    socketService =
-        SocketService(userEmail, model); // Initialize the SocketService
-
-    socketService.getSocket
-        .onDisconnect((_) => print('Disconnected from server'));
-  }
+  // late SocketService socketService;
 
   @override
   void initState() {
     super.initState();
-    c();
+    // initializeSocketService();
   }
+
+  // void initializeSocketService() async {
+  //   final userEmail = context.read<AuthViewModel>().state.loggedUser!.email;
+  //   final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
+  //   final model = device.model;
+  //   socketService = SocketService(userEmail, model);
+
+  //   socketService.getSocket.on('shared-song', (data) async {
+  //     if (mounted) {
+  //       final List<SongEntity> songs = List<SongEntity>.from(data['songList']
+  //           .map((song) => SongEntity.fromApiMap(song))
+  //           .toList());
+  //       await BlocProvider.of<NowPlayingViewModel>(context)
+  //           .playAll(songs: songs, index: data['songIndex']);
+  //     }
+  //   });
+
+  //   socketService.getSocket.onDisconnect((_) {
+  //     if (mounted) {
+  //       print('Disconnected from server');
+  //     }
+  //   });
+  // }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    // if (mounted) {
+    //   socketService.dispose();
+    // }
     super.dispose();
-    try {
-      socketService.dispose();
-    } catch (e) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    socketService.getSocket.on('shared-song', (data) async {
-      log('Shared Song: ${data['timeProgress']}');
-      final List<SongEntity> songs = data['songList']
-          .map<SongEntity>((song) => SongEntity.fromApiMap(song))
-          .toList();
-      await BlocProvider.of<NowPlayingViewModel>(context)
-          .playAll(songs: songs, index: data['songIndex']);
-    });
     return BlocBuilder<NowPlayingViewModel, NowPlayingState>(
       builder: (context, state) {
         return Row(

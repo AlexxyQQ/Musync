@@ -31,26 +31,6 @@ class AuthRepositoryImpl extends IAuthRepository {
   }
 
   @override
-  Future<Either<ErrorModel, bool>> socketConnection({
-    required String loggedUserEmail,
-    required String loggedUserDevice,
-  }) async {
-    try {
-      return await authDataSource.socketConnection(
-        loggedUserEmail: loggedUserEmail,
-        loggedUserDevice: loggedUserDevice,
-      );
-    } catch (e) {
-      return Left(
-        ErrorModel(
-          message: e.toString(),
-          status: false,
-        ),
-      );
-    }
-  }
-
-  @override
   Future<Either<ErrorModel, UserEntity>> login({
     required String email,
     required String password,

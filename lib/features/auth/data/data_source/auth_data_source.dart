@@ -15,28 +15,7 @@ class AuthDataSource {
     required this.api,
   });
 
-  Future<Either<ErrorModel, bool>> socketConnection({
-    required String loggedUserEmail,
-    required String loggedUserDevice,
-  }) async {
-    try {
-      api.getSocket.io.options!['extraHeaders'] = {
-        'userEmail': loggedUserEmail,
-        'uid': loggedUserDevice,
-      };
 
-      api.getSocket.connect();
-
-      return const Right(true);
-    } catch (e) {
-      return Left(
-        ErrorModel(
-          message: e.toString(),
-          status: false,
-        ),
-      );
-    }
-  }
 
   Future<Either<ErrorModel, Map<String, dynamic>>> loginUser({
     required String email,
