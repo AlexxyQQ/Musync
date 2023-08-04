@@ -76,6 +76,35 @@ class _KDrawerState extends State<KDrawer> {
                   Text(
                     loggedUser.username.toUpperCase(),
                   ),
+                  // allow LoginwithBiometric
+                  // a text and a toggele to allow login with biometric
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Biometric'),
+                      Switch(
+                        value: authenticationBlocProvider
+                            .state.allowLoginWithBiometric,
+                        onChanged: (value) {
+                          GetIt.I<HiveQueries>().setValue(
+                            boxName: 'users',
+                            key: 'allowBiometric',
+                            value: value,
+                          );
+                          if (value && loggedUser.username != "Guest") {
+                            GetIt.I<HiveQueries>().setValue(
+                              boxName: 'users',
+                              key: 'anotherToken',
+                              value: loggedUser.token,
+                            );
+                          }
+                          authenticationBlocProvider.allowLoginWithBiometric(
+                            value: value,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

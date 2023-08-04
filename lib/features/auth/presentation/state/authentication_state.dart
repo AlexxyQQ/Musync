@@ -1,5 +1,6 @@
-import 'dart:convert';
 
+import 'package:collection/collection.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
 class AuthState {
@@ -13,6 +14,10 @@ class AuthState {
   final String? token;
   final bool isFirstTime;
   final bool goHome;
+  final bool supportBioMetricState;
+  final LocalAuthentication? localAuth;
+  final List<BiometricType> avilableBiometrices;
+  final bool allowLoginWithBiometric;
 
   AuthState({
     required this.loggedUser,
@@ -25,6 +30,10 @@ class AuthState {
     this.token,
     required this.isFirstTime,
     required this.goHome,
+    required this.supportBioMetricState,
+    required this.localAuth,
+    required this.avilableBiometrices,
+    required this.allowLoginWithBiometric,
   });
 
   factory AuthState.initial() {
@@ -48,6 +57,10 @@ class AuthState {
       isError: false,
       isFirstTime: true,
       goHome: false,
+      supportBioMetricState: false,
+      localAuth: null,
+      avilableBiometrices: [],
+      allowLoginWithBiometric: false,
     );
   }
 
@@ -62,6 +75,10 @@ class AuthState {
     String? token,
     bool? isFirstTime,
     bool? goHome,
+    bool? supportBioMetricState,
+    LocalAuthentication? localAuth,
+    List<BiometricType>? avilableBiometrices,
+    bool? allowLoginWithBiometric,
   }) {
     return AuthState(
       loggedUser: loggedUser ?? this.loggedUser,
@@ -74,54 +91,24 @@ class AuthState {
       token: token ?? this.token,
       isFirstTime: isFirstTime ?? this.isFirstTime,
       goHome: goHome ?? this.goHome,
+      supportBioMetricState:
+          supportBioMetricState ?? this.supportBioMetricState,
+      localAuth: localAuth ?? this.localAuth,
+      avilableBiometrices: avilableBiometrices ?? this.avilableBiometrices,
+      allowLoginWithBiometric:
+          allowLoginWithBiometric ?? this.allowLoginWithBiometric,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'loggedUser': loggedUser?.toMap(),
-      'isLoading': isLoading,
-      'authError': authError,
-      'isError': isError,
-      'isLogin': isLogin,
-      'isSignUp': isSignUp,
-      'isLogout': isLogout,
-      'token': token,
-      'isFirstTime': isFirstTime,
-      'goHome': goHome,
-    };
-  }
-
-  factory AuthState.fromMap(Map<String, dynamic> map) {
-    return AuthState(
-      loggedUser: map['loggedUser'] != null
-          ? UserEntity.fromMap(map['loggedUser'] as Map<String, dynamic>)
-          : null,
-      isLoading: map['isLoading'] as bool,
-      authError: map['authError'] != null ? map['authError'] as String : null,
-      isError: map['isError'] as bool,
-      isLogin: map['isLogin'] as bool,
-      isSignUp: map['isSignUp'] as bool,
-      isLogout: map['isLogout'] as bool,
-      token: map['token'] != null ? map['token'] as String : null,
-      isFirstTime: map['isFirstTime'] as bool,
-      goHome: map['goHome'] as bool,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory AuthState.fromJson(String source) =>
-      AuthState.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'AuthState(loggedUser: $loggedUser, isLoading: $isLoading, authError: $authError, isError: $isError, isLogin: $isLogin, isSignUp: $isSignUp, isLogout: $isLogout, token: $token, isFirstTime: $isFirstTime, goHome: $goHome)';
+    return 'AuthState(loggedUser: $loggedUser, isLoading: $isLoading, authError: $authError, isError: $isError, isLogin: $isLogin, isSignUp: $isSignUp, isLogout: $isLogout, token: $token, isFirstTime: $isFirstTime, goHome: $goHome, supportBioMetricState: $supportBioMetricState, localAuth: $localAuth, avilableBiometrices: $avilableBiometrices, allowLoginWithBiometric: $allowLoginWithBiometric)';
   }
 
   @override
   bool operator ==(covariant AuthState other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other.loggedUser == loggedUser &&
         other.isLoading == isLoading &&
@@ -132,7 +119,11 @@ class AuthState {
         other.isLogout == isLogout &&
         other.token == token &&
         other.isFirstTime == isFirstTime &&
-        other.goHome == goHome;
+        other.goHome == goHome &&
+        other.supportBioMetricState == supportBioMetricState &&
+        other.localAuth == localAuth &&
+        listEquals(other.avilableBiometrices, avilableBiometrices) &&
+        other.allowLoginWithBiometric == allowLoginWithBiometric;
   }
 
   @override
@@ -146,6 +137,10 @@ class AuthState {
         isLogout.hashCode ^
         token.hashCode ^
         isFirstTime.hashCode ^
-        goHome.hashCode;
+        goHome.hashCode ^
+        supportBioMetricState.hashCode ^
+        localAuth.hashCode ^
+        avilableBiometrices.hashCode ^
+        allowLoginWithBiometric.hashCode;
   }
 }

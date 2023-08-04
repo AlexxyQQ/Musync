@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
@@ -15,7 +16,19 @@ class AuthDataSource {
     required this.api,
   });
 
-
+  Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics() async {
+    try {
+      return Right(
+          await GetIt.instance<LocalAuthentication>().isDeviceSupported());
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 
   Future<Either<ErrorModel, Map<String, dynamic>>> loginUser({
     required String email,

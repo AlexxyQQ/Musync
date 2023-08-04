@@ -15,14 +15,17 @@ class SplashRepositoryImpl extends ISplashRepository {
   @override
   Future<Either<ErrorModel, UserEntity>> initialLogin({
     required String token,
+    bool biometric = false,
   }) async {
     try {
       final isConnected = await ConnectivityCheck.connectivity();
       final isServerUp = await ConnectivityCheck.isServerup(recheck: true);
 
       if (isConnected && isServerUp) {
-        final response =
-            await splashRemoteDataSource.initialLogin(token: token);
+        final response = await splashRemoteDataSource.initialLogin(
+          token: token,
+          biometric: biometric,
+        );
         return response.fold(
           (l) {
             return Left(l);

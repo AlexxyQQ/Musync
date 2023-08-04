@@ -99,4 +99,17 @@ class AuthUseCase {
       rethrow;
     }
   }
+
+  Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics() async {
+    try {
+      return await authRepository.checkDeviceSupportForBiometrics();
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

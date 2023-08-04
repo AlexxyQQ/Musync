@@ -101,4 +101,18 @@ class AuthRepositoryImpl extends IAuthRepository {
       );
     }
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics() async {
+    try {
+      return await authDataSource.checkDeviceSupportForBiometrics();
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

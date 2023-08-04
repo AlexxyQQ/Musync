@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/auth/injection/auth_injection_container.dart';
@@ -20,4 +21,5 @@ void setupDependencyInjection() {
   GetIt.instance.registerLazySingleton(() => Api());
   GetIt.instance.registerLazySingleton(() => AudioPlayer());
   GetIt.instance.registerLazySingleton(() => ConnectivityCheck());
+  GetIt.instance.registerLazySingleton(() => LocalAuthentication());
 }
