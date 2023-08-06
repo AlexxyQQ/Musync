@@ -13,15 +13,22 @@ class SplashUseCase {
     required this.hiveQueries,
   });
 
-  Future<Either<ErrorModel, UserEntity>> initialLogin() async {
+  Future<Either<ErrorModel, UserEntity>> initialLogin({
+    bool biometric = false,
+  }) async {
     try {
       String token = await hiveQueries.getValue(
         boxName: 'users',
         key: 'token',
         defaultValue: '',
       );
+      String token2 = await hiveQueries.getValue(
+        boxName: 'users',
+        key: 'anotherToken',
+        defaultValue: '',
+      );
       final response = await splashRepository.initialLogin(
-        token: token,
+        token: biometric ? token2 : token,
       );
       return response;
     } catch (e) {

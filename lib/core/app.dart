@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +11,6 @@ import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 import 'package:musync/features/nowplaying/domain/use_case/now_playing_use_case.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
-import 'package:musync/features/socket/presentation/state/socket_event.dart';
 import 'package:musync/features/socket/presentation/state/state.dart';
 import 'package:musync/features/socket/presentation/view_model/socket_view_model.dart';
 import 'package:musync/features/splash/domain/use_case/splash_use_case.dart';
@@ -56,8 +53,9 @@ class _AppState extends State<App> {
               MusicQueryViewModel(GetIt.instance<MusicQueryUseCase>()),
         ),
         BlocProvider<NowPlayingViewModel>(
-          create: (context) =>
-              NowPlayingViewModel(GetIt.instance<NowPlayingUseCase>()),
+          create: (context) => NowPlayingViewModel(
+            GetIt.instance<NowPlayingUseCase>(),
+          ),
         ),
         BlocProvider<SocketCubit>(
           create: (context) => SocketCubit(

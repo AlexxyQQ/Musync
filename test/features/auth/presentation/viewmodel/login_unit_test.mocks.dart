@@ -272,6 +272,31 @@ class MockAuthUseCase extends _i1.Mock implements _i7.AuthUseCase {
           ),
         )),
       ) as _i8.Future<_i4.Either<_i9.ErrorModel, _i10.UserEntity>>);
+  @override
+  _i8.Future<_i4.Either<_i9.ErrorModel, bool>>
+      checkDeviceSupportForBiometrics() => (super.noSuchMethod(
+            Invocation.method(
+              #checkDeviceSupportForBiometrics,
+              [],
+            ),
+            returnValue: _i8.Future<_i4.Either<_i9.ErrorModel, bool>>.value(
+                _FakeEither_2<_i9.ErrorModel, bool>(
+              this,
+              Invocation.method(
+                #checkDeviceSupportForBiometrics,
+                [],
+              ),
+            )),
+            returnValueForMissingStub:
+                _i8.Future<_i4.Either<_i9.ErrorModel, bool>>.value(
+                    _FakeEither_2<_i9.ErrorModel, bool>(
+              this,
+              Invocation.method(
+                #checkDeviceSupportForBiometrics,
+                [],
+              ),
+            )),
+          ) as _i8.Future<_i4.Either<_i9.ErrorModel, bool>>);
 }
 
 /// A class which mocks [BuildContext].

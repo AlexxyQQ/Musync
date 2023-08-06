@@ -11,6 +11,7 @@ class SplashRemoteDataSource {
 
   Future<Either<ErrorModel, Map<String, dynamic>>> initialLogin({
     required String token,
+    bool biometric = false,
   }) async {
     try {
       final response = await api.sendRequest.get(

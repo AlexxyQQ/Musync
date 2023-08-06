@@ -158,7 +158,6 @@ class MusicRemoteDataSource implements AMusicDataSource {
 
         updatedSongModelMap['isPublic'] = isPublic;
 
-
         final formData = FormData.fromMap({
           'mainFolder': '$model/Music',
           'subFolder': song.data,
@@ -693,6 +692,46 @@ class MusicRemoteDataSource implements AMusicDataSource {
         } else {
           return const Right([]);
         }
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, bool>> deleteSong({
+    required int songID,
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.deleteSongRoute,
+        data: {
+          "songId": songID,
+        },
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        return const Right(true);
       } else {
         return Left(
           ErrorModel(

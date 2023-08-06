@@ -1,42 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:musync/config/constants/constants.dart';
 
 class KTextThemes {
   static TextTheme lightTextTheme() {
-    return TextTheme(
+    return const TextTheme(
       // Use For Body
-      displayLarge: GoogleFonts.openSans(
+      displayLarge: TextStyle(
         fontSize: 26,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      displayMedium: GoogleFonts.openSans(
+      displayMedium: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      displaySmall: GoogleFonts.openSans(
+      displaySmall: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      bodyLarge: GoogleFonts.openSans(
+      bodyLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      bodyMedium: GoogleFonts.openSans(
+      bodyMedium: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      bodySmall: GoogleFonts.openSans(
+      bodySmall: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
@@ -44,19 +43,19 @@ class KTextThemes {
       ),
 
       // Use for Large Extra-Bold Text
-      headlineLarge: GoogleFonts.openSans(
+      headlineLarge: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w900,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      headlineMedium: GoogleFonts.openSans(
+      headlineMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w900,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      headlineSmall: GoogleFonts.openSans(
+      headlineSmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w900,
         letterSpacing: 0.15,
@@ -64,19 +63,19 @@ class KTextThemes {
       ),
 
       // Use for Large Semi-Bold Text
-      titleLarge: GoogleFonts.openSans(
+      titleLarge: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      titleMedium: GoogleFonts.openSans(
+      titleMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      titleSmall: GoogleFonts.openSans(
+      titleSmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
@@ -84,19 +83,19 @@ class KTextThemes {
       ),
 
       // Use for small text
-      labelLarge: GoogleFonts.openSans(
+      labelLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      labelMedium: GoogleFonts.openSans(
+      labelMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.blackColor,
       ),
-      labelSmall: GoogleFonts.openSans(
+      labelSmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
@@ -106,39 +105,39 @@ class KTextThemes {
   }
 
   static TextTheme darkTextTheme() {
-    return TextTheme(
+    return const TextTheme(
       // Use For Body
-      displayLarge: GoogleFonts.openSans(
+      displayLarge: TextStyle(
         fontSize: 26,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      displayMedium: GoogleFonts.openSans(
+      displayMedium: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      displaySmall: GoogleFonts.openSans(
+      displaySmall: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      bodyLarge: GoogleFonts.openSans(
+      bodyLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      bodyMedium: GoogleFonts.openSans(
+      bodyMedium: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      bodySmall: GoogleFonts.openSans(
+      bodySmall: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
@@ -146,19 +145,19 @@ class KTextThemes {
       ),
 
       // Use for Large Extra-Bold Text
-      headlineLarge: GoogleFonts.openSans(
+      headlineLarge: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w900,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      headlineMedium: GoogleFonts.openSans(
+      headlineMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w900,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      headlineSmall: GoogleFonts.openSans(
+      headlineSmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w900,
         letterSpacing: 0.15,
@@ -166,19 +165,19 @@ class KTextThemes {
       ),
 
       // Use for Large Semi-Bold Text
-      titleLarge: GoogleFonts.openSans(
+      titleLarge: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      titleMedium: GoogleFonts.openSans(
+      titleMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      titleSmall: GoogleFonts.openSans(
+      titleSmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         letterSpacing: 0.15,
@@ -186,19 +185,19 @@ class KTextThemes {
       ),
 
       // Use for small text
-      labelLarge: GoogleFonts.openSans(
+      labelLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      labelMedium: GoogleFonts.openSans(
+      labelMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
         color: KColors.whiteColor,
       ),
-      labelSmall: GoogleFonts.openSans(
+      labelSmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,

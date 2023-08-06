@@ -63,4 +63,9 @@ abstract class AMusicDataSource {
     required String token,
     required bool isPublic,
   });
+
+  Future<Either<ErrorModel, bool>> deleteSong({
+    required int songID,
+    required String token,
+  });
 }

@@ -41,6 +41,45 @@ class MusicHiveDataSourse {
     return songs;
   }
 
+  // delete specific song
+  Future<bool> deleteSong(int id) async {
+    var songBox = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    var albumBox = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+
+    var albumWithSongs = await getAllAlbumsWithSongs();
+    for (var album in albumWithSongs.keys) {
+      for (var song in albumWithSongs[album]!) {
+        if (song.id == id) {
+          await albumBox.delete(id);
+          return true;
+        }
+      }
+    }
+
+    var folderWithSongs = await getAllFoldersWithSongs();
+    for (var folder in folderWithSongs.keys) {
+      for (var song in folderWithSongs[folder]!) {
+        if (song.id == id) {
+          await songBox.delete(id);
+          return true;
+        }
+      }
+    }
+
+    var artistWithSongs = await getAllArtistsWithSongs();
+    for (var artist in artistWithSongs.keys) {
+      for (var song in artistWithSongs[artist]!) {
+        if (song.id == id) {
+          await songBox.delete(id);
+          return true;
+        }
+      }
+    }
+
+    await songBox.delete(id);
+    return true;
+  }
+
   // ------------------ All Albums Queries ------------------ //
 
   Future<void> addAllAlbums(List<AlbumHiveModel> albums) async {

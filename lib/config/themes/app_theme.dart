@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/themes/widget_themes/text_themes.dart';
 
@@ -9,7 +8,6 @@ class AppTheme {
       brightness: Brightness.light,
       useMaterial3: true,
       // Font Family
-      fontFamily: GoogleFonts.openSans().fontFamily,
       // Text Theme
       textTheme: KTextThemes.lightTextTheme(),
       // App Bar Theme
@@ -108,8 +106,6 @@ class AppTheme {
       // Brightness
       brightness: Brightness.dark,
       useMaterial3: true,
-      // Font Family
-      fontFamily: GoogleFonts.openSans().fontFamily,
       // Text Theme
       textTheme: KTextThemes.darkTextTheme(),
       // App Bar Theme

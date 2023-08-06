@@ -99,4 +99,51 @@ class AuthUseCase {
       rethrow;
     }
   }
+
+  Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics() async {
+    try {
+      return await authRepository.checkDeviceSupportForBiometrics();
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<ErrorModel, UserEntity>> uploadProfilePic({
+    required String profilePicPath,
+  }) async {
+    try {
+      final token = await hiveQueries.getValue(
+        boxName: 'users',
+        key: 'token',
+        defaultValue: '',
+      );
+      final response = await authRepository.uploadProfilePic(
+        token: token,
+        profilePicPath: profilePicPath,
+      );
+      return response;
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<ErrorModel, bool>> deleteUser() async {
+    final token = await hiveQueries.getValue(
+      boxName: 'users',
+      key: 'token',
+      defaultValue: '',
+    );
+    await logout();
+    return await authRepository.deleteUser(token: token);
+  }
 }

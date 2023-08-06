@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:musync/config/constants/constants.dart';
 
 void kShowSnackBar(
@@ -31,7 +30,7 @@ void kShowSnackBar(
         elevation: 2,
         content: Text(
           message,
-          style: GoogleFonts.openSans(
+          style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
             letterSpacing: 0.15,

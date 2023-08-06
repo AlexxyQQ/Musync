@@ -69,10 +69,14 @@ class SocketCubit extends Cubit<SocketState> {
   }
 
   // on share
-  Future<void> onShare() async {
-    _socket.emit('share', {
-      'userEmail': state.loggedUser!.email,
-      'uid': state.model,
+  Future<void> onShare({
+    required List<SongEntity> songList,
+    required int songIndex,
+  }) async {
+    _socket.emit('shared', {
+      'songList': songList.map((song) => song.toApiMap()).toList(),
+      'songIndex': songIndex,
+      'playing': true,
     });
   }
 

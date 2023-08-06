@@ -238,7 +238,7 @@ class LibrarySongScreen extends StatelessWidget {
                   index: index,
                 );
                 nav.pushNamed(
-                  AppRoutes.nowPlaying,
+                  AppRoutes.nowPlayingRoute,
                   arguments: {
                     "songs": song,
                     "index": index,

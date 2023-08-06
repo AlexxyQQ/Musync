@@ -21,16 +21,12 @@ class NowPlayingRemoteDataSource {
           children: songs
               .map(
                 (song) => (song.serverUrl == '' || song.serverUrl == null)
-                    ? AudioSource.uri(
-                        Uri.parse(song.data),
-                        tag: song,
-                      )
+                    ? AudioSource.uri(Uri.parse(song.data), tag: song)
                     : AudioSource.uri(
                         Uri.parse(
                           '${ApiEndpoints.baseImageUrl}${song.serverUrl}',
                         ),
-                        tag: song,
-                      ),
+                        tag: song),
               )
               .toList(),
         ),

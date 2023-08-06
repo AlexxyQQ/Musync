@@ -101,4 +101,46 @@ class AuthRepositoryImpl extends IAuthRepository {
       );
     }
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics() async {
+    try {
+      return await authDataSource.checkDeviceSupportForBiometrics();
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, UserEntity>> uploadProfilePic({
+    required String token,
+    required String profilePicPath,
+  }) async {
+    try {
+      final response = await authDataSource.uploadProfilePic(
+        token: token,
+        profilePicPath: profilePicPath,
+      );
+      return response;
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, bool>> deleteUser({
+    required String token,
+  }) async {
+    return await authDataSource.deleteUser(token: token);
+  }
 }

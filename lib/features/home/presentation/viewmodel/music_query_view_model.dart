@@ -79,11 +79,9 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
     );
   }
 
-  Future<void> getAllSongs({
-    required String token,
-  }) async {
+  Future<void> getAllSongs() async {
     emit(state.copyWith(isLoading: true));
-    final data = await _musicQueryUseCase.getAllSongs(token: token);
+    final data = await _musicQueryUseCase.getAllSongs();
     data.fold(
       (l) => emit(state.copyWith(isLoading: false, error: l.message)),
       (r) => emit(
@@ -262,6 +260,29 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
         state.copyWith(
           isLoading: false,
           publicSongs: r,
+        ),
+      ),
+    );
+  }
+
+  Future<void> deleteSong({
+    required SongEntity song,
+  }) async {
+    emit(state.copyWith(isLoading: true));
+    final data = await _musicQueryUseCase.deleteSong(
+      songID: song.id,
+    );
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isLoading: false,
+          error: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isLoading: false,
+          songs: state.songs.where((element) => element.id != song.id).toList(),
         ),
       ),
     );

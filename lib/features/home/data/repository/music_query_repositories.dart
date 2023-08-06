@@ -603,4 +603,17 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> deleteSong({
+    required int songID,
+    required String token,
+  }) async {
+    try {
+      musicLocalDataSource.deleteSong(songID: songID, token: token);
+      return musicRemoteDataSource.deleteSong(songID: songID, token: token);
+    } catch (e) {
+      return Left(ErrorModel(message: e.toString(), status: false));
+    }
+  }
 }

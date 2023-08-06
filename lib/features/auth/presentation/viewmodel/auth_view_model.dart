@@ -1,7 +1,7 @@
-import 'dart:developer';
-
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/domain/use_case/auth_use_case.dart';
@@ -16,9 +16,66 @@ class AuthViewModel extends Cubit<AuthState> {
     required this.splashUseCase,
   }) : super(AuthState.initial());
 
-  Future<void> initialLogin() async {
+  Future<void> checkDeviceSupportForBiometrics() async {
+    final data = await authUseCase.checkDeviceSupportForBiometrics();
+
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          supportBioMetricState: false,
+        ),
+      ),
+      (r) async {
+        final localAuth = GetIt.instance<LocalAuthentication>();
+        final List<BiometricType> avilableBiometrices =
+            r ? await localAuth.getAvailableBiometrics() : [];
+        emit(
+          state.copyWith(
+            supportBioMetricState: r,
+            localAuth: localAuth,
+            avilableBiometrices: avilableBiometrices,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> allowLoginWithBiometric({required bool value}) async {
+    emit(
+      state.copyWith(
+        allowLoginWithBiometric: value,
+      ),
+    );
+  }
+
+  Future<void> authenticateWithBiometrics() async {
+    try {
+      bool isAuthorized = await state.localAuth!.authenticate(
+        localizedReason: 'Musync Login',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: false,
+        ),
+      );
+
+      if (state.allowLoginWithBiometric && isAuthorized) {
+        await initialLogin(biometric: true);
+      }
+    } on PlatformException catch (e) {
+      emit(
+        state.copyWith(
+          isError: true,
+          authError: e.message,
+        ),
+      );
+    }
+  }
+
+  Future<void> initialLogin({
+    bool biometric = false,
+  }) async {
     emit(state.copyWith(isLoading: true, authError: null));
-    final data = await splashUseCase.initialLogin();
+    final data = await splashUseCase.initialLogin(biometric: biometric);
     final goHomeHive = await GetIt.instance<HiveQueries>()
         .getValue(boxName: 'settings', key: 'goHome', defaultValue: false);
     final isFirstTime = await GetIt.instance<HiveQueries>()
@@ -150,6 +207,69 @@ class AuthViewModel extends Cubit<AuthState> {
         state.copyWith(
           isLoading: false,
           isError: true,
+          authError: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isError: false,
+          authError: null,
+          isLoading: false,
+          isLogin: false,
+          loggedUser: UserEntity(
+            id: "0",
+            username: 'Guest',
+            email: 'Guest',
+            password: 'Guest',
+            token: '',
+            profilePic: 'assets/default_profile.jpeg',
+            verified: false,
+            type: 'guest',
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> uploadProfilePic({
+    required String path,
+  }) async {
+    emit(state.copyWith(isLoading: true, authError: null));
+
+    final data = await authUseCase.uploadProfilePic(
+      profilePicPath: path,
+    );
+
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isError: true,
+          isLoading: false,
+          authError: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isError: false,
+          authError: null,
+          isLoading: false,
+          loggedUser: r,
+          isLogin: true,
+        ),
+      ),
+    );
+  }
+
+  Future<void> deleteUser() async {
+    emit(state.copyWith(isLoading: true, authError: null));
+
+    final data = await authUseCase.deleteUser();
+
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isError: true,
+          isLoading: false,
           authError: l.message,
         ),
       ),

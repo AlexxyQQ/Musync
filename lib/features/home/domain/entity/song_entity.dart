@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:equatable/equatable.dart';
 
 import 'package:musync/config/constants/api_endpoints.dart';
@@ -321,4 +322,39 @@ class SongEntity extends Equatable {
         albumArtUrl,
         isPublic,
       ];
+
+  Map<String, dynamic> toApiMap() {
+    return <String, dynamic>{
+      'id': id,
+      'data': data,
+      'serverUrl': serverUrl,
+      'uri': uri,
+      'displayName': displayName,
+      'displayNameWOExt': displayNameWOExt,
+      'size': size,
+      'album': album,
+      'albumId': albumId,
+      'artist': artist,
+      'artistId': artistId,
+      'genre': genre,
+      'genreId': genreId,
+      'bookmark': bookmark,
+      'composer': composer,
+      'dateAdded': dateAdded,
+      'dateModified': dateModified,
+      'duration': duration,
+      'title': title,
+      'track': track,
+      'fileExtension': fileExtension,
+      'isAlarm': isAlarm,
+      'isAudioBook': isAudioBook,
+      'isMusic': isMusic,
+      'isNotification': isNotification,
+      'isPodcast': isPodcast,
+      'isRingtone': isRingtone,
+      'albumArt': albumArt,
+      'albumArtUrl': albumArtUrl!.replaceAll("http://192.168.1.65:3001", ''),
+      'isPublic': isPublic,
+    };
+  }
 }

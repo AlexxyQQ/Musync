@@ -57,4 +57,9 @@ abstract class IMusicQueryRepository {
   });
 
   Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs();
+
+  Future<Either<ErrorModel, bool>> deleteSong({
+    required int songID,
+    required String token,
+  });
 }
