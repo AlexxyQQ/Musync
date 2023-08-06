@@ -1,17 +1,17 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:light/light.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:musync/features/nowplaying/presentation/widgets/share_window.dart';
-import 'package:socket_io_client/socket_io_client.dart';
-import 'package:socket_io_client/socket_io_client.dart' as io;
+import 'package:musync/features/socket/presentation/view_model/socket_view_model.dart';
 
 class AudioControlls extends StatefulWidget {
   const AudioControlls({
@@ -31,37 +31,10 @@ class _AudioControllsState extends State<AudioControlls> {
   @override
   void initState() {
     super.initState();
-    // initializeSocketService();
   }
-
-  // void initializeSocketService() async {
-  //   final userEmail = context.read<AuthViewModel>().state.loggedUser!.email;
-  //   final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
-  //   final model = device.model;
-  //   socketService = SocketService(userEmail, model);
-
-  //   socketService.getSocket.on('shared-song', (data) async {
-  //     if (mounted) {
-  //       final List<SongEntity> songs = List<SongEntity>.from(data['songList']
-  //           .map((song) => SongEntity.fromApiMap(song))
-  //           .toList());
-  //       await BlocProvider.of<NowPlayingViewModel>(context)
-  //           .playAll(songs: songs, index: data['songIndex']);
-  //     }
-  //   });
-
-  //   socketService.getSocket.onDisconnect((_) {
-  //     if (mounted) {
-  //       print('Disconnected from server');
-  //     }
-  //   });
-  // }
 
   @override
   void dispose() {
-    // if (mounted) {
-    //   socketService.dispose();
-    // }
     super.dispose();
   }
 
@@ -180,94 +153,100 @@ class MoreControlls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.phone_android_rounded,
-                  color: Colors.amber,
-                  size: 24,
-                ),
-                const SizedBox(width: 5),
-                BlocBuilder<AuthViewModel, AuthState>(
-                  builder: (context, state) {
-                    return InkWell(
-                      onTap: () async {
-                        final device =
-                            await GetDeviceInfo.deviceInfoPlugin.androidInfo;
-                        final model = device.model;
-                        final io.Socket socket = io.io(
-                          'http://192.168.1.65:3002',
-                          io.OptionBuilder()
-                              .setTransports(['websocket']).setQuery({
-                            'userEmail': state.loggedUser!.email,
-                            'uid': model
-                          }).build(),
+    return StreamBuilder(
+      stream: Light().lightSensorStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data! < 10000) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              BlocProvider.of<NowPlayingViewModel>(context).pause();
+            });
+          } else if (BlocProvider.of<NowPlayingViewModel>(context)
+              .state
+              .isPaused) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              BlocProvider.of<NowPlayingViewModel>(context).play();
+            });
+          }
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.phone_android_rounded,
+                      color: Colors.amber,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 5),
+                    BlocBuilder<AuthViewModel, AuthState>(
+                      builder: (context, state) {
+                        return InkWell(
+                          onTap: () async {
+                            await BlocProvider.of<NowPlayingViewModel>(context)
+                                .pause();
+                            await BlocProvider.of<SocketCubit>(context).onShare(
+                              songList:
+                                  BlocProvider.of<NowPlayingViewModel>(context)
+                                      .state
+                                      .queue,
+                              songIndex:
+                                  BlocProvider.of<NowPlayingViewModel>(context)
+                                      .state
+                                      .currentIndex,
+                            );
+                          },
+                          child: const Text(
+                            'Phone',
+                            style: TextStyle(
+                              color: Colors.amber,
+                              fontSize: 19,
+                            ),
+                          ),
                         );
-
-                        socket.connect();
-
-                        socket.onConnect((data) {
-                          socket.emit('connection', {
-                            'userEmail': state.loggedUser!.email,
-                            'uid': model,
-                          });
-                        });
-                        socket.on('shared-song', (data) {
-                          // Handle received data from server
-                          print('Received data: $data');
-                        });
-
-                        socket.onDisconnect(
-                            (_) => print('Disconnected from server'));
                       },
-                      child: const Text(
-                        'Phone',
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 19,
-                        ),
-                      ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.share_rounded),
+                iconSize: 24,
+                color:
+                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                        ? KColors.whiteColor
+                        : KColors.blackColor,
+                onPressed: () async {
+                  // show share window
+                  await showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => const SharePage(),
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.queue_music_rounded),
+                iconSize: 24,
+                color:
+                    MediaQuery.of(context).platformBrightness == Brightness.dark
+                        ? KColors.whiteColor
+                        : KColors.blackColor,
+                onPressed: () {
+                  bottomSheetCallback();
+                },
+              ),
+            ],
           ),
-          const Spacer(),
-          IconButton(
-            icon: const Icon(Icons.share_rounded),
-            iconSize: 24,
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
-                ? KColors.whiteColor
-                : KColors.blackColor,
-            onPressed: () async {
-              // show share window
-              await showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) => const SharePage(),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.queue_music_rounded),
-            iconSize: 24,
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
-                ? KColors.whiteColor
-                : KColors.blackColor,
-            onPressed: () {
-              bottomSheetCallback();
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
