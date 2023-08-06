@@ -86,11 +86,13 @@ class MockSplashUseCase extends _i1.Mock implements _i5.SplashUseCase {
         ),
       ) as _i3.HiveQueries);
   @override
-  _i6.Future<_i4.Either<_i7.ErrorModel, _i8.UserEntity>> initialLogin() =>
+  _i6.Future<_i4.Either<_i7.ErrorModel, _i8.UserEntity>> initialLogin(
+          {bool? biometric = false}) =>
       (super.noSuchMethod(
         Invocation.method(
           #initialLogin,
           [],
+          {#biometric: biometric},
         ),
         returnValue:
             _i6.Future<_i4.Either<_i7.ErrorModel, _i8.UserEntity>>.value(
@@ -99,6 +101,7 @@ class MockSplashUseCase extends _i1.Mock implements _i5.SplashUseCase {
           Invocation.method(
             #initialLogin,
             [],
+            {#biometric: biometric},
           ),
         )),
         returnValueForMissingStub:
@@ -108,6 +111,7 @@ class MockSplashUseCase extends _i1.Mock implements _i5.SplashUseCase {
           Invocation.method(
             #initialLogin,
             [],
+            {#biometric: biometric},
           ),
         )),
       ) as _i6.Future<_i4.Either<_i7.ErrorModel, _i8.UserEntity>>);

@@ -126,6 +126,12 @@ class _NowPlayingState extends State<NowPlaying> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     bool isTablet =

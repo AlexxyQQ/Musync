@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
@@ -32,6 +34,13 @@ class _KDrawerState extends State<KDrawer> {
     super.initState();
     musicQueryBlocProvider = BlocProvider.of<MusicQueryViewModel>(context);
     authenticationBlocProvider = BlocProvider.of<AuthViewModel>(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initialDataFetch();
+    });
+  }
+
+  initialDataFetch() async {
+    musicQueryBlocProvider.getAllSongs();
   }
 
   @override
@@ -44,7 +53,7 @@ class _KDrawerState extends State<KDrawer> {
           children: [
             // Drawer Header
             Container(
-              height: 150,
+              height: 300,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: widget.isDark
@@ -67,8 +76,14 @@ class _KDrawerState extends State<KDrawer> {
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: loggedUser!.profilePic.contains('http')
-                        ? Image.network(loggedUser.profilePic)
-                        : Image.asset(loggedUser.profilePic),
+                        ? Image.network(
+                            loggedUser.profilePic,
+                          )
+                        : loggedUser.profilePic.contains('public')
+                            ? Image.network(
+                                "${ApiEndpoints.baseImageUrl}${loggedUser.profilePic}",
+                              )
+                            : Image.asset(loggedUser.profilePic),
                   ),
 
                   const SizedBox(height: 10),
@@ -76,121 +91,96 @@ class _KDrawerState extends State<KDrawer> {
                   Text(
                     loggedUser.username.toUpperCase(),
                   ),
-                  // allow LoginwithBiometric
-                  // a text and a toggele to allow login with biometric
+                  Text(
+                    loggedUser.email,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 18),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Biometric'),
-                      Switch(
-                        value: authenticationBlocProvider
-                            .state.allowLoginWithBiometric,
-                        onChanged: (value) {
-                          GetIt.I<HiveQueries>().setValue(
-                            boxName: 'users',
-                            key: 'allowBiometric',
-                            value: value,
-                          );
-                          if (value && loggedUser.username != "Guest") {
-                            GetIt.I<HiveQueries>().setValue(
-                              boxName: 'users',
-                              key: 'anotherToken',
-                              value: loggedUser.token,
-                            );
-                          }
-                          authenticationBlocProvider.allowLoginWithBiometric(
-                            value: value,
-                          );
-                        },
+                      Text(
+                        'All Songs: ${musicQueryBlocProvider.state.songs.length} ',
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
+                      Text(
+                        ', Public Songs: ${musicQueryBlocProvider.state.songs.where((element) => element.isPublic ?? false).length}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      )
                     ],
-                  ),
+                  )
                 ],
               ),
             ),
+            const Spacer(),
             // Drawer Items
-            Expanded(
-              child: ListView(
-                children: [
-                  // Drawer Item
-                  ListTile(
-                    leading: const Icon(Icons.home_rounded),
-                    title: Text(
-                      'Home',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    onTap: () {},
+            Column(
+              children: [
+                // Drawer Item
+                ListTile(
+                  leading: const Icon(Icons.home_rounded),
+                  title: Text(
+                    'Home',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  // Drawer Item
-                  ListTile(
-                    leading: const Icon(Icons.search_rounded),
-                    title: Text(
-                      'Search',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+
+                // Drawer Item
+                ListTile(
+                  leading: const Icon(Icons.settings_rounded),
+                  title: Text(
+                    'Settings',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  // Drawer Item
-                  ListTile(
-                    leading: const Icon(Icons.library_music_rounded),
-                    title: Text(
-                      'Library',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.settingRoute,
+                    );
+                  },
+                ),
+                // Sync
+                BlocBuilder<MusicQueryViewModel, MusicQueryState>(
+                  builder: (context, state) {
+                    if (state.isUploading) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        kShowSnackBar("Uploading Songs", context: context);
+                      });
+                    }
+                    return ListTile(
+                      leading: const Icon(Icons.sync_rounded),
+                      title: Text(
+                        'Sync Online',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      onTap: () async {
+                        if (!state.isLoading &&
+                            state.everything.isNotEmpty &&
+                            await ConnectivityCheck.isServerup() &&
+                            loggedUser.username != "Guest") {
+                          _syncOnline(state);
+                          Scaffold.of(context).closeDrawer();
+                        }
+                      },
+                    );
+                  },
+                ),
+                // Drawer Item
+                ListTile(
+                  leading: const Icon(Icons.logout_rounded),
+                  title: Text(
+                    'Logout',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  // Drawer Item
-                  ListTile(
-                    leading: const Icon(Icons.settings_rounded),
-                    title: Text(
-                      'Settings',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => Ppp(),
-                      //   ),
-                      // );
-                    },
-                  ),
-                  // Sync
-                  BlocBuilder<MusicQueryViewModel, MusicQueryState>(
-                    builder: (context, state) {
-                      if (state.isUploading) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          kShowSnackBar("Uploading Songs", context: context);
-                        });
-                      }
-                      return ListTile(
-                        leading: const Icon(Icons.sync_rounded),
-                        title: Text(
-                          'Sync Online',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        onTap: () async {
-                          if (!state.isLoading && state.everything.isNotEmpty) {
-                            _syncOnline(state);
-                            Scaffold.of(context).closeDrawer();
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  // Drawer Item
-                  ListTile(
-                    leading: const Icon(Icons.logout_rounded),
-                    title: Text(
-                      'Logout',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    onTap: () {
-                      _logout(authenticationBlocProvider);
-                    },
-                  ),
-                ],
-              ),
+                  onTap: () {
+                    _logout(authenticationBlocProvider);
+                  },
+                ),
+              ],
             ),
           ],
         ),

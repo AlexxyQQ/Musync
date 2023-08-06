@@ -37,10 +37,7 @@ class HomePage extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           var musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
-          var token = await GetIt.instance
-              .get<HiveQueries>()
-              .getValue(boxName: 'users', key: 'token', defaultValue: '');
-          musicQueryCubit.getAllSongs(token: token);
+          musicQueryCubit.getAllSongs();
           musicQueryCubit.getEverything();
           musicQueryCubit.getAllPublicSongs();
           await ConnectivityCheck.isServerup(recheck: true);

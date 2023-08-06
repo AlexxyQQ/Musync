@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -53,12 +51,13 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> authenticateWithBiometrics() async {
     try {
       bool isAuthorized = await state.localAuth!.authenticate(
-        localizedReason: 'Test for auth',
+        localizedReason: 'Musync Login',
         options: const AuthenticationOptions(
           stickyAuth: true,
           biometricOnly: false,
         ),
       );
+
       if (state.allowLoginWithBiometric && isAuthorized) {
         await initialLogin(biometric: true);
       }
@@ -208,6 +207,69 @@ class AuthViewModel extends Cubit<AuthState> {
         state.copyWith(
           isLoading: false,
           isError: true,
+          authError: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isError: false,
+          authError: null,
+          isLoading: false,
+          isLogin: false,
+          loggedUser: UserEntity(
+            id: "0",
+            username: 'Guest',
+            email: 'Guest',
+            password: 'Guest',
+            token: '',
+            profilePic: 'assets/default_profile.jpeg',
+            verified: false,
+            type: 'guest',
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> uploadProfilePic({
+    required String path,
+  }) async {
+    emit(state.copyWith(isLoading: true, authError: null));
+
+    final data = await authUseCase.uploadProfilePic(
+      profilePicPath: path,
+    );
+
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isError: true,
+          isLoading: false,
+          authError: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isError: false,
+          authError: null,
+          isLoading: false,
+          loggedUser: r,
+          isLogin: true,
+        ),
+      ),
+    );
+  }
+
+  Future<void> deleteUser() async {
+    emit(state.copyWith(isLoading: true, authError: null));
+
+    final data = await authUseCase.deleteUser();
+
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isError: true,
+          isLoading: false,
           authError: l.message,
         ),
       ),

@@ -15,6 +15,8 @@ class ApiEndpoints {
   static const String loginWithTokenRoute = "/users/loginWithToken";
   static const String loginRoute = "/users/login";
   static const String signupRoute = "/users/signup";
+  static const String uploadProfilePicRoute = "/users/uploadProfilePic";
+  static const String deleteUserRoute = "/users/deleteUser";
   // Music Endpoints
   static const String uploadAlbumArtRoute = '/music/uploadAlbumArt';
   static const String addAllSongsRoute = '/music/addAllSongs';
@@ -34,4 +36,5 @@ class ApiEndpoints {
   static const String createPlaylistRoute = '/music/createPlaylist';
   static const String getPlaylistsRoute = '/music/getPlaylists';
   static const String toogleSongPublicRoute = '/music/tooglePublic';
+  static const String deleteSongRoute = '/music/deleteSong';
 }

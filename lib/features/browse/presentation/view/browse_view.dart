@@ -57,7 +57,7 @@ class _BrowseViewState extends State<BrowseView> {
                         index: index,
                       );
                       nav.pushNamed(
-                        AppRoutes.nowPlaying,
+                        AppRoutes.nowPlayingRoute,
                         arguments: {
                           "songs": song,
                           "index": index,

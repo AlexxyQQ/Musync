@@ -1,19 +1,31 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/app.dart';
 import 'package:musync/core/network/hive/hive_service.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/audio_service_handeler.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:musync/core/bloc/bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Setup Dependency Injection
-  setupDependencyInjection();
-  await HiveService().init();
+  Paint.enableDithering = true; // Enable dithering for better quality
 
   Bloc.observer = MusyncBlocObserver();
+  await HiveService().init();
+  setupDependencyInjection();
+
+  final MyAudioHandler audioHandler = await AudioService.init(
+    builder: () => MyAudioHandler(),
+    config: const AudioServiceConfig(
+      androidNotificationChannelId: 'com.alexxy.musync.channel.audio',
+      androidNotificationChannelName: 'Music playback',
+    ),
+  );
 
   runApp(
-    const App(),
+    App(
+      audioHandler: audioHandler,
+    ),
   );
 }

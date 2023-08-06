@@ -21,7 +21,7 @@ class MiniPlayer extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(
               context,
-              AppRoutes.nowPlaying,
+              AppRoutes.nowPlayingRoute,
               arguments: <String, dynamic>{
                 'songs': state.queue,
                 'index': state.currentIndex,

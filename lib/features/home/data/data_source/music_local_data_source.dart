@@ -440,4 +440,21 @@ class MusicLocalDataSource implements AMusicDataSource {
       );
     }
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> deleteSong({
+    required int songID,
+    required String token,
+  }) async {
+    try {
+      return Right(await musicHiveDataSource.deleteSong(songID));
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

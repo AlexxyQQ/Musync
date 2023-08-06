@@ -15,4 +15,13 @@ abstract class IAuthRepository {
   Future<Either<ErrorModel, UserEntity>> googleLogin();
   Future<Either<ErrorModel, void>> logout();
   Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics();
+
+  Future<Either<ErrorModel, UserEntity>> uploadProfilePic({
+    required String token,
+    required String profilePicPath,
+  });
+
+  Future<Either<ErrorModel, bool>> deleteUser({
+    required String token,
+  });
 }

@@ -1,9 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/formfiled.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
@@ -365,7 +371,10 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           // Login with Finger Print
-          BlocProvider.of<AuthViewModel>(context).state.supportBioMetricState
+          BlocProvider.of<AuthViewModel>(context).state.supportBioMetricState &&
+                  BlocProvider.of<AuthViewModel>(context)
+                      .state
+                      .allowLoginWithBiometric
               ? ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: KColors.blackColor,
@@ -382,15 +391,23 @@ class LoginForm extends StatelessWidget {
                     ),
                   ),
                   onPressed: () async {
-                    await BlocProvider.of<AuthViewModel>(context)
-                        .authenticateWithBiometrics();
-
-                    if (BlocProvider.of<AuthViewModel>(context)
-                            .state
-                            .loggedUser!
-                            .username !=
-                        "Guest") {
-                      Navigator.popAndPushNamed(context, AppRoutes.homeRoute);
+                    final t = await GetIt.instance<HiveQueries>().getValue(
+                      boxName: 'users',
+                      key: 'anotherToken',
+                      defaultValue: '',
+                    );
+                    if (t != null || t != "") {
+                      await BlocProvider.of<AuthViewModel>(context)
+                          .authenticateWithBiometrics();
+                      if (BlocProvider.of<AuthViewModel>(context)
+                              .state
+                              .loggedUser!
+                              .username !=
+                          "Guest") {
+                        Navigator.popAndPushNamed(context, AppRoutes.homeRoute);
+                      }
+                    } else {
+                      kShowSnackBar('Please login first', context: context);
                     }
                   },
                   child: const Icon(

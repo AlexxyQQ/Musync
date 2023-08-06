@@ -164,9 +164,7 @@ class MusicQueryUseCase {
     return data;
   }
 
-  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs({
-    required String token,
-  }) async {
+  Future<Either<ErrorModel, List<SongEntity>>> getAllSongs() async {
     final token = await hiveQueries.getValue(
       boxName: 'users',
       key: 'token',
@@ -273,5 +271,16 @@ class MusicQueryUseCase {
 
   Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs() async {
     return await musicQueryRepository.getAllPublicSongs();
+  }
+
+  Future<Either<ErrorModel, bool>> deleteSong({
+    required int songID,
+  }) async {
+    final token = await hiveQueries.getValue(
+      boxName: 'users',
+      key: 'token',
+      defaultValue: '',
+    );
+    return musicQueryRepository.deleteSong(songID: songID, token: token);
   }
 }

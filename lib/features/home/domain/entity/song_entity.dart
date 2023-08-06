@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:equatable/equatable.dart';
 
 import 'package:musync/config/constants/api_endpoints.dart';
@@ -249,6 +250,7 @@ class SongEntity extends Equatable {
   }
 
   factory SongEntity.fromApiMap(Map<String, dynamic> map) {
+    log("fromApiMap: $map");
     return SongEntity(
       id: map['id'] as int,
       data: map['data'] as String,

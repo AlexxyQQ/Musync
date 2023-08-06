@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/common/album_query_widget.dart';
@@ -65,6 +68,11 @@ class _SongListViewState extends State<SongListView> {
   void _handleOption4() {
     widget.songs.sort((a, b) => a.duration!.compareTo(b.duration!));
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -152,7 +160,7 @@ class _ListofSongsState extends State<ListofSongs> {
                 index: index,
               );
               nav.pushNamed(
-                AppRoutes.nowPlaying,
+                AppRoutes.nowPlayingRoute,
                 arguments: {
                   "songs": widget.songs,
                   "index": index,
@@ -228,6 +236,14 @@ class _ListofSongsState extends State<ListofSongs> {
                                   widget.songs[index].serverUrl != null)
                                 const Icon(
                                   Icons.cloud,
+                                  size: 20,
+                                  color: KColors.accentColor,
+                                ),
+                              const SizedBox(width: 5),
+                              if (widget.songs[index].isPublic != null &&
+                                  widget.songs[index].isPublic!)
+                                const Icon(
+                                  FontAwesomeIcons.globe,
                                   size: 20,
                                   color: KColors.accentColor,
                                 ),
@@ -437,7 +453,7 @@ class SecondAppBar extends StatelessWidget {
                             index: 0,
                           );
                           nav.pushNamed(
-                            AppRoutes.nowPlaying,
+                            AppRoutes.nowPlayingRoute,
                             arguments: {
                               "songs": songs,
                               "index": 0,
