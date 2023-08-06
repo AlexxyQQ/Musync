@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/presentation/state/music_query_state.dart';
+import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
+import 'package:musync/features/home/presentation/widgets/search_screen.dart';
 
 class KAppBar extends StatelessWidget implements PreferredSizeWidget {
   const KAppBar({
@@ -45,25 +49,53 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
                         MaterialLocalizations.of(context).openAppDrawerTooltip,
                   ),
                   // Search Bar
-                  SizedBox(
-                    width: mqSize.width * 0.6,
-                    child: TextField(
-                      style: Theme.of(context).textTheme.bodySmall,
-                      decoration: InputDecoration(
-                        hintText: 'Search Music....',
-                        hintStyle:
-                            Theme.of(context).textTheme.labelLarge!.copyWith(
+                  BlocBuilder<MusicQueryViewModel, MusicQueryState>(
+                    builder: (context, state) {
+                      return SizedBox(
+                        width: mqSize.width * 0.6,
+                        child: TextField(
+                          style: Theme.of(context).textTheme.bodySmall,
+                          decoration: InputDecoration(
+                            hintText: 'Search Music....',
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(
                                   color: KColors.greyColor,
                                 ),
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        fillColor: isDark
-                            ? KColors.offBlackColorTwo
-                            : KColors.offWhiteColorThree,
-                        contentPadding: const EdgeInsets.only(left: 10),
-                      ),
-                    ),
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            fillColor: isDark
+                                ? KColors.offBlackColorTwo
+                                : KColors.offWhiteColorThree,
+                            contentPadding: const EdgeInsets.only(left: 10),
+                          ),
+                          onTap: () async {
+                            await context
+                                .read<MusicQueryViewModel>()
+                                .toggleOnSearch();
+                          },
+                          onSubmitted: (value) {
+                            // from the list of songs, filter the songs that match the query
+                            context
+                                .read<MusicQueryViewModel>()
+                                .filterSongSearch(
+                                  query: value.toLowerCase().trim(),
+                                );
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchScreen(
+                                  data: state.filteredSongs,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

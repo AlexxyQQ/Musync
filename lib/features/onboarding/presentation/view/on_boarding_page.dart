@@ -27,7 +27,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             'Seamlessly switch between your computer and phone without missing a beat.',
       ),
       const OnBoardPageBuilder(
-        lottieUrl: 'assets/lottie/31634-turn-music-into-audience.json',
+        lottieUrl: 'assets/lottie/animation_lk5n0846.json',
         title: 'Listen to you library offline',
         subtitle:
             'Musync support playing offline media saved in you device or from the internet.',

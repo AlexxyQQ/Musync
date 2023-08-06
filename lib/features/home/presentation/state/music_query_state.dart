@@ -20,6 +20,9 @@ class MusicQueryState {
   final List<PlaylistEntity> playlists;
   final bool createPlaylist;
   final bool addAllSongs;
+  final bool onSearch;
+  final Map<String, Map<String, List<SongEntity>>> filteredEverything;
+  final List<SongEntity> filteredSongs;
 
   final String? error;
   final bool isLoading;
@@ -28,6 +31,7 @@ class MusicQueryState {
   final List<Widget> pages = [];
   MusicQueryState({
     required this.albumWithSongs,
+    required this.onSearch,
     required this.albums,
     required this.artistWithSongs,
     required this.folderWithSongs,
@@ -39,10 +43,12 @@ class MusicQueryState {
     required this.playlists,
     required this.createPlaylist,
     required this.addAllSongs,
+    required this.filteredSongs,
     this.error,
     required this.isLoading,
     required this.isUploading,
     required this.inLibrary,
+    required this.filteredEverything,
   });
 
   factory MusicQueryState.initial() {
@@ -63,6 +69,9 @@ class MusicQueryState {
       isLoading: false,
       isUploading: false,
       inLibrary: false,
+      onSearch: false,
+      filteredEverything: {},
+      filteredSongs: [],
     );
   }
 
@@ -83,6 +92,9 @@ class MusicQueryState {
     bool? isLoading,
     bool? isUploading,
     bool? inLibrary,
+    bool? onSearch,
+    List<SongEntity>? filteredSongs,
+    Map<String, Map<String, List<SongEntity>>>? filteredEverything,
   }) {
     return MusicQueryState(
       albumWithSongs: albumWithSongs ?? this.albumWithSongs,
@@ -101,6 +113,9 @@ class MusicQueryState {
       isLoading: isLoading ?? this.isLoading,
       isUploading: isUploading ?? this.isUploading,
       inLibrary: inLibrary ?? this.inLibrary,
+      onSearch: onSearch ?? this.onSearch,
+      filteredEverything: filteredEverything ?? this.filteredEverything,
+      filteredSongs: filteredSongs ?? this.filteredSongs,
     );
   }
 
@@ -122,6 +137,9 @@ class MusicQueryState {
       'isLoading': isLoading,
       'isUploading': isUploading,
       'inLibrary': inLibrary,
+      'onSearch': onSearch,
+      'filteredEverything': filteredEverything,
+      'filteredSongs': filteredSongs.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -151,6 +169,9 @@ class MusicQueryState {
         other.error == error &&
         other.isLoading == isLoading &&
         other.inLibrary == inLibrary &&
+        other.onSearch == onSearch &&
+        listEquals(other.filteredSongs, filteredSongs) &&
+        mapEquals(other.filteredEverything, filteredEverything) &&
         other.isUploading == isUploading;
   }
 
@@ -170,7 +191,10 @@ class MusicQueryState {
         addAllSongs.hashCode ^
         error.hashCode ^
         isLoading.hashCode ^
+        filteredSongs.hashCode ^
         inLibrary.hashCode ^
+        filteredEverything.hashCode ^
+        onSearch.hashCode ^
         isUploading.hashCode;
   }
 }

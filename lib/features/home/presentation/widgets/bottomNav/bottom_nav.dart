@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
@@ -8,10 +10,13 @@ import 'package:musync/features/home/presentation/view/home.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_appbar.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomitems.dart';
+import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomsheet.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_drawer.dart';
 import 'package:musync/features/home/presentation/widgets/home_view_shimmer.dart';
 import 'package:musync/features/home/presentation/widgets/music/music_not_found.dart';
 import 'package:musync/features/library/presentation/view/library_page.dart';
+import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -36,17 +41,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Get selectedIndex from the router
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (ModalRoute.of(context)?.settings.arguments != null) {
-        print(
-            'Asses${ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>}');
         try {
           pages = (ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>)['pages'] as List<Widget>;
-        } catch (e) {}
+        } catch (e) {
+          log(e.toString());
+        }
         try {
           selectedIndex = (ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>)['selectedIndex'] as int;
           _pageController = PageController(initialPage: selectedIndex);
-        } catch (e) {}
+        } catch (e) {
+          log(e.toString());
+        }
       }
     });
 
@@ -73,75 +80,109 @@ class _BottomNavBarState extends State<BottomNavBar> {
         isDark: isDark,
         syncTrue: syncTrue,
       ),
-      body: BlocBuilder<MusicQueryViewModel, MusicQueryState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          }
-          if (state.error != null) {
-            pages = [
-              const HomePageShimmer(),
-              const LoadingScreen(),
-              const LoadingScreen(),
-            ];
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              kShowSnackBar(state.error!, context: context);
-            });
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          } else if (state.everything.isNotEmpty) {
-            final Map<String, Map<String, List<SongEntity>>> data =
-                state.everything;
+      body: Stack(
+        children: [
+          BlocBuilder<MusicQueryViewModel, MusicQueryState>(
+            builder: (context, state) {
+              log("crap: ${state.everything}");
+              if (state.isLoading) {
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              }
+              if (state.error != null) {
+                pages = [
+                  const HomePageShimmer(),
+                  const LoadingScreen(),
+                  const LoadingScreen(),
+                ];
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  kShowSnackBar(state.error!, context: context);
+                });
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              } else if (state.everything.isNotEmpty) {
+                final Map<String, Map<String, List<SongEntity>>> data =
+                    state.everything;
 
-            pages = [
-              HomePage(
-                folders: data['folders']!,
-                albums: data['albums']!,
-                artists: data['artists']!,
-                isLoading: state.isLoading,
+                if (state.onSearch) {
+                  pages = [
+                    HomePage(
+                      folders: data['folders']!,
+                      albums: data['albums']!,
+                      artists: data['artists']!,
+                      isLoading: state.isLoading,
+                    ),
+                    const LoadingScreen(),
+                    LibraryPage(
+                      data: data,
+                    ),
+                  ];
+                }
+
+                pages = [
+                  HomePage(
+                    folders: data['folders']!,
+                    albums: data['albums']!,
+                    artists: data['artists']!,
+                    isLoading: state.isLoading,
+                  ),
+                  const LoadingScreen(),
+                  LibraryPage(
+                    data: data,
+                  ),
+                ];
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              } else {
+                pages = [
+                  const MusicNotFound(),
+                  const MusicNotFound(),
+                  const MusicNotFound(),
+                ];
+                return PageView.builder(
+                  itemCount: pages.length,
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return pages[index];
+                  },
+                );
+              }
+            },
+          ),
+          Positioned(
+            bottom: 0,
+            child: SizedBox(
+              width: mqSize.width,
+              height: 120,
+              child: BlocBuilder<NowPlayingViewModel, NowPlayingState>(
+                builder: (context, state) {
+                  return (state.isPlaying || state.isPaused)
+                      ? const MiniPlayer()
+                      : const SizedBox.shrink();
+                },
               ),
-              const LoadingScreen(),
-              LibraryPage(
-                data: data,
-              ),
-            ];
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          } else {
-            pages = [
-              const MusicNotFound(),
-              const MusicNotFound(),
-              const MusicNotFound(),
-            ];
-            return PageView.builder(
-              itemCount: pages.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return pages[index];
-              },
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomItems(
         showFolder: false,

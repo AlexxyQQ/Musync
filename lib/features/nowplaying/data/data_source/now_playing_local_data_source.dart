@@ -37,4 +37,27 @@ class NowPlayingLocalDataSource {
       );
     }
   }
+
+  // Play single song
+  Future<Either<ErrorModel, void>> playSingle({
+    required SongEntity song,
+  }) async {
+    try {
+      await audioQuery.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(song.data),
+          tag: song,
+        ),
+      );
+      await audioQuery.play();
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

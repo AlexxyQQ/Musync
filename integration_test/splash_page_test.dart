@@ -55,7 +55,7 @@ void main() {
             title: 'Musync',
             theme: AppTheme.appDarkTheme(),
             routes: AppRoutes.loggedinRoute,
-            initialRoute: AppRoutes.splashRoute,
+            initialRoute: AppRoutes.initialRoute,
           ),
         ),
       );
@@ -88,7 +88,7 @@ void main() {
             title: 'Musync',
             theme: AppTheme.appDarkTheme(),
             routes: AppRoutes.loggedinRoute,
-            initialRoute: AppRoutes.splashRoute,
+            initialRoute: AppRoutes.initialRoute,
           ),
         ),
       );
@@ -123,7 +123,7 @@ void main() {
             title: 'Musync',
             theme: AppTheme.appDarkTheme(),
             routes: AppRoutes.loggedinRoute,
-            initialRoute: AppRoutes.splashRoute,
+            initialRoute: AppRoutes.initialRoute,
           ),
         ),
       );

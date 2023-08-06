@@ -7,23 +7,25 @@ class LibraryAppBar extends StatefulWidget implements PreferredSizeWidget {
     required this.isDark,
     required this.mqSize,
     required this.changeSort,
+    this.title,
   });
 
   final bool isDark;
   final Size mqSize;
   final Function changeSort;
+  final String? title;
 
   @override
   State<LibraryAppBar> createState() => _LibraryAppBarState();
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(40);
 }
 
 class _LibraryAppBarState extends State<LibraryAppBar> {
   List<String> filterButtons = [
     'All',
+    'Songs',
     'Folders',
     'Albums',
     'Artists',

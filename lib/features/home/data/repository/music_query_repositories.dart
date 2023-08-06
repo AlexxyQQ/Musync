@@ -62,12 +62,8 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       } else {
         final localAlbumWithSongsEither =
             await musicLocalDataSource.getAllAlbumWithSongs(token: token);
-        final localAlbumWithSongs = localAlbumWithSongsEither.fold(
-          (error) => <String, List<SongEntity>>{},
-          (localSongs) => localSongs,
-        );
 
-        return Right(localAlbumWithSongs);
+        return localAlbumWithSongsEither;
       }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
@@ -301,12 +297,8 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       } else {
         final localAllFolderWithSongsEither =
             await musicLocalDataSource.getAllFolderWithSongs(token: token);
-        final localAllFolderWithSongs = localAllFolderWithSongsEither.fold(
-          (error) => <String, List<SongEntity>>{},
-          (localSongs) => localSongs,
-        );
 
-        return Right(localAllFolderWithSongs);
+        return localAllFolderWithSongsEither;
       }
     } catch (e) {
       return Left(
@@ -359,12 +351,8 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       } else {
         final localFoldersListEither =
             await musicLocalDataSource.getAllFolders(token: token);
-        final localFoldersList = localFoldersListEither.fold(
-          (error) => <String>[],
-          (localFolders) => localFolders,
-        );
 
-        return Right(localFoldersList);
+        return localFoldersListEither;
       }
     } catch (e) {
       return Left(
@@ -396,26 +384,25 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
           (localSongs) => localSongs,
         );
 
-        // if remote songs is in the local songs list then show the remote songs
+        final List<SongEntity> mergedSongs = [];
 
-        if (remoteSongsList.isNotEmpty) {
-          final List<SongEntity> mergedSongs = [];
-
-          for (var remoteSong in remoteSongsList.cast<SongEntity>()) {
-            final isLocalSongExists = localSongsList
-                .any((localSong) => localSong.id == remoteSong.id);
-            if (!isLocalSongExists) {
-              mergedSongs.add(remoteSong);
-            }
-          }
-
-          return Right(mergedSongs); // Return mergedSongs if it's not empty
-        } else {
-          return localSongsListEither;
+        for (var remoteSong in remoteSongsList) {
+          mergedSongs.add(remoteSong);
         }
+
+        for (var localSong in localSongsList) {
+          final isSongExistsInRemote = remoteSongsList.any(
+            (remoteSong) => remoteSong.id == localSong.id,
+          );
+          if (!isSongExistsInRemote) {
+            mergedSongs.add(localSong);
+          }
+        }
+
+        return Right(mergedSongs);
       } else {
-        final data = await musicLocalDataSource.getAllSongs();
-        return data;
+        final localSongsListEither = await musicLocalDataSource.getAllSongs();
+        return localSongsListEither;
       }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
@@ -478,11 +465,18 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       final folders = await getAllFolderWithSongs(token: token);
       final albums = await getAllAlbumWithSongs(token: token);
       final artists = await getAllArtistWithSongs(token: token);
+      final songs = await getAllSongs(token: token);
 
       return Right({
         'folders': folders.fold((l) => {}, (r) => r),
         'albums': albums.fold((l) => {}, (r) => r),
         'artists': artists.fold((l) => {}, (r) => r),
+        'songs': songs.fold(
+          (l) => {},
+          (r) => {
+            'all': r,
+          },
+        ),
       });
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));

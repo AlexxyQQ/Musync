@@ -27,9 +27,7 @@ class MusicLocalDataSource implements AMusicDataSource {
       var allHiveFolderSongs =
           await musicHiveDataSource.getFolderSongs(path: path);
       if (allHiveFolderSongs.isNotEmpty) {
-        var allEntitySongs =
-            SongHiveModel.empty().toEntityList(allHiveFolderSongs);
-        return Right(allEntitySongs);
+        return Right(allHiveFolderSongs);
       } else {
         final List<SongModel> allQuerySongs = await audioQuery.querySongs(
           path: path,
@@ -67,20 +65,28 @@ class MusicLocalDataSource implements AMusicDataSource {
     required String token,
   }) async {
     try {
-      var allQueryAlbums = await audioQuery.queryAlbums(
-        sortType: AlbumSortType.ALBUM,
-        orderType: OrderType.ASC_OR_SMALLER,
-        uriType: UriType.EXTERNAL,
-        ignoreCase: true,
-      );
-      List<AlbumEntity> albumEntityList = [];
-      for (var albumMap in allQueryAlbums) {
-        albumEntityList
-            .add(AlbumEntity.fromAlbumModel(convertMap(albumMap.getMap)));
+// Check if albums are already saved in hive
+      var allHiveAlbums = await musicHiveDataSource.getAllAlbums();
+      if (allHiveAlbums.isNotEmpty) {
+        return Right(allHiveAlbums);
+      } else {
+        var allQueryAlbums = await audioQuery.queryAlbums(
+          sortType: AlbumSortType.ALBUM,
+          orderType: OrderType.ASC_OR_SMALLER,
+          uriType: UriType.EXTERNAL,
+          ignoreCase: true,
+        );
+        List<AlbumEntity> albumEntityList = [];
+        for (var albumMap in allQueryAlbums) {
+          albumEntityList
+              .add(AlbumEntity.fromAlbumModel(convertMap(albumMap.getMap)));
+        }
+        var albumHiveList = AlbumHiveModel.empty().toHiveList(albumEntityList);
+        await musicHiveDataSource.addAllAlbums(albumHiveList);
+        // save all albums in hive
+        await musicHiveDataSource.addAllAlbums(albumHiveList);
+        return Right(albumEntityList);
       }
-      var albumHiveList = AlbumHiveModel.empty().toHiveList(albumEntityList);
-      await musicHiveDataSource.addAllAlbums(albumHiveList);
-      return Right(albumEntityList);
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
@@ -91,11 +97,13 @@ class MusicLocalDataSource implements AMusicDataSource {
     required String token,
   }) async {
     try {
+      // check if folders are already saved in hive
       var allSongFolders = await musicHiveDataSource.getAllFolders();
       if (allSongFolders.isNotEmpty) {
         return Right(allSongFolders);
       } else {
         final List<String> allSongFolders = await audioQuery.queryAllPath();
+        // save all folders in hive
         await musicHiveDataSource.addAllFolders(allSongFolders);
         return Right(allSongFolders);
       }
@@ -111,23 +119,33 @@ class MusicLocalDataSource implements AMusicDataSource {
   }) async {
     try {
       final Map<String, List<SongEntity>> result = {};
-      final Either<ErrorModel, List<String>> foldersEither =
-          await getAllFolders(token: token);
-      return foldersEither.fold(
-        (error) => Left(error),
-        (allFolder) async {
-          for (String folderPath in allFolder) {
-            final Either<ErrorModel, List<SongEntity>> songsEither =
-                await getFolderSongs(path: folderPath, token: token);
-            songsEither.fold(
-              (error) => Left(error),
-              (folderSongEntityList) =>
-                  result[folderPath] = folderSongEntityList,
-            );
-          }
-          return Right(result);
-        },
-      );
+      // check if folder songs are already saved in hive
+      final Map<String, List<SongEntity>> allFolderWithSongs =
+          await musicHiveDataSource.getAllFoldersWithSongs();
+      // check if the map is not empty
+      if (allFolderWithSongs.isNotEmpty) {
+        return Right(allFolderWithSongs);
+      } else {
+        final Either<ErrorModel, List<String>> foldersEither =
+            await getAllFolders(token: token);
+        return foldersEither.fold(
+          (error) => Left(error),
+          (allFolder) async {
+            for (String folderPath in allFolder) {
+              final Either<ErrorModel, List<SongEntity>> songsEither =
+                  await getFolderSongs(path: folderPath, token: token);
+              songsEither.fold(
+                (error) => Left(error),
+                (folderSongEntityList) =>
+                    result[folderPath] = folderSongEntityList,
+              );
+            }
+            // save all folder songs in hive
+            musicHiveDataSource.addFolderWithSongs(foldersWithSongs: result);
+            return Right(result);
+          },
+        );
+      }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
@@ -140,22 +158,34 @@ class MusicLocalDataSource implements AMusicDataSource {
   }) async {
     try {
       final Map<String, List<SongEntity>> result = {};
-      final Either<ErrorModel, List<SongEntity>> allSongsEither =
-          await getAllSongs();
-      return allSongsEither.fold(
-        (error) => Left(error),
-        (allSongs) {
-          for (SongEntity song in allSongs) {
-            final artistSongs = allSongs
-                .where(
-                  (element) => element.artistId.toString() == song.artistId,
-                )
-                .toList();
-            result[song.artist ?? 'Unknown'] = artistSongs;
-          }
-          return Right(result);
-        },
-      );
+      // check if artist songs are already saved in hive
+      final Map<String, List<SongEntity>> allArtistWithSongs =
+          await musicHiveDataSource.getAllArtistsWithSongs();
+      // check if the map is not empty
+      if (allArtistWithSongs.isNotEmpty) {
+        return Right(allArtistWithSongs);
+      } else {
+        final Either<ErrorModel, List<SongEntity>> allSongsEither =
+            await getAllSongs();
+        return allSongsEither.fold(
+          (error) => Left(error),
+          (allSongs) {
+            for (SongEntity song in allSongs) {
+              final artistSongs = allSongs
+                  .where(
+                    (element) => element.artistId.toString() == song.artistId,
+                  )
+                  .toList();
+              result[song.artist ?? 'Unknown'] = artistSongs;
+            }
+            // save all artist songs in hive
+            musicHiveDataSource.addAllArtistsWithSongs(
+              artistsWithSongs: result,
+            );
+            return Right(result);
+          },
+        );
+      }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
@@ -292,9 +322,7 @@ class MusicLocalDataSource implements AMusicDataSource {
     box.clear();
     var allHiveSongs = await musicHiveDataSource.getAllSongs();
     if (allHiveSongs.isNotEmpty) {
-      var allEntitySongs =
-          SongHiveModel.empty().toCheckEntityList(allHiveSongs);
-      return Right(allEntitySongs);
+      return Right(allHiveSongs);
     } else {
       final List<SongModel> allQuerySongs = await audioQuery.querySongs(
         sortType: SongSortType.ALBUM,
@@ -331,28 +359,41 @@ class MusicLocalDataSource implements AMusicDataSource {
       getAllAlbumWithSongs({required String token}) async {
     try {
       final Map<String, List<SongEntity>> result = {};
-      final Either<ErrorModel, List<AlbumEntity>> albumsEither =
-          await getAllAlbums(token: token);
-      final Either<ErrorModel, List<SongEntity>> songsEither =
-          await getAllSongs();
+      // check if albums are already saved in hive
+      final Map<String, List<SongEntity>> allHiveAlbums =
+          await musicHiveDataSource.getAllAlbumsWithSongs();
+      if (allHiveAlbums.isNotEmpty) {
+        return Right(allHiveAlbums);
+      } else {
+        final Either<ErrorModel, List<AlbumEntity>> albumsEither =
+            await getAllAlbums(token: token);
+        final Either<ErrorModel, List<SongEntity>> songsEither =
+            await getAllSongs();
 
-      return albumsEither.fold(
-        (error) => Left(error),
-        (allAlbums) {
-          return songsEither.fold(
-            (error) => Left(error),
-            (allSongs) {
-              for (AlbumEntity album in allAlbums) {
-                final albumSongs = allSongs
-                    .where((element) => element.albumId.toString() == album.id)
-                    .toList();
-                result[album.id] = albumSongs;
-              }
-              return Right(result);
-            },
-          );
-        },
-      );
+        return albumsEither.fold(
+          (error) => Left(error),
+          (allAlbums) {
+            return songsEither.fold(
+              (error) => Left(error),
+              (allSongs) {
+                for (AlbumEntity album in allAlbums) {
+                  final albumSongs = allSongs
+                      .where(
+                        (element) => element.albumId.toString() == album.id,
+                      )
+                      .toList();
+                  result[album.id] = albumSongs;
+                }
+                // save all albums with songs in hive
+                musicHiveDataSource.addAllAlbumWithSongs(
+                  albumWithSongs: result,
+                );
+                return Right(result);
+              },
+            );
+          },
+        );
+      }
     } catch (e) {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
