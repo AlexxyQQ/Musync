@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 class NowPlayingState {

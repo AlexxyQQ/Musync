@@ -30,8 +30,6 @@ class AuthRepositoryImpl extends IAuthRepository {
     }
   }
 
- 
-
   @override
   Future<Either<ErrorModel, UserEntity>> login({
     required String email,

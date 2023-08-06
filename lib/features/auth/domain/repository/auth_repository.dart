@@ -14,5 +14,4 @@ abstract class IAuthRepository {
   });
   Future<Either<ErrorModel, UserEntity>> googleLogin();
   Future<Either<ErrorModel, void>> logout();
-  
 }

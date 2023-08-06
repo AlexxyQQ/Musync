@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
+import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/domain/repository/auth_repository.dart';
 
@@ -22,8 +23,6 @@ class AuthUseCase {
       rethrow;
     }
   }
-
-  
 
   Future<Either<ErrorModel, UserEntity>> login({
     required String email,
