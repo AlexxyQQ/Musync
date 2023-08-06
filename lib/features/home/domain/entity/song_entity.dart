@@ -250,7 +250,6 @@ class SongEntity extends Equatable {
   }
 
   factory SongEntity.fromApiMap(Map<String, dynamic> map) {
-    log("fromApiMap: $map");
     return SongEntity(
       id: map['id'] as int,
       data: map['data'] as String,

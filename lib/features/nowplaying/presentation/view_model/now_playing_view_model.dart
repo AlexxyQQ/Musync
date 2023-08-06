@@ -8,14 +8,11 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/nowplaying/domain/use_case/now_playing_use_case.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
-import 'package:musync/features/nowplaying/presentation/view_model/audio_service_handeler.dart';
 
 class NowPlayingViewModel extends Cubit<NowPlayingState> {
   final NowPlayingUseCase nowPlayingUseCase;
-  final MyAudioHandler audioHandler;
   NowPlayingViewModel(
     this.nowPlayingUseCase,
-    this.audioHandler,
   ) : super(NowPlayingState.initial()) {
     init();
   }
@@ -133,6 +130,7 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
     if (state.queue.length > state.currentIndex + 1 && !state.isRepeatOne) {
       await state.audioPlayer.seek(Duration.zero);
       await state.audioPlayer.seekToNext();
+
       emit(
         state.copyWith(
           isPlaying: true,
@@ -141,10 +139,9 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
           currentSong:
               state.queue[state.audioPlayer.sequenceState!.currentIndex],
           currentIndex: state.audioPlayer.sequenceState!.currentIndex,
-          queue: state.audioPlayer.sequenceState!.sequence.map((e) {
-            log('asshole : ${e.tag}');
-            return SongEntity.fromApiMap(e.tag.extras!);
-          }).toList(),
+          queue: state.audioPlayer.sequenceState!.sequence
+              .map((e) => e.tag as SongEntity)
+              .toList(),
         ),
       );
     } else {
@@ -173,7 +170,7 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
               state.queue[state.audioPlayer.sequenceState!.currentIndex],
           currentIndex: state.audioPlayer.sequenceState!.currentIndex,
           queue: state.audioPlayer.sequenceState!.sequence
-              .map((e) => SongEntity.fromApiMap(e.tag.extras))
+              .map((e) => e.tag as SongEntity)
               .toList(),
         ),
       );
