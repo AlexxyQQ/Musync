@@ -7,11 +7,14 @@ import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 
 class AuthDataSource {
   final Api api;
 
-  const AuthDataSource({required this.api});
+  AuthDataSource({
+    required this.api,
+  });
 
   Future<Either<ErrorModel, Map<String, dynamic>>> loginUser({
     required String email,
@@ -32,6 +35,7 @@ class AuthDataSource {
         Map<String, dynamic> userData = responseApi.data['user'];
         String token = responseApi.data['token'];
         userData['token'] = token;
+        // Replace 'your_received_token_here' with the token received after successful login.
         return Right(userData);
       } else {
         return Left(

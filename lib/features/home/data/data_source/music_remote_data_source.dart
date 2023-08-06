@@ -119,6 +119,123 @@ class MusicRemoteDataSource implements AMusicDataSource {
 
 //  ----- All Songs -----
 
+  Future<Either<ErrorModel, bool>> addListOfSongs({
+    required String token,
+    required List<SongEntity> songs,
+    bool isPublic = false,
+  }) async {
+    try {
+      final Either<ErrorModel, List<SongEntity>> apiSongsEither =
+          await getAllSongs(token: token);
+      final List<SongEntity> apiSongs = apiSongsEither.fold(
+        (l) => [],
+        (r) => r,
+      );
+
+      final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
+      final model = device.model;
+
+      List<SongEntity> filteredSongs = [];
+
+      for (var song in songs) {
+        bool found = false;
+
+        for (var apiSong in apiSongs) {
+          if (song.id == apiSong.id) {
+            found = true;
+            break;
+          }
+        }
+
+        if (!found) {
+          filteredSongs.add(song);
+        }
+      }
+
+      for (var song in filteredSongs) {
+        // Create a FormData object
+        final updatedSongModelMap = Map<String, dynamic>.from(song.toMap());
+
+        updatedSongModelMap['isPublic'] = isPublic;
+
+
+        final formData = FormData.fromMap({
+          'mainFolder': '$model/Music',
+          'subFolder': song.data,
+          'songModelMap': updatedSongModelMap,
+          'files': await MultipartFile.fromFile(
+            song.data,
+            filename: song.displayName,
+          ),
+        });
+        // Make a multipart request
+        final songResponse = await api.sendRequest.post(
+          ApiEndpoints.addAllSongsRoute,
+          data: formData,
+          options: Options(
+            headers: {
+              "Authorization": 'Bearer $token',
+            },
+          ),
+        );
+
+        ApiResponse apiSongResponse = ApiResponse.fromResponse(songResponse);
+
+        if (!apiSongResponse.success) {
+          continue;
+        } else {
+          if (song.albumArt != '') {
+            final List<String> musicPath = song.data.split('/');
+            musicPath[musicPath.length - 1] = "${song.id}.png";
+            final String newPath = musicPath.join('/');
+
+            final albumformData = FormData.fromMap({
+              'mainFolder': '$model/Music',
+              'subFolder': newPath,
+              'albumArtUP': await MultipartFile.fromFile(
+                song.albumArt,
+                filename: '${song.id}.png',
+              ),
+            });
+            await api.sendRequest.post(
+              ApiEndpoints.uploadAlbumArtRoute,
+              data: albumformData,
+              options: Options(
+                headers: {
+                  "Authorization": 'Bearer $token',
+                },
+              ),
+            );
+          }
+        }
+      }
+      return const Right(true); // Return success indication
+    } catch (e) {
+      if (e is DioError) {
+        if (e.response != null) {
+          ApiResponse responseApi = ApiResponse.fromResponse(e.response!);
+          return Left(
+            ErrorModel(
+              message: responseApi.message.toString(),
+              status: false,
+            ),
+          );
+        } else {
+          return Left(
+            ErrorModel(
+              message: 'Network error occurred.',
+              status: false,
+            ),
+          );
+        }
+      } else {
+        return Left(
+          ErrorModel(message: 'An unexpected error occurred.', status: false),
+        );
+      }
+    }
+  }
+
   @override
   Future<Either<ErrorModel, bool>> addAllSongs({
     required String token,
@@ -515,5 +632,82 @@ class MusicRemoteDataSource implements AMusicDataSource {
   }) {
     // TODO: implement getPlaylists
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<ErrorModel, bool>> tooglePublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.toogleSongPublicRoute,
+        data: {
+          "songId": songID,
+          'toggleValue': isPublic,
+        },
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        return Right(isPublic);
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs() async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllPublicSongsRoute,
+      );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        final List<dynamic> responseData = apiResponse.data;
+        if (responseData.isNotEmpty) {
+          final List<SongEntity> apiSongs =
+              responseData.map((e) => SongEntity.fromApiMap(e)).toList();
+          return Right(apiSongs); // Wrap songs list in Right and return
+        } else {
+          return const Right([]);
+        }
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
   }
 }

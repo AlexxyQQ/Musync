@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/nowplaying/domain/use_case/now_playing_use_case.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 
@@ -100,11 +103,9 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
     GetIt.instance
         .get<HiveQueries>()
         .setValue(boxName: 'settings', key: 'shuffle', value: true);
+    state.queue.shuffle();
     emit(
-      state.copyWith(
-        isShuffle: !state.isShuffle,
-        queue: state.queue..shuffle(),
-      ),
+      state.copyWith(isShuffle: !state.isShuffle, queue: state.queue),
     );
   }
 
@@ -231,6 +232,28 @@ class NowPlayingViewModel extends Cubit<NowPlayingState> {
         currentIndex: 0,
         queue: [state.queue[state.audioPlayer.sequenceState!.currentIndex]],
       ),
+    );
+  }
+
+  Future<void> tooglePublic({
+    required int songID,
+    required bool isPublic,
+  }) async {
+    final data = await GetIt.instance<MusicQueryUseCase>().toggleSongPublic(
+      songID: songID,
+      isPublic: isPublic,
+    );
+    data.fold(
+      (l) => log(l.message),
+      (r) {
+        emit(
+          state.copyWith(
+            currentSong: state.currentSong.copyWith(
+              isPublic: r,
+            ),
+          ),
+        );
+      },
     );
   }
 }

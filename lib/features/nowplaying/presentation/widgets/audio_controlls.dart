@@ -6,6 +6,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
+import 'package:musync/features/nowplaying/presentation/widgets/share_window.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 class AudioControlls extends StatefulWidget {
   const AudioControlls({
@@ -167,7 +169,14 @@ class MoreControlls extends StatelessWidget {
             color: MediaQuery.of(context).platformBrightness == Brightness.dark
                 ? KColors.whiteColor
                 : KColors.blackColor,
-            onPressed: () async {},
+            onPressed: () async {
+              // show share window
+              await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => const SharePage(),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(Icons.queue_music_rounded),

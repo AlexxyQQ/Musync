@@ -42,6 +42,7 @@ class HomePage extends StatelessWidget {
               .getValue(boxName: 'users', key: 'token', defaultValue: '');
           musicQueryCubit.getAllSongs(token: token);
           musicQueryCubit.getEverything();
+          musicQueryCubit.getAllPublicSongs();
           await ConnectivityCheck.isServerup(recheck: true);
         },
         child: SingleChildScrollView(

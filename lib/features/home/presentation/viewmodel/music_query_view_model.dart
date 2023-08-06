@@ -114,6 +114,26 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
     );
   }
 
+  Future<void> addListOfSongs({
+    required List<SongEntity> songs,
+    bool isPublic = false,
+  }) async {
+    emit(state.copyWith(isUploading: true));
+    final data = await _musicQueryUseCase.addListOfSongs(
+      songs: songs,
+      isPublic: isPublic,
+    );
+
+    data.fold(
+      (l) => emit(state.copyWith(isLoading: false, error: l.message)),
+      (r) => emit(
+        state.copyWith(
+          isUploading: false,
+        ),
+      ),
+    );
+  }
+
   Future<void> getFolderSongs({
     required String path,
   }) async {
@@ -205,6 +225,7 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
         ),
       );
     }
+
     emit(
       state.copyWith(
         isLoading: false,
@@ -215,5 +236,34 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
 
   Future<void> toggleOnSearch() async {
     emit(state.copyWith(onSearch: !state.onSearch));
+  }
+
+  Future<void> tooglePublic({
+    required int songID,
+    required bool isPublic,
+  }) async {
+    await _musicQueryUseCase.toggleSongPublic(
+      songID: songID,
+      isPublic: isPublic,
+    );
+  }
+
+  Future<void> getAllPublicSongs() async {
+    emit(state.copyWith(isLoading: true));
+    final data = await _musicQueryUseCase.getAllPublicSongs();
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isLoading: false,
+          error: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isLoading: false,
+          publicSongs: r,
+        ),
+      ),
+    );
   }
 }

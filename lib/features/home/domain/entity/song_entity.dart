@@ -62,6 +62,8 @@ class SongEntity extends Equatable {
 
   final String? albumArtUrl;
 
+  final bool? isPublic;
+
   const SongEntity({
     required this.id,
     required this.data,
@@ -92,6 +94,7 @@ class SongEntity extends Equatable {
     this.isPodcast,
     required this.isRingtone,
     this.albumArtUrl,
+    this.isPublic,
   });
 
   SongEntity copyWith({
@@ -124,6 +127,7 @@ class SongEntity extends Equatable {
     String? serverUrl,
     String? albumArt,
     String? albumArtUrl,
+    bool? isPublic,
   }) {
     return SongEntity(
       id: id ?? this.id,
@@ -155,6 +159,7 @@ class SongEntity extends Equatable {
       serverUrl: serverUrl ?? this.serverUrl,
       albumArt: albumArt ?? this.albumArt,
       albumArtUrl: albumArtUrl ?? this.albumArtUrl,
+      isPublic: isPublic ?? this.isPublic,
     );
   }
 
@@ -189,6 +194,7 @@ class SongEntity extends Equatable {
       'serverUrl': serverUrl,
       'albumArt': albumArt,
       'albumArtUrl': albumArtUrl,
+      'isPublic': isPublic,
     };
   }
 
@@ -228,6 +234,7 @@ class SongEntity extends Equatable {
       albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
       albumArtUrl:
           map['albumArtUrl'] != null ? map['albumArtUrl'] as String : null,
+      isPublic: map['isPublic'] != null ? map['isPublic'] as bool : null,
     );
   }
 
@@ -277,6 +284,7 @@ class SongEntity extends Equatable {
           map['isNotification'] != null ? map['isNotification'] as bool : null,
       isPodcast: map['isPodcast'] != null ? map['isPodcast'] as bool : null,
       isRingtone: map['isRingtone'] as bool,
+      isPublic: map['isPublic'] != null ? map['isPublic'] as bool : null,
     );
   }
 
@@ -311,5 +319,6 @@ class SongEntity extends Equatable {
         isRingtone,
         albumArt,
         albumArtUrl,
+        isPublic,
       ];
 }

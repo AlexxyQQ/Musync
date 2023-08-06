@@ -398,4 +398,46 @@ class MusicLocalDataSource implements AMusicDataSource {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> tooglePublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  }) async {
+    try {
+      // find song in hive using songID
+      final allSongs = await musicHiveDataSource.getAllSongs();
+      final song = allSongs.firstWhere((element) => element.id == songID);
+
+      // update song in hive
+      song.copyWith(isPublic: isPublic);
+      // save song in hive
+      await musicHiveDataSource
+          .updateSong(SongHiveModel.empty().toHiveModel(song));
+
+      return Right(isPublic);
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs() async {
+    try {
+      return const Right([]);
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 }

@@ -536,4 +536,71 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
       return Left(ErrorModel(message: e.toString(), status: false));
     }
   }
+
+  @override
+  Future<Either<ErrorModel, bool>> makeSongPublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  }) async {
+    try {
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        return await musicRemoteDataSource.tooglePublic(
+          songID: songID,
+          token: token,
+          isPublic: isPublic,
+        );
+      } else {
+        return await musicLocalDataSource.tooglePublic(
+          songID: songID,
+          token: token,
+          isPublic: isPublic,
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs() async {
+    try {
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        return await musicRemoteDataSource.getAllPublicSongs();
+      } else {
+        return await musicLocalDataSource.getAllPublicSongs();
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, bool>> addListOfSongs({
+    required String token,
+    required List<SongEntity> songs,
+    bool isPublic = false,
+  }) async {
+    try {
+      return await musicRemoteDataSource.addListOfSongs(
+        token: token,
+        songs: songs,
+        isPublic: isPublic,
+      );
+    } catch (e) {
+      return Left(ErrorModel(message: e.toString(), status: false));
+    }
+  }
 }

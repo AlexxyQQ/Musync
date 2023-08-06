@@ -238,4 +238,40 @@ class MusicQueryUseCase {
     );
     return await musicQueryRepository.addAllSongs(token: token);
   }
+
+  Future<Either<ErrorModel, bool>> addListOfSongs({
+    required List<SongEntity> songs,
+    bool isPublic = false,
+  }) async {
+    final token = await hiveQueries.getValue(
+      boxName: 'users',
+      key: 'token',
+      defaultValue: '',
+    );
+    return await musicQueryRepository.addListOfSongs(
+      token: token,
+      songs: songs,
+      isPublic: isPublic,
+    );
+  }
+
+  Future<Either<ErrorModel, bool>> toggleSongPublic({
+    required int songID,
+    required bool isPublic,
+  }) async {
+    final token = await hiveQueries.getValue(
+      boxName: 'users',
+      key: 'token',
+      defaultValue: '',
+    );
+    return await musicQueryRepository.makeSongPublic(
+      songID: songID,
+      token: token,
+      isPublic: isPublic,
+    );
+  }
+
+  Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs() async {
+    return await musicQueryRepository.getAllPublicSongs();
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/loading_screen.dart';
+import 'package:musync/features/browse/presentation/view/browse_view.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/view/home.dart';
@@ -59,6 +60,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     var musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
     musicQueryCubit.getEverything();
+    musicQueryCubit.getAllPublicSongs();
   }
 
   void syncTrue() {
@@ -84,7 +86,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         children: [
           BlocBuilder<MusicQueryViewModel, MusicQueryState>(
             builder: (context, state) {
-              log("crap: ${state.everything}");
               if (state.isLoading) {
                 return PageView.builder(
                   itemCount: pages.length,
@@ -124,7 +125,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       artists: data['artists']!,
                       isLoading: state.isLoading,
                     ),
-                    const LoadingScreen(),
+                    const BrowseView(),
                     LibraryPage(
                       data: data,
                     ),
@@ -138,7 +139,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     artists: data['artists']!,
                     isLoading: state.isLoading,
                   ),
-                  const LoadingScreen(),
+                  const BrowseView(),
                   LibraryPage(
                     data: data,
                   ),

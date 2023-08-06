@@ -41,8 +41,20 @@ abstract class IMusicQueryRepository {
   Future<Either<ErrorModel, bool>> addAllSongs({
     required String token,
   });
+  Future<Either<ErrorModel, bool>> addListOfSongs({
+    required String token,
+    required List<SongEntity> songs,
+  });
   Future<Either<ErrorModel, Map<String, Map<String, List<SongEntity>>>>>
       getEverything({
     required String token,
   });
+
+  Future<Either<ErrorModel, bool>> makeSongPublic({
+    required int songID,
+    required String token,
+    required bool isPublic,
+  });
+
+  Future<Either<ErrorModel, List<SongEntity>>> getAllPublicSongs();
 }
