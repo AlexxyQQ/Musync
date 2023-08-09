@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
 import 'package:musync/features/home/presentation/widgets/search_screen.dart';
@@ -76,19 +77,32 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 .read<MusicQueryViewModel>()
                                 .toggleOnSearch();
                           },
-                          onSubmitted: (value) {
-                            // from the list of songs, filter the songs that match the query
-                            context
-                                .read<MusicQueryViewModel>()
-                                .filterSongSearch(
-                                  query: value.toLowerCase().trim(), //apple
-                                );
-
+                          onSubmitted: (value) async {
+                            final songs = <SongEntity>[];
+                            if (value.isNotEmpty && value != ' ') {
+                              final songsWithSongs =
+                                  state.everything['songs']!['all'];
+                              songs.addAll(
+                                songsWithSongs!.where(
+                                  (element) =>
+                                      element.title.toLowerCase().contains(
+                                            value.toLowerCase(),
+                                          ) ||
+                                      element.artist
+                                          .toString()
+                                          .toLowerCase()
+                                          .contains(
+                                            value.toLowerCase(),
+                                          ),
+                                ),
+                              );
+                            }
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SearchScreen(
-                                  data: state.filteredSongs,
+                                  data: songs,
+                                  query: value,
                                 ),
                               ),
                             );

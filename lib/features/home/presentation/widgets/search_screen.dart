@@ -10,21 +10,28 @@ import 'package:musync/features/library/presentation/widgets/song_listview.dart'
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({Key? key, required this.data}) : super(key: key);
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key, required this.data, required this.query})
+      : super(key: key);
 
   final List<SongEntity> data;
+  final String query;
 
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
   void _onSongTap(BuildContext context, int index) {
     final nav = Navigator.of(context);
     BlocProvider.of<NowPlayingViewModel>(context).playAll(
-      songs: data,
+      songs: widget.data,
       index: index,
     );
     nav.pushNamed(
       AppRoutes.nowPlayingRoute,
       arguments: {
-        "songs": data,
+        "songs": widget.data,
         "index": index,
       },
     );
@@ -38,7 +45,7 @@ class SearchScreen extends StatelessWidget {
     final songArtistColor =
         isDark ? KColors.offWhiteColor : KColors.offBlackColor;
 
-    if (data.isEmpty) {
+    if (widget.data.isEmpty) {
       return Scaffold(
         body: Center(
           child: Text(
@@ -49,10 +56,47 @@ class SearchScreen extends StatelessWidget {
       );
     } else {
       return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          centerTitle: true,
+          title: Column(
+            children: [
+              Text(
+                "Search Results for:",
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                widget.query,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      color: KColors.greyColor,
+                    ),
+              ),
+            ],
+          ),
+
+          // Back Button
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+            ),
+          ),
+        ),
         body: ListView.builder(
-          itemCount: data.length,
+          itemCount: widget.data.length,
           itemBuilder: (context, index) {
-            final ms = data[index].duration!;
+            final ms = widget.data[index].duration!;
             final duration = Duration(milliseconds: ms);
             final minutes = duration.inMinutes;
             final seconds = duration.inSeconds.remainder(60);
@@ -68,10 +112,10 @@ class SearchScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: data[index].albumArtUrl == null ||
-                            data[index].albumArtUrl == ''
+                    child: widget.data[index].albumArtUrl == null ||
+                            widget.data[index].albumArtUrl == ''
                         ? QueryArtworkWidget(
-                            id: data[index].id,
+                            id: widget.data[index].id,
                             nullArtworkWidget: const Icon(
                               Icons.music_note_rounded,
                               size: 40,
@@ -86,14 +130,14 @@ class SearchScreen extends StatelessWidget {
                             },
                           )
                         : QueryArtworkFromApi(
-                            data: data,
+                            data: widget.data,
                             index: index,
                           ),
                   ),
                   title: SizedBox(
                     width: mqSize.width * 0.7,
                     child: Text(
-                      data[index].title,
+                      widget.data[index].title,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
@@ -105,8 +149,8 @@ class SearchScreen extends StatelessWidget {
                   ),
                   subtitle: Row(
                     children: [
-                      if (data[index].serverUrl != '' &&
-                          data[index].serverUrl != null)
+                      if (widget.data[index].serverUrl != '' &&
+                          widget.data[index].serverUrl != null)
                         const Icon(
                           Icons.cloud,
                           size: 20,
@@ -116,7 +160,7 @@ class SearchScreen extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                           text:
-                              '${data[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                              '${widget.data[index].artist} • ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
                           style: TextStyle(
                             color: songArtistColor,
                             fontSize: 14,
