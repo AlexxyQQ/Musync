@@ -6,6 +6,7 @@ import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:musync/features/nowplaying/presentation/widgets/audio_controlls.dart';
+import 'package:musync/features/socket/presentation/view_model/socket_view_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MiniPlayer extends StatelessWidget {
@@ -117,7 +118,20 @@ class MiniPlayer extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.share_rounded),
                       color: Colors.white,
-                      onPressed: () {},
+                      onPressed: () async {
+                        await BlocProvider.of<NowPlayingViewModel>(context)
+                            .pause();
+                        await BlocProvider.of<SocketCubit>(context).onShare(
+                          songList:
+                              BlocProvider.of<NowPlayingViewModel>(context)
+                                  .state
+                                  .queue,
+                          songIndex:
+                              BlocProvider.of<NowPlayingViewModel>(context)
+                                  .state
+                                  .currentIndex,
+                        );
+                      },
                     ),
                     // Next Button
                     IconButton(
