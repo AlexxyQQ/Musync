@@ -166,8 +166,9 @@ class _SettingsViewState extends State<SettingsView> {
         const SizedBox(height: 12),
         // All Songs
         InkWell(
-          onTap: () {
+          onTap: () async {
             Navigator.pushNamed(context, AppRoutes.manageAllSongsRoute);
+            await context.read<MusicQueryViewModel>().getAllSongs();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,9 +191,14 @@ class _SettingsViewState extends State<SettingsView> {
         // Public Songs
         authenticationBlocProvider.state.loggedUser!.email != "Guest"
             ? InkWell(
-                onTap: () {
+                onTap: () async {
                   Navigator.pushNamed(
-                      context, AppRoutes.manageAllPublicSongsRoute);
+                    context,
+                    AppRoutes.manageAllPublicSongsRoute,
+                  );
+                  await context
+                      .read<MusicQueryViewModel>()
+                      .getUserPublicSongs();
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

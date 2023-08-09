@@ -10,6 +10,7 @@ import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
+import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 
 class KDrawer extends StatefulWidget {
   const KDrawer({
@@ -176,8 +177,9 @@ class _KDrawerState extends State<KDrawer> {
                     'Logout',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  onTap: () {
-                    _logout(authenticationBlocProvider);
+                  onTap: () async {
+                    await _logout(authenticationBlocProvider,
+                        BlocProvider.of<NowPlayingViewModel>(context));
                   },
                 ),
               ],
@@ -198,8 +200,13 @@ class _KDrawerState extends State<KDrawer> {
     widget.syncTrue();
   }
 
-  void _logout(AuthViewModel authViewModel) {
-    authViewModel.logoutUser();
+  Future<void> _logout(
+    AuthViewModel authViewModel,
+    NowPlayingViewModel nowPlayingViewModel,
+  ) async {
+    await nowPlayingViewModel.stop();
+    await nowPlayingViewModel.clearQueue();
+    await authViewModel.logoutUser();
     kShowSnackBar('Logged Out', context: context);
     Navigator.popAndPushNamed(context, AppRoutes.getStartedRoute);
   }

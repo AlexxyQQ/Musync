@@ -588,6 +588,27 @@ class MusicQueryRepositoryImpl extends IMusicQueryRepository {
   }
 
   @override
+  Future<Either<ErrorModel, List<SongEntity>>> getUserPublicSongs({
+    required String token,
+  }) async {
+    try {
+      if (await ConnectivityCheck.connectivity() &&
+          await ConnectivityCheck.isServerup()) {
+        return await musicRemoteDataSource.getUserPublicSongs(token: token);
+      } else {
+        return const Right([]);
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
   Future<Either<ErrorModel, bool>> addListOfSongs({
     required String token,
     required List<SongEntity> songs,

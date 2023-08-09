@@ -157,7 +157,7 @@ class MoreControlls extends StatelessWidget {
       stream: Light().lightSensorStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          if (snapshot.data! < 10000) {
+          if (snapshot.data! < 5) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               BlocProvider.of<NowPlayingViewModel>(context).pause();
             });

@@ -266,6 +266,25 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
     );
   }
 
+  Future<void> getUserPublicSongs() async {
+    emit(state.copyWith(isLoading: true));
+    final data = await _musicQueryUseCase.getUserPublicSongs();
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isLoading: false,
+          error: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isLoading: false,
+          userPublicSongs: r,
+        ),
+      ),
+    );
+  }
+
   Future<void> deleteSong({
     required SongEntity song,
   }) async {
