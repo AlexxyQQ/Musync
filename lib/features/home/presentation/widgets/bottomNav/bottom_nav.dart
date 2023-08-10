@@ -154,9 +154,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 );
               } else {
                 pages = [
-                  const MusicNotFound(),
-                  const MusicNotFound(),
-                  const MusicNotFound(),
+                  const HomePageShimmer(),
+                  const LoadingScreen(),
+                  const LoadingScreen(),
                 ];
                 return PageView.builder(
                   itemCount: pages.length,

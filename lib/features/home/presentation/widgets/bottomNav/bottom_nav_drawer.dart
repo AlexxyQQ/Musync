@@ -35,13 +35,13 @@ class _KDrawerState extends State<KDrawer> {
     super.initState();
     musicQueryBlocProvider = BlocProvider.of<MusicQueryViewModel>(context);
     authenticationBlocProvider = BlocProvider.of<AuthViewModel>(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      initialDataFetch();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await initialDataFetch();
     });
   }
 
   initialDataFetch() async {
-    musicQueryBlocProvider.getAllSongs();
+    await musicQueryBlocProvider.getAllSongs();
   }
 
   @override
@@ -205,7 +205,9 @@ class _KDrawerState extends State<KDrawer> {
     NowPlayingViewModel nowPlayingViewModel,
   ) async {
     await nowPlayingViewModel.stop();
-    await nowPlayingViewModel.clearQueue();
+    try {
+      await nowPlayingViewModel.clearQueue();
+    } catch (e) {}
     await authViewModel.logoutUser();
     kShowSnackBar('Logged Out', context: context);
     Navigator.popAndPushNamed(context, AppRoutes.getStartedRoute);

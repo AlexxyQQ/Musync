@@ -353,7 +353,7 @@ class SongEntity extends Equatable {
       'isPodcast': isPodcast,
       'isRingtone': isRingtone,
       'albumArt': albumArt,
-      'albumArtUrl': albumArtUrl!.replaceAll("http://192.168.0.107:3001", ''),
+      'albumArtUrl': albumArtUrl!.replaceAll("http://192.168.1.65:3001", ''),
       'isPublic': isPublic,
     };
   }

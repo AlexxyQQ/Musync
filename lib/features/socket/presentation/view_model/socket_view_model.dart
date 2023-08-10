@@ -48,7 +48,7 @@ class SocketCubit extends Cubit<SocketState> {
         socketOptions['forceNew'] = true;
       }
 
-      _socket = io.io('http://192.168.0.107:3002', socketOptions);
+      _socket = io.io('http://192.168.1.65:3002', socketOptions);
     }
   }
 

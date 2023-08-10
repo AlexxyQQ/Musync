@@ -89,131 +89,118 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                physics:
-                    constraints.maxHeight < MediaQuery.of(context).size.height
-                        ? null
-                        : const NeverScrollableScrollPhysics(),
-                controller: _scrollController,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // Login Texts
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight: 80,
-                          maxWidth: mediaQuerySize.width,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // Login Text
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                'Log In',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall!
-                                    .copyWith(
-                                      fontSize: 40,
-                                    ),
-                              ),
-                            ),
-                            // Welcome back Text
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                'Welcome back, we missed you',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Login Form
-                      Container(
-                        height: mediaQuerySize.height * 0.5,
-                        width: mediaQuerySize.width,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                          color:
-                              isDark ? KColors.whiteColor : KColors.blackColor,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: constraints.maxHeight < MediaQuery.of(context).size.height
+                ? null
+                : const NeverScrollableScrollPhysics(),
+            controller: _scrollController,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // Login Texts
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 80,
+                      maxWidth: mediaQuerySize.width,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Login Text
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'Log In',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(
+                                  fontSize: 40,
+                                ),
                           ),
                         ),
-                        child: LoginForm(
-                          formKey: formKey,
-                          emailController: _emailController,
-                          passwordController: _passwordController,
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              setState(() {
-                                isPressed = true;
-                              });
-                              String email = _emailController.text;
-                              String password = _passwordController.text;
-                              BlocProvider.of<AuthViewModel>(context).loginUser(
-                                email: email,
-                                password: password,
-                              );
-                            }
-                          },
+                        // Welcome back Text
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'Welcome back, we missed you',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-          // Loading Indicator and ScaffoldMessenger
-          isPressed
-              ? BlocBuilder<AuthViewModel, AuthState>(
-                  builder: (context, state) {
-                    if (state.isLoading) {
-                      return authLoading(mediaQuerySize, context);
-                    } else if (state.isError) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        kShowSnackBar(
-                          state.authError!,
-                          context: context,
+                  // Login Form
+                  Container(
+                    height: mediaQuerySize.height * 0.5,
+                    width: mediaQuerySize.width,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: isDark ? KColors.whiteColor : KColors.blackColor,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
+                    ),
+                    child: BlocConsumer<AuthViewModel, AuthState>(
+                      listener: (context, state) {
+                        if (state.isError) {
+                          kShowSnackBar(
+                            state.authError!,
+                            context: context,
+                          );
+                        }
+                        if (state.isLogin) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            AppRoutes.homeRoute,
+                            (route) => false,
+                            arguments: {
+                              "selectedIndex": 0,
+                            },
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return Stack(
+                          children: [
+                            if (state.isLoading)
+                              authLoading(mediaQuerySize, context),
+                            LoginForm(
+                              formKey: formKey,
+                              emailController: _emailController,
+                              passwordController: _passwordController,
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  setState(() {
+                                    isPressed = true;
+                                  });
+                                  String email = _emailController.text;
+                                  String password = _passwordController.text;
+                                  BlocProvider.of<AuthViewModel>(context)
+                                      .loginUser(
+                                    email: email,
+                                    password: password,
+                                  );
+                                }
+                              },
+                            ),
+                          ],
                         );
-                      });
-                    } else if (state.isLogin) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        kShowSnackBar(
-                          "Login Successful",
-                          context: context,
-                        );
-                        // ! This is for testing purpose uncomment it later after testing
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.homeRoute,
-                          (route) => false,
-                          arguments: {
-                            "selectedIndex": 0,
-                          },
-                        );
-                      });
-                    }
-                    return const SizedBox.shrink();
-                  },
-                )
-              : const SizedBox.shrink(),
-        ],
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,1 +1,47 @@
-{"installed":{"client_id":"195413477003-4914v7vmv0f25pudrlcpn5s39s6ktll1.apps.googleusercontent.com","project_id":"musync-383913","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs"}}
+{
+  "project_info": {
+    "project_number": "759352717609",
+    "project_id": "musync-bc65e",
+    "storage_bucket": "musync-bc65e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759352717609:android:a2929f4563105d11d08738",
+        "android_client_info": {
+          "package_name": "com.alexxy.musync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759352717609-mgnko7l36m24u71tn0s9j1ugdrksb3vi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexxy.musync",
+            "certificate_hash": "4f21c4435014c50ed48f6e72478b29a2bef5cc8b"
+          }
+        },
+        {
+          "client_id": "759352717609-uh1utrroiqg9mu0a2j02tbmb2kqp6n7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf4aAS7glyHunq2ZruUu0yhMscPt6uB-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759352717609-dv0k3jsb96hlkj9skfj1qqqjmgb0f7f9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
