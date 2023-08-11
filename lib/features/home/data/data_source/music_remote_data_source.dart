@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -680,6 +682,49 @@ class MusicRemoteDataSource implements AMusicDataSource {
       final response = await api.sendRequest.get(
         ApiEndpoints.getAllPublicSongsRoute,
       );
+
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+
+      if (apiResponse.success) {
+        final List<dynamic> responseData = apiResponse.data;
+        if (responseData.isNotEmpty) {
+          final List<SongEntity> apiSongs =
+              responseData.map((e) => SongEntity.fromApiMap(e)).toList();
+          return Right(apiSongs); // Wrap songs list in Right and return
+        } else {
+          return const Right([]);
+        }
+      } else {
+        return Left(
+          ErrorModel(
+            message: apiResponse.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } catch (e) {
+      return Left(
+        ErrorModel(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<ErrorModel, List<SongEntity>>> getUserPublicSongs({
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getUserPublicSongsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+      log('crappy: ${response.data}');
 
       ApiResponse apiResponse = ApiResponse.fromResponse(response);
 

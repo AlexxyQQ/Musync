@@ -462,9 +462,8 @@ class NowPlayingTablet extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.keyboard_arrow_down,
-                color: isDark ? KColors.whiteColor : KColors.blackColor,
               ),
             ),
             actions: [
@@ -565,13 +564,14 @@ class NowPlayingTablet extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Song Title and Artist
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.12,
+                        height: MediaQuery.of(context).size.height * 0.1,
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: MediaQuery.of(context).size.width * 0.1,
@@ -580,36 +580,81 @@ class NowPlayingTablet extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  "Song Title",
+                                  state.currentSong.title,
                                   softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: MediaQuery.of(context)
-                                                .platformBrightness ==
-                                            Brightness.dark
-                                        ? KColors.whiteColor
-                                        : KColors.blackColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  maxLines: 1,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
-                                const Text(
-                                  ("• Artist •"),
-                                  softWrap: true,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                BlocBuilder<MusicQueryViewModel,
+                                    MusicQueryState>(
+                                  builder: (context, musicQueryState) {
+                                    return InkWell(
+                                      onTap: () {
+                                        // if there is the artist in the artist list then go to the artist page
+                                        (musicQueryState.everything['artists']!
+                                                .containsKey(
+                                                    state.currentSong.artist))
+                                            ? Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      slv.SongListView(
+                                                    songs: musicQueryState
+                                                                .everything[
+                                                            'artists']![
+                                                        state.currentSong
+                                                            .artist]!,
+                                                  ),
+                                                ),
+                                              )
+                                            : null;
+                                      },
+                                      child: Text(
+                                        ("• ${state.currentSong.artist} •"),
+                                        softWrap: true,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge!
+                                            .copyWith(color: KColors.greyColor),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
+                      DurationSlider(
+                        height: 4,
+                        activeColor:
+                            isDark ? KColors.accentColor : KColors.blackColor,
+                        thumbRadius: 6,
+                        overlayRadius: 20,
+                        inactiveColor: KColors.greyColor,
+                        audioPlayer: state.audioPlayer,
+                      ),
+                      // Audio Controls
+                      const AudioControlls(),
+                      // More Controls
+                      MoreControlls(
+                        bottomSheetCallback: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            useSafeArea: true,
+                            enableDrag: true,
+                            builder: (context) => QueueView(
+                              songList: songs,
+                            ),
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),

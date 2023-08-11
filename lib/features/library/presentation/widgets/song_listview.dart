@@ -94,7 +94,7 @@ class _SongListViewState extends State<SongListView> {
           primary: false, // set primary to false
           slivers: <Widget>[
             // Moving AppBar
-            AppBar(
+            KAppBar(
               songs: songModels,
               backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
               mqSize: mqSize,
@@ -473,8 +473,8 @@ class SecondAppBar extends StatelessWidget {
   }
 }
 
-class AppBar extends StatelessWidget {
-  const AppBar({
+class KAppBar extends StatelessWidget {
+  const KAppBar({
     super.key,
     required this.backgroundColor,
     required this.mqSize,

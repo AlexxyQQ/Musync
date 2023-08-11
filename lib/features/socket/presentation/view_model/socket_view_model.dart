@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/nowplaying/domain/use_case/now_playing_use_case.dart';
@@ -73,11 +74,13 @@ class SocketCubit extends Cubit<SocketState> {
     required List<SongEntity> songList,
     required int songIndex,
   }) async {
-    _socket.emit('shared', {
-      'songList': songList.map((song) => song.toApiMap()).toList(),
-      'songIndex': songIndex,
-      'playing': true,
-    });
+    await ConnectivityCheck.isServerup()
+        ? _socket.emit('shared', {
+            'songList': songList.map((song) => song.toApiMap()).toList(),
+            'songIndex': songIndex,
+            'playing': true,
+          })
+        : null;
   }
 
   // on recieved share

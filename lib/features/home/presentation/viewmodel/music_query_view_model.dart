@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
 import 'package:musync/features/home/presentation/state/music_query_state.dart';
+import 'dart:developer';
 
 class MusicQueryViewModel extends Cubit<MusicQueryState> {
   final MusicQueryUseCase _musicQueryUseCase;
@@ -260,6 +261,25 @@ class MusicQueryViewModel extends Cubit<MusicQueryState> {
         state.copyWith(
           isLoading: false,
           publicSongs: r,
+        ),
+      ),
+    );
+  }
+
+  Future<void> getUserPublicSongs() async {
+    emit(state.copyWith(isLoading: true));
+    final data = await _musicQueryUseCase.getUserPublicSongs();
+    data.fold(
+      (l) => emit(
+        state.copyWith(
+          isLoading: false,
+          error: l.message,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          isLoading: false,
+          userPublicSongs: r,
         ),
       ),
     );

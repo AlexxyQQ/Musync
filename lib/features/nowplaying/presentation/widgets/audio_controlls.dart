@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
@@ -157,7 +155,7 @@ class MoreControlls extends StatelessWidget {
       stream: Light().lightSensorStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          if (snapshot.data! < 10000) {
+          if (snapshot.data! < 8) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               BlocProvider.of<NowPlayingViewModel>(context).pause();
             });

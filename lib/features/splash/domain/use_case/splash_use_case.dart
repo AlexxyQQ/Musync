@@ -30,6 +30,11 @@ class SplashUseCase {
       final response = await splashRepository.initialLogin(
         token: biometric ? token2 : token,
       );
+      await hiveQueries.setValue(
+        boxName: 'users',
+        key: 'token',
+        value: token2,
+      );
       return response;
     } catch (e) {
       rethrow;

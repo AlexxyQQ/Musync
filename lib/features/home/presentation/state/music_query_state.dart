@@ -24,6 +24,7 @@ class MusicQueryState {
   final Map<String, Map<String, List<SongEntity>>> filteredEverything;
   final List<SongEntity> filteredSongs;
   final List<SongEntity> publicSongs;
+  final List<SongEntity> userPublicSongs;
 
   final String? error;
   final bool isLoading;
@@ -51,6 +52,7 @@ class MusicQueryState {
     required this.inLibrary,
     required this.filteredEverything,
     required this.publicSongs,
+    required this.userPublicSongs,
   });
 
   factory MusicQueryState.initial() {
@@ -75,6 +77,7 @@ class MusicQueryState {
       filteredEverything: {},
       filteredSongs: [],
       publicSongs: [],
+      userPublicSongs: [],
     );
   }
 
@@ -99,6 +102,7 @@ class MusicQueryState {
     List<SongEntity>? filteredSongs,
     Map<String, Map<String, List<SongEntity>>>? filteredEverything,
     List<SongEntity>? publicSongs,
+    List<SongEntity>? userPublicSongs,
   }) {
     return MusicQueryState(
       albumWithSongs: albumWithSongs ?? this.albumWithSongs,
@@ -121,6 +125,7 @@ class MusicQueryState {
       filteredEverything: filteredEverything ?? this.filteredEverything,
       filteredSongs: filteredSongs ?? this.filteredSongs,
       publicSongs: publicSongs ?? this.publicSongs,
+      userPublicSongs: userPublicSongs ?? this.userPublicSongs,
     );
   }
 
@@ -146,6 +151,7 @@ class MusicQueryState {
       'filteredEverything': filteredEverything,
       'filteredSongs': filteredSongs.map((x) => x.toMap()).toList(),
       'publicSongs': publicSongs.map((x) => x.toMap()).toList(),
+      'userPublicSongs': userPublicSongs.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -179,6 +185,7 @@ class MusicQueryState {
         listEquals(other.filteredSongs, filteredSongs) &&
         mapEquals(other.filteredEverything, filteredEverything) &&
         listEquals(other.publicSongs, publicSongs) &&
+        listEquals(other.userPublicSongs, userPublicSongs) &&
         other.isUploading == isUploading;
   }
 
@@ -203,6 +210,7 @@ class MusicQueryState {
         filteredEverything.hashCode ^
         publicSongs.hashCode ^
         onSearch.hashCode ^
+        userPublicSongs.hashCode ^
         isUploading.hashCode;
   }
 }

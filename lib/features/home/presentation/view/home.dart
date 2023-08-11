@@ -56,7 +56,14 @@ class HomePage extends StatelessWidget {
                           folders: folders,
                           isLoading: isLoading,
                         )
-                      : HomeFolderSectionTablet(isDark: isDark, mqSize: mqSize)
+                      : HomeFolderSectionTablet(
+                          isDark: isDark,
+                          mqSize: mqSize,
+                          isTablet: isTablet,
+                          isPortrait: isPortrait,
+                          folders: folders,
+                          isLoading: isLoading,
+                        )
                   : HomeFolderSectionNormal(
                       isDark: isDark,
                       mqSize: mqSize,

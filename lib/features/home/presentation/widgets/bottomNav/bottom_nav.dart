@@ -60,7 +60,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     var musicQueryCubit = BlocProvider.of<MusicQueryViewModel>(context);
     musicQueryCubit.getEverything();
-    // musicQueryCubit.getAllPublicSongs();
+    musicQueryCubit.getAllPublicSongs();
   }
 
   void syncTrue() {
@@ -154,9 +154,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 );
               } else {
                 pages = [
-                  const MusicNotFound(),
-                  const MusicNotFound(),
-                  const MusicNotFound(),
+                  const HomePageShimmer(),
+                  const LoadingScreen(),
+                  const LoadingScreen(),
                 ];
                 return PageView.builder(
                   itemCount: pages.length,
