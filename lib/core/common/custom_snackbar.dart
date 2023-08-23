@@ -6,12 +6,13 @@ void kShowSnackBar(
   BuildContext? context,
   GlobalKey<ScaffoldState>? scaffoldKey,
   Duration duration = const Duration(milliseconds: 1200),
+  Color color = KColors.offWhiteColor,
 }) {
   if (context != null) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: KColors.offWhiteColor,
+        backgroundColor: color,
         elevation: 2,
         content: Text(
           message,
@@ -26,7 +27,7 @@ void kShowSnackBar(
     ScaffoldMessenger.of(scaffoldKey!.currentContext!).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: KColors.offWhiteColor,
+        backgroundColor: color,
         elevation: 2,
         content: Text(
           message,

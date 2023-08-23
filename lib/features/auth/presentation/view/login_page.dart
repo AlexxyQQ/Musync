@@ -150,9 +150,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: BlocConsumer<AuthViewModel, AuthState>(
                       listener: (context, state) {
-                        if (state.isError) {
+                        if (state.isError &&
+                            !state.errorMsg!.contains('token')) {
                           kShowSnackBar(
-                            state.authError!,
+                            state.errorMsg!,
+                            color: Colors.red,
                             context: context,
                           );
                         }

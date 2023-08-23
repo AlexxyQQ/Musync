@@ -193,28 +193,34 @@ class _SignupPageState extends State<SignupPage> {
             },
           ),
           Positioned(
-            child: BlocBuilder<AuthViewModel, AuthState>(
-              builder: (blocBuilderContext, state) {
-                if (state.isLoading) {
-                  return authLoading(mediaQuerySize, context);
-                }
+            child: BlocConsumer<AuthViewModel, AuthState>(
+              listener: (listenerContext, state) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (state.isSignUp) {
                     Navigator.popAndPushNamed(
-                      blocBuilderContext,
+                      context,
                       AppRoutes.loginRoute,
                     );
                     kShowSnackBar(
                       'Sign up successful!',
+                      color: Colors.green,
                       context: context,
                     );
-                  } else if (state.isError) {
+                  } else if (state.isError &&
+                      !state.errorMsg!.contains('token')) {
                     kShowSnackBar(
-                      state.authError!,
+                      state.errorMsg!,
+                      color: Colors.red,
                       context: context,
                     );
                   }
                 });
+              },
+              builder: (blocBuilderContext, state) {
+                if (state.isLoading) {
+                  return authLoading(mediaQuerySize, context);
+                }
+
                 return const SizedBox.shrink();
               },
             ),

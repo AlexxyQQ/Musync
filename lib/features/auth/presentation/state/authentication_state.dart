@@ -1,12 +1,10 @@
-
-import 'package:collection/collection.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
 class AuthState {
   final UserEntity? loggedUser;
   final bool isLoading;
-  final String? authError;
+  final String? errorMsg;
   final bool isError;
   final bool isLogin;
   final bool isSignUp;
@@ -22,7 +20,7 @@ class AuthState {
   AuthState({
     required this.loggedUser,
     required this.isLoading,
-    this.authError,
+    this.errorMsg,
     required this.isError,
     required this.isLogin,
     required this.isSignUp,
@@ -49,7 +47,7 @@ class AuthState {
         type: 'guest',
       ),
       isLoading: false,
-      authError: null,
+      errorMsg: null,
       isLogin: false,
       isSignUp: false,
       isLogout: false,
@@ -67,7 +65,7 @@ class AuthState {
   AuthState copyWith({
     UserEntity? loggedUser,
     bool? isLoading,
-    String? authError,
+    String? errorMsg,
     bool? isError,
     bool? isLogin,
     bool? isSignUp,
@@ -83,7 +81,7 @@ class AuthState {
     return AuthState(
       loggedUser: loggedUser ?? this.loggedUser,
       isLoading: isLoading ?? this.isLoading,
-      authError: authError ?? this.authError,
+      errorMsg: errorMsg ?? this.errorMsg,
       isError: isError ?? this.isError,
       isLogin: isLogin ?? this.isLogin,
       isSignUp: isSignUp ?? this.isSignUp,
@@ -102,45 +100,6 @@ class AuthState {
 
   @override
   String toString() {
-    return 'AuthState(loggedUser: $loggedUser, isLoading: $isLoading, authError: $authError, isError: $isError, isLogin: $isLogin, isSignUp: $isSignUp, isLogout: $isLogout, token: $token, isFirstTime: $isFirstTime, goHome: $goHome, supportBioMetricState: $supportBioMetricState, localAuth: $localAuth, avilableBiometrices: $avilableBiometrices, allowLoginWithBiometric: $allowLoginWithBiometric)';
-  }
-
-  @override
-  bool operator ==(covariant AuthState other) {
-    if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
-
-    return other.loggedUser == loggedUser &&
-        other.isLoading == isLoading &&
-        other.authError == authError &&
-        other.isError == isError &&
-        other.isLogin == isLogin &&
-        other.isSignUp == isSignUp &&
-        other.isLogout == isLogout &&
-        other.token == token &&
-        other.isFirstTime == isFirstTime &&
-        other.goHome == goHome &&
-        other.supportBioMetricState == supportBioMetricState &&
-        other.localAuth == localAuth &&
-        listEquals(other.avilableBiometrices, avilableBiometrices) &&
-        other.allowLoginWithBiometric == allowLoginWithBiometric;
-  }
-
-  @override
-  int get hashCode {
-    return loggedUser.hashCode ^
-        isLoading.hashCode ^
-        authError.hashCode ^
-        isError.hashCode ^
-        isLogin.hashCode ^
-        isSignUp.hashCode ^
-        isLogout.hashCode ^
-        token.hashCode ^
-        isFirstTime.hashCode ^
-        goHome.hashCode ^
-        supportBioMetricState.hashCode ^
-        localAuth.hashCode ^
-        avilableBiometrices.hashCode ^
-        allowLoginWithBiometric.hashCode;
+    return 'AuthState(loggedUser: $loggedUser, isLoading: $isLoading, authError: $errorMsg, isError: $isError, isLogin: $isLogin, isSignUp: $isSignUp, isLogout: $isLogout, token: $token, isFirstTime: $isFirstTime, goHome: $goHome, supportBioMetricState: $supportBioMetricState, localAuth: $localAuth, avilableBiometrices: $avilableBiometrices, allowLoginWithBiometric: $allowLoginWithBiometric)';
   }
 }
