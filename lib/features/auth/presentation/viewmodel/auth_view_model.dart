@@ -65,7 +65,7 @@ class AuthViewModel extends Cubit<AuthState> {
       emit(
         state.copyWith(
           isError: true,
-          authError: e.message,
+          errorMsg: e.message,
         ),
       );
     }
@@ -74,7 +74,7 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> initialLogin({
     bool biometric = false,
   }) async {
-    emit(state.copyWith(isLoading: true, authError: null));
+    emit(state.copyWith(isLoading: true, errorMsg: null));
     final data = await splashUseCase.initialLogin(biometric: biometric);
     final goHomeHive = await GetIt.instance<HiveQueries>()
         .getValue(boxName: 'settings', key: 'goHome', defaultValue: false);
@@ -88,7 +88,7 @@ class AuthViewModel extends Cubit<AuthState> {
           goHome: goHomeHive,
           isError: true,
           isLoading: false,
-          authError: l.message,
+          errorMsg: l.message,
         ),
       ),
       (r) => emit(
@@ -96,7 +96,7 @@ class AuthViewModel extends Cubit<AuthState> {
           isFirstTime: isFirstTime,
           goHome: goHomeHive,
           isError: false,
-          authError: null,
+          errorMsg: null,
           isLoading: false,
           loggedUser: r,
           isLogin: true,
@@ -110,7 +110,7 @@ class AuthViewModel extends Cubit<AuthState> {
     required String password,
     required String username,
   }) async {
-    emit(state.copyWith(isLoading: true, authError: null));
+    emit(state.copyWith(isLoading: true, errorMsg: null));
     final data = await authUseCase.signup(
       email: email,
       password: password,
@@ -122,16 +122,16 @@ class AuthViewModel extends Cubit<AuthState> {
           state.copyWith(
             isError: true,
             isLoading: false,
-            authError: l.message,
+            errorMsg: l.message,
           ),
         );
       },
       (r) {
-        state.copyWith(authError: null);
+        state.copyWith(errorMsg: null);
         emit(
           state.copyWith(
             isError: false,
-            authError: null,
+            errorMsg: null,
             isLoading: false,
             isSignUp: true,
             isLogin: false,
@@ -145,7 +145,7 @@ class AuthViewModel extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
-    emit(state.copyWith(isLoading: true, authError: null, isError: null));
+    emit(state.copyWith(isLoading: true, errorMsg: null, isError: false));
 
     final data = await authUseCase.login(
       email: email,
@@ -157,14 +157,14 @@ class AuthViewModel extends Cubit<AuthState> {
         state.copyWith(
           isLoading: false,
           isError: true,
-          authError: data.leftMap((l) => l.message).fold((l) => l, (r) => null),
+          errorMsg: data.leftMap((l) => l.message).fold((l) => l, (r) => null),
         ),
       );
     } else {
       emit(
         state.copyWith(
           isError: false,
-          authError: null,
+          errorMsg: null,
           isLoading: false,
           loggedUser: data.fold((l) => null, (r) => r),
           isLogin: true,
@@ -175,7 +175,7 @@ class AuthViewModel extends Cubit<AuthState> {
   }
 
   Future<void> googleLoginUser() async {
-    emit(state.copyWith(isLoading: true, authError: null));
+    emit(state.copyWith(isLoading: true, errorMsg: null));
 
     final data = await authUseCase.googleLogin();
     data.fold(
@@ -183,13 +183,13 @@ class AuthViewModel extends Cubit<AuthState> {
         state.copyWith(
           isError: true,
           isLoading: false,
-          authError: l.message,
+          errorMsg: l.message,
         ),
       ),
       (r) => emit(
         state.copyWith(
           isError: false,
-          authError: null,
+          errorMsg: null,
           isLoading: false,
           loggedUser: r,
           isLogin: true,
@@ -199,7 +199,7 @@ class AuthViewModel extends Cubit<AuthState> {
   }
 
   Future<void> logoutUser() async {
-    emit(state.copyWith(isLoading: true, authError: null, token: null));
+    emit(state.copyWith(isLoading: true, errorMsg: null, token: null));
 
     final data = await authUseCase.logout();
     data.fold(
@@ -207,13 +207,13 @@ class AuthViewModel extends Cubit<AuthState> {
         state.copyWith(
           isLoading: false,
           isError: true,
-          authError: l.message,
+          errorMsg: l.message,
         ),
       ),
       (r) => emit(
         state.copyWith(
           isError: false,
-          authError: null,
+          errorMsg: null,
           isLoading: false,
           isLogin: false,
           loggedUser: UserEntity(
@@ -234,7 +234,7 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> uploadProfilePic({
     required String path,
   }) async {
-    emit(state.copyWith(isLoading: true, authError: null));
+    emit(state.copyWith(isLoading: true, errorMsg: null));
 
     final data = await authUseCase.uploadProfilePic(
       profilePicPath: path,
@@ -245,13 +245,13 @@ class AuthViewModel extends Cubit<AuthState> {
         state.copyWith(
           isError: true,
           isLoading: false,
-          authError: l.message,
+          errorMsg: l.message,
         ),
       ),
       (r) => emit(
         state.copyWith(
           isError: false,
-          authError: null,
+          errorMsg: null,
           isLoading: false,
           loggedUser: r,
           isLogin: true,
@@ -261,7 +261,7 @@ class AuthViewModel extends Cubit<AuthState> {
   }
 
   Future<void> deleteUser() async {
-    emit(state.copyWith(isLoading: true, authError: null));
+    emit(state.copyWith(isLoading: true, errorMsg: null));
 
     final data = await authUseCase.deleteUser();
 
@@ -270,13 +270,13 @@ class AuthViewModel extends Cubit<AuthState> {
         state.copyWith(
           isError: true,
           isLoading: false,
-          authError: l.message,
+          errorMsg: l.message,
         ),
       ),
       (r) => emit(
         state.copyWith(
           isError: false,
-          authError: null,
+          errorMsg: null,
           isLoading: false,
           isLogin: false,
           loggedUser: UserEntity(

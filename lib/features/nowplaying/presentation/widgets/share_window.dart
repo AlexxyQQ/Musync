@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +43,8 @@ class _SharePageState extends State<SharePage> {
     return BlocBuilder<NowPlayingViewModel, NowPlayingState>(
       builder: (context, state) {
         _extractAlbumArtColor(state);
+        log("sadas: ${state.currentSong.isPublic}");
+
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 80,
@@ -151,7 +155,10 @@ class _SharePageState extends State<SharePage> {
                 const SizedBox(height: 16.0),
                 // Copy Link Button
 
-                state.currentSong.isPublic == false
+                ((state.currentSong.isPublic == false ||
+                            state.currentSong.isPublic == null) &&
+                        (state.currentSong.serverUrl == null ||
+                            state.currentSong.serverUrl == ''))
                     ? const SizedBox()
                     : ElevatedButton(
                         onPressed: () {

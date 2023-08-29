@@ -33,6 +33,11 @@ class _BrowseViewState extends State<BrowseView> {
       child: BlocBuilder<MusicQueryViewModel, MusicQueryState>(
         builder: (context, state) {
           final List<SongEntity> song = state.publicSongs;
+          if (song.isEmpty) {
+            return const Center(
+              child: Text("No songs found"),
+            );
+          }
           return SizedBox(
             height: mqSize.height,
             width: mqSize.width,

@@ -134,8 +134,8 @@ class LoginSignupButton extends StatelessWidget {
                         },
                       );
                     }
-                    if (state.authError != null) {
-                      kShowSnackBar(state.authError!, context: context);
+                    if (state.errorMsg != null) {
+                      kShowSnackBar(state.errorMsg!, context: context);
                     }
                   },
                   child: ElevatedButton(
