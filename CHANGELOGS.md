@@ -1,6 +1,6 @@
 # Musync App Changelog
 
-## Version 1.0 - August 2023
+## Version 1.66 - August 2023
 
 ### New Features
 
