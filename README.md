@@ -1,7 +1,6 @@
 <div align="center">
   <img src="assets/splash_screen/icon.png" alt="Musync Icon" height="80px">
 </div>
-
 # Musync - Seamless Music Streaming App
 
 | Platform | Supported          |

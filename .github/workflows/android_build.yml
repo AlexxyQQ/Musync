@@ -70,8 +70,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "Musync-${{ steps.branch_name.outputs.branch }}-${{ github.run_number }}" # Tag name for the release
-          name: "Musync Release ${{ steps.branch_name.outputs.branch }} ${{ github.run_number }}" # Name of the release
+          tag_name: "Musync-v1.${{ github.run_number }}" # Tag name for the release
+          name: "Musync Release v1.${{ github.run_number }}" # Name of the release
           body_path: CHANGELOGS.md # Contents of the changelog file
           files: |
             build/app/outputs/flutter-apk/*.apk
