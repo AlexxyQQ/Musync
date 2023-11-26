@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/formfiled.dart';
 import 'package:musync/config/constants/constants.dart';
@@ -165,9 +166,9 @@ class _SignupPageState extends State<SignupPage> {
                       Container(
                         width: mediaQuerySize.width,
                         height: mediaQuerySize.height * 0.65,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 5,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 20.h,
                         ),
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(

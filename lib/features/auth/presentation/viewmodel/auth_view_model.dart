@@ -1,74 +1,37 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
-import 'package:musync/features/auth/domain/use_case/auth_use_case.dart';
+import 'package:musync/features/auth/domain/use_case/delete_user_usecase.dart';
+import 'package:musync/features/auth/domain/use_case/google_login_usecase.dart';
+import 'package:musync/features/auth/domain/use_case/login_usecase.dart';
+import 'package:musync/features/auth/domain/use_case/logout_usecase.dart';
+import 'package:musync/features/auth/domain/use_case/signup_usecase.dart';
+import 'package:musync/features/auth/domain/use_case/upload_profile_pic_usecase.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/splash/domain/use_case/splash_use_case.dart';
 
 class AuthViewModel extends Cubit<AuthState> {
-  final AuthUseCase authUseCase;
   final SplashUseCase splashUseCase;
+  final LoginUseCase loginUseCase;
+  final SignupUseCase signupUseCase;
+  final LogoutUseCase logoutUseCase;
+  final UploadProfilePicUseCase uploadProfilePicUseCase;
+  final DeleteUserUseCase deleteUserUseCase;
+  final GoogleLoginUseCase googleLoginUseCase;
   AuthViewModel({
-    required this.authUseCase,
     required this.splashUseCase,
+    required this.loginUseCase,
+    required this.signupUseCase,
+    required this.logoutUseCase,
+    required this.uploadProfilePicUseCase,
+    required this.deleteUserUseCase,
+    required this.googleLoginUseCase,
   }) : super(AuthState.initial());
 
-  Future<void> checkDeviceSupportForBiometrics() async {
-    final data = await authUseCase.checkDeviceSupportForBiometrics();
-
-    data.fold(
-      (l) => emit(
-        state.copyWith(
-          supportBioMetricState: false,
-        ),
-      ),
-      (r) async {
-        final localAuth = GetIt.instance<LocalAuthentication>();
-        final List<BiometricType> avilableBiometrices =
-            r ? await localAuth.getAvailableBiometrics() : [];
-        emit(
-          state.copyWith(
-            supportBioMetricState: r,
-            localAuth: localAuth,
-            avilableBiometrices: avilableBiometrices,
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> allowLoginWithBiometric({required bool value}) async {
-    emit(
-      state.copyWith(
-        allowLoginWithBiometric: value,
-      ),
-    );
-  }
-
-  Future<void> authenticateWithBiometrics() async {
-    try {
-      bool isAuthorized = await state.localAuth!.authenticate(
-        localizedReason: 'Musync Login',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: false,
-        ),
-      );
-
-      if (state.allowLoginWithBiometric && isAuthorized) {
-        await initialLogin(biometric: true);
-      }
-    } on PlatformException catch (e) {
-      emit(
-        state.copyWith(
-          isError: true,
-          errorMsg: e.message,
-        ),
-      );
-    }
+  // start state
+  Future<void> start() async {
+    
   }
 
   Future<void> initialLogin({
@@ -111,10 +74,12 @@ class AuthViewModel extends Cubit<AuthState> {
     required String username,
   }) async {
     emit(state.copyWith(isLoading: true, errorMsg: null));
-    final data = await authUseCase.signup(
-      email: email,
-      password: password,
-      username: username,
+    final data = await signupUseCase.call(
+      SignupParams(
+        email: email,
+        password: password,
+        username: username,
+      ),
     );
     data.fold(
       (l) {
@@ -145,11 +110,19 @@ class AuthViewModel extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
-    emit(state.copyWith(isLoading: true, errorMsg: null, isError: false));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        errorMsg: null,
+        isError: false,
+      ),
+    );
 
-    final data = await authUseCase.login(
-      email: email,
-      password: password,
+    final data = await loginUseCase.call(
+      LoginParams(
+        email: email,
+        password: password,
+      ),
     );
 
     if (data.isLeft()) {
@@ -177,7 +150,7 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> googleLoginUser() async {
     emit(state.copyWith(isLoading: true, errorMsg: null));
 
-    final data = await authUseCase.googleLogin();
+    final data = await googleLoginUseCase.call(null);
     data.fold(
       (l) => emit(
         state.copyWith(
@@ -201,7 +174,7 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> logoutUser() async {
     emit(state.copyWith(isLoading: true, errorMsg: null, token: null));
 
-    final data = await authUseCase.logout();
+    final data = await logoutUseCase.call(null);
     data.fold(
       (l) => emit(
         state.copyWith(
@@ -236,8 +209,11 @@ class AuthViewModel extends Cubit<AuthState> {
   }) async {
     emit(state.copyWith(isLoading: true, errorMsg: null));
 
-    final data = await authUseCase.uploadProfilePic(
-      profilePicPath: path,
+    final data = await uploadProfilePicUseCase.call(
+      UploadProfilePicParams(
+        token: state.loggedUser!.token,
+        profilePicPath: path,
+      ),
     );
 
     data.fold(
@@ -263,7 +239,9 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> deleteUser() async {
     emit(state.copyWith(isLoading: true, errorMsg: null));
 
-    final data = await authUseCase.deleteUser();
+    final data = await deleteUserUseCase.call(
+      state.loggedUser!.token,
+    );
 
     data.fold(
       (l) => emit(

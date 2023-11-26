@@ -65,7 +65,7 @@ class _MusyncSplashState extends State<MusyncSplash> {
                 context: listenerContext,
               );
               Navigator.popAndPushNamed(
-                  listenerContext, AppRoutes.onBoardingRoute);
+                  listenerContext, AppRoutes.onBoardingRoute,);
             });
           }
 

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';

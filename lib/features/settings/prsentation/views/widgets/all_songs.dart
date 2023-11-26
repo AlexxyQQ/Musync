@@ -21,7 +21,7 @@ class _ManageAllSongsViewState extends State<ManageAllSongsView> {
   final scrollController = ScrollController();
 
   Future<void> deleteFile(
-      SongEntity song, MusicQueryViewModel musicQuery) async {
+      SongEntity song, MusicQueryViewModel musicQuery,) async {
     try {
       final file = File(song.data);
       if (await file.exists()) {

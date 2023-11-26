@@ -1,70 +1,27 @@
 import 'dart:convert';
 
-class UserModel {
-  String id;
-  String username;
-  String email;
-  String password;
-  String profilePic;
-  bool verified;
-  String type;
-  String token;
+import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
+class UserModel extends UserEntity {
   UserModel({
-    required this.id,
-    required this.username,
-    required this.email,
-    required this.password,
-    required this.profilePic,
-    required this.verified,
-    required this.type,
-    required this.token,
-  });
-
-  UserModel.empty()
-      : id = '',
-        username = '',
-        email = '',
-        password = '',
-        profilePic = '',
-        verified = false,
-        type = '',
-        token = '';
-
-  UserModel copyWith({
-    String? id,
-    String? username,
-    String? email,
-    String? password,
-    String? profilePic,
-    bool? verified,
-    String? type,
-    String? token,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      username: username ?? this.username,
-      email: email ?? this.email,
-      password: password ?? this.password,
-      profilePic: profilePic ?? this.profilePic,
-      verified: verified ?? this.verified,
-      type: type ?? this.type,
-      token: token ?? this.token,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'username': username,
-      'email': email,
-      'password': password,
-      'profilePic': profilePic,
-      'verified': verified,
-      'type': type,
-      'token': token,
-    };
-  }
+    required String id,
+    required String username,
+    required String email,
+    required String password,
+    required String profilePic,
+    required bool verified,
+    required String type,
+    required String token,
+  }) : super(
+          id: id,
+          username: username,
+          email: email,
+          password: password,
+          profilePic: profilePic,
+          verified: verified,
+          type: type,
+          token: token,
+        );
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
@@ -78,8 +35,6 @@ class UserModel {
       token: map['token'] as String,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source) as Map<String, dynamic>);

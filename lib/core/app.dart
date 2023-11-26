@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/router/routers.dart';
 import 'package:musync/config/themes/app_theme.dart';
+import 'package:musync/core/bloc/bloc_providers.dart';
 import 'package:musync/core/utils/device_info.dart';
-import 'package:musync/features/auth/domain/use_case/auth_use_case.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
-import 'package:musync/features/home/domain/use_case/music_query_use_case.dart';
-import 'package:musync/features/home/presentation/viewmodel/music_query_view_model.dart';
-import 'package:musync/features/nowplaying/domain/use_case/now_playing_use_case.dart';
-import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';
 import 'package:musync/features/socket/presentation/state/state.dart';
 import 'package:musync/features/socket/presentation/view_model/socket_view_model.dart';
-import 'package:musync/features/splash/domain/use_case/splash_use_case.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class App extends StatefulWidget {
@@ -24,46 +19,23 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  late String model = 'ccc';
+  late String model = 'Default';
 
-  Future<void> sothing() async {
+  Future<void> deviceConfig() async {
     final device = await GetDeviceInfo.deviceInfoPlugin.androidInfo;
     model = device.model;
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    sothing();
+    deviceConfig();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthViewModel>(
-          create: (context) => AuthViewModel(
-            authUseCase: GetIt.instance<AuthUseCase>(),
-            splashUseCase: GetIt.instance<SplashUseCase>(),
-          ),
-        ),
-        BlocProvider<MusicQueryViewModel>(
-          create: (context) =>
-              MusicQueryViewModel(GetIt.instance<MusicQueryUseCase>()),
-        ),
-        BlocProvider<NowPlayingViewModel>(
-          create: (context) => NowPlayingViewModel(
-            GetIt.instance<NowPlayingUseCase>(),
-          ),
-        ),
-        BlocProvider<SocketCubit>(
-          create: (context) => SocketCubit(
-            GetIt.instance<NowPlayingUseCase>(),
-            // NowPlayingViewModel(GetIt.instance<NowPlayingUseCase>()),
-          ),
-        ),
-      ],
+      providers: BlocProvidersList.blocList,
       child: BlocBuilder<AuthViewModel, AuthState>(
         builder: (authContext, authState) {
           return BlocBuilder<SocketCubit, SocketState>(
@@ -80,15 +52,20 @@ class _AppState extends State<App> {
               return StreamBuilder<io.Socket>(
                 stream: socketContext.read<SocketCubit>().socketStream,
                 builder: (context, snapshot) {
-                  return MaterialApp(
-                    title: "Musync",
-                    debugShowCheckedModeBanner: false,
-                    theme: AppTheme.appLightTheme(),
-                    darkTheme: AppTheme.appDarkTheme(),
-                    themeMode: ThemeMode.system,
-                    routes: authState.loggedUser == null
-                        ? AppRoutes.loggedoutRoute
-                        : AppRoutes.loggedinRoute,
+                  return ScreenUtilInit(
+                    designSize: const Size(360, 690),
+                    minTextAdapt: true,
+                    splitScreenMode: true,
+                    builder: (_, child) {
+                      return MaterialApp(
+                        title: "Musync",
+                        debugShowCheckedModeBanner: false,
+                        theme: AppTheme.appLightTheme(),
+                        darkTheme: AppTheme.appDarkTheme(),
+                        themeMode: ThemeMode.system,
+                        routes: AppRoutes.appPageRoutes,
+                      );
+                    },
                   );
                 },
               );

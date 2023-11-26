@@ -87,7 +87,7 @@ class NowPlayingState {
       queue: queue ?? this.queue,
       currentIndex: currentIndex ?? this.currentIndex,
       isShuffle: isShuffle ?? this.isShuffle,
-      isRepeatOne: isRepaeatOne ?? this.isRepeatOne,
+      isRepeatOne: isRepaeatOne ?? isRepeatOne,
       isRepeatAll: isRepeatAll ?? this.isRepeatAll,
       position: position ?? this.position,
       isPaused: isPaused ?? this.isPaused,

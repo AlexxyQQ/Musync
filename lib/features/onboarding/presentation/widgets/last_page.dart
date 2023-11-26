@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:musync/core/utils/connectivity_check.dart';
+import 'package:musync/injection/app_injection_container.dart';
 
 class LastPage extends StatelessWidget {
   const LastPage({super.key, required this.mediaQuerySize});
@@ -49,15 +51,29 @@ class LastPage extends StatelessWidget {
         InkWell(
           onTap: () async {
             final navigator = Navigator.of(context);
-            GetIt.instance<HiveQueries>().setValue(
-              boxName: 'settings',
-              key: "isFirstTime",
-              value: false,
-            );
-            navigator.pushNamedAndRemoveUntil(
-              AppRoutes.getStartedRoute,
-              (route) => false,
-            );
+            final scaffoldMessanger = ScaffoldMessenger.of(context);
+
+            final isConnected = await ConnectivityCheck.connectivity();
+            final isServerUp =
+                await ConnectivityCheck.isServerup(recheck: true);
+
+            if (isConnected || isServerUp) {
+              get<HiveQueries>().setValue(
+                boxName: 'settings',
+                key: "isFirstTime",
+                value: false,
+              );
+              navigator.pushNamedAndRemoveUntil(
+                AppRoutes.getStartedRoute,
+                (route) => false,
+              );
+            } else {
+              scaffoldMessanger.showSnackBar(
+                const SnackBar(
+                  content: Text('No Internet Connection'),
+                ),
+              );
+            }
           },
           child: Container(
             height: 67,

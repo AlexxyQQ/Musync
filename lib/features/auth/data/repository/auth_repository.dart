@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/features/auth/data/data_source/auth_data_source.dart';
+import 'package:musync/features/auth/data/data_source/remote_data_source/auth_remote_data_source.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 import 'package:musync/features/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl extends IAuthRepository {
-  final AuthDataSource authDataSource;
+  final AuthRemoteDataSource authDataSource;
+  
 
   AuthRepositoryImpl({
     required this.authDataSource,
@@ -36,7 +37,7 @@ class AuthRepositoryImpl extends IAuthRepository {
     required String password,
   }) async {
     try {
-      final response = await authDataSource.loginUser(
+      final response = await authDataSource.login(
         email: email,
         password: password,
       );
@@ -92,20 +93,6 @@ class AuthRepositoryImpl extends IAuthRepository {
           return Right(UserEntity.fromMap(r));
         },
       );
-    } catch (e) {
-      return Left(
-        ErrorModel(
-          message: e.toString(),
-          status: false,
-        ),
-      );
-    }
-  }
-
-  @override
-  Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics() async {
-    try {
-      return await authDataSource.checkDeviceSupportForBiometrics();
     } catch (e) {
       return Left(
         ErrorModel(

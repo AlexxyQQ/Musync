@@ -14,7 +14,6 @@ import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_b
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_bottomsheet.dart';
 import 'package:musync/features/home/presentation/widgets/bottomNav/bottom_nav_drawer.dart';
 import 'package:musync/features/home/presentation/widgets/home_view_shimmer.dart';
-import 'package:musync/features/home/presentation/widgets/music/music_not_found.dart';
 import 'package:musync/features/library/presentation/view/library_page.dart';
 import 'package:musync/features/nowplaying/presentation/state/now_playing_state.dart';
 import 'package:musync/features/nowplaying/presentation/view_model/now_playing_view_model.dart';

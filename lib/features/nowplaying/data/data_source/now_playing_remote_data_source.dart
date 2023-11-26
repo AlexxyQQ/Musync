@@ -26,7 +26,7 @@ class NowPlayingRemoteDataSource {
                         Uri.parse(
                           '${ApiEndpoints.baseImageUrl}${song.serverUrl}',
                         ),
-                        tag: song),
+                        tag: song,),
               )
               .toList(),
         ),

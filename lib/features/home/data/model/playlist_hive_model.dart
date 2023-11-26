@@ -61,7 +61,7 @@ class PlaylistHiveModel {
         "_data": entity.data,
         "date_added": entity.dateAdded,
         "date_modified": entity.dateModified,
-        "num_of_songs": entity.numOfSongs
+        "num_of_songs": entity.numOfSongs,
       });
 
   PlaylistHiveModel toHiveModelFromEntity(PlaylistEntity entity) =>

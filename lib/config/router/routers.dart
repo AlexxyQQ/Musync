@@ -24,7 +24,7 @@ class AppRoutes {
   static const String manageAllSongsRoute = '/manageAllSongs';
   static const String manageAllPublicSongsRoute = '/manageAllPublicSongs';
 
-  static final Map<String, Widget Function(BuildContext)> loggedinRoute = {
+  static final Map<String, Widget Function(BuildContext)> appPageRoutes = {
     initialRoute: (context) => const MusyncSplash(),
     onBoardingRoute: (context) => const OnBoardingPage(),
     getStartedRoute: (context) => const MainAuthPage(),

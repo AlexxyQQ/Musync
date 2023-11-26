@@ -1,4 +1,3 @@
-import 'package:local_auth/local_auth.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
 class AuthState {
@@ -13,8 +12,6 @@ class AuthState {
   final bool isFirstTime;
   final bool goHome;
   final bool supportBioMetricState;
-  final LocalAuthentication? localAuth;
-  final List<BiometricType> avilableBiometrices;
   final bool allowLoginWithBiometric;
 
   AuthState({
@@ -29,8 +26,6 @@ class AuthState {
     required this.isFirstTime,
     required this.goHome,
     required this.supportBioMetricState,
-    required this.localAuth,
-    required this.avilableBiometrices,
     required this.allowLoginWithBiometric,
   });
 
@@ -56,8 +51,6 @@ class AuthState {
       isFirstTime: true,
       goHome: false,
       supportBioMetricState: false,
-      localAuth: null,
-      avilableBiometrices: [],
       allowLoginWithBiometric: false,
     );
   }
@@ -74,8 +67,6 @@ class AuthState {
     bool? isFirstTime,
     bool? goHome,
     bool? supportBioMetricState,
-    LocalAuthentication? localAuth,
-    List<BiometricType>? avilableBiometrices,
     bool? allowLoginWithBiometric,
   }) {
     return AuthState(
@@ -91,8 +82,6 @@ class AuthState {
       goHome: goHome ?? this.goHome,
       supportBioMetricState:
           supportBioMetricState ?? this.supportBioMetricState,
-      localAuth: localAuth ?? this.localAuth,
-      avilableBiometrices: avilableBiometrices ?? this.avilableBiometrices,
       allowLoginWithBiometric:
           allowLoginWithBiometric ?? this.allowLoginWithBiometric,
     );
@@ -100,6 +89,19 @@ class AuthState {
 
   @override
   String toString() {
-    return 'AuthState(loggedUser: $loggedUser, isLoading: $isLoading, authError: $errorMsg, isError: $isError, isLogin: $isLogin, isSignUp: $isSignUp, isLogout: $isLogout, token: $token, isFirstTime: $isFirstTime, goHome: $goHome, supportBioMetricState: $supportBioMetricState, localAuth: $localAuth, avilableBiometrices: $avilableBiometrices, allowLoginWithBiometric: $allowLoginWithBiometric)';
+    return 'AuthState{\n'
+        '  loggedUser: $loggedUser,\n'
+        '  isLoading: $isLoading,\n'
+        '  errorMsg: $errorMsg,\n'
+        '  isError: $isError,\n'
+        '  isLogin: $isLogin,\n'
+        '  isSignUp: $isSignUp,\n'
+        '  isLogout: $isLogout,\n'
+        '  token: $token,\n'
+        '  isFirstTime: $isFirstTime,\n'
+        '  goHome: $goHome,\n'
+        '  supportBioMetricState: $supportBioMetricState,\n'
+        '  allowLoginWithBiometric: $allowLoginWithBiometric\n'
+        '}';
   }
 }

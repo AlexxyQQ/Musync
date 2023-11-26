@@ -14,6 +14,10 @@ class MusicQueryUseCase {
     required this.hiveQueries,
   });
 
+  Future<Either<ErrorModel, bool>> permission() async {
+    return await musicQueryRepository.permission();
+  }
+
   Future<Either<ErrorModel, Map<String, List<SongEntity>>>>
       getAllAlbumWithSongs() async {
     final token = await hiveQueries.getValue(
@@ -88,10 +92,6 @@ class MusicQueryUseCase {
     final data =
         await musicQueryRepository.getFolderSongs(path: path, token: token);
     return data;
-  }
-
-  Future<Either<ErrorModel, bool>> permission() async {
-    return await musicQueryRepository.permission();
   }
 
   Future<Either<ErrorModel, Map<String, Map<String, List<SongEntity>>>>>

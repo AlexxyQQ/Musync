@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +31,7 @@ class SocketCubit extends Cubit<SocketState> {
       emit(state.copyWith(
         loggedUser: loggedUser,
         model: model,
-      ));
+      ),);
 
       final socketOptions =
           io.OptionBuilder().setTransports(['websocket']).setQuery({

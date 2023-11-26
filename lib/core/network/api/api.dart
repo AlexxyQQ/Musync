@@ -10,7 +10,7 @@ class Api {
   final io.Socket _socket = io.io(
     ApiEndpoints.socketURL,
     <String, dynamic>{
-      'transports': ['websocket']
+      'transports': ['websocket'],
     },
   );
 

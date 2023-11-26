@@ -45,7 +45,7 @@ class NextAndSkip extends StatelessWidget {
           TextButton(
             onPressed: () async {
               controller.animateToPage(
-                2,
+                3,
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
               );

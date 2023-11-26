@@ -63,7 +63,7 @@ class _SettingsViewState extends State<SettingsView> {
               const SizedBox(height: 12),
               const Divider(),
               const SizedBox(height: 12),
-              extraSettingsSection(context)
+              extraSettingsSection(context),
             ],
           ),
         ),
@@ -487,9 +487,7 @@ class _SettingsViewState extends State<SettingsView> {
                           value: authenticationBlocProvider
                               .state.loggedUser!.token,
                         );
-                        authenticationBlocProvider.allowLoginWithBiometric(
-                          value: value,
-                        );
+
                         kShowSnackBar(
                           value
                               ? 'Biometric login enabled'

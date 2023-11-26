@@ -108,9 +108,9 @@ class _KDrawerState extends State<KDrawer> {
                       Text(
                         ', Public Songs: ${musicQueryBlocProvider.state.songs.where((element) => element.isPublic ?? false).length}',
                         style: Theme.of(context).textTheme.bodySmall,
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -179,7 +179,7 @@ class _KDrawerState extends State<KDrawer> {
                   ),
                   onTap: () async {
                     await _logout(authenticationBlocProvider,
-                        BlocProvider.of<NowPlayingViewModel>(context));
+                        BlocProvider.of<NowPlayingViewModel>(context),);
                   },
                 ),
               ],

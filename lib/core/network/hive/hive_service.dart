@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:musync/features/home/data/data_source/music_hive_data_source.dart';
+import 'package:musync/features/home/data/data_source/local_data_source/hive_service/music_hive_service.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {

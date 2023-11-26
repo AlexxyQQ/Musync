@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:light/light.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
@@ -151,100 +150,79 @@ class MoreControlls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: Light().lightSensorStream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data! < 8) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              BlocProvider.of<NowPlayingViewModel>(context).pause();
-            });
-          } else if (BlocProvider.of<NowPlayingViewModel>(context)
-              .state
-              .isPaused) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              BlocProvider.of<NowPlayingViewModel>(context).play();
-            });
-          }
-        }
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.phone_android_rounded,
-                      color: Colors.amber,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 5),
-                    BlocBuilder<AuthViewModel, AuthState>(
-                      builder: (context, state) {
-                        return InkWell(
-                          onTap: () async {
-                            await BlocProvider.of<NowPlayingViewModel>(context)
-                                .pause();
-                            await BlocProvider.of<SocketCubit>(context).onShare(
-                              songList:
-                                  BlocProvider.of<NowPlayingViewModel>(context)
-                                      .state
-                                      .queue,
-                              songIndex:
-                                  BlocProvider.of<NowPlayingViewModel>(context)
-                                      .state
-                                      .currentIndex,
-                            );
-                          },
-                          child: const Text(
-                            'Phone',
-                            style: TextStyle(
-                              color: Colors.amber,
-                              fontSize: 19,
-                            ),
-                          ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {},
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.phone_android_rounded,
+                  color: Colors.amber,
+                  size: 24,
+                ),
+                const SizedBox(width: 5),
+                BlocBuilder<AuthViewModel, AuthState>(
+                  builder: (context, state) {
+                    return InkWell(
+                      onTap: () async {
+                        await BlocProvider.of<NowPlayingViewModel>(context)
+                            .pause();
+                        await BlocProvider.of<SocketCubit>(context).onShare(
+                          songList:
+                              BlocProvider.of<NowPlayingViewModel>(context)
+                                  .state
+                                  .queue,
+                          songIndex:
+                              BlocProvider.of<NowPlayingViewModel>(context)
+                                  .state
+                                  .currentIndex,
                         );
                       },
-                    ),
-                  ],
+                      child: const Text(
+                        'Phone',
+                        style: TextStyle(
+                          color: Colors.amber,
+                          fontSize: 19,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              ),
-              const Spacer(),
-              IconButton(
-                icon: const Icon(Icons.share_rounded),
-                iconSize: 24,
-                color:
-                    MediaQuery.of(context).platformBrightness == Brightness.dark
-                        ? KColors.whiteColor
-                        : KColors.blackColor,
-                onPressed: () async {
-                  // show share window
-                  await showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => const SharePage(),
-                  );
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.queue_music_rounded),
-                iconSize: 24,
-                color:
-                    MediaQuery.of(context).platformBrightness == Brightness.dark
-                        ? KColors.whiteColor
-                        : KColors.blackColor,
-                onPressed: () {
-                  bottomSheetCallback();
-                },
-              ),
-            ],
+              ],
+            ),
           ),
-        );
-      },
+          const Spacer(),
+          IconButton(
+            icon: const Icon(Icons.share_rounded),
+            iconSize: 24,
+            color: MediaQuery.of(context).platformBrightness == Brightness.dark
+                ? KColors.whiteColor
+                : KColors.blackColor,
+            onPressed: () async {
+              // show share window
+              await showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => const SharePage(),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.queue_music_rounded),
+            iconSize: 24,
+            color: MediaQuery.of(context).platformBrightness == Brightness.dark
+                ? KColors.whiteColor
+                : KColors.blackColor,
+            onPressed: () {
+              bottomSheetCallback();
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -380,7 +358,7 @@ class _DurationSliderState extends State<DurationSlider> {
                   ],
                 ),
               )
-            : const SizedBox()
+            : const SizedBox(),
       ],
     );
   }

@@ -353,7 +353,7 @@ class NowPlayingPhone extends StatelessWidget {
                                   // if there is the artist in the artist list then go to the artist page
                                   (musicQueryState.everything['artists']!
                                           .containsKey(
-                                              state.currentSong.artist))
+                                              state.currentSong.artist,))
                                       ? Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -410,7 +410,7 @@ class NowPlayingPhone extends StatelessWidget {
                       ),
                     );
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -596,7 +596,7 @@ class NowPlayingTablet extends StatelessWidget {
                                         // if there is the artist in the artist list then go to the artist page
                                         (musicQueryState.everything['artists']!
                                                 .containsKey(
-                                                    state.currentSong.artist))
+                                                    state.currentSong.artist,))
                                             ? Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -654,7 +654,7 @@ class NowPlayingTablet extends StatelessWidget {
                             ),
                           );
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),

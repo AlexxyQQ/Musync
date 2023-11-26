@@ -8,7 +8,7 @@ import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/utils/device_info.dart';
 import 'package:musync/features/home/data/data_source/i_music_data_source.dart';
-import 'package:musync/features/home/data/data_source/music_local_data_source.dart';
+import 'package:musync/features/home/data/data_source/local_data_source/music_local_data_source.dart';
 import 'package:musync/features/home/data/model/song_hive_model.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';

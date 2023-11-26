@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/utils/connectivity_check.dart';
-import 'package:musync/features/home/data/data_source/music_remote_data_source.dart';
+import 'package:musync/features/home/data/data_source/remote_data_source/music_remote_data_source.dart';
 import 'package:musync/features/home/domain/entity/playlist_entity.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import 'package:permission_handler/permission_handler.dart';
-import 'package:musync/features/home/data/data_source/music_local_data_source.dart';
+import 'package:musync/features/home/data/data_source/local_data_source/music_local_data_source.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/repository/music_query_repository_a.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musync/core/common/custom_page_indicator.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/features/onboarding/presentation/widgets/illegal_page.dart';
 import 'package:musync/features/onboarding/presentation/widgets/last_page.dart';
 import 'package:musync/features/onboarding/presentation/widgets/next_and_skip.dart';
 import 'package:musync/features/onboarding/presentation/widgets/page_builder.dart';
@@ -32,6 +33,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         subtitle:
             'Musync support playing offline media saved in you device or from the internet.',
       ),
+      const IllegalPageBuilder(
+        lottieUrl: 'assets/lottie/animation_lloun5s0.json',
+        title: "Let's do something illegal.",
+        subtitle: 'Toggle the illegal mode.',
+      ),
       const OnBoardPageBuilder(
         lottieUrl:
             'assets/lottie/139537-boy-avatar-listening-music-animation.json',
@@ -51,7 +57,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 controller: controller,
                 onPageChanged: (index) {
                   setState(() {
-                    isLastPage = index == 2;
+                    isLastPage = index == 3;
                   });
                 },
                 scrollDirection: Axis.horizontal,
@@ -128,7 +134,7 @@ class IconAndPageIndicator extends StatelessWidget {
         // Page Indicator
         CustomPageIndicator(
           controller: controller,
-          itemCount: 3,
+          itemCount: 4,
           inactiveDotWidth: 12,
           inactiveDotHeight: 12,
           activeDotHeight: 12,

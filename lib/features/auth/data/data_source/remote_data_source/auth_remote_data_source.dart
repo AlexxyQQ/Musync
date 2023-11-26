@@ -1,38 +1,22 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/domain/entity/user_entity.dart';
 
-class AuthDataSource {
+class AuthRemoteDataSource {
   final Api api;
 
-  AuthDataSource({
+  AuthRemoteDataSource({
     required this.api,
   });
 
-  Future<Either<ErrorModel, bool>> checkDeviceSupportForBiometrics() async {
-    try {
-      return Right(
-          await GetIt.instance<LocalAuthentication>().isDeviceSupported());
-    } catch (e) {
-      return Left(
-        ErrorModel(
-          message: e.toString(),
-          status: false,
-        ),
-      );
-    }
-  }
-
-  Future<Either<ErrorModel, Map<String, dynamic>>> loginUser({
+  Future<Either<ErrorModel, Map<String, dynamic>>> login({
     required String email,
     required String password,
   }) async {
@@ -47,23 +31,16 @@ class AuthDataSource {
 
       ApiResponse responseApi = ApiResponse.fromResponse(response);
 
-      if (responseApi.success) {
-        Map<String, dynamic> userData = responseApi.data['user'];
-        String token = responseApi.data['token'];
-        userData['token'] = token;
-
-        // Replace 'your_received_token_here' with the token received after successful login.
-        return Right(userData);
-      } else {
-        return Left(
-          ErrorModel(
-            message: responseApi.message.toString(),
-            status: false,
-          ),
-        );
-      }
-    } on DioError catch (e) {
-      if (e.response != null) {
+      return responseApi.success
+          ? Right({...responseApi.data, 'token': responseApi.data['token']})
+          : Left(
+              ErrorModel(
+                message: responseApi.message.toString(),
+                status: false,
+              ),
+            );
+    } catch (e) {
+      if (e is DioError && e.response != null) {
         var responseApi = ApiResponse.fromResponse(e.response!);
         return Left(
           ErrorModel(
@@ -71,15 +48,8 @@ class AuthDataSource {
             status: false,
           ),
         );
-      } else {
-        return Left(
-          ErrorModel(
-            message: 'An unexpected error occurred.',
-            status: false,
-          ),
-        );
       }
-    } catch (e) {
+
       return Left(
         ErrorModel(
           message: e.toString(),
@@ -107,18 +77,15 @@ class AuthDataSource {
       );
 
       ApiResponse responseApi = ApiResponse.fromResponse(response);
-      if (responseApi.success) {
-        Map<String, dynamic> userData = responseApi.data;
-        userData['token'] = '';
-        return Right(userData);
-      } else {
-        return Left(
-          ErrorModel(
-            message: responseApi.message.toString(),
-            status: false,
-          ),
-        );
-      }
+
+      return responseApi.success
+          ? Right({...responseApi.data, 'token': ''})
+          : Left(
+              ErrorModel(
+                message: responseApi.message.toString(),
+                status: false,
+              ),
+            );
     } on DioError catch (e) {
       if (e.response != null) {
         var responseApi = ApiResponse.fromResponse(e.response!);
@@ -184,8 +151,7 @@ class AuthDataSource {
         ApiResponse responseApi = ApiResponse.fromResponse(response);
         if (responseApi.success) {
           // Login user
-          var loggedUser =
-              await loginUser(email: user.email, password: user.id);
+          var loggedUser = await login(email: user.email, password: user.id);
 
           return loggedUser;
         } else {
@@ -214,8 +180,7 @@ class AuthDataSource {
           //
           if (user != null) {
             // Login user
-            var loggedUser =
-                await loginUser(email: user.email, password: user.id);
+            var loggedUser = await login(email: user.email, password: user.id);
 
             return loggedUser;
           } else {

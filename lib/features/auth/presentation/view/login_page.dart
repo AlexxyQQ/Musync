@@ -1,15 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/formfiled.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/features/auth/presentation/state/authentication_state.dart';
 import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
 
@@ -37,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-      BlocProvider.of<AuthViewModel>(context).checkDeviceSupportForBiometrics();
     });
   }
 
@@ -359,54 +354,6 @@ class LoginForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          // Login with Finger Print
-          BlocProvider.of<AuthViewModel>(context).state.supportBioMetricState &&
-                  BlocProvider.of<AuthViewModel>(context)
-                      .state
-                      .allowLoginWithBiometric
-              ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: KColors.blackColor,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    minimumSize: const Size(
-                      100,
-                      50,
-                    ),
-                  ),
-                  onPressed: () async {
-                    final t = await GetIt.instance<HiveQueries>().getValue(
-                      boxName: 'users',
-                      key: 'anotherToken',
-                      defaultValue: '',
-                    );
-                    if (t != null || t != "") {
-                      await BlocProvider.of<AuthViewModel>(context)
-                          .authenticateWithBiometrics();
-                      if (BlocProvider.of<AuthViewModel>(context)
-                              .state
-                              .loggedUser!
-                              .username !=
-                          "Guest") {
-                        Navigator.popAndPushNamed(context, AppRoutes.homeRoute);
-                      }
-                    } else {
-                      kShowSnackBar('Please login first', context: context);
-                    }
-                  },
-                  child: const Icon(
-                    Icons.fingerprint,
-                    color: KColors.accentColor,
-                    size: 30,
-                  ),
-                )
-              : const SizedBox.shrink(),
-          const SizedBox(height: 20),
           // Terms and Conditions
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -420,13 +367,6 @@ class LoginForm extends StatelessWidget {
                         : KColors.whiteColor,
                     fontWeight: FontWeight.w400,
                   ),
-
-              // style: GlobalConstants.textStyle(
-              //   family: 'Sans',
-              //   fontSize: 15,
-              //   color: isDark ? KColors.blackColor : KColors.whiteColor,
-              //   fontWeight: FontWeight.w500,
-              // ),
             ),
           ),
         ],

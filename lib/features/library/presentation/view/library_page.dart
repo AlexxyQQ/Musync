@@ -38,7 +38,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "type": "Folder",
           "name": key,
           "numSongs": value.length,
-          "songs": value
+          "songs": value,
         });
       });
     }
@@ -50,7 +50,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "name": value[0].artist,
           "artist": value[0].artist,
           "numSongs": value.length,
-          "songs": value
+          "songs": value,
         });
       });
     }
@@ -61,7 +61,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "type": "Artist",
           "name": key,
           "numSongs": value.length,
-          "songs": value
+          "songs": value,
         });
       });
     } else if (sortBy == 'Songs') {
@@ -70,7 +70,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "type": "Song",
           "name": key,
           "songs": value,
-          'numSongs': value.length
+          'numSongs': value.length,
         });
       });
     } else {
@@ -80,7 +80,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "type": "Folder",
           "name": key,
           "numSongs": value.length,
-          "songs": value
+          "songs": value,
         });
       });
       //* Add the albums to the list
@@ -90,7 +90,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "name": value[0].album,
           "artist": value[0].artist,
           "numSongs": value.length,
-          "songs": value
+          "songs": value,
         });
       });
       //* Add the artists to the list
@@ -99,7 +99,7 @@ class _LibraryPageState extends State<LibraryPage> {
           "type": "Artist",
           "name": key,
           "numSongs": value.length,
-          "songs": value
+          "songs": value,
         });
       });
     }
