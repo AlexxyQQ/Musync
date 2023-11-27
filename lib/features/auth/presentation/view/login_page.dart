@@ -2,12 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/common/formfiled.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/features/auth/presentation/state/authentication_state.dart';
-import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
+
+import '../../../../core/common/loading.dart';
+import '../cubit/authentication_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -143,32 +146,11 @@ class _LoginPageState extends State<LoginPage> {
                         topRight: Radius.circular(40),
                       ),
                     ),
-                    child: BlocConsumer<AuthViewModel, AuthState>(
-                      listener: (context, state) {
-                        if (state.isError &&
-                            !state.errorMsg!.contains('token')) {
-                          kShowSnackBar(
-                            state.errorMsg!,
-                            color: Colors.red,
-                            context: context,
-                          );
-                        }
-                        if (state.isLogin) {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            AppRoutes.homeRoute,
-                            (route) => false,
-                            arguments: {
-                              "selectedIndex": 0,
-                            },
-                          );
-                        }
-                      },
+                    child:
+                        BlocBuilder<AuthenticationCubit, AuthenticationState>(
                       builder: (context, state) {
                         return Stack(
                           children: [
-                            if (state.isLoading)
-                              authLoading(mediaQuerySize, context),
                             LoginForm(
                               formKey: formKey,
                               emailController: _emailController,
@@ -180,14 +162,17 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                   String email = _emailController.text;
                                   String password = _passwordController.text;
-                                  BlocProvider.of<AuthViewModel>(context)
-                                      .loginUser(
+                                  BlocProvider.of<AuthenticationCubit>(context)
+                                      .login(
                                     email: email,
                                     password: password,
+                                    context: context,
                                   );
                                 }
                               },
                             ),
+                            if (state.isLoading)
+                              loading(mediaQuerySize, context),
                           ],
                         );
                       },
@@ -198,33 +183,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Center authLoading(Size mediaQuerySize, BuildContext context) {
-    return Center(
-      child: Container(
-        height: mediaQuerySize.height * 0.2,
-        width: mediaQuerySize.width * 0.4,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.black,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 10),
-            Text(
-              'Loading...',
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: KColors.whiteColor,
-                  ),
-            ),
-          ],
-        ),
       ),
     );
   }

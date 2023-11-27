@@ -1,17 +1,19 @@
 import 'dart:convert';
 
-import 'package:musync/features/auth/domain/entity/user_entity.dart';
+import '../../domain/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
   UserModel({
-    required String id,
-    required String username,
-    required String email,
-    required String password,
-    required String profilePic,
-    required bool verified,
-    required String type,
-    required String token,
+    required String? id,
+    required String? username,
+    required String? email,
+    required String? password,
+    required String? profilePic,
+    required bool? verified,
+    required String? type,
+    required String? token,
+    required String? otp,
+    required String? createdAt,
   }) : super(
           id: id,
           username: username,
@@ -21,18 +23,23 @@ class UserModel extends UserEntity {
           verified: verified,
           type: type,
           token: token,
+          otp: otp,
+          createdAt: createdAt,
         );
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['_id'] as String,
-      username: map['username'] as String,
-      email: map['email'] as String,
-      password: map['password'] as String,
-      profilePic: map['profilePic'] as String,
-      verified: map['verified'] as bool,
-      type: map['type'] as String,
-      token: map['token'] as String,
+      id: map['_id'] != null ? map['_id'] as String : null,
+      username: map['username'] != null ? map['username'] as String : null,
+      email: map['email'] != null ? map['email'] as String : null,
+      password: map['password'] != null ? map['password'] as String : null,
+      profilePic:
+          map['profilePic'] != null ? map['profilePic'] as String : null,
+      verified: map['verified'] != null ? map['verified'] as bool : null,
+      type: map['type'] != null ? map['type'] as String : null,
+      token: map['token'] != null ? map['token'] as String : null,
+      otp: map['otp'] != null ? map['otp'] as String : null,
+      createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
     );
   }
 
@@ -41,7 +48,7 @@ class UserModel extends UserEntity {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, username: $username, email: $email, password: $password, profilePic: $profilePic, verified: $verified, type: $type, token: $token)';
+    return 'UserModel(id: $id, username: $username, email: $email, password: $password, profilePic: $profilePic, verified: $verified, type: $type, token: $token, otp: $otp)';
   }
 
   @override
@@ -55,7 +62,8 @@ class UserModel extends UserEntity {
         other.profilePic == profilePic &&
         other.verified == verified &&
         other.type == type &&
-        other.token == token;
+        other.token == token &&
+        other.otp == otp;
   }
 
   @override
@@ -67,6 +75,7 @@ class UserModel extends UserEntity {
         profilePic.hashCode ^
         verified.hashCode ^
         type.hashCode ^
-        token.hashCode;
+        token.hashCode ^
+        otp.hashCode;
   }
 }

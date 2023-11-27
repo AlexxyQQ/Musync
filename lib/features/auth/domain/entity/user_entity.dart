@@ -1,35 +1,28 @@
 import 'dart:convert';
 
 class UserEntity {
-  String id;
-  String username;
-  String email;
-  String password;
-  String profilePic;
-  bool verified;
-  String type;
-  String token;
-
+  String? id;
+  String? username;
+  String? email;
+  String? password;
+  String? profilePic;
+  bool? verified;
+  String? type;
+  String? token;
+  String? otp;
+  String? createdAt;
   UserEntity({
-    required this.id,
-    required this.username,
-    required this.email,
-    required this.password,
-    required this.profilePic,
-    required this.verified,
-    required this.type,
-    required this.token,
+    this.id,
+    this.username,
+    this.email,
+    this.password,
+    this.profilePic,
+    this.verified,
+    this.type,
+    this.token,
+    this.otp,
+    this.createdAt,
   });
-
-  UserEntity.empty()
-      : id = '',
-        username = '',
-        email = '',
-        password = '',
-        profilePic = '',
-        verified = false,
-        type = '',
-        token = '';
 
   UserEntity copyWith({
     String? id,
@@ -40,6 +33,8 @@ class UserEntity {
     bool? verified,
     String? type,
     String? token,
+    String? otp,
+    String? createdAt,
   }) {
     return UserEntity(
       id: id ?? this.id,
@@ -50,6 +45,8 @@ class UserEntity {
       verified: verified ?? this.verified,
       type: type ?? this.type,
       token: token ?? this.token,
+      otp: otp ?? this.otp,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -63,19 +60,24 @@ class UserEntity {
       'verified': verified,
       'type': type,
       'token': token,
+      'otp': otp,
+      'createdAt': createdAt,
     };
   }
 
   factory UserEntity.fromMap(Map<String, dynamic> map) {
     return UserEntity(
-      id: map['_id'] as String,
-      username: map['username'] as String,
-      email: map['email'] as String,
-      password: map['password'] as String,
-      profilePic: map['profilePic'] as String,
-      verified: map['verified'] as bool,
-      type: map['type'] as String,
-      token: map['token'] as String,
+      id: map['_id'] != null ? map['_id'] as String : null,
+      username: map['username'] != null ? map['username'] as String : null,
+      email: map['email'] != null ? map['email'] as String : null,
+      password: map['password'] != null ? map['password'] as String : null,
+      profilePic:
+          map['profilePic'] != null ? map['profilePic'] as String : null,
+      verified: map['verified'] != null ? map['verified'] as bool : null,
+      type: map['type'] != null ? map['type'] as String : null,
+      token: map['token'] != null ? map['token'] as String : null,
+      otp: map['otp'] != null ? map['otp'] as String : null,
+      createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
     );
   }
 
@@ -86,7 +88,7 @@ class UserEntity {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, username: $username, email: $email, password: $password, profilePic: $profilePic, verified: $verified, type: $type, token: $token)';
+    return 'UserEntity(id: $id, username: $username, email: $email, password: $password, profilePic: $profilePic, verified: $verified, type: $type, token: $token, otp: $otp)';
   }
 
   @override
@@ -100,7 +102,8 @@ class UserEntity {
         other.profilePic == profilePic &&
         other.verified == verified &&
         other.type == type &&
-        other.token == token;
+        other.token == token &&
+        other.otp == otp;
   }
 
   @override
@@ -112,6 +115,7 @@ class UserEntity {
         profilePic.hashCode ^
         verified.hashCode ^
         type.hashCode ^
-        token.hashCode;
+        token.hashCode ^
+        otp.hashCode;
   }
 }

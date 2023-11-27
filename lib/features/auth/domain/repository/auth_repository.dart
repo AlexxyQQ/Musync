@@ -1,26 +1,38 @@
 import 'package:dartz/dartz.dart';
-import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/features/auth/domain/entity/user_entity.dart';
+
+import '../../../../core/failure/error_handler.dart';
+import '../entity/user_entity.dart';
 
 abstract class IAuthRepository {
-  Future<Either<ErrorModel, UserEntity>> login({
+  Future<Either<AppErrorHandler, UserEntity>> login({
     required String email,
     required String password,
   });
-  Future<Either<ErrorModel, UserEntity>> signup({
+  Future<Either<AppErrorHandler, UserEntity>> signup({
     required String email,
     required String password,
     required String username,
   });
-  Future<Either<ErrorModel, UserEntity>> googleLogin();
-  Future<Either<ErrorModel, void>> logout();
+  Future<Either<AppErrorHandler, void>> logout();
 
-  Future<Either<ErrorModel, UserEntity>> uploadProfilePic({
+  Future<Either<AppErrorHandler, UserEntity>> uploadProfilePic({
     required String token,
     required String profilePicPath,
   });
 
-  Future<Either<ErrorModel, bool>> deleteUser({
+  Future<Either<AppErrorHandler, bool>> deleteUser({
     required String token,
+  });
+  Future<Either<AppErrorHandler, bool>> signupOTPValidator({
+    required String email,
+    required String otp,
+  });
+  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPSender({
+    required String email,
+  });
+  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPValidator({
+    required String email,
+    required String otp,
+    required String newPassword,
   });
 }

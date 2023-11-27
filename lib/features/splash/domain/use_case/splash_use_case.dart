@@ -1,43 +1,39 @@
 import 'package:dartz/dartz.dart';
-import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/core/network/hive/hive_queries.dart';
-import 'package:musync/features/auth/domain/entity/user_entity.dart';
-import 'package:musync/features/splash/domain/repository/splash_repository.dart';
 
-class SplashUseCase {
+import '../../../../core/failure/error_handler.dart';
+import '../../../../core/network/hive/hive_queries.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../../../auth/domain/entity/user_entity.dart';
+import '../repository/splash_repository.dart';
+
+class InitialLoginUseCase extends UseCase<UserEntity, void> {
   final ISplashRepository splashRepository;
   final HiveQueries hiveQueries;
 
-  const SplashUseCase({
+  InitialLoginUseCase({
     required this.splashRepository,
     required this.hiveQueries,
   });
 
-  Future<Either<ErrorModel, UserEntity>> initialLogin({
-    bool biometric = false,
-  }) async {
+  @override
+  Future<Either<AppErrorHandler, UserEntity>> call(void params) async {
     try {
       String token = await hiveQueries.getValue(
         boxName: 'users',
         key: 'token',
         defaultValue: '',
       );
-      String token2 = await hiveQueries.getValue(
-        boxName: 'users',
-        key: 'anotherToken',
-        defaultValue: '',
-      );
       final response = await splashRepository.initialLogin(
-        token: biometric ? token2 : token,
-      );
-      await hiveQueries.setValue(
-        boxName: 'users',
-        key: 'token',
-        value: token2,
+        token: token,
       );
       return response;
     } catch (e) {
-      rethrow;
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
     }
   }
 }

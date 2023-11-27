@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/core/usecase/usecase.dart';
-import 'package:musync/features/auth/domain/repository/auth_repository.dart';
+
+import '../../../../core/failure/error_handler.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../repository/auth_repository.dart';
 
 class DeleteUserUseCase extends UseCase<bool, String> {
   final IAuthRepository repository;
@@ -11,7 +12,7 @@ class DeleteUserUseCase extends UseCase<bool, String> {
   });
 
   @override
-  Future<Either<ErrorModel, bool>> call(String params) async {
+  Future<Either<AppErrorHandler, bool>> call(String params) async {
     return await repository.deleteUser(
       token: params,
     );

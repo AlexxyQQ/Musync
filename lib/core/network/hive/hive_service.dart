@@ -1,5 +1,4 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:musync/features/home/data/data_source/local_data_source/hive_service/music_hive_service.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {
@@ -12,7 +11,7 @@ class HiveService {
     await hiveOpen('uploads');
     await hiveOpen('songs');
     // Music Hive
-    await MusicHiveDataSourse().init();
+    // await MusicHiveDataSourse().init();
   }
 
   /// Open Hive Boxes

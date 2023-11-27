@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:musync/config/constants/api_endpoints.dart';
 import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/core/network/api/api.dart';
-import 'package:musync/core/network/hive/hive_queries.dart';
-import 'package:musync/features/auth/domain/entity/user_entity.dart';
+
+import '../../../../../config/constants/api_endpoints.dart';
+import '../../../../../core/network/api/api.dart';
+import '../../../../../core/network/hive/hive_queries.dart';
+import '../../dto/user_dto.dart';
+import '../../model/user_model.dart';
 
 class AuthRemoteDataSource {
   final Api api;
@@ -16,7 +17,7 @@ class AuthRemoteDataSource {
     required this.api,
   });
 
-  Future<Either<ErrorModel, Map<String, dynamic>>> login({
+  Future<Either<AppErrorHandler, UserModel>> login({
     required String email,
     required String password,
   }) async {
@@ -31,27 +32,35 @@ class AuthRemoteDataSource {
 
       ApiResponse responseApi = ApiResponse.fromResponse(response);
 
-      return responseApi.success
-          ? Right({...responseApi.data, 'token': responseApi.data['token']})
-          : Left(
-              ErrorModel(
-                message: responseApi.message.toString(),
-                status: false,
-              ),
-            );
-    } catch (e) {
-      if (e is DioError && e.response != null) {
-        var responseApi = ApiResponse.fromResponse(e.response!);
+      if (responseApi.success) {
+        // Convert response to DTO
+        UserDTO userDTO = UserDTO.fromMap(responseApi.data);
+        if (userDTO.user?.verified ?? false) {
+          // conver the DTO to Entity and return
+          return Right(UserDTO.fromDTOtoEntity(userDTO));
+        } else {
+          // send OTP to user email and return error
+          // ! Send OTP to user email
+          return Left(
+            AppErrorHandler(
+              message: 'Please verify your email.',
+              status: false,
+            ),
+          );
+        }
+      } else {
         return Left(
-          ErrorModel(
+          AppErrorHandler(
             message: responseApi.message.toString(),
             status: false,
           ),
         );
       }
-
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
       return Left(
-        ErrorModel(
+        AppErrorHandler(
           message: e.toString(),
           status: false,
         ),
@@ -59,7 +68,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<ErrorModel, Map<String, dynamic>>> signupUser({
+  Future<Either<AppErrorHandler, UserModel>> signup({
     required String email,
     required String password,
     required String username,
@@ -78,34 +87,25 @@ class AuthRemoteDataSource {
 
       ApiResponse responseApi = ApiResponse.fromResponse(response);
 
-      return responseApi.success
-          ? Right({...responseApi.data, 'token': ''})
-          : Left(
-              ErrorModel(
-                message: responseApi.message.toString(),
-                status: false,
-              ),
-            );
-    } on DioError catch (e) {
-      if (e.response != null) {
-        var responseApi = ApiResponse.fromResponse(e.response!);
-        return Left(
-          ErrorModel(
-            message: responseApi.message.toString(),
-            status: false,
+      if (responseApi.success) {
+        return right(
+          UserModel.fromMap(
+            responseApi.data,
           ),
         );
       } else {
         return Left(
-          ErrorModel(
-            message: "Network error occurred.",
+          AppErrorHandler(
+            message: responseApi.message.toString(),
             status: false,
           ),
         );
       }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
     } catch (e) {
       return Left(
-        ErrorModel(
+        AppErrorHandler(
           message: 'An unexpected error occurred.',
           status: false,
         ),
@@ -113,7 +113,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<ErrorModel, void>> logout() async {
+  Future<Either<AppErrorHandler, void>> logout() async {
     try {
       await GetIt.instance<HiveQueries>().deleteValue(
         boxName: 'users',
@@ -122,7 +122,7 @@ class AuthRemoteDataSource {
       return const Right(null);
     } catch (e) {
       return Left(
-        ErrorModel(
+        AppErrorHandler(
           message: e.toString(),
           status: false,
         ),
@@ -130,94 +130,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<ErrorModel, Map<String, dynamic>>> google() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final user = await googleSignIn.signIn();
-    try {
-      if (user != null) {
-        // User signup
-        final response = await api.sendRequest.post(
-          ApiEndpoints.signupRoute,
-          data: jsonEncode({
-            "username": user.displayName.toString().toLowerCase(),
-            "email": user.email,
-            "password": user.id,
-            "confirmPassword": user.id,
-            "profilePic": user.photoUrl,
-            "type": "google",
-          }),
-        );
-
-        ApiResponse responseApi = ApiResponse.fromResponse(response);
-        if (responseApi.success) {
-          // Login user
-          var loggedUser = await login(email: user.email, password: user.id);
-
-          return loggedUser;
-        } else {
-          return Left(
-            ErrorModel(
-              message: responseApi.message.toString(),
-              status: false,
-            ),
-          );
-        }
-      } else {
-        return Left(
-          ErrorModel(
-            message: 'Google sign in failed.',
-            status: false,
-          ),
-        );
-      }
-    } on DioError catch (e) {
-      if (e.response != null) {
-        var responseApi = ApiResponse.fromResponse(e.response!);
-        if (responseApi.message.toString() ==
-                'User with same USERNAME already exists!' ||
-            responseApi.message.toString() ==
-                'User with same EMAIL already exists!') {
-          //
-          if (user != null) {
-            // Login user
-            var loggedUser = await login(email: user.email, password: user.id);
-
-            return loggedUser;
-          } else {
-            return Left(
-              ErrorModel(
-                message: 'Google sign in failed.',
-                status: false,
-              ),
-            );
-          }
-        } else {
-          return Left(
-            ErrorModel(
-              message: responseApi.message.toString(),
-              status: false,
-            ),
-          );
-        }
-      } else {
-        return Left(
-          ErrorModel(
-            message: 'An unexpected error occurred.',
-            status: false,
-          ),
-        );
-      }
-    } catch (e) {
-      return Left(
-        ErrorModel(
-          message: 'An unexpected error occurred.',
-          status: false,
-        ),
-      );
-    }
-  }
-
-  Future<Either<ErrorModel, UserEntity>> uploadProfilePic({
+  Future<Either<AppErrorHandler, UserModel>> uploadProfilePic({
     required String token,
     required String profilePicPath,
   }) async {
@@ -238,20 +151,20 @@ class AuthRemoteDataSource {
       ApiResponse responseApi = ApiResponse.fromResponse(response);
 
       if (responseApi.success) {
-        Map<String, dynamic> userData = responseApi.data;
-        userData['token'] = token;
-        return Right(UserEntity.fromMap(userData));
+        return Right(UserModel.fromMap(responseApi.data));
       } else {
         return Left(
-          ErrorModel(
+          AppErrorHandler(
             message: responseApi.message.toString(),
             status: false,
           ),
         );
       }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
     } catch (e) {
       return Left(
-        ErrorModel(
+        AppErrorHandler(
           message: e.toString(),
           status: false,
         ),
@@ -259,7 +172,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<ErrorModel, bool>> deleteUser({
+  Future<Either<AppErrorHandler, bool>> deleteUser({
     required String token,
   }) async {
     try {
@@ -278,15 +191,126 @@ class AuthRemoteDataSource {
         return const Right(true);
       } else {
         return Left(
-          ErrorModel(
+          AppErrorHandler(
             message: responseApi.message.toString(),
             status: false,
           ),
         );
       }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
     } catch (e) {
       return Left(
-        ErrorModel(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<AppErrorHandler, bool>> signupOTPValidator(
+      {required String email, required String otp}) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.signupOTPValidatorRoute,
+        data: jsonEncode({
+          "email": email,
+          "otp": otp,
+        }),
+      );
+
+      ApiResponse responseApi = ApiResponse.fromResponse(response);
+
+      if (responseApi.success) {
+        return const Right(true);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPSender({
+    required String email,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.forgotPasswordOTPSenderRoute,
+        data: jsonEncode({
+          "email": email,
+        }),
+      );
+
+      ApiResponse responseApi = ApiResponse.fromResponse(response);
+
+      if (responseApi.success) {
+        return const Right(true);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPValidator({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.forgotPasswordOTPValidatorRoute,
+        data: jsonEncode({
+          "email": email,
+          "otp": otp,
+          "newPassword": newPassword,
+        }),
+      );
+
+      ApiResponse responseApi = ApiResponse.fromResponse(response);
+
+      if (responseApi.success) {
+        return const Right(true);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
           message: e.toString(),
           status: false,
         ),

@@ -4,9 +4,10 @@ import 'package:get_it/get_it.dart';
 import 'package:musync/core/common/custom_snackbar.dart';
 import 'package:musync/core/network/hive/hive_queries.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/features/auth/presentation/state/authentication_state.dart';
-import 'package:musync/features/auth/presentation/viewmodel/auth_view_model.dart';
+import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/config/router/routers.dart';
+
+import '../cubit/authentication_state.dart';
 
 class MainAuthPage extends StatefulWidget {
   const MainAuthPage({super.key});
@@ -118,30 +119,10 @@ class LoginSignupButton extends StatelessWidget {
                   ),
                 ),
                 // Google Sign In Button
-                BlocListener<AuthViewModel, AuthState>(
-                  listener: (context, state) {
-                    if (state.isLogin) {
-                      kShowSnackBar(
-                        "Logged in successfully!",
-                        context: context,
-                      );
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        AppRoutes.homeRoute,
-                        (route) => false,
-                        arguments: {
-                          "selectedIndex": 0,
-                        },
-                      );
-                    }
-                    if (state.errorMsg != null) {
-                      kShowSnackBar(state.errorMsg!, context: context);
-                    }
-                  },
-                  child: ElevatedButton(
+                BlocBuilder<AuthenticationCubit, AuthenticationState>(
+                  builder: (context, state) => ElevatedButton(
                     onPressed: () async {
                       // ! UNCOMMENT THIS TO ENABLE GOOGLE SIGN IN
-                      BlocProvider.of<AuthViewModel>(context).googleLoginUser();
                     },
                     child: Image.asset(
                       'assets/icons/google.png',
@@ -195,16 +176,6 @@ class LoginSignupButton extends StatelessWidget {
                             ? KColors.blackColor
                             : KColors.whiteColor,
                       ),
-                  // style: TextStyle(
-                  //   fontSize: 16,
-                  //   fontWeight: FontWeight.w600,
-                  //   color: isDark ? KColors.blackColor : KColors.whiteColor,
-                  // ),
-                  // style: GlobalConstants.textStyle(
-                  //   fontSize: 18,
-                  //   fontWeight: FontWeight.w400,
-                  //   color: isDark ? KColors.blackColor : KColors.whiteColor,
-                  // ),
                 ),
               ),
             ),

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:musync/core/failure/error_handler.dart';
-import 'package:musync/core/usecase/usecase.dart';
-import 'package:musync/features/auth/domain/entity/user_entity.dart';
-import 'package:musync/features/auth/domain/repository/auth_repository.dart';
+import '../../../../core/failure/error_handler.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../entity/user_entity.dart';
+import '../repository/auth_repository.dart';
 
 class SignupUseCase extends UseCase<UserEntity, SignupParams> {
   final IAuthRepository repository;
@@ -12,7 +12,7 @@ class SignupUseCase extends UseCase<UserEntity, SignupParams> {
   });
 
   @override
-  Future<Either<ErrorModel, UserEntity>> call(SignupParams params) async {
+  Future<Either<AppErrorHandler, UserEntity>> call(SignupParams params) async {
     return await repository.signup(
       username: params.username,
       email: params.email,
