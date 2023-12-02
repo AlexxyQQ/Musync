@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:musync/core/common/custom_page_indicator.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/features/onboarding/presentation/widgets/illegal_page.dart';
+import 'package:musync/core/utils/text_theme_extension.dart';
 import 'package:musync/features/onboarding/presentation/widgets/last_page.dart';
 import 'package:musync/features/onboarding/presentation/widgets/next_and_skip.dart';
 import 'package:musync/features/onboarding/presentation/widgets/page_builder.dart';
+
+import '../../../../core/common/loader.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -16,34 +18,40 @@ class OnBoardingPage extends StatefulWidget {
 class _OnBoardingPageState extends State<OnBoardingPage> {
   static PageController controller = PageController();
   bool isLastPage = false;
+  bool loading = false;
+
+  void changeLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Size mediaQuerySize = MediaQuery.of(context).size;
     List<dynamic> pages = [
-      const OnBoardPageBuilder(
+      const OnBoardPageComponent(
         lottieUrl: 'assets/lottie/4879-trumpet-music.json',
-        title: 'Welcome to Musync',
-        subtitle:
-            'Seamlessly switch between your computer and phone without missing a beat.',
+        title: 'Seamless Music Transition',
+        subtitle: 'Switch tunes between devices without missing a beat',
       ),
-      const OnBoardPageBuilder(
+      const OnBoardPageComponent(
         lottieUrl: 'assets/lottie/animation_lk5n0846.json',
-        title: 'Listen to you library offline',
-        subtitle:
-            'Musync support playing offline media saved in you device or from the internet.',
+        title: 'Personalized Playlist Creation',
+        subtitle: 'Craft and manage your soundtracks with custom playlists.',
       ),
-      const IllegalPageBuilder(
-        lottieUrl: 'assets/lottie/animation_lloun5s0.json',
-        title: "Let's do something illegal.",
-        subtitle: 'Toggle the illegal mode.',
+      const OnBoardPageComponent(
+        lottieUrl:
+            'assets/lottie/139537-boy-avatar-listening-music-animation.json',
+        title: 'Social Tunes Sharing',
+        subtitle: "Share your favorite hits instantly on social media.",
       ),
-      const OnBoardPageBuilder(
+      const OnBoardPageComponent(
         lottieUrl:
             'assets/lottie/139537-boy-avatar-listening-music-animation.json',
         title: 'Get started now!!',
         subtitle:
-            "Login to get started, if you don't have an account, you can create one.",
+            "Discover new favorites with personalized song recommendations.",
       ),
     ];
     return Scaffold(
@@ -86,10 +94,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     // Get Started Offline and Terms and Conditions
                     ? LastPage(
                         mediaQuerySize: mediaQuerySize,
+                        changeLoading: changeLoading,
                       )
                     // Next and Skip Button
                     : NextAndSkip(controller: controller),
               ),
+              loading ? const Loader() : const SizedBox.shrink(),
             ],
           ),
         ),
@@ -123,10 +133,7 @@ class IconAndPageIndicator extends StatelessWidget {
             // App Name
             Text(
               'Musync',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: Theme.of(context).textTheme.f20W7,
             ),
           ],
         ),
@@ -141,8 +148,8 @@ class IconAndPageIndicator extends StatelessWidget {
           activeDotWidth: 70,
           dotSpacing: 15,
           trailing: false,
-          activeColor: KColors.accentColor,
-          inactiveColor: KColors.greyColor,
+          activeColor: AppAccentColor.yellow,
+          inactiveColor: AppIconColor.dim,
         ),
       ],
     );

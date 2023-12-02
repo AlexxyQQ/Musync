@@ -2,13 +2,14 @@ import 'dart:math';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/core/utils/text_theme_extension.dart';
 
-class OnBoardPageBuilder extends StatelessWidget {
+class OnBoardPageComponent extends StatelessWidget {
   final String lottieUrl;
   final String title;
   final String subtitle;
 
-  const OnBoardPageBuilder({
+  const OnBoardPageComponent({
     super.key,
     this.lottieUrl = '',
     this.title = '',
@@ -23,12 +24,11 @@ class OnBoardPageBuilder extends StatelessWidget {
         children: [
           const SizedBox(height: 100),
           Padding(
-            padding: const EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(top: 16),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontSize: 28,
-                  ),
+              style: Theme.of(context).textTheme.f24W5,
+              textAlign: TextAlign.center,
             ),
           ),
           const SizedBox(height: 10),
@@ -39,7 +39,7 @@ class OnBoardPageBuilder extends StatelessWidget {
               child: Text(
                 subtitle,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(context).textTheme.f14W4,
               ),
             ),
           ),
@@ -50,8 +50,8 @@ class OnBoardPageBuilder extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.465,
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? KColors.offWhiteColorTwo
-                    : KColors.offWhiteColor,
+                    ? AppBackgroundColor.lightDim
+                    : AppBackgroundColor.darkDim,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Lottie.asset(

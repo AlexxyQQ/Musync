@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:musync/config/constants/constants.dart';
 
-class CTextFormFiled extends StatelessWidget {
-  final String hintText;
-  final String labelText;
+class KTextFormField extends StatelessWidget {
+  final String? hintText;
+  final String? labelText;
   final TextEditingController controller;
   final TextInputType keyboardType;
   final bool? obscureText;
   final bool? enableSuggestions;
   final bool? autocorrect;
+  final TextStyle? contentStyle;
+  final TextStyle? hintTextStyle;
+  final TextStyle? labelTextStyle;
+  final TextStyle? errorTextStyle;
   final bool? enableIMEPersonalizedLearning;
   final String? Function(String?)? validator;
   final void Function(String?)? onChanged;
@@ -16,11 +22,18 @@ class CTextFormFiled extends StatelessWidget {
   final void Function(String?)? onFieldSubmitted;
   final void Function()? onEditingComplete;
   final void Function()? onTap;
+  final Color? fillColor; // Added parameter for fill color
+  final Widget? prefixIcon; // Added parameter for prefix icon
+  final Widget? suffixIcon; // Added parameter for suffix icon
+  final void Function()? onSuffixTap; // Added parameter for suffix tap
+  List<TextInputFormatter>? inputFormatters;
+  final FocusNode? focusNode;
+  final TextAlign? textAlign;
 
-  const CTextFormFiled({
+  KTextFormField({
     super.key,
-    required this.hintText,
-    required this.labelText,
+    this.hintText,
+    this.labelText,
     required this.controller,
     required this.keyboardType,
     this.obscureText = false,
@@ -33,27 +46,63 @@ class CTextFormFiled extends StatelessWidget {
     this.onFieldSubmitted,
     this.onEditingComplete,
     this.onTap,
+    this.prefixIcon, // Initialize the new parameter
+    this.suffixIcon, // Initialize the new parameter
+    this.onSuffixTap, // Initialize the new parameter
+    this.contentStyle,
+    this.hintTextStyle,
+    this.labelTextStyle,
+    this.fillColor,
+    this.errorTextStyle,
+    this.inputFormatters,
+    this.focusNode,
+    this.textAlign,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      textAlign: textAlign ?? TextAlign.start,
       keyboardType: keyboardType,
-      obscureText: obscureText!,
-      enableSuggestions: enableSuggestions!,
-      autocorrect: autocorrect!,
+      obscureText: obscureText ?? false,
+      enableSuggestions: enableSuggestions ?? true,
+      autocorrect: autocorrect ?? true,
       textInputAction: TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      enableIMEPersonalizedLearning: enableIMEPersonalizedLearning!,
+      enableIMEPersonalizedLearning: enableIMEPersonalizedLearning ?? true,
+      style: contentStyle ?? GlobalConstants.textStyle(),
+      focusNode: focusNode,
       decoration: InputDecoration(
+        counterText: '',
+        errorStyle: errorTextStyle ?? GlobalConstants.textStyle(),
         hintText: hintText,
         labelText: labelText,
-        hintTextDirection: TextDirection.ltr,
-        suffixIconConstraints: const BoxConstraints(
-          maxHeight: 10,
-          maxWidth: 10,
+        hintStyle: hintTextStyle ?? GlobalConstants.textStyle(),
+        labelStyle: hintTextStyle ?? GlobalConstants.textStyle(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        fillColor: fillColor ?? AppBackgroundColor.light,
+        filled: true,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 8.h,
+        ),
+        prefixIcon: prefixIcon,
+        hintTextDirection: TextDirection.ltr,
+        suffixIcon: suffixIcon != null
+            ? GestureDetector(
+                onTap: onSuffixTap,
+                child: suffixIcon,
+              )
+            : null,
       ),
       validator: validator,
       onChanged: onChanged,
@@ -61,85 +110,6 @@ class CTextFormFiled extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted,
       onEditingComplete: onEditingComplete,
       onTap: onTap,
-    );
-  }
-}
-
-class CPasswordFormField extends StatefulWidget {
-  final String hintText;
-  final String labelText;
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-  final bool obscureText;
-  final bool enableSuggestions;
-  final bool autocorrect;
-  final bool enableIMEPersonalizedLearning;
-  final String? Function(String?)? validator;
-  final void Function(String?)? onChanged;
-  final void Function(String?)? onSaved;
-  final void Function(String?)? onFieldSubmitted;
-  final void Function()? onEditingComplete;
-  final void Function()? onTap;
-
-  const CPasswordFormField({
-    Key? key,
-    required this.hintText,
-    required this.labelText,
-    required this.controller,
-    required this.keyboardType,
-    this.obscureText = true,
-    this.enableSuggestions = false,
-    this.autocorrect = false,
-    this.enableIMEPersonalizedLearning = false,
-    this.validator,
-    this.onChanged,
-    this.onSaved,
-    this.onFieldSubmitted,
-    this.onEditingComplete,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  State<CPasswordFormField> createState() => _CPasswordFormFieldState();
-}
-
-class _CPasswordFormFieldState extends State<CPasswordFormField> {
-  bool _obscureText = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      keyboardType: widget.keyboardType,
-      obscureText: _obscureText,
-      enableSuggestions: widget.enableSuggestions,
-      autocorrect: widget.autocorrect,
-      textInputAction: TextInputAction.next,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        labelText: widget.labelText,
-        hintTextDirection: TextDirection.ltr,
-        suffixIcon: GestureDetector(
-          onTap: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-          child: Icon(
-            _obscureText ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
-            size: 17.0,
-            color: Colors.black,
-          ),
-        ),
-      ),
-      validator: widget.validator,
-      onChanged: widget.onChanged,
-      onSaved: widget.onSaved,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      onEditingComplete: widget.onEditingComplete,
-      onTap: widget.onTap,
     );
   }
 }

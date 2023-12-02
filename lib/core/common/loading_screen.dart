@@ -13,8 +13,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return const Center(
       child: CircularProgressIndicator(
-        backgroundColor: KColors.blackColor,
-        color: KColors.accentColor,
+        color: AppAccentColor.yellow,
+        strokeWidth: 6,
+        strokeCap: StrokeCap.round,
+        semanticsValue: 'Loading...',
+        semanticsLabel: 'Loading...',
       ),
     );
   }

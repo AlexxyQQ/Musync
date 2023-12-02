@@ -14,8 +14,12 @@ class AppErrorHandler {
   });
 
   @override
-  String toString() =>
-      'AppErrorHandler(message: $message, data: $data, status: $status)';
+  String toString() {
+    return 'App Error Handler Details:\n'
+        '  - Message: $message\n'
+        '  - Data: $data\n'
+        '  - Status: $status';
+  }
 
   // on DioError
   factory AppErrorHandler.fromDioError(DioError error) {

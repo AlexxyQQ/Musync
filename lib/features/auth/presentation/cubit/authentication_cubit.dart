@@ -1,14 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/features/auth/domain/use_case/rend_verification_usecase.dart';
+import 'package:musync/features/auth/presentation/view/change_password_page.dart';
+import 'package:musync/features/auth/presentation/view/otp_page.dart';
 
 import '../../../../core/common/custom_snackbar.dart';
 import '../../../splash/domain/use_case/splash_use_case.dart';
 import '../../domain/entity/user_entity.dart';
 import '../../domain/use_case/delete_user_usecase.dart';
-import '../../domain/use_case/forgot_password_otp_sender_usecase.dart';
-import '../../domain/use_case/forgot_password_otp_validator_usecase.dart';
+import '../../domain/use_case/send_forgot_password_otp_usecase.dart';
+import '../../domain/use_case/change_password_usecase.dart';
 import '../../domain/use_case/login_usecase.dart';
 import '../../domain/use_case/logout_usecase.dart';
 import '../../domain/use_case/signup_otp_validator_usecase.dart';
@@ -22,20 +25,22 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final LogoutUseCase logoutUseCase;
   final UploadProfilePicUseCase uploadProfilePicUseCase;
   final DeleteUserUseCase deleteUserUseCase;
-  final SignupOTPValidatorUsecase signupOTPValidatorUsecase;
-  final ForgotPasswordOTPSenderUsecase forgotPasswordOTPSenderUsecase;
-  final ForgotPasswordOTPValidatorUsecase forgotPasswordOTPValidatorUsecase;
+  final OTPValidatorUsecase otpValidatorUsecase;
+  final SendForgotPasswordOTPUsecase sendForgotPasswordOTPUsecase;
+  final ChangePasswordUsecase changePasswordUsecase;
   final InitialLoginUseCase initialLoginUseCase;
+  final ResendVerificationUsecase resendVerificationUsecase;
   AuthenticationCubit({
     required this.loginUseCase,
     required this.signupUseCase,
     required this.logoutUseCase,
     required this.uploadProfilePicUseCase,
     required this.deleteUserUseCase,
-    required this.signupOTPValidatorUsecase,
-    required this.forgotPasswordOTPSenderUsecase,
-    required this.forgotPasswordOTPValidatorUsecase,
+    required this.otpValidatorUsecase,
+    required this.sendForgotPasswordOTPUsecase,
+    required this.changePasswordUsecase,
     required this.initialLoginUseCase,
+    required this.resendVerificationUsecase,
   }) : super(AuthenticationState.initial());
 
   Future<void> signup({
@@ -44,11 +49,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     required String username,
     required BuildContext context,
   }) async {
-    emit(state.copyWith(
-      isLoading: true,
-      eror: null,
-      isSuccess: false,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        eror: null,
+        isSuccess: false,
+      ),
+    );
     final data = await signupUseCase.call(
       SignupParams(
         email: email,
@@ -78,21 +85,31 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           ),
         );
         kShowSnackBar(context: context, message: 'OTP sent to your email');
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (_) => OTPPage(
+              email: email,
+            ),
+          ),
+          (route) => false,
+        );
       },
     );
   }
 
-  Future<void> signupOTPValidator({
+  Future<void> otpValidator({
     required String email,
     required String otp,
     required BuildContext context,
   }) async {
-    emit(state.copyWith(
-      isLoading: true,
-      eror: null,
-      isSuccess: false,
-    ));
-    final data = await signupOTPValidatorUsecase.call(
+    emit(
+      state.copyWith(
+        isLoading: true,
+        eror: null,
+        isSuccess: false,
+      ),
+    );
+    final data = await otpValidatorUsecase.call(
       SignupOTPValidatorParams(
         email: email,
         otp: otp,
@@ -119,6 +136,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             isFirstTime: false,
           ),
         );
+        Navigator.of(context).pushNamed('/login');
       },
     );
   }
@@ -151,7 +169,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         ),
       );
       kShowSnackBar(
-          context: context, message: data.fold((l) => l.message, (r) => ''));
+        context: context,
+        message: data.fold((l) => l.message, (r) => ''),
+      );
     } else {
       emit(
         state.copyWith(
@@ -163,6 +183,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           goHome: true,
         ),
       );
+
       kShowSnackBar(context: context, message: 'Logged in successfully');
     }
   }
@@ -188,7 +209,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         ),
       );
       kShowSnackBar(
-          context: context, message: data.fold((l) => l.message, (r) => ''));
+        context: context,
+        message: data.fold((l) => l.message, (r) => ''),
+      );
     } else {
       emit(
         state.copyWith(
@@ -205,11 +228,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   Future<void> logoutUser() async {
-    emit(state.copyWith(
-      isLoading: true,
-      eror: null,
-      isSuccess: false,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        eror: null,
+        isSuccess: false,
+      ),
+    );
 
     final data = await logoutUseCase.call(null);
     data.fold(
@@ -234,11 +259,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> uploadProfilePic({
     required String path,
   }) async {
-    emit(state.copyWith(
-      isLoading: true,
-      eror: null,
-      isSuccess: false,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        eror: null,
+        isSuccess: false,
+      ),
+    );
 
     final data = await uploadProfilePicUseCase.call(
       UploadProfilePicParams(
@@ -267,11 +294,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   Future<void> deleteUser() async {
-    emit(state.copyWith(
-      isLoading: true,
-      eror: null,
-      isSuccess: false,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        eror: null,
+        isSuccess: false,
+      ),
+    );
 
     final data = await deleteUserUseCase.call(
       state.loggedUser!.token!,
@@ -296,17 +325,19 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
-  Future<void> forgotPasswordOTPSender({
+  Future<void> sendForgetPasswordOTP({
     required String email,
     required BuildContext context,
   }) async {
-    emit(state.copyWith(
-      isLoading: true,
-      eror: null,
-      isSuccess: false,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        eror: null,
+        isSuccess: false,
+      ),
+    );
 
-    final data = await forgotPasswordOTPSenderUsecase.call(email);
+    final data = await sendForgotPasswordOTPUsecase.call(email);
 
     data.fold(
       (l) {
@@ -325,32 +356,42 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             eror: null,
             isLoading: false,
             isSuccess: true,
-            loggedUser: UserEntity().copyWith(email: email),
           ),
         );
         kShowSnackBar(context: context, message: 'OTP sent to your email');
-        Navigator.of(context).pushNamed('/forgotPasswordOTPValidator');
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (_) => ChangePasswordPage(
+              email: email,
+            ),
+          ),
+          (route) => false,
+        );
       },
     );
   }
 
-  Future<void> forgotPasswordOTPValidator({
+  Future<void> changePassword({
     required String email,
     required String otp,
     required String newPassword,
+    required String confirmNewPassword,
     required BuildContext context,
   }) async {
-    emit(state.copyWith(
-      isLoading: true,
-      eror: null,
-      isSuccess: false,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        eror: null,
+        isSuccess: false,
+      ),
+    );
 
-    final data = await forgotPasswordOTPValidatorUsecase.call(
-      ForgotPasswordOTPValidatorParams(
+    final data = await changePasswordUsecase.call(
+      ChagePasswordParams(
         email: email,
         otp: otp,
         newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword,
       ),
     );
 
@@ -374,7 +415,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           ),
         );
         kShowSnackBar(
-            context: context, message: 'Password changed successfully');
+          context: context,
+          message: 'Password changed successfully',
+        );
         Navigator.of(context).pushNamed('/login');
       },
     );

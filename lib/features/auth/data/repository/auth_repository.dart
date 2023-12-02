@@ -13,36 +13,41 @@ class AuthRepositoryImpl extends IAuthRepository {
   });
 
   @override
-  Future<Either<AppErrorHandler, bool>> deleteUser(
-      {required String token}) async {
+  Future<Either<AppErrorHandler, bool>> deleteUser({
+    required String token,
+  }) async {
     return await authDataSource.deleteUser(token: token);
   }
 
   @override
-  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPSender({
+  Future<Either<AppErrorHandler, bool>> sendForgotPasswordOTP({
     required String email,
   }) async {
-    return await authDataSource.forgotPasswordOTPSender(
+    return await authDataSource.sendForgotPasswordOTP(
       email: email,
     );
   }
 
   @override
-  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPValidator(
-      {required String email,
-      required String otp,
-      required String newPassword,
-      x}) async {
-    return await authDataSource.forgotPasswordOTPValidator(
+  Future<Either<AppErrorHandler, bool>> chagePassword({
+    required String email,
+    required String otp,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) async {
+    return await authDataSource.chagePassword(
       email: email,
       otp: otp,
       newPassword: newPassword,
+      confirmNewPassword: confirmNewPassword,
     );
   }
 
   @override
-  Future<Either<AppErrorHandler, UserEntity>> login(
-      {required String email, required String password}) async {
+  Future<Either<AppErrorHandler, UserEntity>> login({
+    required String email,
+    required String password,
+  }) async {
     return await authDataSource.login(
       email: email,
       password: password,
@@ -55,10 +60,11 @@ class AuthRepositoryImpl extends IAuthRepository {
   }
 
   @override
-  Future<Either<AppErrorHandler, UserEntity>> signup(
-      {required String email,
-      required String password,
-      required String username}) async {
+  Future<Either<AppErrorHandler, UserEntity>> signup({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
     return await authDataSource.signup(
       email: email,
       password: password,
@@ -67,8 +73,10 @@ class AuthRepositoryImpl extends IAuthRepository {
   }
 
   @override
-  Future<Either<AppErrorHandler, bool>> signupOTPValidator(
-      {required String email, required String otp}) async {
+  Future<Either<AppErrorHandler, bool>> signupOTPValidator({
+    required String email,
+    required String otp,
+  }) async {
     return await authDataSource.signupOTPValidator(
       email: email,
       otp: otp,
@@ -76,11 +84,20 @@ class AuthRepositoryImpl extends IAuthRepository {
   }
 
   @override
-  Future<Either<AppErrorHandler, UserEntity>> uploadProfilePic(
-      {required String token, required String profilePicPath}) async {
+  Future<Either<AppErrorHandler, UserEntity>> uploadProfilePic({
+    required String token,
+    required String profilePicPath,
+  }) async {
     return await authDataSource.uploadProfilePic(
       token: token,
       profilePicPath: profilePicPath,
     );
+  }
+
+  @override
+  Future<Either<AppErrorHandler, bool>> resendVerification({
+    required String token,
+  }) {
+    return authDataSource.resendVerification(token: token);
   }
 }

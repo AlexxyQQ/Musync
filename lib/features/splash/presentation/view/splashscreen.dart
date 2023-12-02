@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/config/constants/constants.dart';
+import 'package:musync/config/router/routers.dart';
+import 'package:musync/core/common/hive_service/setting_hive_service.dart';
+import 'package:musync/injection/app_injection_container.dart';
 
 import '../../../auth/presentation/cubit/authentication_cubit.dart';
 
@@ -20,14 +24,18 @@ class _SplashScreenState extends State<SplashScreen> {
   init() async {
     final nav = Navigator.of(context);
     final authCubit = BlocProvider.of<AuthenticationCubit>(context);
-
     await authCubit.initialLogin(context: context);
 
-    if (authCubit.state.loggedUser != null &&
-        authCubit.state.loggedUser!.username != null) {
-      nav.pushNamed('/home');
+    final settings = await get<SettingsHiveService>().getSettings();
+
+    if (settings.firstTime) {
+      nav.pushNamed(AppRoutes.onBoardingRoute);
+    } else if ((authCubit.state.loggedUser != null &&
+            authCubit.state.loggedUser!.username != null) ||
+        settings.goHome) {
+      nav.pushNamed(AppRoutes.homeRoute);
     } else {
-      nav.pushNamed('/login');
+      nav.pushNamed(AppRoutes.loginRoute);
     }
   }
 
@@ -35,7 +43,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: AppAccentColor.yellow,
+          strokeWidth: 6,
+          strokeCap: StrokeCap.round,
+          semanticsValue: 'Loading...',
+          semanticsLabel: 'Loading...',
+        ),
       ),
     );
   }

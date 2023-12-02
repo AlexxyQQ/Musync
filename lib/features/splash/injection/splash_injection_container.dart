@@ -24,7 +24,7 @@ class SplashInjectionContainer {
     get.registerLazySingleton(
       () => InitialLoginUseCase(
         splashRepository: get(),
-        hiveQueries: get(),
+        settingsHiveService: get(),
       ),
     );
   }

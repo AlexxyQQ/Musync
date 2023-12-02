@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:musync/config/themes/widget_themes/text_styles.dart';
+import 'package:musync/core/utils/text_theme_extension.dart';
 
 import '../../config/constants/constants.dart';
 
@@ -7,18 +9,19 @@ void kShowSnackBar({
   BuildContext? context,
   GlobalKey<ScaffoldState>? scaffoldKey,
   Duration duration = const Duration(milliseconds: 1200),
-  Color color = KColors.offWhiteColor,
+  Color backgroundColor = AppBackgroundColor.light,
+  Color textColor = AppTextColor.dark,
 }) {
   if (context != null) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: color,
+        backgroundColor: backgroundColor,
         elevation: 2,
         content: Text(
           message,
-          style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                color: KColors.blackColor,
+          style: Theme.of(context).textTheme.f10W3.copyWith(
+                color: textColor,
               ),
         ),
         duration: duration,
@@ -28,15 +31,12 @@ void kShowSnackBar({
     ScaffoldMessenger.of(scaffoldKey!.currentContext!).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: color,
+        backgroundColor: backgroundColor,
         elevation: 2,
         content: Text(
           message,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.15,
-            color: KColors.blackColor,
+          style: AppTextStyle.f10W3.copyWith(
+            color: textColor,
           ),
         ),
         duration: duration,

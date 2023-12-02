@@ -1,10 +1,12 @@
+import 'package:musync/features/auth/domain/use_case/rend_verification_usecase.dart';
+
 import '../../../injection/app_injection_container.dart';
 import '../data/data_source/remote_data_source/auth_remote_data_source.dart';
 import '../data/repository/auth_repository.dart';
 import '../domain/repository/auth_repository.dart';
 import '../domain/use_case/delete_user_usecase.dart';
-import '../domain/use_case/forgot_password_otp_sender_usecase.dart';
-import '../domain/use_case/forgot_password_otp_validator_usecase.dart';
+import '../domain/use_case/send_forgot_password_otp_usecase.dart';
+import '../domain/use_case/change_password_usecase.dart';
 import '../domain/use_case/login_usecase.dart';
 import '../domain/use_case/logout_usecase.dart';
 import '../domain/use_case/signup_otp_validator_usecase.dart';
@@ -32,7 +34,7 @@ class AuthInjectionContainer {
     get.registerLazySingleton(
       () => LoginUseCase(
         repository: get(),
-        hiveQueries: get(),
+        settingsHiveService: get(),
       ),
     );
     get.registerLazySingleton(
@@ -41,7 +43,7 @@ class AuthInjectionContainer {
       ),
     );
     get.registerLazySingleton(
-      () => SignupOTPValidatorUsecase(
+      () => OTPValidatorUsecase(
         repository: get(),
       ),
     );
@@ -61,13 +63,19 @@ class AuthInjectionContainer {
       ),
     );
     get.registerLazySingleton(
-      () => ForgotPasswordOTPSenderUsecase(
+      () => SendForgotPasswordOTPUsecase(
         repository: get(),
       ),
     );
     get.registerLazySingleton(
-      () => ForgotPasswordOTPValidatorUsecase(
+      () => ChangePasswordUsecase(
         repository: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => ResendVerificationUsecase(
+        repository: get(),
+        settingsHiveService: get(),
       ),
     );
 
@@ -79,10 +87,11 @@ class AuthInjectionContainer {
         logoutUseCase: get(),
         signupUseCase: get(),
         uploadProfilePicUseCase: get(),
-        signupOTPValidatorUsecase: get(),
-        forgotPasswordOTPSenderUsecase: get(),
-        forgotPasswordOTPValidatorUsecase: get(),
+        otpValidatorUsecase: get(),
+        sendForgotPasswordOTPUsecase: get(),
+        changePasswordUsecase: get(),
         initialLoginUseCase: get(),
+        resendVerificationUsecase: get(),
       ),
     );
   }

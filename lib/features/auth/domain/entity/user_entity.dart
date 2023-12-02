@@ -88,7 +88,16 @@ class UserEntity {
 
   @override
   String toString() {
-    return 'UserEntity(id: $id, username: $username, email: $email, password: $password, profilePic: $profilePic, verified: $verified, type: $type, token: $token, otp: $otp)';
+    return 'UserEntity Details:\n'
+        '  - ID: $id\n'
+        '  - Username: $username\n'
+        '  - Email: $email\n'
+        '  - Password: [PROTECTED]\n' // Assuming you want to hide the password in logs
+        '  - Profile Picture: $profilePic\n'
+        '  - Verified: $verified\n'
+        '  - Type: $type\n'
+        '  - Token: [PROTECTED]\n' // Assuming you want to hide the token as well
+        '  - OTP: $otp';
   }
 
   @override

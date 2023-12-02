@@ -4,11 +4,10 @@ import 'package:musync/features/auth/domain/repository/auth_repository.dart';
 
 import '../../../../core/usecase/usecase.dart';
 
-class SignupOTPValidatorUsecase
-    extends UseCase<bool, SignupOTPValidatorParams> {
+class OTPValidatorUsecase extends UseCase<bool, SignupOTPValidatorParams> {
   final IAuthRepository repository;
 
-  SignupOTPValidatorUsecase({
+  OTPValidatorUsecase({
     required this.repository,
   });
 

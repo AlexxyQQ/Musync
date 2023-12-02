@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/core/common/buttom.dart';
 
 class NextAndSkip extends StatelessWidget {
   const NextAndSkip({
@@ -18,31 +19,22 @@ class NextAndSkip extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextButton(
-            style: Theme.of(context).textButtonTheme.style!.copyWith(
-                  backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).brightness == Brightness.dark
-                        ? KColors.accentColor
-                        : KColors.blackColor,
-                  ),
-                ),
+          // Next Button
+          KButton(
             onPressed: () {
               controller.nextPage(
                 duration: const Duration(milliseconds: 800),
                 curve: Curves.linearToEaseOut,
               );
             },
-            child: Text(
-              'Next',
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? KColors.blackColor
-                        : KColors.whiteColor,
-                  ),
-            ),
+            label: 'Next',
+            lightForegroundColor: AppTextColor.dark,
+            darkForegroundColor: AppTextColor.light,
+            borderRadius: 26,
           ),
+
           // Skip Button
-          TextButton(
+          KButton(
             onPressed: () async {
               controller.animateToPage(
                 3,
@@ -50,10 +42,10 @@ class NextAndSkip extends StatelessWidget {
                 curve: Curves.easeInOut,
               );
             },
-            child: Text(
-              'Skip',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            label: 'Skip',
+            borderRadius: 26,
+            darkBackgroundColor: Colors.transparent,
+            lightBackgroundColor: Colors.transparent,
           ),
         ],
       ),

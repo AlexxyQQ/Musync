@@ -86,7 +86,14 @@ class AuthenticationState {
 
   @override
   String toString() {
-    return 'AuthState(loggedUser: $loggedUser, isLoading: $isLoading, isSuccess: $isSuccess, eror: $eror, token: $token, isFirstTime: $isFirstTime, goHome: $goHome)';
+    return 'AuthState Details:\n'
+        '  - Logged User: $loggedUser\n'
+        '  - Is Loading: $isLoading\n'
+        '  - Is Success: $isSuccess\n'
+        '  - Error: $eror\n' // Assuming 'eror' is not a typo. If it is, replace with 'error'
+        '  - Token: $token\n' // Assuming you want to keep the token private
+        '  - Is First Time: $isFirstTime\n'
+        '  - Go Home: $goHome';
   }
 
   @override

@@ -1,17 +1,16 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../common/hive_service/setting_hive_service.dart';
 
 class HiveService {
   Future<void> init() async {
     final appDocumentDirectory = await getApplicationDocumentsDirectory();
     Hive.init(appDocumentDirectory.path);
-    // Open Hive Boxes
-    await hiveOpen('settings');
-    await hiveOpen('users');
-    await hiveOpen('uploads');
-    await hiveOpen('songs');
-    // Music Hive
-    // await MusicHiveDataSourse().init();
+
+    await SettingsHiveService().init();
+    await QueryHiveService().init();
   }
 
   /// Open Hive Boxes

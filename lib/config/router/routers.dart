@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:musync/features/auth/presentation/view/forgot_password_page.dart';
+import 'package:musync/features/home/presentation/pages/home_page.dart';
 
 import '../../core/common/no_page_route.dart';
 import '../../features/auth/presentation/view/login_page.dart';
@@ -21,11 +23,17 @@ class AppRoutes {
   static const String manageAllPublicSongsRoute = '/manageAllPublicSongs';
 
   static final Map<String, Widget Function(BuildContext)> appPageRoutes = {
+    // Starters
     initialRoute: (context) => const SplashScreen(),
     onBoardingRoute: (context) => const OnBoardingPage(),
+    // Auth
     getStartedRoute: (context) => const MainAuthPage(),
     loginRoute: (context) => const LoginPage(),
     signupRoute: (context) => const SignupPage(),
+    forgotPasswordRoute: (context) => const ForgotPasswordPage(),
+    // Home
+    homeRoute: (context) => const MusicScreen(),
+    // Settings
   };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

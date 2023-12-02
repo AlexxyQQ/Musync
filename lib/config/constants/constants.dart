@@ -7,7 +7,7 @@ class GlobalConstants {
     family = 'Sans',
     double fontSize = 14,
     FontWeight fontWeight = FontWeight.w400,
-    Color? color = KColors.whiteColor,
+    Color? color = AppTextColor.light,
   }) {
     return TextStyle(
       fontFamily: family,
@@ -30,4 +30,32 @@ class KColors {
   static const greyColor = Color(0xFF666666);
   static const accentColor = Color(0xFFFFC800);
   static const todoColor = Colors.red;
+}
+
+class AppAccentColor {
+  static const yellow = Color(0xFFFFC800);
+  static const green = Color(0xFFA1CD44);
+  static const red = Color(0xFFCD5444);
+  static const highlights = Color(0xFF407BFF);
+}
+
+class AppTextColor {
+  static const light = Color(0xFFF3F3F3);
+  static const dark = Color(0xFF1F1F1F);
+  static const dim = Color(0xFF76808C);
+  static const lightDim = Color(0xFFD9D9D9);
+}
+
+class AppIconColor {
+  static const light = Color(0xFFF3F3F3);
+  static const dark = Color(0xFF1F1F1F);
+  static const dim = Color(0xFF76808C);
+  static const lightDim = Color(0xFFD9D9D9);
+}
+
+class AppBackgroundColor {
+  static const light = Color(0xFFF3F3F3);
+  static const dark = Color(0xFF1A1A1A);
+  static const darkDim = Color(0xFFB8B8B8);
+  static const lightDim = Color(0xFFE0E0E0);
 }

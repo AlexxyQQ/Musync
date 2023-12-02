@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
+import 'package:musync/core/common/hive_service/setting_hive_service.dart';
 import 'package:musync/core/failure/error_handler.dart';
+import 'package:musync/injection/app_injection_container.dart';
 
 import '../../../../../config/constants/api_endpoints.dart';
 import '../../../../../core/network/api/api.dart';
-import '../../../../../core/network/hive/hive_queries.dart';
 import '../../dto/user_dto.dart';
 import '../../model/user_model.dart';
 
@@ -115,9 +115,9 @@ class AuthRemoteDataSource {
 
   Future<Either<AppErrorHandler, void>> logout() async {
     try {
-      await GetIt.instance<HiveQueries>().deleteValue(
-        boxName: 'users',
-        key: 'token',
+      final data = await get<SettingsHiveService>().getSettings();
+      await get<SettingsHiveService>().updateSettings(
+        data.copyWith(token: null),
       );
       return const Right(null);
     } catch (e) {
@@ -209,8 +209,10 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<AppErrorHandler, bool>> signupOTPValidator(
-      {required String email, required String otp}) async {
+  Future<Either<AppErrorHandler, bool>> signupOTPValidator({
+    required String email,
+    required String otp,
+  }) async {
     try {
       final response = await api.sendRequest.post(
         ApiEndpoints.signupOTPValidatorRoute,
@@ -244,12 +246,12 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPSender({
+  Future<Either<AppErrorHandler, bool>> sendForgotPasswordOTP({
     required String email,
   }) async {
     try {
       final response = await api.sendRequest.post(
-        ApiEndpoints.forgotPasswordOTPSenderRoute,
+        ApiEndpoints.sendForgotPasswordOTPRoute,
         data: jsonEncode({
           "email": email,
         }),
@@ -279,19 +281,58 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPValidator({
+  Future<Either<AppErrorHandler, bool>> chagePassword({
     required String email,
     required String otp,
     required String newPassword,
+    required String confirmNewPassword,
   }) async {
     try {
       final response = await api.sendRequest.post(
-        ApiEndpoints.forgotPasswordOTPValidatorRoute,
+        ApiEndpoints.changePasswordRoute,
         data: jsonEncode({
           "email": email,
           "otp": otp,
           "newPassword": newPassword,
+          "confirmNewPassword": confirmNewPassword,
         }),
+      );
+
+      ApiResponse responseApi = ApiResponse.fromResponse(response);
+
+      if (responseApi.success) {
+        return const Right(true);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: responseApi.message.toString(),
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<AppErrorHandler, bool>> resendVerification({
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.resendVerificationRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
       );
 
       ApiResponse responseApi = ApiResponse.fromResponse(response);

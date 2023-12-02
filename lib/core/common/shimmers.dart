@@ -67,7 +67,7 @@ class HomeAlbumsShimmerEffect extends StatelessWidget {
                       highlightColor: Colors.grey[100]!,
                       child: CircleAvatar(
                         radius: cardWidth / 2,
-                        backgroundColor: KColors.todoColor,
+                        backgroundColor: AppAccentColor.red,
                       ),
                     ),
                   )
@@ -77,7 +77,7 @@ class HomeAlbumsShimmerEffect extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: KColors.todoColor,
+                        color: AppAccentColor.red,
                         borderRadius: BorderRadius.circular(cardRoundness),
                       ),
                       width: cardWidth,

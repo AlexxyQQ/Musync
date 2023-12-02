@@ -27,12 +27,16 @@ abstract class IAuthRepository {
     required String email,
     required String otp,
   });
-  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPSender({
+  Future<Either<AppErrorHandler, bool>> sendForgotPasswordOTP({
     required String email,
   });
-  Future<Either<AppErrorHandler, bool>> forgotPasswordOTPValidator({
+  Future<Either<AppErrorHandler, bool>> chagePassword({
     required String email,
     required String otp,
     required String newPassword,
+    required String confirmNewPassword,
+  });
+  Future<Either<AppErrorHandler, bool>> resendVerification({
+    required String token,
   });
 }

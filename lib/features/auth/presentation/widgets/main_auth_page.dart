@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:musync/core/common/custom_snackbar.dart';
-import 'package:musync/core/network/hive/hive_queries.dart';
+import 'package:musync/core/common/buttom.dart';
+import 'package:musync/core/common/hive_service/setting_hive_service.dart';
 import 'package:musync/config/constants/constants.dart';
+import 'package:musync/core/utils/text_theme_extension.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/config/router/routers.dart';
+import 'package:musync/injection/app_injection_container.dart';
 
 import '../cubit/authentication_state.dart';
 
@@ -66,22 +67,17 @@ class LoginSignupButton extends StatelessWidget {
             // Welcome Text
             Text(
               'Welcome to Musync',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontSize: 32,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? KColors.blackColor
-                        : KColors.whiteColor,
-                  ),
+              style: Theme.of(context).brightness == Brightness.dark
+                  ? Theme.of(context).textTheme.f22W6D
+                  : Theme.of(context).textTheme.f22W6L,
             ),
             // Description Text
             const SizedBox(height: 6),
             Text(
               'Musync is a music streaming app that allows you to listen to your favorite music and share it with your friends.',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? KColors.blackColor
-                        : KColors.whiteColor,
-                  ),
+              style: Theme.of(context).brightness == Brightness.dark
+                  ? Theme.of(context).textTheme.f16W4D
+                  : Theme.of(context).textTheme.f16W4L,
             ),
             const SizedBox(height: 30),
             // Login and Signup Button
@@ -90,20 +86,20 @@ class LoginSignupButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Login Button
-                ElevatedButton(
+                KButton(
                   onPressed: () {
                     Navigator.of(context).popAndPushNamed('/login');
                   },
-                  child: Text(
-                    'LOGIN',
-                    style: GlobalConstants.textStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? KColors.whiteColor : KColors.blackColor,
-                    ),
-                  ),
+                  label: 'LOGIN',
+                  borderRadius: 32,
+                  fixedSize: const Size(120, 40),
+                  lightBackgroundColor: AppBackgroundColor.dark,
+                  darkBackgroundColor: AppBackgroundColor.light,
+                  lightForegroundColor: AppTextColor.light,
+                  darkForegroundColor: AppTextColor.dark,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
-                // Signup Button
+
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context)
@@ -138,10 +134,12 @@ class LoginSignupButton extends StatelessWidget {
               child: TextButton(
                 onPressed: () async {
                   final navigator = Navigator.of(context);
-                  GetIt.instance<HiveQueries>().setValue(
-                    boxName: 'settings',
-                    key: "goHome",
-                    value: true,
+                  final setting =
+                      await get<SettingsHiveService>().getSettings();
+                  await get<SettingsHiveService>().updateSettings(
+                    setting.copyWith(
+                      goHome: true,
+                    ),
                   );
                   // await ref.read(songProvider).permission();
                   navigator.pushNamedAndRemoveUntil(
@@ -208,28 +206,13 @@ class LogoAndAppName extends StatelessWidget {
             height: 80,
           ),
           // App Name
-          Text(
-            'Musync',
-            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                  fontSize: 40,
-                ),
-            // style: GlobalConstants.textStyle(
-            //   color: isDark ? KColors.whiteColor : KColors.blackColor,
-            //   fontSize: 40,
-            //   fontWeight: FontWeight.w700,
-            // ),
-          ),
+          Text('Musync', style: Theme.of(context).textTheme.f32W8),
           const SizedBox(height: 10),
           // App Description
           Text(
             'Sync up and tune in with Musync - your ultimate music companion.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge,
-            // style: GlobalConstants.textStyle(
-            //   color: isDark ? KColors.whiteColor : KColors.blackColor,
-            //   fontSize: 20,
-            //   fontWeight: FontWeight.w400,
-            // ),
+            style: Theme.of(context).textTheme.f18W4,
           ),
         ],
       ),

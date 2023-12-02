@@ -9,7 +9,10 @@ class AppTheme {
       useMaterial3: true,
       // Font Family
       // Text Theme
-      textTheme: KTextThemes.lightTextTheme(),
+      textTheme: KTextThemes.lightTextTheme().apply(
+        displayColor: AppTextColor.dark,
+        bodyColor: AppTextColor.dark,
+      ),
       // App Bar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: KColors.whiteColor,
@@ -55,38 +58,38 @@ class AppTheme {
           ),
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        filled: true,
-        fillColor: KColors.whiteColor,
-        hintStyle: KTextThemes.lightTextTheme().bodySmall,
-        labelStyle: KTextThemes.lightTextTheme().bodySmall,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 16,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: const BorderSide(
-            color: KColors.todoColor,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: const BorderSide(
-            color: KColors.accentColor,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: const BorderSide(
-            color: KColors.accentColor,
-          ),
-        ),
-      ),
+      // inputDecorationTheme: InputDecorationTheme(
+      //   floatingLabelBehavior: FloatingLabelBehavior.never,
+      //   filled: true,
+      //   fillColor: KColors.whiteColor,
+      //   hintStyle: KTextThemes.lightTextTheme().bodySmall,
+      //   labelStyle: KTextThemes.lightTextTheme().bodySmall,
+      //   contentPadding: const EdgeInsets.symmetric(
+      //     horizontal: 24,
+      //     vertical: 16,
+      //   ),
+      //   border: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //   ),
+      //   errorBorder: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //     borderSide: const BorderSide(
+      //       color: KColors.todoColor,
+      //     ),
+      //   ),
+      //   enabledBorder: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //     borderSide: const BorderSide(
+      //       color: KColors.accentColor,
+      //     ),
+      //   ),
+      //   focusedBorder: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //     borderSide: const BorderSide(
+      //       color: KColors.accentColor,
+      //     ),
+      //   ),
+      // ),
       // Text Button Theme
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
@@ -96,7 +99,10 @@ class AppTheme {
         ),
       ),
       iconTheme: const IconThemeData(
-        color: KColors.blackColor,
+        color: AppIconColor.dark,
+      ),
+      primaryIconTheme: const IconThemeData(
+        color: AppIconColor.dark,
       ),
     );
   }
@@ -107,7 +113,10 @@ class AppTheme {
       brightness: Brightness.dark,
       useMaterial3: true,
       // Text Theme
-      textTheme: KTextThemes.darkTextTheme(),
+      textTheme: KTextThemes.darkTextTheme().apply(
+        displayColor: AppTextColor.light,
+        bodyColor: AppTextColor.light,
+      ),
       // App Bar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: KColors.blackColor,
@@ -154,37 +163,42 @@ class AppTheme {
         ),
       ),
       // Input Decoration Theme
-      inputDecorationTheme: InputDecorationTheme(
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        filled: true,
-        fillColor: KColors.offBlackColor,
-        hintStyle: KTextThemes.lightTextTheme().bodySmall,
-        labelStyle: KTextThemes.lightTextTheme().bodySmall,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 16,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: const BorderSide(
-            color: KColors.todoColor,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: const BorderSide(
-            color: KColors.accentColor,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: const BorderSide(
-            color: KColors.accentColor,
-          ),
-        ),
+      // inputDecorationTheme: InputDecorationTheme(
+      //   floatingLabelBehavior: FloatingLabelBehavior.never,
+      //   filled: true,
+      //   fillColor: KColors.offBlackColor,
+      //   hintStyle: KTextThemes.lightTextTheme().bodySmall,
+      //   labelStyle: KTextThemes.lightTextTheme().bodySmall,
+      //   contentPadding: const EdgeInsets.symmetric(
+      //     horizontal: 24,
+      //     vertical: 16,
+      //   ),
+      //   border: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //   ),
+      //   errorBorder: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //     borderSide: const BorderSide(
+      //       color: KColors.todoColor,
+      //     ),
+      //   ),
+      //   enabledBorder: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //     borderSide: const BorderSide(
+      //       color: KColors.accentColor,
+      //     ),
+      //   ),
+      //   focusedBorder: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(50),
+      //     borderSide: const BorderSide(
+      //       color: KColors.accentColor,
+      //     ),
+      //   ),
+      // ),
+// Circular progress indicator
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppAccentColor.yellow,
+        circularTrackColor: Colors.transparent,
       ),
       // Text Button Theme
       textButtonTheme: TextButtonThemeData(
@@ -195,7 +209,10 @@ class AppTheme {
         ),
       ),
       iconTheme: const IconThemeData(
-        color: KColors.whiteColor,
+        color: AppIconColor.light,
+      ),
+      primaryIconTheme: const IconThemeData(
+        color: AppIconColor.light,
       ),
     );
   }
