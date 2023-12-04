@@ -4,7 +4,10 @@ import '../data/data_source/local_data_source/local_data_source.dart';
 import '../data/data_source/query_data_source.dart';
 import '../data/repository/audio_query_repository_impl.dart';
 import '../domain/repository/audio_query_repository.dart';
-import '../domain/usecase/get_songs_usecase.dart';
+import '../domain/usecase/get_all_albums_usecase.dart';
+import '../domain/usecase/get_all_artist_usecase.dart';
+import '../domain/usecase/get_all_folders_usecase.dart';
+import '../domain/usecase/get_all_songs_usecase.dart';
 import '../presentation/cubit/query_cubit.dart';
 
 class HomeInjectionContainer {
@@ -37,7 +40,25 @@ class HomeInjectionContainer {
 
     // Use Cases
     get.registerLazySingleton(
-      () => GetSongsUseCase(
+      () => GetAllSongsUseCase(
+        audioQueryRepository: get(),
+        queryHiveService: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => GetAllAlbumsUsecase(
+        audioQueryRepository: get(),
+        queryHiveService: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => GetAllArtistsUsecase(
+        audioQueryRepository: get(),
+        queryHiveService: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => GetAllFoldersUsecase(
         audioQueryRepository: get(),
         queryHiveService: get(),
       ),
@@ -46,8 +67,12 @@ class HomeInjectionContainer {
     // Cubit
     get.registerFactory(
       () => QueryCubit(
-        getSongsUseCase: get(),
+        getAllSongsUseCase: get(),
+        getAllAlbumsUsecase: get(),
+        getAllArtistsUsecase: get(),
+        getAllFoldersUsecase: get(),
         settingsHiveService: get(),
+        queryHiveService: get(),
       ),
     );
   }

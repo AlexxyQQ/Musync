@@ -10,10 +10,17 @@ abstract class IAudioQueryRepository {
   Future<Either<AppErrorHandler, List<SongEntity>>> getAllSongs({
     required Function(int) onProgress,
     bool? first,
+    bool? refetch,
   });
-  Future<Either<AppErrorHandler, List<AlbumEntity>>> getAllAlbums();
+  Future<Either<AppErrorHandler, List<AlbumEntity>>> getAllAlbums({
+    bool? refetch,
+  });
 
-  Future<Either<AppErrorHandler, List<ArtistEntity>>> getAllArtists();
+  Future<Either<AppErrorHandler, List<ArtistEntity>>> getAllArtists({
+    bool? refetch,
+  });
 
-  Future<Either<AppErrorHandler, List<FolderEntity>>> getAllFolders();
+  Future<Either<AppErrorHandler, List<FolderEntity>>> getAllFolders({
+    bool? refetch,
+  });
 }

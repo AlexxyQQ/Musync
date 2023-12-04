@@ -17,7 +17,7 @@ class ArtistHiveModelAdapter extends TypeAdapter<ArtistHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ArtistHiveModel(
-      id: fields[0] as String,
+      id: fields[0] as int,
       artist: fields[1] as String,
       numberOfAlbums: fields[2] as int?,
       numberOfTracks: fields[3] as int?,

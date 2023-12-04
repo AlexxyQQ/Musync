@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/common/buttom.dart';
@@ -141,6 +143,9 @@ class LoginSignupButton extends StatelessWidget {
                       goHome: true,
                     ),
                   );
+                  final setting2 =
+                      await get<SettingsHiveService>().getSettings();
+                  log(setting2.goHome.toString(), name: "SettingsState");
                   // await ref.read(songProvider).permission();
                   navigator.pushNamedAndRemoveUntil(
                     AppRoutes.homeRoute,

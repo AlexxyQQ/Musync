@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:musync/core/utils/song_model_map_converter.dart';
+import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
 
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -144,5 +145,15 @@ class AlbumEntity {
 
   static List<AlbumEntity> fromListAlbumModle(List<AlbumModel> albums) {
     return albums.map((e) => fromAlbumModel(e)).toList();
+  }
+
+  // from hive model
+  AlbumEntity fromHiveModel(AlbumHiveModel model) {
+    return AlbumEntity.fromMap(model.toMap());
+  }
+
+  // from list hive model
+  static List<AlbumEntity> fromListHiveModel(List<AlbumHiveModel> models) {
+    return models.map((e) => AlbumEntity.fromMap(e.toMap())).toList();
   }
 }

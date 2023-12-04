@@ -90,21 +90,6 @@ class AlbumHiveModel {
         '  - Songs: ${songs?.join(", ") ?? "None"}'; // Assuming songs is a list, joining them with a comma for better readability
   }
 
-  static AppAlbumModel fromHiveModel(AlbumHiveModel hiveObject) {
-    return AppAlbumModel(
-      id: hiveObject.id,
-      album: hiveObject.album,
-      artist: hiveObject.artist,
-      artistId: hiveObject.artistId,
-      numOfSongs: hiveObject.numOfSongs,
-      songs: hiveObject.songs,
-    );
-  }
-
-  static List<AppAlbumModel> fromHiveList(List<AlbumHiveModel> hiveList) {
-    return hiveList.map((e) => fromHiveModel(e)).toList();
-  }
-
   factory AlbumHiveModel.fromModelMap(Map<String, dynamic> map) {
     return AlbumHiveModel(
       id: map['id'] ?? '',

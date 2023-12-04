@@ -15,7 +15,7 @@ part 'artist_hive_model.g.dart';
 )
 class ArtistHiveModel {
   @HiveField(0)
-  final String id;
+  final int id;
 
   @HiveField(1)
   final String artist;
@@ -37,7 +37,7 @@ class ArtistHiveModel {
   });
 
   ArtistHiveModel copyWith({
-    String? id,
+    int? id,
     String? artist,
     int? numberOfAlbums,
     int? numberOfTracks,

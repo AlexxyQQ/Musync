@@ -6,11 +6,11 @@ import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/repository/audio_query_repository.dart';
 
-class GetSongsUseCase extends UseCase<List<SongEntity>, GetSongsParams> {
+class GetAllSongsUseCase extends UseCase<List<SongEntity>, GetQueryParams> {
   final IAudioQueryRepository audioQueryRepository;
   final QueryHiveService queryHiveService;
 
-  GetSongsUseCase({
+  GetAllSongsUseCase({
     required this.audioQueryRepository,
     required this.queryHiveService,
   });
@@ -19,8 +19,9 @@ class GetSongsUseCase extends UseCase<List<SongEntity>, GetSongsParams> {
   Future<Either<AppErrorHandler, List<SongEntity>>> call(params) async {
     try {
       final data = await audioQueryRepository.getAllSongs(
-        onProgress: params.onProgress,
+        onProgress: params.onProgress!,
         first: params.first,
+        refetch: params.refetch ?? false,
       );
       return data.fold(
         (l) => Left(l),
@@ -43,12 +44,14 @@ class GetSongsUseCase extends UseCase<List<SongEntity>, GetSongsParams> {
   }
 }
 
-class GetSongsParams {
-  final Function(int) onProgress;
+class GetQueryParams {
+  final Function(int)? onProgress;
   final bool? first;
+  final bool? refetch;
 
-  GetSongsParams({
-    required this.onProgress,
+  GetQueryParams({
+    this.onProgress,
     this.first,
+    this.refetch,
   });
 }

@@ -29,17 +29,29 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
   }
 
   @override
-  Future<Either<AppErrorHandler, List<AlbumEntity>>> getAllAlbums() async {
-    return await audioQueryDataSource.getAllAlbums();
+  Future<Either<AppErrorHandler, List<AlbumEntity>>> getAllAlbums({
+    bool? refetch,
+  }) async {
+    return await audioQueryDataSource.getAllAlbums(
+      refetch: refetch,
+    );
   }
 
   @override
-  Future<Either<AppErrorHandler, List<ArtistEntity>>> getAllArtists() async {
-    return await audioQueryDataSource.getAllArtists();
+  Future<Either<AppErrorHandler, List<ArtistEntity>>> getAllArtists({
+    bool? refetch,
+  }) async {
+    return await audioQueryDataSource.getAllArtists(
+      refetch: refetch,
+    );
   }
 
   @override
-  Future<Either<AppErrorHandler, List<FolderEntity>>> getAllFolders() async {
-    return await audioQueryDataSource.getAllFolders();
+  Future<Either<AppErrorHandler, List<FolderEntity>>> getAllFolders({
+    bool? refetch,
+  }) async {
+    return await audioQueryDataSource.getAllFolders(
+      refetch: refetch,
+    );
   }
 }

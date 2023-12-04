@@ -104,11 +104,11 @@ class AppAlbumModel extends AlbumEntity {
     return albums.map((e) => fromAlbumModel(e)).toList();
   }
 
-  static AppAlbumModel fromHiveModel(AlbumHiveModel album) {
+  static AppAlbumModel fromHiveModelm(AlbumHiveModel album) {
     return AppAlbumModel.fromMap(album.toMap());
   }
 
   static List<AppAlbumModel> fromListHiveModel(List<AlbumHiveModel> hiveSongs) {
-    return hiveSongs.map((e) => fromHiveModel(e)).toList();
+    return hiveSongs.map((e) => fromHiveModelm(e)).toList();
   }
 }

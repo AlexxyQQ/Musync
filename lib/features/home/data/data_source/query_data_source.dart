@@ -49,24 +49,14 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
         if (connectivity && serverUp) {
-          return localDataSource.getAllAlbums();
+          // !  TODO: here should be remote data source
+          return localDataSource.getAllAlbums(
+            refetch: refetch,
+          );
         } else {
-          // else return data from the local storage
-          final hiveAlbums = await queryHiveService.getAllAlbums();
-          if (hiveAlbums.isNotEmpty) {
-            return Right(
-              AppAlbumModel.fromListHiveModel(
-                hiveAlbums,
-              ),
-            );
-          } else {
-            return Left(
-              AppErrorHandler(
-                message: 'No songs found',
-                status: false,
-              ),
-            );
-          }
+          return localDataSource.getAllAlbums(
+            refetch: refetch,
+          );
         }
       } else {
         final hiveAlbums = await queryHiveService.getAllAlbums();
@@ -106,24 +96,13 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
         if (connectivity && serverUp) {
-          return localDataSource.getAllArtists();
+          return localDataSource.getAllArtists(
+            refetch: refetch,
+          );
         } else {
-          // else return data from the local storage
-          final hiveArtists = await queryHiveService.getAllArtists();
-          if (hiveArtists.isNotEmpty) {
-            return Right(
-              AppArtistModel.fromListHiveModel(
-                hiveArtists,
-              ),
-            );
-          } else {
-            return Left(
-              AppErrorHandler(
-                message: 'No songs found',
-                status: false,
-              ),
-            );
-          }
+          return localDataSource.getAllArtists(
+            refetch: refetch,
+          );
         }
       } else {
         final hiveArtists = await queryHiveService.getAllArtists();
@@ -163,24 +142,9 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
         if (connectivity && serverUp) {
-          return localDataSource.getAllFolders();
+          return localDataSource.getAllFolders(refetch: refetch);
         } else {
-          // else return data from the local storage
-          final hiveFolders = await queryHiveService.getAllFolders();
-          if (hiveFolders.isNotEmpty) {
-            return Right(
-              AppFolderModel.fromListHiveModel(
-                hiveFolders,
-              ),
-            );
-          } else {
-            return Left(
-              AppErrorHandler(
-                message: 'No songs found',
-                status: false,
-              ),
-            );
-          }
+          return localDataSource.getAllFolders(refetch: refetch);
         }
       } else {
         final hiveFolders = await queryHiveService.getAllFolders();
@@ -216,19 +180,17 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     bool? refetch,
   }) async {
     try {
-      return localDataSource.getAllSongs(
-        onProgress: onProgress,
-        first: first,
-      );
       // check for the connectivity and server up
       final connectivity = await ConnectivityCheck.connectivity();
       final serverUp = await ConnectivityCheck.isServerup();
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
         if (connectivity && serverUp) {
+          // ! TODO: here should be remote data source
           return localDataSource.getAllSongs(
             onProgress: onProgress,
             first: first,
+            refetch: refetch,
           );
         } else {
           // else return data from the local storage
@@ -240,11 +202,10 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
               ),
             );
           } else {
-            return Left(
-              AppErrorHandler(
-                message: 'No songs found',
-                status: false,
-              ),
+            return localDataSource.getAllSongs(
+              onProgress: onProgress,
+              first: first,
+              refetch: refetch,
             );
           }
         }
