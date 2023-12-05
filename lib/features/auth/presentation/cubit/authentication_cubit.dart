@@ -6,7 +6,7 @@ import 'package:musync/features/auth/domain/use_case/rend_verification_usecase.d
 import 'package:musync/features/auth/presentation/view/change_password_page.dart';
 import 'package:musync/features/auth/presentation/view/otp_page.dart';
 
-import '../../../../core/common/custom_snackbar.dart';
+import '../../../../core/common/custom_widgets/custom_snackbar.dart';
 import '../../../splash/domain/use_case/splash_use_case.dart';
 import '../../domain/entity/user_entity.dart';
 import '../../domain/use_case/delete_user_usecase.dart';

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../config/constants/hive_tabel_constant.dart';
+import '../../../config/constants/hive_tabel_constant.dart';
 
 part 'app_settings_hive_model.g.dart';
 

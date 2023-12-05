@@ -1,7 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/constants.dart';
 
-class CustomPageIndicator extends StatefulWidget {
+/// KPageIndicator - A Customizable Page Indicator for Flutter PageView.
+///
+/// This widget provides a flexible and visually appealing way to indicate the current page
+/// position in a PageView. It's highly customizable, allowing for different colors, sizes,
+/// and styles for the active and inactive dots.
+///
+/// Parameters:
+///   [controller] - PageController that this page indicator will respond to.
+///   [itemCount] - The total number of items (dots) to display, typically matching the number of pages in the PageView.
+///   [activeColor] - (Optional) The Color for the active dot. Defaults to AppAccentColor.yellow.
+///   [inactiveColor] - (Optional) The Color for the inactive dots. Defaults to AppIconColor.dim.
+///   [activeDotHeight] - (Optional) The height of the active dot. Defaults to 10.0.
+///   [activeDotWidth] - (Optional) The width of the active dot. Defaults to 20.0.
+///   [inactiveDotHeight] - (Optional) The height of the inactive dots. Defaults to 8.0.
+///   [inactiveDotWidth] - (Optional) The width of the inactive dots. Defaults to 20.0.
+///   [dotSpacing] - (Optional) The spacing between each dot. Defaults to 8.0.
+///   [trailing] - (Optional) A flag to determine if active dots should include trailing dots. Defaults to false.
+///
+/// Example Usage:
+/// ```dart
+/// KPageIndicator(
+///   controller: _pageController,
+///   itemCount: 3,
+///   activeColor: Colors.red,
+///   inactiveColor: Colors.grey,
+///   activeDotHeight: 12.0,
+///   activeDotWidth: 24.0,
+///   inactiveDotHeight: 10.0,
+///   inactiveDotWidth: 10.0,
+///   dotSpacing: 5.0,
+///   trailing: true,
+/// )
+/// ```
+///
+/// Note: Ensure the [PageController] used with this indicator is attached to the same PageView
+/// for which you want to display the page index. The active dot style can be customized to highlight
+/// the current page, and optional trailing active dots can be enabled for a different visual effect.
+
+class KPageIndicator extends StatefulWidget {
   final PageController controller;
   final int itemCount;
   final Color activeColor;
@@ -13,7 +51,7 @@ class CustomPageIndicator extends StatefulWidget {
   final double dotSpacing;
   final bool trailing;
 
-  const CustomPageIndicator({
+  const KPageIndicator({
     Key? key,
     required this.controller,
     required this.itemCount,
@@ -28,10 +66,10 @@ class CustomPageIndicator extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomPageIndicator> createState() => _CustomPageIndicatorState();
+  State<KPageIndicator> createState() => _KPageIndicatorState();
 }
 
-class _CustomPageIndicatorState extends State<CustomPageIndicator> {
+class _KPageIndicatorState extends State<KPageIndicator> {
   late int _currentIndex;
 
   @override

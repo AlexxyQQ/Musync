@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/common/buttom.dart';
+import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 
 class NextAndSkip extends StatelessWidget {
   const NextAndSkip({

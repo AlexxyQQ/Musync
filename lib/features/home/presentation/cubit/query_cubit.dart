@@ -1,13 +1,11 @@
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
-import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../core/common/hive_service/setting_hive_service.dart';
+import '../../../../core/common/hive/hive_service/setting_hive_service.dart';
 import '../../../../core/failure/error_handler.dart';
 import '../../domain/usecase/get_all_albums_usecase.dart';
 import '../../domain/usecase/get_all_artist_usecase.dart';

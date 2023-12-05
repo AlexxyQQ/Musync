@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/core/common/buttom.dart';
-import 'package:musync/core/common/hive_service/setting_hive_service.dart';
+import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
+import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/utils/text_theme_extension.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/config/router/routers.dart';
-import 'package:musync/core/common/hive_service/setting_hive_service.dart';
+import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/injection/app_injection_container.dart';
 
 import '../../../auth/presentation/cubit/authentication_cubit.dart';

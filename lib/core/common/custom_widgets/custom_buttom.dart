@@ -3,6 +3,46 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/utils/text_theme_extension.dart';
 
+/// KButton - A Customizable Elevated Button for Flutter Applications.
+///
+/// This widget provides a versatile and customizable button that can be easily adapted
+/// to different UI designs. It supports various customizations including colors, size,
+/// elevation, icon, and text styling. This button is designed to cater to both dark and
+/// light themes, offering flexibility in UI design.
+///
+/// Parameters:
+///   [onPressed] - A void Function callback that is triggered when the button is pressed.
+///   [darkBackgroundColor] - (Optional) The background color for dark theme. Defaults to AppBackgroundColor.dark.
+///   [darkForegroundColor] - (Optional) The foreground (text/icon) color for dark theme.
+///   [lightBackgroundColor] - (Optional) The background color for light theme. Defaults to AppBackgroundColor.light.
+///   [lightForegroundColor] - (Optional) The foreground (text/icon) color for light theme.
+///   [elevation] - (Optional) The elevation of the button. Defaults to 0.
+///   [fixedSize] - (Optional) The fixed size of the button.
+///   [padding] - (Optional) The internal padding of the button.
+///   [darkDisabledForegroundColor] - (Optional) The foreground color when the button is disabled in dark theme.
+///   [lightDisabledForegroundColor] - (Optional) The foreground color when the button is disabled in light theme.
+///   [textStyle] - (Optional) The TextStyle for the button label.
+///   [iconData] - (Optional) The icon to be displayed alongside the button label.
+///   [label] - (Optional) The text label of the button.
+///   [borderRadius] - (Optional) The border radius of the button.
+///
+/// Example Usage:
+/// ```dart
+/// KButton(
+///   onPressed: () {
+///     // Your code here
+///   },
+///   label: 'Click Me',
+///   iconData: Icons.touch_app,
+///   darkBackgroundColor: Colors.blue,
+///   lightBackgroundColor: Colors.green,
+///   borderRadius: 15.0,
+/// )
+/// ```
+///
+/// Note: The button adapts its color based on the current theme context (dark or light). If no colors are specified,
+/// it defaults to predefined values. You can customize the button's appearance extensively through the provided parameters.
+
 class KButton extends StatelessWidget {
   final void Function()? onPressed;
   final Color? darkBackgroundColor;

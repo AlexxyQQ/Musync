@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:musync/core/common/hive_service/setting_hive_service.dart';
+import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/injection/app_injection_container.dart';
 

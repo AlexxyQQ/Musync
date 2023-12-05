@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:musync/core/common/custom_page_indicator.dart';
+import 'package:musync/core/common/custom_widgets/custom_page_indicator.dart';
 import 'package:musync/config/constants/constants.dart';
 import 'package:musync/core/utils/text_theme_extension.dart';
 import 'package:musync/features/onboarding/presentation/widgets/last_page.dart';
 import 'package:musync/features/onboarding/presentation/widgets/next_and_skip.dart';
 import 'package:musync/features/onboarding/presentation/widgets/page_builder.dart';
 
-import '../../../../core/common/loader.dart';
+import '../../../../core/common/static_loader.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -139,7 +139,7 @@ class IconAndPageIndicator extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         // Page Indicator
-        CustomPageIndicator(
+        KPageIndicator(
           controller: controller,
           itemCount: 4,
           inactiveDotWidth: 12,

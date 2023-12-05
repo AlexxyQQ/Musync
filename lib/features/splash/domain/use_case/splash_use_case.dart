@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:musync/core/common/hive_service/setting_hive_service.dart';
+import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 
 import '../../../../core/failure/error_handler.dart';
 import '../../../../core/usecase/usecase.dart';

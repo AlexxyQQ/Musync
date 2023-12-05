@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
@@ -33,8 +32,6 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
         ignoreCase: true,
       );
 
-      log('Songs: ${allQuerySongs.length}');
-
       if (first == false) {
         return Right(
           AppSongModel.fromListSongModel(
@@ -56,7 +53,7 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
         onProgress(fetchedSongs.length);
         await Future.delayed(
           const Duration(
-            milliseconds: 100,
+            milliseconds: 1,
           ),
         );
       }

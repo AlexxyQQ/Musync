@@ -3,17 +3,59 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/router/routers.dart';
-import 'package:musync/core/common/buttom.dart';
-import 'package:musync/core/common/loader.dart';
 import 'package:musync/core/utils/text_theme_extension.dart';
 import 'package:musync/core/utils/titlecase_extinsion.dart';
-import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
-import 'package:musync/features/auth/presentation/cubit/authentication_state.dart';
 
-import '../../../../core/common/formfiled.dart';
+import '../../../../config/constants/constants.dart';
+import '../../../../config/router/routers.dart';
+import '../../../../core/common/custom_widgets/custom_buttom.dart';
+import '../../../../core/common/custom_widgets/custom_form_filed.dart';
+import '../../../../core/common/static_loader.dart';
+import '../cubit/authentication_cubit.dart';
+import '../cubit/authentication_state.dart';
 
+/// AuthComponent - A Custom Authentication Component for Flutter Applications.
+///
+/// This component provides a customizable user interface for authentication purposes,
+/// including login, registration, and password reset functionalities. It's designed
+/// to be easily integrated into Flutter applications that require user authentication.
+///
+/// Parameters:
+///   [fromKey] - GlobalKey<FormState> that is used to control the form within the component.
+///   [darkMode] - (Optional) A bool value to toggle dark mode for the component's UI.
+///   [canBack] - (Optional) A bool value to enable or disable a back navigation button.
+///   [redirectRoute] - (Optional) A String value that specifies the route to redirect to.
+///   [redirectLabel] - (Optional) A String label for the redirection option.
+///   [formMessage] - (Optional) A String message to be displayed on the form.
+///   [controllersMap] - A Map of String and TextEditingController for form fields.
+///   [optController] - (Optional) A List of TextEditingController for OTP fields.
+///   [buttonLabel] - A String label for the main action button.
+///   [onPressed] - A Function callback for the button press action.
+///   [forgotPassword] - (Optional) A bool value to enable or disable forgot password feature.
+///   [title] - A String title for the component.
+///   [description] - A String description for the component.
+///   [focusNodes] - (Optional) A List of FocusNode for managing focus in the form fields.
+///   [backRoute] - (Optional) A String value specifying the back navigation route.
+///
+/// Example Usage:
+/// ```dart
+/// AuthComponent(
+///   fromKey: _formKey,
+///   darkMode: true,
+///   canBack: true,
+///   controllersMap: {
+///     'Email': _emailController,
+///     'Password': _passwordController,
+///   },
+///   buttonLabel: 'Login',
+///   onPressed: _handleLogin,
+///   title: 'Welcome Back',
+///   description: 'Login to your account',
+/// )
+/// ```
+///
+/// Note: Make sure to provide all the required parameters and manage the state of controllers
+/// and focus nodes as needed in your parent widget.
 class AuthComponent extends StatefulWidget {
   final GlobalKey<FormState> fromKey;
   final bool? darkMode;
@@ -21,33 +63,33 @@ class AuthComponent extends StatefulWidget {
   final String? redirectRoute;
   final String? redirectLabel;
   final String? formMessage;
-  final Map<String, TextEditingController> controllersMap;
+  final Map<String, TextEditingController>? controllersMap;
   final List<TextEditingController>? optController;
   final String buttonLabel;
   final void Function() onPressed;
   final bool? forgotPassword;
   final String title;
   final String description;
-  List<FocusNode>? focusNodes;
+  final List<FocusNode>? focusNodes;
   final String? backRoute;
-  AuthComponent({
-    super.key,
-    this.canBack,
-    this.darkMode,
-    this.formMessage,
+  const AuthComponent({
+    Key? key,
     required this.fromKey,
-    this.redirectRoute,
-    this.redirectLabel,
-    required this.controllersMap,
     required this.buttonLabel,
-    this.optController,
     required this.onPressed,
-    this.forgotPassword,
     required this.title,
     required this.description,
+    this.controllersMap,
+    this.darkMode,
+    this.canBack,
+    this.redirectRoute,
+    this.redirectLabel,
+    this.formMessage,
+    this.optController,
+    this.forgotPassword,
     this.focusNodes,
     this.backRoute,
-  });
+  }) : super(key: key);
 
   @override
   State<AuthComponent> createState() => _AuthComponentState();
@@ -249,7 +291,7 @@ class TermsAndConditions extends StatelessWidget {
 
 class MyForm extends StatefulWidget {
   final bool? darkMode;
-  final Map<String, TextEditingController> controllersMap;
+  final Map<String, TextEditingController>? controllersMap;
   final List<TextEditingController>? optController;
   final String? formMessage;
   final GlobalKey<FormState> fromKey;
@@ -258,7 +300,7 @@ class MyForm extends StatefulWidget {
   const MyForm({
     Key? key,
     required this.darkMode,
-    required this.controllersMap,
+    this.controllersMap,
     this.optController,
     this.formMessage,
     required this.fromKey,
@@ -300,8 +342,9 @@ class _MyFormState extends State<MyForm> {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
         children: [
-          ...widget.controllersMap.entries
-              .map((e) => _buildTextField(e, context)),
+          if (widget.controllersMap != null)
+            ...widget.controllersMap!.entries
+                .map((e) => _buildTextField(e, context)),
           if (widget.optController != null && widget.optController!.isNotEmpty)
             _buildOTPFields(),
         ],
@@ -477,7 +520,7 @@ class _MyFormState extends State<MyForm> {
         return 'Password must contain at least one number';
       } else if (!RegExp(r'^(?=.*?[!@#\$&*~])').hasMatch(value)) {
         return 'Password must contain at least one special character';
-      } else if (value != widget.controllersMap['Password']?.text) {
+      } else if (value != widget.controllersMap!['Password']?.text) {
         return 'Confirm Password must be same as Password';
       }
       return null;

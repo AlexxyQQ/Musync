@@ -5,9 +5,10 @@ import 'package:musync/config/router/routers.dart';
 import 'package:musync/core/utils/text_theme_extension.dart';
 import 'package:musync/injection/app_injection_container.dart';
 
-import '../../../../core/common/custom_snackbar.dart';
-import '../../../../core/common/hive_service/setting_hive_service.dart';
+import '../../../../core/common/custom_widgets/custom_snackbar.dart';
+import '../../../../core/common/hive/hive_service/setting_hive_service.dart';
 import '../../../../core/utils/connectivity_check.dart';
+import 'dart:developer';
 
 class LastPage extends StatelessWidget {
   const LastPage({
@@ -61,6 +62,9 @@ class LastPage extends StatelessWidget {
                 goHome: true,
               ),
             );
+            final settings2 = await get<SettingsHiveService>().getSettings();
+            log(settings2.firstTime.toString(), name: "settingsssss");
+
             navigator.pushNamedAndRemoveUntil(
               AppRoutes.homeRoute,
               (route) => false,

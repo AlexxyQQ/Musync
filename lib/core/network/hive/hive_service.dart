@@ -2,7 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../common/hive_service/setting_hive_service.dart';
+import '../../common/hive/hive_service/setting_hive_service.dart';
 
 class HiveService {
   Future<void> init() async {
