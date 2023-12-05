@@ -1,8 +1,8 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
+import 'package:musync/injection/app_injection_container.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../core/common/hive/hive_service/setting_hive_service.dart';
@@ -34,10 +34,18 @@ class QueryCubit extends Cubit<HomeState> {
 
   void init() async {
     final settings = await settingsHiveService.getSettings();
+    // Fetch Data
     await getAllSongs(first: settings.firstTime, refetch: true);
     await getAllAlbums(first: settings.firstTime, refetch: true);
     await getAllArtists(first: settings.firstTime, refetch: true);
     await getAllFolders(first: settings.firstTime, refetch: true);
+    // Update Settings
+    await get<SettingsHiveService>().updateSettings(
+      settings.copyWith(
+        firstTime: false,
+        goHome: true,
+      ),
+    );
   }
 
   Future<void> getAllSongs({

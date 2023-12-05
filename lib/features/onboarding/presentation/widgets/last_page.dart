@@ -55,15 +55,6 @@ class LastPage extends StatelessWidget {
         InkWell(
           onTap: () async {
             final navigator = Navigator.of(context);
-            final settings = await get<SettingsHiveService>().getSettings();
-            await get<SettingsHiveService>().updateSettings(
-              settings.copyWith(
-                firstTime: false,
-                goHome: true,
-              ),
-            );
-            final settings2 = await get<SettingsHiveService>().getSettings();
-            log(settings2.firstTime.toString(), name: "settingsssss");
 
             navigator.pushNamedAndRemoveUntil(
               AppRoutes.homeRoute,
