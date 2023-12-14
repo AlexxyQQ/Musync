@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musync/config/themes/widget_themes/text_styles.dart';
-import 'package:musync/core/utils/text_theme_extension.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/themes/text_themes/all_text_styles.dart';
+import 'package:musync/core/utils/app_text_theme_extension.dart';
 
-import '../../../config/constants/constants.dart';
+import '../../../config/constants/global_constants.dart';
 
 /// kShowSnackBar - A Utility Function for Displaying SnackBars in Flutter Applications.
 ///
@@ -14,7 +15,7 @@ import '../../../config/constants/constants.dart';
 ///   [message] - A String representing the message to be displayed in the snack bar.
 ///   [context] - (Optional) The BuildContext in which to find the ScaffoldMessenger. If null,
 ///               scaffoldKey must be provided.
-///   [scaffoldKey] - (Optional) GlobalKey<ScaffoldState> to access the current Scaffold's state.
+///   [scaffoldKey] - (Optional ) GlobalKey<ScaffoldState> to access the current Scaffold's state.
 ///                   Required if context is not provided.
 ///   [duration] - (Optional) The Duration for how long the snack bar should be shown. Defaults to 1200 milliseconds.
 ///   [backgroundColor] - (Optional) The Color for the snack bar's background. Defaults to AppBackgroundColor.light.
@@ -39,20 +40,22 @@ import '../../../config/constants/constants.dart';
 void kShowSnackBar({
   required String message,
   BuildContext? context,
+  bool isError = false,
   GlobalKey<ScaffoldState>? scaffoldKey,
   Duration duration = const Duration(milliseconds: 1200),
-  Color backgroundColor = AppBackgroundColor.light,
-  Color textColor = AppTextColor.dark,
+  Color backgroundColor = AppLightColor.surfaceContainerLowest,
+  Color textColor = AppLightColor.onSurface,
 }) {
   if (context != null) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: backgroundColor,
+        backgroundColor:
+            isError ? AppLightColor.errorContainer : backgroundColor,
         elevation: 2,
         content: Text(
           message,
-          style: Theme.of(context).textTheme.f10W3.copyWith(
+          style: Theme.of(context).textTheme.mBS.copyWith(
                 color: textColor,
               ),
         ),
@@ -63,11 +66,12 @@ void kShowSnackBar({
     ScaffoldMessenger.of(scaffoldKey!.currentContext!).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: backgroundColor,
+        backgroundColor:
+            isError ? AppLightColor.errorContainer : backgroundColor,
         elevation: 2,
         content: Text(
           message,
-          style: AppTextStyle.f10W3.copyWith(
+          style: AllTextStyle.f12W5.copyWith(
             color: textColor,
           ),
         ),

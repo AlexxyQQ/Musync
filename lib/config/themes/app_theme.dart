@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/themes/widget_themes/text_themes.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/global_constants.dart';
+import 'package:musync/config/themes/text_themes/all_text_styles.dart';
+import 'package:musync/config/themes/text_themes/text_themes.dart';
 
 class AppTheme {
   static appLightTheme() {
@@ -10,209 +12,153 @@ class AppTheme {
       // Font Family
       // Text Theme
       textTheme: KTextThemes.lightTextTheme().apply(
-        displayColor: AppTextColor.dark,
-        bodyColor: AppTextColor.dark,
+        displayColor: AppLightColor.onBackground,
+        bodyColor: AppLightColor.onBackground,
+        fontFamily: 'Manrope',
       ),
       // App Bar Theme
       appBarTheme: const AppBarTheme(
-        backgroundColor: KColors.whiteColor,
+        backgroundColor: AppLightColor.background,
         elevation: 0,
         scrolledUnderElevation: 0,
         toolbarHeight: 70,
         iconTheme: IconThemeData(
-          color: KColors.blackColor,
+          color: AppLightColor.onBackground,
         ),
       ),
       // Scaffold Background Color
-      scaffoldBackgroundColor: KColors.whiteColor,
+      scaffoldBackgroundColor: AppLightColor.background,
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          foregroundColor: KColors.blackColor,
-          backgroundColor: KColors.offWhiteColor,
-          textStyle: KTextThemes.lightTextTheme().titleSmall,
-          minimumSize: const Size(100, 50),
+          foregroundColor: AppLightColor.onSurface,
+          backgroundColor: AppLightColor.surface,
+          textStyle: AllTextStyle.f16W8.copyWith(
+            color: AppLightColor.onSurface,
+          ),
+          minimumSize: const Size(100, 30),
+          maximumSize: const Size(400, 60),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(12),
           ),
           animationDuration: const Duration(milliseconds: 150),
         ),
       ),
       // Scrollbar Theme
       scrollbarTheme: ScrollbarThemeData(
-        thumbColor: MaterialStateProperty.all(KColors.accentColor),
-        trackColor: MaterialStateProperty.all(KColors.todoColor),
+        thumbColor: MaterialStateProperty.all(AppLightColor.primary),
+        trackColor: MaterialStateProperty.all(AppLightColor.onSurfaceVariant),
         interactive: true,
         thumbVisibility: MaterialStateProperty.all(true),
-        radius: const Radius.circular(20),
+        radius: const Radius.circular(12),
         trackVisibility: MaterialStateProperty.all(false),
       ),
       // Drawer Theme
       drawerTheme: const DrawerThemeData(
         elevation: 0,
-        backgroundColor: KColors.offWhiteColor,
+        backgroundColor: AppLightColor.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+            topRight: Radius.circular(12),
+            bottomRight: Radius.circular(12),
           ),
         ),
       ),
-      // inputDecorationTheme: InputDecorationTheme(
-      //   floatingLabelBehavior: FloatingLabelBehavior.never,
-      //   filled: true,
-      //   fillColor: KColors.whiteColor,
-      //   hintStyle: KTextThemes.lightTextTheme().bodySmall,
-      //   labelStyle: KTextThemes.lightTextTheme().bodySmall,
-      //   contentPadding: const EdgeInsets.symmetric(
-      //     horizontal: 24,
-      //     vertical: 16,
-      //   ),
-      //   border: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //   ),
-      //   errorBorder: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //     borderSide: const BorderSide(
-      //       color: KColors.todoColor,
-      //     ),
-      //   ),
-      //   enabledBorder: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //     borderSide: const BorderSide(
-      //       color: KColors.accentColor,
-      //     ),
-      //   ),
-      //   focusedBorder: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //     borderSide: const BorderSide(
-      //       color: KColors.accentColor,
-      //     ),
-      //   ),
-      // ),
+
       // Text Button Theme
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          textStyle: KTextThemes.lightTextTheme().bodySmall,
+          textStyle: AllTextStyle.f16W8.copyWith(
+            color: AppLightColor.onSurface,
+          ),
           elevation: 5,
           backgroundColor: KColors.transparentColor,
         ),
       ),
       iconTheme: const IconThemeData(
-        color: AppIconColor.dark,
+        color: AppLightColor.onSurface,
       ),
       primaryIconTheme: const IconThemeData(
-        color: AppIconColor.dark,
+        color: AppLightColor.primary,
       ),
     );
   }
 
   static appDarkTheme() {
     return ThemeData(
-      // Brightness
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
       useMaterial3: true,
+      // Font Family
       // Text Theme
       textTheme: KTextThemes.darkTextTheme().apply(
-        displayColor: AppTextColor.light,
-        bodyColor: AppTextColor.light,
+        displayColor: AppDarkColor.onBackground,
+        bodyColor: AppDarkColor.onBackground,
+        fontFamily: 'Manrope',
       ),
       // App Bar Theme
       appBarTheme: const AppBarTheme(
-        backgroundColor: KColors.blackColor,
+        backgroundColor: AppDarkColor.background,
         elevation: 0,
         scrolledUnderElevation: 0,
         toolbarHeight: 70,
         iconTheme: IconThemeData(
-          color: KColors.whiteColor,
+          color: AppDarkColor.onBackground,
         ),
       ),
       // Scaffold Background Color
-      scaffoldBackgroundColor: KColors.blackColor,
+      scaffoldBackgroundColor: AppDarkColor.background,
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: KColors.offBlackColor,
-          foregroundColor: KColors.whiteColor,
-          textStyle: KTextThemes.lightTextTheme().titleSmall,
-          minimumSize: const Size(100, 50),
+          foregroundColor: AppDarkColor.onSurface,
+          backgroundColor: AppDarkColor.surface,
+          textStyle: AllTextStyle.f16W8.copyWith(
+            color: AppDarkColor.onSurface,
+          ),
+          minimumSize: const Size(100, 30),
+          maximumSize: const Size(400, 60),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(12),
           ),
           animationDuration: const Duration(milliseconds: 150),
         ),
       ),
       // Scrollbar Theme
       scrollbarTheme: ScrollbarThemeData(
-        thumbColor: MaterialStateProperty.all(KColors.accentColor),
-        trackColor: MaterialStateProperty.all(KColors.todoColor),
+        thumbColor: MaterialStateProperty.all(AppDarkColor.primary),
+        trackColor: MaterialStateProperty.all(AppDarkColor.onSurfaceVariant),
         interactive: true,
         thumbVisibility: MaterialStateProperty.all(true),
-        radius: const Radius.circular(20),
+        radius: const Radius.circular(12),
         trackVisibility: MaterialStateProperty.all(false),
       ),
       // Drawer Theme
       drawerTheme: const DrawerThemeData(
         elevation: 0,
-        backgroundColor: KColors.offBlackColor,
+        backgroundColor: AppDarkColor.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+            topRight: Radius.circular(12),
+            bottomRight: Radius.circular(12),
           ),
         ),
       ),
-      // Input Decoration Theme
-      // inputDecorationTheme: InputDecorationTheme(
-      //   floatingLabelBehavior: FloatingLabelBehavior.never,
-      //   filled: true,
-      //   fillColor: KColors.offBlackColor,
-      //   hintStyle: KTextThemes.lightTextTheme().bodySmall,
-      //   labelStyle: KTextThemes.lightTextTheme().bodySmall,
-      //   contentPadding: const EdgeInsets.symmetric(
-      //     horizontal: 24,
-      //     vertical: 16,
-      //   ),
-      //   border: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //   ),
-      //   errorBorder: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //     borderSide: const BorderSide(
-      //       color: KColors.todoColor,
-      //     ),
-      //   ),
-      //   enabledBorder: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //     borderSide: const BorderSide(
-      //       color: KColors.accentColor,
-      //     ),
-      //   ),
-      //   focusedBorder: OutlineInputBorder(
-      //     borderRadius: BorderRadius.circular(50),
-      //     borderSide: const BorderSide(
-      //       color: KColors.accentColor,
-      //     ),
-      //   ),
-      // ),
-// Circular progress indicator
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppAccentColor.yellow,
-        circularTrackColor: Colors.transparent,
-      ),
+
       // Text Button Theme
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          textStyle: KTextThemes.lightTextTheme().bodySmall,
+          textStyle: AllTextStyle.f16W8.copyWith(
+            color: AppDarkColor.onSurface,
+          ),
           elevation: 5,
           backgroundColor: KColors.transparentColor,
         ),
       ),
       iconTheme: const IconThemeData(
-        color: AppIconColor.light,
+        color: AppDarkColor.onSurface,
       ),
       primaryIconTheme: const IconThemeData(
-        color: AppIconColor.light,
+        color: AppDarkColor.primary,
       ),
     );
   }

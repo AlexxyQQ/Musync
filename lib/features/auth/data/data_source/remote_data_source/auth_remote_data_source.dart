@@ -5,7 +5,7 @@ import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/injection/app_injection_container.dart';
 
-import '../../../../../config/constants/api_endpoints.dart';
+import '../../../../../config/constants/api/api_endpoints.dart';
 import '../../../../../core/network/api/api.dart';
 import '../../dto/user_dto.dart';
 import '../../model/user_model.dart';

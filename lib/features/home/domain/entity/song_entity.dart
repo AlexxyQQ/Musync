@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
-import 'package:musync/config/constants/api_endpoints.dart';
+import 'package:musync/config/constants/api/api_endpoints.dart';
 import 'package:musync/core/utils/song_model_map_converter.dart';
 import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';

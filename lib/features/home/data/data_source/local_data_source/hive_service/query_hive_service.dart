@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:musync/config/constants/hive_tabel_constant.dart';
+import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
 import 'package:musync/features/home/data/model/hive/artist_hive_model.dart';
 import 'package:musync/features/home/data/model/hive/folder_hive_model.dart';

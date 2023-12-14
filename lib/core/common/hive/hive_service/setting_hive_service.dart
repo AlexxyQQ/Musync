@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:musync/config/constants/hive_tabel_constant.dart';
+import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/core/common/hive/app_settings_hive_model.dart';
 
 class SettingsHiveService {

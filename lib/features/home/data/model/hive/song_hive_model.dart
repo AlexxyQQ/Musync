@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:musync/config/constants/hive_tabel_constant.dart';
+import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/features/home/data/model/app_song_model.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:on_audio_query/on_audio_query.dart';

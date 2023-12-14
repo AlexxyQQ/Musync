@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/core/utils/text_theme_extension.dart';
+import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/core/utils/titlecase_extinsion.dart';
 
-import '../../../../config/constants/constants.dart';
-import '../../../../config/router/routers.dart';
+import '../../../../config/constants/global_constants.dart';
+import '../../../../config/route/routes.dart';
 import '../../../../core/common/custom_widgets/custom_buttom.dart';
 import '../../../../core/common/custom_widgets/custom_form_filed.dart';
 import '../../../../core/common/static_loader.dart';
@@ -124,7 +124,7 @@ class _AuthComponentState extends State<AuthComponent> {
                     },
                     child: Text(
                       widget.redirectLabel!,
-                      style: Theme.of(context).textTheme.f14W6,
+                      style: Theme.of(context).textTheme.bBS,
                     ),
                   ),
                 )
@@ -175,8 +175,20 @@ class _AuthComponentState extends State<AuthComponent> {
                                       'Forgot Password?',
                                       style: widget.darkMode != null &&
                                               widget.darkMode!
-                                          ? Theme.of(context).textTheme.f12W4D
-                                          : Theme.of(context).textTheme.f12W4L,
+                                          ? Theme.of(context)
+                                              .textTheme
+                                              .lBS
+                                              .copyWith(
+                                                color: Colors.red,
+                                                // TODO: TO Change the colors
+                                              )
+                                          : Theme.of(context)
+                                              .textTheme
+                                              .lBS
+                                              .copyWith(
+                                                color: Colors.red,
+                                                // TODO: TO Change the colors
+                                              ),
                                     ),
                                   ),
                                 ],
@@ -188,10 +200,8 @@ class _AuthComponentState extends State<AuthComponent> {
                       KButton(
                         onPressed: widget.onPressed,
                         label: widget.buttonLabel,
-                        darkBackgroundColor: AppBackgroundColor.light,
-                        lightBackgroundColor: AppBackgroundColor.dark,
-                        darkForegroundColor: AppTextColor.dark,
-                        lightForegroundColor: AppTextColor.light,
+                        backgroundColor: AppBackgroundColor.light,
+                        foregroundColor: AppTextColor.dark,
                         fixedSize: Size(
                           MediaQuery.of(context).size.width * 0.87,
                           40.h,
@@ -216,12 +226,12 @@ class _AuthComponentState extends State<AuthComponent> {
                   children: [
                     Text(
                       widget.title.titleCase,
-                      style: Theme.of(context).textTheme.f28W7,
+                      style: Theme.of(context).textTheme.h3,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       widget.description,
-                      style: Theme.of(context).textTheme.f14W4,
+                      style: Theme.of(context).textTheme.lBM,
                     ),
                   ],
                 ),
@@ -261,26 +271,50 @@ class TermsAndConditions extends StatelessWidget {
         text: TextSpan(
           text: 'By signing up, you agree to our ',
           style: darkMode != null && darkMode!
-              ? Theme.of(context).textTheme.f10W3D
-              : Theme.of(context).textTheme.f10W3LDi,
+              ? Theme.of(context).textTheme.lC.copyWith(
+                    color: Colors.red,
+                    // TODO: TO Change the colors
+                  )
+              : Theme.of(context).textTheme.lC.copyWith(
+                    color: Colors.red,
+                    // TODO: TO Change the colors
+                  ),
           children: [
             TextSpan(
               text: 'Terms and Conditions',
               style: darkMode != null && darkMode!
-                  ? Theme.of(context).textTheme.f10W3D
-                  : Theme.of(context).textTheme.f10W3LDi,
+                  ? Theme.of(context).textTheme.lC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      )
+                  : Theme.of(context).textTheme.lC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      ),
             ),
             TextSpan(
               text: ' and ',
               style: darkMode != null && darkMode!
-                  ? Theme.of(context).textTheme.f10W3D
-                  : Theme.of(context).textTheme.f10W3LDi,
+                  ? Theme.of(context).textTheme.lC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      )
+                  : Theme.of(context).textTheme.lC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      ),
             ),
             TextSpan(
               text: 'Privacy Policy',
               style: darkMode != null && darkMode!
-                  ? Theme.of(context).textTheme.f10W3D
-                  : Theme.of(context).textTheme.f10W3LDi,
+                  ? Theme.of(context).textTheme.lC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      )
+                  : Theme.of(context).textTheme.lC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      ),
             ),
           ],
         ),
@@ -325,8 +359,14 @@ class _MyFormState extends State<MyForm> {
             Text(
               widget.formMessage!,
               style: widget.darkMode != null && widget.darkMode!
-                  ? Theme.of(context).textTheme.f12W4D
-                  : Theme.of(context).textTheme.f12W4LDi,
+                  ? Theme.of(context).textTheme.mC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      )
+                  : Theme.of(context).textTheme.mC.copyWith(
+                        color: Colors.red,
+                        // TODO: TO Change the colors
+                      ),
             ),
           SizedBox(height: 20.h),
           // Form Fields
@@ -363,15 +403,15 @@ class _MyFormState extends State<MyForm> {
         fillColor: widget.darkMode != null && widget.darkMode!
             ? AppBackgroundColor.dark
             : AppBackgroundColor.light,
-        contentStyle: widget.darkMode != null && widget.darkMode!
-            ? Theme.of(context).textTheme.f14W4L
-            : Theme.of(context).textTheme.f14W4D,
-        hintTextStyle: widget.darkMode != null && widget.darkMode!
-            ? Theme.of(context).textTheme.f12W3LDi
-            : Theme.of(context).textTheme.f12W3D,
-        errorTextStyle: Theme.of(context).textTheme.f12W3D.copyWith(
-              color: AppAccentColor.red,
-            ),
+        // contentStyle: widget.darkMode != null && widget.darkMode!
+        //     ? Theme.of(context).textTheme.f14W4L
+        //     : Theme.of(context).textTheme.f14W4D,
+        // hintTextStyle: widget.darkMode != null && widget.darkMode!
+        //     ? Theme.of(context).textTheme.f12W3LDi
+        //     : Theme.of(context).textTheme.f12W3D,
+        // errorTextStyle: Theme.of(context).textTheme.f12W3D.copyWith(
+        //       color: AppAccentColor.red,
+        //     ),
         controller: entry.value,
         obscureText: entry.key == 'Password'
             ? _obstructText
@@ -541,15 +581,15 @@ class _MyFormState extends State<MyForm> {
             fillColor: widget.darkMode != null && widget.darkMode!
                 ? AppBackgroundColor.dark
                 : AppBackgroundColor.light,
-            contentStyle: widget.darkMode != null && widget.darkMode!
-                ? Theme.of(context).textTheme.f14W4L
-                : Theme.of(context).textTheme.f14W4D,
-            hintTextStyle: widget.darkMode != null && widget.darkMode!
-                ? Theme.of(context).textTheme.f12W3LDi
-                : Theme.of(context).textTheme.f12W3D,
-            errorTextStyle: Theme.of(context).textTheme.f12W3D.copyWith(
-                  color: AppAccentColor.red,
-                ),
+            // contentStyle: widget.darkMode != null && widget.darkMode!
+            //     ? Theme.of(context).textTheme.f14W4L
+            //     : Theme.of(context).textTheme.f14W4D,
+            // hintTextStyle: widget.darkMode != null && widget.darkMode!
+            //     ? Theme.of(context).textTheme.f12W3LDi
+            //     : Theme.of(context).textTheme.f12W3D,
+            // errorTextStyle: Theme.of(context).textTheme.f12W3D.copyWith(
+            //       color: AppAccentColor.red,
+            //     ),
             keyboardType: TextInputType.number,
             onChanged: (value) {
               if (value != null) {

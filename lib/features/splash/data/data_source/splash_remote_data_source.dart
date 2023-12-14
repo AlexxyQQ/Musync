@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import '../../../../config/constants/api_endpoints.dart';
+import '../../../../config/constants/api/api_endpoints.dart';
 import '../../../../core/failure/error_handler.dart';
 import '../../../../core/network/api/api.dart';
 import '../../../auth/data/dto/user_dto.dart';

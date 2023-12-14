@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/themes/app_theme.dart';
 import 'package:musync/core/bloc/bloc_providers.dart';
 
-import '../config/router/routers.dart';
+import '../config/route/routes.dart';
 
 class App extends StatefulWidget {
   const App({super.key});

@@ -72,7 +72,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             isSuccess: false,
           ),
         );
-        kShowSnackBar(context: context, message: l.message);
+        kShowSnackBar(context: context, message: l.message, isError: true);
       },
       (r) {
         emit(
@@ -171,6 +171,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       kShowSnackBar(
         context: context,
         message: data.fold((l) => l.message, (r) => ''),
+        isError: true,
       );
     } else {
       emit(
@@ -211,6 +212,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       kShowSnackBar(
         context: context,
         message: data.fold((l) => l.message, (r) => ''),
+        isError: true,
+        duration: const Duration(milliseconds: 400),
       );
     } else {
       emit(
@@ -348,7 +351,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             eror: l,
           ),
         );
-        kShowSnackBar(context: context, message: l.message);
+        kShowSnackBar(context: context, message: l.message, isError: true);
       },
       (r) {
         emit(
@@ -404,7 +407,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             eror: l,
           ),
         );
-        kShowSnackBar(context: context, message: l.message);
+        kShowSnackBar(context: context, message: l.message, isError: true);
       },
       (r) {
         emit(

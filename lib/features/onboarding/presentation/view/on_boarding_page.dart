@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_page_indicator.dart';
-import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/utils/text_theme_extension.dart';
+import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/features/onboarding/presentation/widgets/last_page.dart';
 import 'package:musync/features/onboarding/presentation/widgets/next_and_skip.dart';
 import 'package:musync/features/onboarding/presentation/widgets/page_builder.dart';
@@ -124,16 +125,18 @@ class IconAndPageIndicator extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // App Icon
-            SizedBox(
+            SvgPicture.asset(
+              'assets/splash_screen/Logo.svg',
               height: 30,
               width: 30,
-              child: Image.asset('assets/splash_screen/Logo.png'),
             ),
             const SizedBox(width: 10),
             // App Name
             Text(
               'Musync',
-              style: Theme.of(context).textTheme.f20W7,
+              style: Theme.of(context).textTheme.h4.copyWith(
+                    color: AppColors().onBackground,
+                  ),
             ),
           ],
         ),
@@ -148,8 +151,8 @@ class IconAndPageIndicator extends StatelessWidget {
           activeDotWidth: 70,
           dotSpacing: 15,
           trailing: false,
-          activeColor: AppAccentColor.yellow,
-          inactiveColor: AppIconColor.dim,
+          activeColor: AppLightColor.primary,
+          inactiveColor: AppLightColor.surfaceContainer,
         ),
       ],
     );

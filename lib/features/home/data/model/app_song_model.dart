@@ -4,7 +4,7 @@ import 'package:musync/core/utils/song_model_map_converter.dart';
 import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:on_audio_query_platform_interface/src/models/song_model.dart';
 
-import '../../../../config/constants/api_endpoints.dart';
+import '../../../../config/constants/api/api_endpoints.dart';
 import '../../domain/entity/song_entity.dart';
 
 class AppSongModel extends SongEntity {

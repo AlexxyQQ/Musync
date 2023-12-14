@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musync/config/constants/constants.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 
 class NextAndSkip extends StatelessWidget {
@@ -28,8 +28,8 @@ class NextAndSkip extends StatelessWidget {
               );
             },
             label: 'Next',
-            lightForegroundColor: AppTextColor.dark,
-            darkForegroundColor: AppTextColor.light,
+            backgroundColor: AppColors(inverseDarkMode: true).surface,
+            foregroundColor: AppColors(inverseDarkMode: true).onSurface,
             borderRadius: 26,
           ),
 
@@ -44,8 +44,6 @@ class NextAndSkip extends StatelessWidget {
             },
             label: 'Skip',
             borderRadius: 26,
-            darkBackgroundColor: Colors.transparent,
-            lightBackgroundColor: Colors.transparent,
           ),
         ],
       ),

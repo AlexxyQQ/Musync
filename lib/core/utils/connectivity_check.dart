@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:musync/config/constants/api_endpoints.dart';
+import 'package:musync/config/constants/api/api_endpoints.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/network/api/api.dart';
 import 'package:musync/injection/app_injection_container.dart';

@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/config/router/routers.dart';
+import 'package:musync/config/route/routes.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/features/auth/presentation/widgets/auth_page_component.dart';
 

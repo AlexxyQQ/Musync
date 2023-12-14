@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musync/config/router/routers.dart';
+import 'package:musync/config/route/routes.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/features/auth/presentation/widgets/auth_page_component.dart';
 
-import '../../../home/presentation/pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -58,11 +57,7 @@ class _LoginPageState extends State<LoginPage> {
           });
           String email = _emailController.text;
           String password = _passwordController.text;
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const MusicScreen(),
-            ),
-          );
+          Navigator.pushNamed(context, AppRoutes.homeRoute);
           BlocProvider.of<AuthenticationCubit>(context).login(
             email: email,
             password: password,

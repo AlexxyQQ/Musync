@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
-import 'package:musync/config/constants/constants.dart';
+import 'package:musync/config/constants/global_constants.dart';
 
 class IllegalPageBuilder extends StatelessWidget {
   final String lottieUrl;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/config/constants/constants.dart';
+import 'package:musync/config/constants/global_constants.dart';
 
 /// KTextFormField - A Custom Text Form Field for Flutter Applications.
 ///

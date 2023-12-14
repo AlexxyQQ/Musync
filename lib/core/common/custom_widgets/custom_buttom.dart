@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/utils/text_theme_extension.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/global_constants.dart';
+import 'package:musync/core/utils/app_text_theme_extension.dart';
 
 /// KButton - A Customizable Elevated Button for Flutter Applications.
 ///
@@ -12,15 +13,15 @@ import 'package:musync/core/utils/text_theme_extension.dart';
 ///
 /// Parameters:
 ///   [onPressed] - A void Function callback that is triggered when the button is pressed.
-///   [darkBackgroundColor] - (Optional) The background color for dark theme. Defaults to AppBackgroundColor.dark.
-///   [darkForegroundColor] - (Optional) The foreground (text/icon) color for dark theme.
+///   [backgroundColor] - (Optional) The background color for dark theme. Defaults to AppBackgroundColor.dark.
+///   [foregroundColor] - (Optional) The foreground (text/icon) color for dark theme.
 ///   [lightBackgroundColor] - (Optional) The background color for light theme. Defaults to AppBackgroundColor.light.
 ///   [lightForegroundColor] - (Optional) The foreground (text/icon) color for light theme.
 ///   [elevation] - (Optional) The elevation of the button. Defaults to 0.
 ///   [fixedSize] - (Optional) The fixed size of the button.
 ///   [padding] - (Optional) The internal padding of the button.
-///   [darkDisabledForegroundColor] - (Optional) The foreground color when the button is disabled in dark theme.
-///   [lightDisabledForegroundColor] - (Optional) The foreground color when the button is disabled in light theme.
+///   [disabledForegroundColor] - (Optional) The foreground color when the button is disabled in dark theme.
+///   [disabledBackgroundColor] - (Optional) The foreground color when the button is disabled in light theme.
 ///   [textStyle] - (Optional) The TextStyle for the button label.
 ///   [iconData] - (Optional) The icon to be displayed alongside the button label.
 ///   [label] - (Optional) The text label of the button.
@@ -45,14 +46,12 @@ import 'package:musync/core/utils/text_theme_extension.dart';
 
 class KButton extends StatelessWidget {
   final void Function()? onPressed;
-  final Color? darkBackgroundColor;
-  final Color? darkForegroundColor;
-  final Color? lightBackgroundColor;
-  final Color? lightForegroundColor;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
   final double? elevation;
   final Size? fixedSize;
-  final Color? darkDisabledForegroundColor;
-  final Color? lightDisabledForegroundColor;
+  final Color? disabledForegroundColor;
+  final Color? disabledBackgroundColor;
   final EdgeInsetsGeometry? padding;
   final TextStyle? textStyle;
   final IconData? iconData;
@@ -64,12 +63,10 @@ class KButton extends StatelessWidget {
     this.elevation,
     this.fixedSize,
     this.padding,
-    this.darkBackgroundColor,
-    this.darkForegroundColor,
-    this.lightBackgroundColor,
-    this.lightForegroundColor,
-    this.darkDisabledForegroundColor,
-    this.lightDisabledForegroundColor,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.disabledForegroundColor,
+    this.disabledBackgroundColor,
     this.textStyle,
     this.iconData,
     this.label,
@@ -78,31 +75,27 @@ class KButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius ?? 12), // User input
         ),
-        backgroundColor: isDark
-            ? lightBackgroundColor ?? AppBackgroundColor.light
-            : darkBackgroundColor ?? AppBackgroundColor.dark,
-        foregroundColor: isDark
-            ? lightForegroundColor ?? AppBackgroundColor.light
-            : darkForegroundColor ?? AppBackgroundColor.dark,
+        backgroundColor: backgroundColor ?? AppColors().surface,
+        foregroundColor: foregroundColor ?? AppColors().onSurface,
         elevation: 0, // User input
         maximumSize: Size(350.w, 60.h),
         minimumSize: Size(50.w, 40.h),
         fixedSize: fixedSize ?? Size(350.w, 40.h), // User input
-        disabledForegroundColor: isDark
-            ? lightDisabledForegroundColor ?? AppTextColor.lightDim
-            : darkDisabledForegroundColor ?? AppTextColor.dim,
+        disabledForegroundColor:
+            disabledForegroundColor ?? AppColors().surfaceContainerHigh,
+        disabledBackgroundColor:
+            disabledBackgroundColor ?? AppColors().surfaceDim,
         padding: padding ??
             EdgeInsets.symmetric(
               horizontal: 20.w,
               vertical: 10.h,
             ), // User input
-        textStyle: textStyle ?? Theme.of(context).textTheme.f16W7,
+        textStyle: textStyle ?? Theme.of(context).textTheme.bBL,
       ),
       onPressed: onPressed,
       child: Row(

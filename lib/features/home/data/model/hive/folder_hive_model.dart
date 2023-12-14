@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-import 'package:musync/config/constants/hive_tabel_constant.dart';
+import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/features/home/data/model/app_folder_model.dart';
 import 'package:musync/features/home/data/model/app_song_model.dart';
 

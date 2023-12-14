@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/config/constants/constants.dart';
-import 'package:musync/config/router/routers.dart';
-import 'package:musync/core/utils/text_theme_extension.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/global_constants.dart';
+import 'package:musync/config/route/routes.dart';
+import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/injection/app_injection_container.dart';
 
 import '../../../../core/common/custom_widgets/custom_snackbar.dart';
 import '../../../../core/common/hive/hive_service/setting_hive_service.dart';
 import '../../../../core/utils/connectivity_check.dart';
-import 'dart:developer';
 
 class LastPage extends StatelessWidget {
   const LastPage({
@@ -41,6 +41,7 @@ class LastPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -48,7 +49,11 @@ class LastPage extends StatelessWidget {
         Text(
           "By continuing, you’re agreeing to \n Musync Privacy policy and Terms of use.",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.f10W3,
+          style: Theme.of(context).textTheme.lC.copyWith(
+                color: isDarkMode
+                    ? AppDarkColor.onSurfaceVariant
+                    : AppLightColor.onSurfaceVariant,
+              ),
         ),
         const SizedBox(height: 20),
         // Get Started Offline
@@ -63,7 +68,7 @@ class LastPage extends StatelessWidget {
           },
           child: Text(
             'Get Started Offline',
-            style: Theme.of(context).textTheme.f14W4,
+            style: Theme.of(context).textTheme.mBM,
           ),
         ),
         SizedBox(
@@ -84,16 +89,16 @@ class LastPage extends StatelessWidget {
               kShowSnackBar(
                 message: "No Internet Connection or server is down.",
                 context: context,
-                textColor: AppTextColor.dark,
+                isError: true,
               );
             }
           },
           child: Container(
             height: 67,
             width: mediaQuerySize.width,
-            decoration: const BoxDecoration(
-              color: AppAccentColor.yellow,
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: isDarkMode ? AppDarkColor.primary : AppLightColor.primary,
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
@@ -103,7 +108,7 @@ class LastPage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Get Started Now',
-                  style: Theme.of(context).textTheme.f20W7D,
+                  style: Theme.of(context).textTheme.h4,
                 ),
               ),
             ),

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
-import 'package:musync/config/constants/constants.dart';
-import 'package:musync/core/utils/text_theme_extension.dart';
+import 'package:musync/config/constants/global_constants.dart';
+import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
-import 'package:musync/config/router/routers.dart';
+import 'package:musync/config/route/routes.dart';
 import 'package:musync/injection/app_injection_container.dart';
 
 import '../cubit/authentication_state.dart';
@@ -26,7 +26,6 @@ class _MainAuthPageState extends State<MainAuthPage> {
     Size mediaQuerySize = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: isDark ? KColors.blackColor : KColors.whiteColor,
       body: Column(
         children: [
           // Logo and App Name
@@ -70,16 +69,16 @@ class LoginSignupButton extends StatelessWidget {
             Text(
               'Welcome to Musync',
               style: Theme.of(context).brightness == Brightness.dark
-                  ? Theme.of(context).textTheme.f22W6D
-                  : Theme.of(context).textTheme.f22W6L,
+                  ? Theme.of(context).textTheme.h3
+                  : Theme.of(context).textTheme.h3,
             ),
             // Description Text
             const SizedBox(height: 6),
             Text(
               'Musync is a music streaming app that allows you to listen to your favorite music and share it with your friends.',
               style: Theme.of(context).brightness == Brightness.dark
-                  ? Theme.of(context).textTheme.f16W4D
-                  : Theme.of(context).textTheme.f16W4L,
+                  ? Theme.of(context).textTheme.bBL
+                  : Theme.of(context).textTheme.bBL,
             ),
             const SizedBox(height: 30),
             // Login and Signup Button
@@ -95,10 +94,8 @@ class LoginSignupButton extends StatelessWidget {
                   label: 'LOGIN',
                   borderRadius: 32,
                   fixedSize: const Size(120, 40),
-                  lightBackgroundColor: AppBackgroundColor.dark,
-                  darkBackgroundColor: AppBackgroundColor.light,
-                  lightForegroundColor: AppTextColor.light,
-                  darkForegroundColor: AppTextColor.dark,
+                  backgroundColor: AppBackgroundColor.light,
+                  foregroundColor: AppTextColor.dark,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
 
@@ -211,13 +208,13 @@ class LogoAndAppName extends StatelessWidget {
             height: 80,
           ),
           // App Name
-          Text('Musync', style: Theme.of(context).textTheme.f32W8),
+          Text('Musync', style: Theme.of(context).textTheme.h4),
           const SizedBox(height: 10),
           // App Description
           Text(
             'Sync up and tune in with Musync - your ultimate music companion.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.f18W4,
+            style: Theme.of(context).textTheme.bBL,
           ),
         ],
       ),
