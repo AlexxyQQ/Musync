@@ -233,7 +233,7 @@ class SplashComponents extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: 260.h,
+          bottom: 240.h,
           left: 80,
           child: SvgPicture.asset(
             'assets/splash_screen/music2.svg', // Replace with your SVG image path

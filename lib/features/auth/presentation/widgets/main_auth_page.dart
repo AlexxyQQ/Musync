@@ -1,16 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
-import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
-import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/config/route/routes.dart';
 import 'package:musync/injection/app_injection_container.dart';
-
-import '../cubit/authentication_state.dart';
 
 class MainAuthPage extends StatefulWidget {
   const MainAuthPage({super.key});
@@ -22,16 +19,17 @@ class MainAuthPage extends StatefulWidget {
 class _MainAuthPageState extends State<MainAuthPage> {
   @override
   Widget build(BuildContext context) {
-    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     Size mediaQuerySize = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           // Logo and App Name
-          LogoAndAppName(mediaQuerySize: mediaQuerySize, isDark: isDark),
+          LogoAndAppName(
+            mediaQuerySize: mediaQuerySize,
+          ),
           // Login and Signup Button
-          LoginSignupButton(isDark: isDark, mediaQuerySize: mediaQuerySize),
+          LoginSignupButton(mediaQuerySize: mediaQuerySize),
         ],
       ),
     );
@@ -41,11 +39,9 @@ class _MainAuthPageState extends State<MainAuthPage> {
 class LoginSignupButton extends StatelessWidget {
   const LoginSignupButton({
     super.key,
-    required this.isDark,
     required this.mediaQuerySize,
   });
 
-  final bool isDark;
   final Size mediaQuerySize;
 
   @override
@@ -56,7 +52,7 @@ class LoginSignupButton extends StatelessWidget {
           topLeft: Radius.circular(50),
           topRight: Radius.circular(50),
         ),
-        color: isDark ? KColors.whiteColor : KColors.blackColor,
+        color: AppColors(inverseDarkMode: true).background,
       ),
       height: mediaQuerySize.height / 2,
       child: Padding(
@@ -68,17 +64,17 @@ class LoginSignupButton extends StatelessWidget {
             // Welcome Text
             Text(
               'Welcome to Musync',
-              style: Theme.of(context).brightness == Brightness.dark
-                  ? Theme.of(context).textTheme.h3
-                  : Theme.of(context).textTheme.h3,
+              style: Theme.of(context).textTheme.h3.copyWith(
+                    color: AppColors(inverseDarkMode: true).onBackground,
+                  ),
             ),
             // Description Text
             const SizedBox(height: 6),
             Text(
               'Musync is a music streaming app that allows you to listen to your favorite music and share it with your friends.',
-              style: Theme.of(context).brightness == Brightness.dark
-                  ? Theme.of(context).textTheme.bBL
-                  : Theme.of(context).textTheme.bBL,
+              style: Theme.of(context).textTheme.mBM.copyWith(
+                    color: AppColors(inverseDarkMode: true).onBackground,
+                  ),
             ),
             const SizedBox(height: 30),
             // Login and Signup Button
@@ -89,49 +85,43 @@ class LoginSignupButton extends StatelessWidget {
                 // Login Button
                 KButton(
                   onPressed: () {
-                    Navigator.of(context).popAndPushNamed('/login');
+                    Navigator.of(context).popAndPushNamed(AppRoutes.loginRoute);
                   },
                   label: 'LOGIN',
                   borderRadius: 32,
-                  fixedSize: const Size(120, 40),
-                  backgroundColor: AppBackgroundColor.light,
-                  foregroundColor: AppTextColor.dark,
+                  fixedSize: const Size(110, 40),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
 
-                ElevatedButton(
+                KButton(
                   onPressed: () {
                     Navigator.of(context)
                         .popAndPushNamed(AppRoutes.signupRoute);
                   },
-                  child: Text(
-                    'SIGN UP',
-                    style: GlobalConstants.textStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? KColors.whiteColor : KColors.blackColor,
-                    ),
-                  ),
+                  label: 'SIGN UP',
+                  borderRadius: 32,
+                  fixedSize: const Size(110, 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
+
                 // Google Sign In Button
-                BlocBuilder<AuthenticationCubit, AuthenticationState>(
-                  builder: (context, state) => ElevatedButton(
-                    onPressed: () async {
-                      // ! UNCOMMENT THIS TO ENABLE GOOGLE SIGN IN
-                    },
-                    child: Image.asset(
-                      'assets/icons/google.png',
-                      height: 28,
-                    ),
-                  ),
+                KButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .popAndPushNamed(AppRoutes.signupRoute);
+                  },
+                  iconData: Icons.abc_sharp,
+                  borderRadius: 32,
+                  fixedSize: const Size(110, 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 18),
             // Get Started Offline Button
             Center(
-              child: TextButton(
-                onPressed: () async {
+              child: InkWell(
+                onTap: () async {
                   final navigator = Navigator.of(context);
                   final setting =
                       await get<SettingsHiveService>().getSettings();
@@ -154,29 +144,21 @@ class LoginSignupButton extends StatelessWidget {
                 },
                 child: Text(
                   'Get Started Offline',
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 16,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? KColors.blackColor
-                            : KColors.whiteColor,
+                  style: Theme.of(context).textTheme.mBM.copyWith(
+                        color: AppColors(inverseDarkMode: true).onBackground,
                       ),
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 24),
             // Google Sign In Button
             Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Text(
-                  'By Continue, you’re agree to Musync Privacy policy and Terms of use.',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? KColors.blackColor
-                            : KColors.whiteColor,
-                      ),
-                ),
+              child: Text(
+                "By continuing, you’re agreeing to \n Musync Privacy Policy and Terms of use.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.lC.copyWith(
+                      color: AppColors(inverseDarkMode: true).onSurfaceVariant,
+                    ),
               ),
             ),
           ],
@@ -190,33 +172,34 @@ class LogoAndAppName extends StatelessWidget {
   const LogoAndAppName({
     super.key,
     required this.mediaQuerySize,
-    required this.isDark,
   });
 
   final Size mediaQuerySize;
-  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Logo
-          Image.asset(
-            'assets/splash_screen/Logo.png',
-            height: 80,
-          ),
-          // App Name
-          Text('Musync', style: Theme.of(context).textTheme.h4),
-          const SizedBox(height: 10),
-          // App Description
-          Text(
-            'Sync up and tune in with Musync - your ultimate music companion.',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bBL,
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo
+            SvgPicture.asset(
+              'assets/splash_screen/Logo.svg',
+              height: 80,
+            ),
+            // App Name
+            Text('Musync', style: Theme.of(context).textTheme.h4),
+            const SizedBox(height: 12),
+            // App Description
+            Text(
+              'Sync up and tune in with Musync - your ultimate music companion.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.mBL,
+            ),
+          ],
+        ),
       ),
     );
   }

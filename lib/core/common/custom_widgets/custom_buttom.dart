@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
 
 /// KButton - A Customizable Elevated Button for Flutter Applications.
@@ -102,9 +101,6 @@ class KButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           iconData != null ? Icon(iconData) : const SizedBox.shrink(),
-          (iconData != null || label != null)
-              ? const SizedBox(width: 10)
-              : const SizedBox.shrink(),
           label != null ? Text(label!) : const SizedBox.shrink(),
         ],
       ),

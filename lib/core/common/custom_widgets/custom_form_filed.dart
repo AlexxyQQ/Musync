@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/constants/global_constants.dart';
 
 /// KTextFormField - A Custom Text Form Field for Flutter Applications.
@@ -137,6 +138,7 @@ class KTextFormField extends StatelessWidget {
       focusNode: focusNode,
       decoration: InputDecoration(
         counterText: '',
+        errorMaxLines: 1,
         errorStyle: errorTextStyle ?? GlobalConstants.textStyle(),
         hintText: hintText,
         labelText: labelText,
@@ -150,8 +152,12 @@ class KTextFormField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.r),
+          borderSide: BorderSide(
+            color: AppColors()
+                .errorContainer, // Set the error border color to amber
+          ),
         ),
-        fillColor: fillColor ?? AppBackgroundColor.light,
+        fillColor: fillColor ?? AppColors().surfaceDim,
         filled: true,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 16.w,

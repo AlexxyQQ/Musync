@@ -35,7 +35,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       controllersMap: {
         'Email': _emailController,
       },
-      forgotPassword: true,
+      forgotPassword: false,
       title: 'Forgot Password',
       description: 'Its alright bud we got you.',
       buttonLabel: 'CONTINUE',

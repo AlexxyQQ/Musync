@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/core/utils/titlecase_extinsion.dart';
 
@@ -124,7 +125,9 @@ class _AuthComponentState extends State<AuthComponent> {
                     },
                     child: Text(
                       widget.redirectLabel!,
-                      style: Theme.of(context).textTheme.bBS,
+                      style: Theme.of(context).textTheme.bBS.copyWith(
+                            color: AppColors().onBackground,
+                          ),
                     ),
                   ),
                 )
@@ -139,9 +142,7 @@ class _AuthComponentState extends State<AuthComponent> {
               Container(
                 padding: EdgeInsets.only(top: 20.h, bottom: 20.h),
                 decoration: BoxDecoration(
-                  color: widget.darkMode != null && widget.darkMode!
-                      ? AppBackgroundColor.darkDim
-                      : AppBackgroundColor.dark,
+                  color: AppColors(inverseDarkMode: true).surface,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.r),
                     topRight: Radius.circular(20.r),
@@ -151,7 +152,6 @@ class _AuthComponentState extends State<AuthComponent> {
                   child: Column(
                     children: [
                       MyForm(
-                        darkMode: widget.darkMode,
                         controllersMap: widget.controllersMap,
                         fromKey: widget.fromKey,
                         optController: widget.optController,
@@ -173,22 +173,14 @@ class _AuthComponentState extends State<AuthComponent> {
                                     },
                                     child: Text(
                                       'Forgot Password?',
-                                      style: widget.darkMode != null &&
-                                              widget.darkMode!
-                                          ? Theme.of(context)
-                                              .textTheme
-                                              .lBS
-                                              .copyWith(
-                                                color: Colors.red,
-                                                // TODO: TO Change the colors
-                                              )
-                                          : Theme.of(context)
-                                              .textTheme
-                                              .lBS
-                                              .copyWith(
-                                                color: Colors.red,
-                                                // TODO: TO Change the colors
-                                              ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .lBS
+                                          .copyWith(
+                                            color:
+                                                AppColors(inverseDarkMode: true)
+                                                    .onSurface,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -200,8 +192,6 @@ class _AuthComponentState extends State<AuthComponent> {
                       KButton(
                         onPressed: widget.onPressed,
                         label: widget.buttonLabel,
-                        backgroundColor: AppBackgroundColor.light,
-                        foregroundColor: AppTextColor.dark,
                         fixedSize: Size(
                           MediaQuery.of(context).size.width * 0.87,
                           40.h,
@@ -210,9 +200,7 @@ class _AuthComponentState extends State<AuthComponent> {
                       ),
                       SizedBox(height: 20.h),
                       // Terms and Conditions and Privacy Policy
-                      TermsAndConditions(
-                        darkMode: widget.darkMode,
-                      ),
+                      TermsAndConditions(),
                     ],
                   ),
                 ),
@@ -257,10 +245,7 @@ class _AuthComponentState extends State<AuthComponent> {
 class TermsAndConditions extends StatelessWidget {
   const TermsAndConditions({
     super.key,
-    required this.darkMode,
   });
-
-  final bool? darkMode;
 
   @override
   Widget build(BuildContext context) {
@@ -270,51 +255,27 @@ class TermsAndConditions extends StatelessWidget {
         textAlign: TextAlign.center,
         text: TextSpan(
           text: 'By signing up, you agree to our ',
-          style: darkMode != null && darkMode!
-              ? Theme.of(context).textTheme.lC.copyWith(
-                    color: Colors.red,
-                    // TODO: TO Change the colors
-                  )
-              : Theme.of(context).textTheme.lC.copyWith(
-                    color: Colors.red,
-                    // TODO: TO Change the colors
-                  ),
+          style: Theme.of(context).textTheme.lC.copyWith(
+                color: AppColors(inverseDarkMode: true).onSurfaceVariant,
+              ),
           children: [
             TextSpan(
               text: 'Terms and Conditions',
-              style: darkMode != null && darkMode!
-                  ? Theme.of(context).textTheme.lC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      )
-                  : Theme.of(context).textTheme.lC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      ),
+              style: Theme.of(context).textTheme.lC.copyWith(
+                    color: AppColors(inverseDarkMode: true).onSurfaceVariant,
+                  ),
             ),
             TextSpan(
               text: ' and ',
-              style: darkMode != null && darkMode!
-                  ? Theme.of(context).textTheme.lC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      )
-                  : Theme.of(context).textTheme.lC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      ),
+              style: Theme.of(context).textTheme.lC.copyWith(
+                    color: AppColors(inverseDarkMode: true).onSurfaceVariant,
+                  ),
             ),
             TextSpan(
               text: 'Privacy Policy',
-              style: darkMode != null && darkMode!
-                  ? Theme.of(context).textTheme.lC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      )
-                  : Theme.of(context).textTheme.lC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      ),
+              style: Theme.of(context).textTheme.lC.copyWith(
+                    color: AppColors(inverseDarkMode: true).onSurfaceVariant,
+                  ),
             ),
           ],
         ),
@@ -324,7 +285,6 @@ class TermsAndConditions extends StatelessWidget {
 }
 
 class MyForm extends StatefulWidget {
-  final bool? darkMode;
   final Map<String, TextEditingController>? controllersMap;
   final List<TextEditingController>? optController;
   final String? formMessage;
@@ -333,7 +293,6 @@ class MyForm extends StatefulWidget {
 
   const MyForm({
     Key? key,
-    required this.darkMode,
     this.controllersMap,
     this.optController,
     this.formMessage,
@@ -358,15 +317,9 @@ class _MyFormState extends State<MyForm> {
           if (widget.formMessage != null)
             Text(
               widget.formMessage!,
-              style: widget.darkMode != null && widget.darkMode!
-                  ? Theme.of(context).textTheme.mC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      )
-                  : Theme.of(context).textTheme.mC.copyWith(
-                        color: Colors.red,
-                        // TODO: TO Change the colors
-                      ),
+              style: Theme.of(context).textTheme.mC.copyWith(
+                    color: AppColors(inverseDarkMode: true).onSurface,
+                  ),
             ),
           SizedBox(height: 20.h),
           // Form Fields
@@ -400,18 +353,16 @@ class _MyFormState extends State<MyForm> {
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: KTextFormField(
         hintText: entry.key,
-        fillColor: widget.darkMode != null && widget.darkMode!
-            ? AppBackgroundColor.dark
-            : AppBackgroundColor.light,
-        // contentStyle: widget.darkMode != null && widget.darkMode!
-        //     ? Theme.of(context).textTheme.f14W4L
-        //     : Theme.of(context).textTheme.f14W4D,
-        // hintTextStyle: widget.darkMode != null && widget.darkMode!
-        //     ? Theme.of(context).textTheme.f12W3LDi
-        //     : Theme.of(context).textTheme.f12W3D,
-        // errorTextStyle: Theme.of(context).textTheme.f12W3D.copyWith(
-        //       color: AppAccentColor.red,
-        //     ),
+        fillColor: AppColors().surfaceDim,
+        contentStyle: Theme.of(context).textTheme.mBS.copyWith(
+              color: AppColors().onSurface,
+            ),
+        hintTextStyle: Theme.of(context).textTheme.lBS.copyWith(
+              color: AppColors().onSurfaceVariant,
+            ),
+        errorTextStyle: Theme.of(context).textTheme.mC.copyWith(
+              color: AppColors().onErrorContainer,
+            ),
         controller: entry.value,
         obscureText: entry.key == 'Password'
             ? _obstructText
@@ -442,30 +393,22 @@ class _MyFormState extends State<MyForm> {
       return _obstructText
           ? Icon(
               Icons.visibility_rounded,
-              color: widget.darkMode != null && widget.darkMode!
-                  ? AppIconColor.light
-                  : AppIconColor.dark,
+              color: AppColors().onSurfaceVariant,
             )
           : Icon(
               Icons.visibility_off_rounded,
-              color: widget.darkMode != null && widget.darkMode!
-                  ? AppIconColor.light
-                  : AppIconColor.dark,
+              color: AppColors().onSurfaceVariant,
             );
     }
     if (key == 'Confirm Password') {
       return _obstructTextC
           ? Icon(
               Icons.visibility_rounded,
-              color: widget.darkMode != null && widget.darkMode!
-                  ? AppIconColor.light
-                  : AppIconColor.dark,
+              color: AppColors().onSurfaceVariant,
             )
           : Icon(
               Icons.visibility_off_rounded,
-              color: widget.darkMode != null && widget.darkMode!
-                  ? AppIconColor.light
-                  : AppIconColor.dark,
+              color: AppColors().onSurfaceVariant,
             );
     }
     return null;
@@ -475,25 +418,19 @@ class _MyFormState extends State<MyForm> {
     if (key == 'Email') {
       return Icon(
         Icons.email_outlined,
-        color: widget.darkMode != null && widget.darkMode!
-            ? AppIconColor.light
-            : AppIconColor.dark,
+        color: AppColors().onSurfaceVariant,
       );
     }
     if (key == 'Password' || key == 'Confirm Password') {
       return Icon(
         Icons.lock_outline_rounded,
-        color: widget.darkMode != null && widget.darkMode!
-            ? AppIconColor.light
-            : AppIconColor.dark,
+        color: AppColors().onSurfaceVariant,
       );
     }
     if (key == "Username") {
       return Icon(
         Icons.person_outline_rounded,
-        color: widget.darkMode != null && widget.darkMode!
-            ? AppIconColor.light
-            : AppIconColor.dark,
+        color: AppColors().onSurfaceVariant,
       );
     }
     return null;
@@ -578,9 +515,8 @@ class _MyFormState extends State<MyForm> {
           child: KTextFormField(
             textAlign: TextAlign.center,
             controller: controller,
-            fillColor: widget.darkMode != null && widget.darkMode!
-                ? AppBackgroundColor.dark
-                : AppBackgroundColor.light,
+            fillColor: AppColors(inverseDarkMode: true).surfaceContainerHighest,
+
             // contentStyle: widget.darkMode != null && widget.darkMode!
             //     ? Theme.of(context).textTheme.f14W4L
             //     : Theme.of(context).textTheme.f14W4D,
