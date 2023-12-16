@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
 
@@ -56,6 +57,7 @@ class KButton extends StatelessWidget {
   final IconData? iconData;
   final String? label;
   final double? borderRadius;
+  final String? svg;
   const KButton({
     super.key,
     required this.onPressed,
@@ -70,6 +72,7 @@ class KButton extends StatelessWidget {
     this.iconData,
     this.label,
     this.borderRadius,
+    this.svg,
   });
 
   @override
@@ -100,6 +103,13 @@ class KButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          svg != null
+              ? SvgPicture.asset(
+                  svg!,
+                  width: 20.w,
+                  height: 20.h,
+                )
+              : const SizedBox.shrink(),
           iconData != null ? Icon(iconData) : const SizedBox.shrink(),
           label != null ? Text(label!) : const SizedBox.shrink(),
         ],

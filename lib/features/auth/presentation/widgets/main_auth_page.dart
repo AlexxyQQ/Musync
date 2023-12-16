@@ -64,7 +64,7 @@ class LoginSignupButton extends StatelessWidget {
             // Welcome Text
             Text(
               'Welcome to Musync',
-              style: Theme.of(context).textTheme.h3.copyWith(
+              style: Theme.of(context).textTheme.h4.copyWith(
                     color: AppColors(inverseDarkMode: true).onBackground,
                   ),
             ),
@@ -110,7 +110,7 @@ class LoginSignupButton extends StatelessWidget {
                     Navigator.of(context)
                         .popAndPushNamed(AppRoutes.signupRoute);
                   },
-                  iconData: Icons.abc_sharp,
+                  svg: 'assets/icons/Google-Colored.svg',
                   borderRadius: 32,
                   fixedSize: const Size(110, 40),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -190,7 +190,7 @@ class LogoAndAppName extends StatelessWidget {
               height: 80,
             ),
             // App Name
-            Text('Musync', style: Theme.of(context).textTheme.h4),
+            Text('Musync', style: Theme.of(context).textTheme.h1),
             const SizedBox(height: 12),
             // App Description
             Text(

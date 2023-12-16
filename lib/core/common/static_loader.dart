@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
 
 import '../../config/constants/global_constants.dart';
 
@@ -48,9 +49,7 @@ class Loader extends StatelessWidget {
         width: 120.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppBackgroundColor.light.withOpacity(0.98)
-              : AppBackgroundColor.dark.withOpacity(0.98),
+          color: AppColors(inverseDarkMode: true).background.withOpacity(0.96),
         ),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
