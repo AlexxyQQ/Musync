@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:musync/core/utils/song_model_map_converter.dart';
 import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:on_audio_query_platform_interface/src/models/song_model.dart';
-
 import '../../../../config/constants/api/api_endpoints.dart';
 import '../../domain/entity/song_entity.dart';
 
@@ -11,34 +10,34 @@ class AppSongModel extends SongEntity {
   const AppSongModel({
     required int id,
     required String data,
-    required String? serverUrl,
-    required String? uri,
+    String? serverUrl,
+    String? uri,
     required String displayName,
     required String displayNameWOExt,
     required int size,
-    required String? album,
-    required String? albumId,
-    required String? artist,
-    required String? artistId,
-    required String? genre,
-    required String? genreId,
-    required int? bookmark,
-    required String? composer,
-    required int? dateAdded,
-    required int? dateModified,
-    required int? duration,
+    String? album,
+    String? albumId,
+    String? artist,
+    String? artistId,
+    String? genre,
+    String? genreId,
+    int? bookmark,
+    String? composer,
+    int? dateAdded,
+    int? dateModified,
+    int? duration,
     required String title,
-    required int? track,
+    int? track,
     required String fileExtension,
-    required bool? isAlarm,
-    required bool? isAudioBook,
-    required bool? isMusic,
-    required bool? isNotification,
-    required bool? isPodcast,
+    bool? isAlarm,
+    bool? isAudioBook,
+    bool? isMusic,
+    bool? isNotification,
+    bool? isPodcast,
     required bool isRingtone,
-    required String albumArt,
-    required String? albumArtUrl,
-    required bool? isPublic,
+    String? albumArt,
+    String? albumArtUrl,
+    bool? isPublic,
   }) : super(
           id: id,
           data: data,
@@ -105,10 +104,10 @@ class AppSongModel extends SongEntity {
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
       serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
-      albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
+      albumArt: map['album_art'] != null ? map['album_art'] as String : '',
       albumArtUrl:
-          map['albumArtUrl'] != null ? map['albumArtUrl'] as String : null,
-      isPublic: map['isPublic'] != null ? map['isPublic'] as bool : null,
+          map['album_art_url'] != null ? map['album_art_url'] as String : null,
+      isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
     );
   }
 
@@ -144,6 +143,9 @@ class AppSongModel extends SongEntity {
         '  - Is Music: $isMusic\n'
         '  - Is Notification: $isNotification\n'
         '  - Is Podcast: $isPodcast\n'
+        '  - Album Art: $albumArt\n'
+        '  - Album Art URL: $albumArtUrl\n'
+        '  - Is Public: $isPublic\n'
         '  - Is Ringtone: $isRingtone';
   }
 

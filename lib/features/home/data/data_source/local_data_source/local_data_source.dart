@@ -1,5 +1,6 @@
 
 import 'package:dartz/dartz.dart';
+import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/data/data_source/query_data_source.dart';
 import 'package:musync/features/home/data/model/app_album_model.dart';
@@ -43,12 +44,25 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
       List<AppSongModel> fetchedSongs = [];
 
       for (var song in allQuerySongs) {
+        final artworkPath =
+            await AlbumArtQuerySave(audioQuery: onAudioQuery).saveAlbumArt(
+          id: song.id,
+          type: ArtworkType.AUDIO,
+          fileName: song.displayNameWOExt,
+        );
+
+        final Map<String, dynamic> songMap = convertMap(
+          song.getMap,
+        );
+
+        songMap.addAll(
+          {
+            'album_art': artworkPath,
+          },
+        );
+
         fetchedSongs.add(
-          AppSongModel.fromModelMap(
-            convertMap(
-              song.getMap,
-            ),
-          ),
+          AppSongModel.fromModelMap(songMap),
         );
         onProgress(fetchedSongs.length);
         await Future.delayed(

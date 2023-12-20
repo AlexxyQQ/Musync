@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/usecase/usecase.dart';
@@ -27,8 +29,11 @@ class GetAllSongsUseCase extends UseCase<List<SongEntity>, GetQueryParams> {
         (l) => Left(l),
         (r) async {
           final List<SongHiveModel> convertedHiveSongs =
-              r.map((e) => e.toHiveModel()).toList();
+              SongEntity.toListHiveModel(r);
           await queryHiveService.addSongs(convertedHiveSongs);
+          final data = await queryHiveService.getAllSongs();
+          log('data: $data', name: 'GetAllSongsUseCase');
+
           return Right(r);
         },
       );

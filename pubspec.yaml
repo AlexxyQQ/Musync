@@ -69,6 +69,7 @@ flutter:
     - assets/icons/
     - assets/splash_screen/
     - assets/lottie/
+    - assets/iconography/
 
   fonts:
     - family: Manrope

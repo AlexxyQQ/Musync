@@ -61,7 +61,7 @@ class SongEntity extends Equatable {
 
   final bool isRingtone;
 
-  final String albumArt;
+  final String? albumArt;
 
   final String? albumArtUrl;
 
@@ -74,7 +74,7 @@ class SongEntity extends Equatable {
     required this.displayName,
     required this.displayNameWOExt,
     required this.size,
-    required this.albumArt,
+    this.albumArt,
     this.album,
     this.serverUrl,
     this.albumId,
@@ -234,10 +234,10 @@ class SongEntity extends Equatable {
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
       serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
-      albumArt: map['albumArt'] != null ? map['albumArt'] as String : '',
+      albumArt: map['album_art'] != null ? map['album_art'] as String : '',
       albumArtUrl:
-          map['albumArtUrl'] != null ? map['albumArtUrl'] as String : null,
-      isPublic: map['isPublic'] != null ? map['isPublic'] as bool : null,
+          map['album_art_url'] != null ? map['album_art_url'] as String : null,
+      isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
     );
   }
 
@@ -275,6 +275,7 @@ class SongEntity extends Equatable {
         '  - Is Music: $isMusic\n'
         '  - Is Notification: $isNotification\n'
         '  - Is Podcast: $isPodcast\n'
+        '  - Album Art: $albumArt\n'
         '  - Is Ringtone: $isRingtone';
   }
 

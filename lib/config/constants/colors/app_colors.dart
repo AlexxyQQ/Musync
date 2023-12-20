@@ -106,8 +106,6 @@ class AppColors {
       SchedulerBinding.instance.platformDispatcher.platformBrightness ==
           Brightness.dark;
 
-  var change = false;
-
   Color get background => (_isDarkMode != inverseDarkMode)
       ? AppDarkColor.background
       : AppLightColor.background;

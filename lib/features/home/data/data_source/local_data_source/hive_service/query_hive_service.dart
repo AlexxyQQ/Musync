@@ -1,3 +1,4 @@
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
@@ -6,41 +7,75 @@ import 'package:musync/features/home/data/model/hive/folder_hive_model.dart';
 import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 
 class QueryHiveService {
-  Box<SongHiveModel>? _songsBox;
-
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(SongHiveModelAdapter());
     Hive.registerAdapter(ArtistHiveModelAdapter());
     Hive.registerAdapter(AlbumHiveModelAdapter());
     Hive.registerAdapter(FolderHiveModelAdapter());
-
-    _songsBox = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
   }
 
   // ------------------ All Songs Queries ------------------ //
   Future<List<SongHiveModel>> getAllSongs() async {
-    return _songsBox?.values.toList() ?? [];
-  }
-
-  Future<void> addSong(SongHiveModel song) async {
-    await _songsBox?.add(song);
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    var songs = box.values.toList();
+    return songs;
   }
 
   Future<void> addSongs(List<SongHiveModel> songs) async {
-    await _songsBox?.addAll(songs);
-  }
-
-  Future<void> updateSongs(List<SongHiveModel> songs) async {
-    await _songsBox?.putAll({for (var e in songs) e.id: e});
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    for (var song in songs) {
+      if (box.containsKey(song.id)) {
+        var existingSong = box.get(song.id);
+        var updatedSong = existingSong!
+            .copyWith(serverUrl: song.serverUrl, albumArtUrl: song.albumArtUrl);
+        await box.put(song.id, updatedSong);
+      } else {
+        await box.put(song.id, song);
+      }
+    }
   }
 
   Future<void> deleteSong(int id) async {
-    await _songsBox?.delete(id);
+    var songBox = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    // var albumBox = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+
+    // var albumWithSongs = await getAllAlbumsWithSongs();
+    // for (var album in albumWithSongs.keys) {
+    //   for (var song in albumWithSongs[album]!) {
+    //     if (song.id == id) {
+    //       await albumBox.delete(id);
+    //       return true;
+    //     }
+    //   }
+    // }
+
+    // var folderWithSongs = await getAllFoldersWithSongs();
+    // for (var folder in folderWithSongs.keys) {
+    //   for (var song in folderWithSongs[folder]!) {
+    //     if (song.id == id) {
+    //       await songBox.delete(id);
+    //       return true;
+    //     }
+    //   }
+    // }
+
+    // var artistWithSongs = await getAllArtistsWithSongs();
+    // for (var artist in artistWithSongs.keys) {
+    //   for (var song in artistWithSongs[artist]!) {
+    //     if (song.id == id) {
+    //       await songBox.delete(id);
+    //       return true;
+    //     }
+    //   }
+    // }
+
+    await songBox.delete(id);
   }
 
   Future<void> deleteAllSongs() async {
-    await _songsBox?.clear();
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    await box.clear();
   }
 
   // ------------------ All Albums Queries ------------------ //

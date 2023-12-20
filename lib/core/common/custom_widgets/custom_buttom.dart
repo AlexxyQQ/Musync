@@ -77,6 +77,40 @@ class KButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> buildRowChildren() {
+      List<Widget> widgets = [];
+
+      // Helper function to add widget and a spacer
+      void addWidgetWithSpacer(Widget widget) {
+        if (widgets.isNotEmpty) {
+          widgets.add(const SizedBox(width: 12)); // Spacer
+        }
+        widgets.add(widget);
+      }
+
+      // Add SVG if not null
+      if (svg != null) {
+        addWidgetWithSpacer(SvgPicture.asset(
+          svg!,
+          width: 20.w,
+          height: 20.h,
+          color: foregroundColor ?? AppColors().onSurface,
+        ));
+      }
+
+      // Add Icon if not null
+      if (iconData != null) {
+        addWidgetWithSpacer(Icon(iconData));
+      }
+
+      // Add Text if not null
+      if (label != null) {
+        addWidgetWithSpacer(Text(label!));
+      }
+
+      return widgets;
+    }
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -102,17 +136,7 @@ class KButton extends StatelessWidget {
       onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          svg != null
-              ? SvgPicture.asset(
-                  svg!,
-                  width: 20.w,
-                  height: 20.h,
-                )
-              : const SizedBox.shrink(),
-          iconData != null ? Icon(iconData) : const SizedBox.shrink(),
-          label != null ? Text(label!) : const SizedBox.shrink(),
-        ],
+        children: buildRowChildren(),
       ),
     );
   }

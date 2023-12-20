@@ -59,7 +59,7 @@ class LastPage extends StatelessWidget {
             final navigator = Navigator.of(context);
 
             navigator.pushNamedAndRemoveUntil(
-              AppRoutes.loginRoute,
+              AppRoutes.homeRoute,
               (route) => false,
             );
           },

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -132,7 +131,6 @@ class LoginSignupButton extends StatelessWidget {
                   );
                   final setting2 =
                       await get<SettingsHiveService>().getSettings();
-                  log(setting2.goHome.toString(), name: "SettingsState");
                   // await ref.read(songProvider).permission();
                   navigator.pushNamedAndRemoveUntil(
                     AppRoutes.homeRoute,

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
@@ -13,7 +12,6 @@ class SettingsHiveService {
   // ------------------ All Settings Queries ------------------ //
 
   Future<void> addSettings(AppSettingsHiveModel settings) async {
-    log('SettingsHiveService: getSettings: $settings');
     var box = await Hive.openBox<AppSettingsHiveModel>(
       HiveTableConstant.appSettingsBox,
     );

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,6 @@ import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/core/utils/titlecase_extinsion.dart';
 
-import '../../../../config/constants/global_constants.dart';
 import '../../../../config/route/routes.dart';
 import '../../../../core/common/custom_widgets/custom_buttom.dart';
 import '../../../../core/common/custom_widgets/custom_form_filed.dart';
@@ -200,7 +198,7 @@ class _AuthComponentState extends State<AuthComponent> {
                       ),
                       SizedBox(height: 20.h),
                       // Terms and Conditions and Privacy Policy
-                      TermsAndConditions(),
+                      const TermsAndConditions(),
                     ],
                   ),
                 ),
@@ -438,7 +436,6 @@ class _MyFormState extends State<MyForm> {
 
   onSuffixTap(String? key) {
     if (key == 'Password') {
-      log('Password');
       setState(() {
         _obstructText = !_obstructText;
       });

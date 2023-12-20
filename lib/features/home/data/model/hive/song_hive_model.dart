@@ -442,6 +442,8 @@ class SongHiveModel {
         '  - ID: $id\n'
         '  - Data: $data\n'
         '  - Server URL: $serverUrl\n'
+        '  - Album Art: $albumArt\n'
+        '  - Album Art URL: $albumArtUrl\n'
         '  - URI: $uri\n'
         '  - Display Name: $displayName\n'
         '  - Display Name Without Extension: $displayNameWOExt\n'
