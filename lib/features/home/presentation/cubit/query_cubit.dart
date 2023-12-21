@@ -4,6 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
+import 'package:musync/features/home/domain/entity/recently_played_entity.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -22,6 +25,8 @@ class QueryCubit extends Cubit<HomeState> {
   final GetAllFoldersUsecase getAllFoldersUsecase;
   final SettingsHiveService settingsHiveService;
   final QueryHiveService queryHiveService;
+  final GetRecentlyPlayedUsecase getRecentlyPlayedUsecase;
+  final UpdateRecentlyPlayedUsecase updateRecentlyPlayedUsecase;
 
   QueryCubit({
     required this.getAllSongsUseCase,
@@ -30,6 +35,8 @@ class QueryCubit extends Cubit<HomeState> {
     required this.getAllFoldersUsecase,
     required this.settingsHiveService,
     required this.queryHiveService,
+    required this.getRecentlyPlayedUsecase,
+    required this.updateRecentlyPlayedUsecase,
   }) : super(HomeState.initial()) {
     init();
   }
@@ -41,6 +48,7 @@ class QueryCubit extends Cubit<HomeState> {
     await getAllAlbums(first: settings.firstTime, refetch: true);
     await getAllArtists(first: settings.firstTime, refetch: true);
     await getAllFolders(first: settings.firstTime, refetch: true);
+    await getRecentlyPlayedSongs();
     // Update Settings
     await get<SettingsHiveService>().updateSettings(
       settings.copyWith(
@@ -83,7 +91,6 @@ class QueryCubit extends Cubit<HomeState> {
       );
 
       data.fold((l) => Left(l), (r) {
-        log('SongsLLL: ${r.length}');
         emit(
           state.copyWith(
             isLoading: false,
@@ -273,6 +280,92 @@ class QueryCubit extends Cubit<HomeState> {
             error: null,
             count: state.count,
             folders: updatedFolders,
+          ),
+        );
+      });
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: false,
+          error: AppErrorHandler(message: e.toString(), status: false),
+          count: state.count,
+        ),
+      );
+    }
+  }
+
+  Future<void> getRecentlyPlayedSongs() async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        isSuccess: false,
+        error: null,
+      ),
+    );
+    try {
+      final data = await getRecentlyPlayedUsecase.call(null);
+
+      data.fold((l) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            recentlyPlayed: RecentlyPlayedEntity.empty(),
+            count: state.count,
+          ),
+        );
+      }, (r) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            error: null,
+            count: state.count,
+            recentlyPlayed: r,
+          ),
+        );
+      });
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          error: null,
+          count: state.count,
+          recentlyPlayed: RecentlyPlayedEntity.empty(),
+        ),
+      );
+    }
+  }
+
+  Future<void> updateRecentlyPlayedSongs({required SongEntity song}) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        isSuccess: false,
+        error: null,
+      ),
+    );
+    try {
+      final data = await updateRecentlyPlayedUsecase.call(song);
+
+      data.fold((l) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            isSuccess: false,
+            error: l,
+            count: state.count,
+          ),
+        );
+      }, (r) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            error: null,
+            count: state.count,
           ),
         );
       });

@@ -15,4 +15,7 @@ class HiveTableConstant {
 
   static const int folderTableId = 4;
   static const String folderBox = "folderBox";
+
+  static const int recentlyPlayedTableId = 5;
+  static const String recentlyPlayedBox = "recentlyPlayedBox";
 }

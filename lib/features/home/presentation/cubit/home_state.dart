@@ -7,6 +7,7 @@ import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/artist_entity.dart';
 import 'package:musync/features/home/domain/entity/folder_entity.dart';
+import 'package:musync/features/home/domain/entity/recently_played_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 class HomeState {
@@ -16,6 +17,7 @@ class HomeState {
   final List<AlbumEntity> albums;
   final List<ArtistEntity> artists;
   final List<FolderEntity> folders;
+  final RecentlyPlayedEntity? recentlyPlayed;
   final bool isSuccess;
   final int count;
   HomeState({
@@ -25,6 +27,7 @@ class HomeState {
     required this.albums,
     required this.artists,
     required this.folders,
+    this.recentlyPlayed,
     required this.isSuccess,
     required this.count,
   });
@@ -49,6 +52,7 @@ class HomeState {
     List<AlbumEntity>? albums,
     List<ArtistEntity>? artists,
     List<FolderEntity>? folders,
+    RecentlyPlayedEntity? recentlyPlayed,
     bool? isSuccess,
     int? count,
   }) {
@@ -59,6 +63,7 @@ class HomeState {
       albums: albums ?? this.albums,
       artists: artists ?? this.artists,
       folders: folders ?? this.folders,
+      recentlyPlayed: recentlyPlayed ?? this.recentlyPlayed,
       isSuccess: isSuccess ?? this.isSuccess,
       count: count ?? this.count,
     );
@@ -66,7 +71,7 @@ class HomeState {
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, isSuccess: $isSuccess, count: $count)';
+    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, recentlyPlayed: $recentlyPlayed, isSuccess: $isSuccess, count: $count)';
   }
 
   @override
@@ -79,6 +84,7 @@ class HomeState {
         listEquals(other.albums, albums) &&
         listEquals(other.artists, artists) &&
         listEquals(other.folders, folders) &&
+        other.recentlyPlayed == recentlyPlayed &&
         other.isSuccess == isSuccess &&
         other.count == count;
   }
@@ -91,6 +97,7 @@ class HomeState {
         albums.hashCode ^
         artists.hashCode ^
         folders.hashCode ^
+        recentlyPlayed.hashCode ^
         isSuccess.hashCode ^
         count.hashCode;
   }
@@ -103,6 +110,7 @@ class HomeState {
       'albums': albums.map((x) => x.toMap()).toList(),
       'artists': artists.map((x) => x.toMap()).toList(),
       'folders': folders.map((x) => x.toMap()).toList(),
+      'recentlyPlayed': recentlyPlayed?.toMap(),
       'isSuccess': isSuccess,
       'count': count,
     };
@@ -134,6 +142,10 @@ class HomeState {
           (x) => FolderEntity.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      recentlyPlayed: map['recentlyPlayed'] != null
+          ? RecentlyPlayedEntity.fromMap(
+              map['recentlyPlayed'] as Map<String, dynamic>)
+          : null,
       isSuccess: map['isSuccess'] as bool,
       count: map['count'] as int,
     );

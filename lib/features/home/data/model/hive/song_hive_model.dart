@@ -469,4 +469,79 @@ class SongHiveModel {
         '  - Is Podcast: $isPodcast\n'
         '  - Is Ringtone: $isRingtone';
   }
+
+  // from map
+  // factory SongHiveModel.fromMap(Map<String, dynamic> map) {
+  //   return SongHiveModel(
+  //     id: map['id'] as int,
+  //     data: map['data'] as String,
+  //     uri: map['uri'] as String,
+  //     displayName: map['display_name'] as String,
+  //     displayNameWOExt: map['display_name_wo_ext'] as String,
+  //     size: map['size'] as int,
+  //     album: map['album'] as String,
+  //     albumId: map['album_id'] as String,
+  //     artist: map['artist'] as String,
+  //     artistId: map['artist_id'] as String,
+  //     genre: map['genre'] as String,
+  //     genreId: map['genre_id'] as String,
+  //     bookmark: map['bookmark'] as int,
+  //     composer: map['composer'] as String,
+  //     dateAdded: map['date_added'] as int,
+  //     dateModified: map['date_modified'] as int,
+  //     duration: map['duration'] as int,
+  //     title: map['title'] as String,
+  //     track: map['track'] as int,
+  //     fileExtension: map['file_extension'] as String,
+  //     isAlarm: map['is_alarm'] as bool,
+  //     isAudioBook: map['is_audiobook'] as bool,
+  //     isMusic: map['is_music'] as bool,
+  //     isNotification: map['is_notification'] as bool,
+  //     isPodcast: map['is_podcast'] as bool,
+  //     isRingtone: map['is_ringtone'] as bool,
+  //     serverUrl: map['server_url'] as String,
+  //     albumArt: map['album_art'] as String,
+  //     albumArtUrl: map['album_art_url'] as String,
+  //     isPublic: map['is_public'] as bool,
+  //   );
+  // }
+
+  factory SongHiveModel.fromMap(Map<String, dynamic> map) {
+    return SongHiveModel(
+      id: map['id'] as int,
+      data: map['data'] as String,
+      albumArt: map['album_art'] as String,
+      albumArtUrl: map['album_art_url'],
+      serverUrl: map['server_url'] as String,
+      uri: map['uri'] != null ? map['uri'] as String : null,
+      displayName: map['display_name'] as String,
+      displayNameWOExt: map['display_name_wo_ext'] as String,
+      size: map['size'] as int,
+      album: map['album'] != null ? map['album'] as String : null,
+      albumId: map['album_id'] != null ? map['album_id'] as String : null,
+      artist: map['artist'] != null ? map['artist'] as String : null,
+      artistId: map['artist_id'] != null ? map['artist_id'] as String : null,
+      genre: map['genre'] != null ? map['genre'] as String : null,
+      genreId: map['genre_id'] != null ? map['genre_id'] as String : null,
+      bookmark: map['bookmark'] != null ? map['bookmark'] as int : null,
+      composer: map['composer'] != null ? map['composer'] as String : null,
+      dateAdded: map['date_added'] != null ? map['date_added'] as int : null,
+      dateModified:
+          map['date_modified'] != null ? map['date_modified'] as int : null,
+      duration: map['duration'] != null ? map['duration'] as int : null,
+      title: map['title'] as String,
+      track: map['track'] != null ? map['track'] as int : null,
+      fileExtension: map['file_extension'] as String,
+      isAlarm: map['is_alarm'] != null ? map['is_alarm'] as bool : null,
+      isAudioBook:
+          map['is_audio_book'] != null ? map['is_audio_book'] as bool : null,
+      isMusic: map['is_music'] != null ? map['is_music'] as bool : null,
+      isNotification: map['is_notification'] != null
+          ? map['is_notification'] as bool
+          : null,
+      isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
+      isRingtone: map['is_ringtone'] as bool,
+      isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
+    );
+  }
 }

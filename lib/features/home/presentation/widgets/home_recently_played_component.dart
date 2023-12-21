@@ -6,6 +6,7 @@ import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -137,9 +138,11 @@ class _HomeRecentlyPayedComponentState
             if (state.isLoading) {
               return SizedBox(height: 118, child: _buildShimmerEffect(context));
             } else if (state.isSuccess) {
-              if (state.albums.isEmpty) {
+              if (state.recentlyPlayed == null ||
+                  state.recentlyPlayed!.songs.isEmpty) {
                 return const SizedBox.shrink();
               } else {
+                final List<SongEntity> songs = state.recentlyPlayed!.songs;
                 return Column(
                   children: [
                     // Section Title
@@ -170,7 +173,7 @@ class _HomeRecentlyPayedComponentState
                         scrollDirection: Axis.horizontal,
                         itemBuilder: ((context, index) {
                           // Fetching album cover from the list of songs
-                          var albumCover = state.albums[index].songs!
+                          var albumCover = songs
                               .firstWhere(
                                 (song) => song.albumArt != null,
                               )
@@ -186,8 +189,12 @@ class _HomeRecentlyPayedComponentState
                           return Container(
                             width: 250,
                             height: 110,
+                            clipBehavior: Clip.antiAlias,
                             margin: const EdgeInsets.only(
-                                bottom: 8, right: 8, left: 8,),
+                              bottom: 8,
+                              right: 8,
+                              left: 8,
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -274,8 +281,7 @@ class _HomeRecentlyPayedComponentState
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          state.albums[index].songs!.first
-                                              .title,
+                                          songs.first.title,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.start,
                                           maxLines: 1,
@@ -288,7 +294,7 @@ class _HomeRecentlyPayedComponentState
                                               ),
                                         ),
                                         Text(
-                                          "${state.albums[index].artist}",
+                                          "${songs[index].artist}",
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.start,
                                           maxLines: 1,
@@ -309,9 +315,8 @@ class _HomeRecentlyPayedComponentState
                           );
                         }),
                         // only show 10 items
-                        itemCount: state.albums.length > 10
-                            ? 10
-                            : state.albums.length,
+                        itemCount:
+                            state.albums.length > 10 ? 10 : state.albums.length,
                       ),
                     ),
                   ],

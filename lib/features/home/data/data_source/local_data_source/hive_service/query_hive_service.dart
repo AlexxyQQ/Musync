@@ -3,6 +3,7 @@ import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
 import 'package:musync/features/home/data/model/hive/artist_hive_model.dart';
 import 'package:musync/features/home/data/model/hive/folder_hive_model.dart';
+import 'package:musync/features/home/data/model/hive/recently_played_hive_model.dart';
 import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 
 class QueryHiveService {
@@ -12,6 +13,7 @@ class QueryHiveService {
     Hive.registerAdapter(ArtistHiveModelAdapter());
     Hive.registerAdapter(AlbumHiveModelAdapter());
     Hive.registerAdapter(FolderHiveModelAdapter());
+    Hive.registerAdapter(RecentlyPlayedHiveModelAdapter());
   }
 
   // ------------------ All Songs Queries ------------------ //
@@ -187,5 +189,36 @@ class QueryHiveService {
     final foldersBox =
         await Hive.openBox<FolderHiveModel>(HiveTableConstant.folderBox);
     await foldersBox.clear();
+  }
+
+  // ------------------ All Recently Played Queries ------------------ //
+
+  Future<RecentlyPlayedHiveModel> getRecentlyPlayed() async {
+    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
+      HiveTableConstant.recentlyPlayedBox,
+    );
+    return recentlyPlayedBox.get(0)!;
+  }
+
+  Future<void> addRecentlyPlayed(RecentlyPlayedHiveModel recentlyPlayed) async {
+    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
+      HiveTableConstant.recentlyPlayedBox,
+    );
+    await recentlyPlayedBox.add(recentlyPlayed);
+  }
+
+  Future<void> updateRecentlyPlayed(
+      RecentlyPlayedHiveModel recentlyPlayed,) async {
+    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
+      HiveTableConstant.recentlyPlayedBox,
+    );
+    await recentlyPlayedBox.put(0, recentlyPlayed);
+  }
+
+  Future<void> deleteRecentlyPlayed() async {
+    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
+      HiveTableConstant.recentlyPlayedBox,
+    );
+    await recentlyPlayedBox.delete(0);
   }
 }

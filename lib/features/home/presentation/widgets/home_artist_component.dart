@@ -112,8 +112,6 @@ class HomeArtistComponent extends StatelessWidget {
                           )
                           .albumArt;
 
-                      log("DD:${state.artists[index].songs}");
-
                       return Container(
                         height: 150,
                         width: 150,

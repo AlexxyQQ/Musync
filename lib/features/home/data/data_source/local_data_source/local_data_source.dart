@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
@@ -33,10 +35,33 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
       );
 
       if (first == false) {
+        final List<AppSongModel> fetchedSongs = [];
+        // get album art for all songs
+        for (var song in allQuerySongs) {
+          final artworkPath =
+              await AlbumArtQuerySave(audioQuery: onAudioQuery).saveAlbumArt(
+            id: song.id,
+            type: ArtworkType.AUDIO,
+            fileName: song.displayNameWOExt,
+          );
+
+          final Map<String, dynamic> songMap = convertMap(
+            song.getMap,
+          );
+
+          songMap.addAll(
+            {
+              'album_art': artworkPath,
+            },
+          );
+
+          fetchedSongs.add(
+            AppSongModel.fromModelMap(songMap),
+          );
+        }
+
         return Right(
-          AppSongModel.fromListSongModel(
-            allQuerySongs,
-          ),
+          fetchedSongs,
         );
       }
 
@@ -70,7 +95,6 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
           ),
         );
       }
-
       return Right(fetchedSongs);
     } catch (e) {
       return Left(

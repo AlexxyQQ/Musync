@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/failure/error_handler.dart';
@@ -21,11 +23,12 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
     bool? first,
     bool? refetch,
   }) async {
-    return await audioQueryDataSource.getAllSongs(
+    final data = await audioQueryDataSource.getAllSongs(
       onProgress: onProgress,
       first: first,
       refetch: refetch,
     );
+    return data;
   }
 
   @override
