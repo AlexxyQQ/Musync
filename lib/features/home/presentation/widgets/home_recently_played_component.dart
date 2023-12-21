@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/constants/colors/primitive_colors.dart';
+import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
@@ -203,32 +204,13 @@ class _HomeRecentlyPayedComponentState
                                 // Album Cover
                                 Positioned(
                                   right: 0,
-                                  child: Container(
+                                  child: SongArtWork(
+                                    song: songs.firstWhere(
+                                      (song) => song.albumArt != null,
+                                    ),
                                     height: 110,
                                     width: 150,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      image: DecorationImage(
-                                        image: albumCover != null
-                                            ? Image.file(
-                                                io.File(albumCover),
-                                                errorBuilder: (
-                                                  context,
-                                                  error,
-                                                  stackTrace,
-                                                ) {
-                                                  return Image.asset(
-                                                    'assets/splash_screen/icon.png',
-                                                    fit: BoxFit.cover,
-                                                  );
-                                                },
-                                              ).image
-                                            : const AssetImage(
-                                                'assets/splash_screen/icon.png',
-                                              ), // Default cover
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                    borderRadius: 12,
                                   ),
                                 ),
                                 // Gradient

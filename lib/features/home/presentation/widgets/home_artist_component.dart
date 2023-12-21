@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
@@ -119,29 +120,13 @@ class HomeArtistComponent extends StatelessWidget {
                         child: Column(
                           children: [
                             // Album Cover
-                            Container(
+                            SongArtWork(
+                              song: state.artists[index].songs!.firstWhere(
+                                (song) => song.albumArt != null,
+                              ),
                               height: 100,
                               width: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(500),
-                                image: DecorationImage(
-                                  image: albumCover != null
-                                      ? Image.file(
-                                          File(albumCover),
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Image.asset(
-                                              'assets/splash_screen/icon.png',
-                                              fit: BoxFit.cover,
-                                            );
-                                          },
-                                        ).image
-                                      : const AssetImage(
-                                          'assets/splash_screen/icon.png',
-                                        ), // Default cover
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                              borderRadius: 500,
                             ),
                             const SizedBox(height: 8),
                             // Album Details
