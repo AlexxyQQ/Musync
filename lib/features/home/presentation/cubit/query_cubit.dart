@@ -380,4 +380,8 @@ class QueryCubit extends Cubit<HomeState> {
       );
     }
   }
+
+  void update(HomeState copyWith) {
+    emit(copyWith);
+  }
 }

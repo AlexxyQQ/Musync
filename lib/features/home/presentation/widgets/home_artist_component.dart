@@ -126,9 +126,18 @@ class HomeArtistComponent extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(500),
                                 image: DecorationImage(
                                   image: albumCover != null
-                                      ? Image.file(File(albumCover)).image
+                                      ? Image.file(
+                                          File(albumCover),
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/splash_screen/icon.png',
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
+                                        ).image
                                       : const AssetImage(
-                                          'assets/images/default_cover.jpg',
+                                          'assets/splash_screen/icon.png',
                                         ), // Default cover
                                   fit: BoxFit.cover,
                                 ),

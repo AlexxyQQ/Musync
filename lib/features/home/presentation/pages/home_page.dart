@@ -28,11 +28,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<QueryCubit, HomeState>(
       builder: (context, state) {
-        log('fetchedSongs: ${state.isSuccess}', name: 'getAllAlbums');
-        log('fetchedSongs: ${state.artists}', name: 'getAllArtist');
-        log('fetchedSongs: ${state.folders}', name: 'getAllFolders');
-        log('fetchedSongs: ${state.songs}', name: 'getAllSongs');
-
         final bool noAnyData = state.albums.isEmpty &&
             state.artists.isEmpty &&
             state.folders.isEmpty &&

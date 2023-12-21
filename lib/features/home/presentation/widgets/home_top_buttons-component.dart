@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 
 class TopButtons extends StatelessWidget {
@@ -27,7 +28,9 @@ class TopButtons extends StatelessWidget {
         ),
         // Recent Button
         KButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.recentPageRoute);
+          },
           label: 'Recent',
           backgroundColor: AppColors().secondaryContainer,
           foregroundColor: AppColors().onSecondaryContainer,
@@ -37,7 +40,9 @@ class TopButtons extends StatelessWidget {
         ),
         // Folder Button
         KButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.folderPageRoute);
+          },
           label: 'Folder',
           backgroundColor: AppColors().accentContainer,
           foregroundColor: AppColors().onAccentContainer,
