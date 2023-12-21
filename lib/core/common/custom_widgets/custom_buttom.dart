@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/core/utils/app_text_theme_extension.dart';
+import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 
 /// KButton - A Customizable Elevated Button for Flutter Applications.
 ///

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/route/routes.dart';
-import 'package:musync/core/utils/app_text_theme_extension.dart';
+import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/injection/app_injection_container.dart';
 
 import '../../../../core/common/custom_widgets/custom_snackbar.dart';

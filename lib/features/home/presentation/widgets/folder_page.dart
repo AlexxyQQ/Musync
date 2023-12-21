@@ -6,7 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
-import 'package:musync/core/utils/app_text_theme_extension.dart';
+import 'package:musync/core/common/song_list_tile.dart';
+import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/domain/entity/folder_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
@@ -40,6 +41,9 @@ class _FolderPageState extends State<FolderPage> {
   void initState() {
     super.initState();
 
+    // Clears the search controller
+    _searchController.clear();
+
     // Adds a listener to the search controller
     _searchController.addListener(() {
       // Calls _filterFolder method whenever the text in the search controller changes
@@ -65,11 +69,7 @@ class _FolderPageState extends State<FolderPage> {
     // Checks if the search query is empty
     if (query.isEmpty) {
       // If empty, reset the folders to the original list
-      BlocProvider.of<QueryCubit>(context).update(
-        state.copyWith(
-          folders: _folders,
-        ),
-      );
+      _folders = BlocProvider.of<QueryCubit>(context).state.folders;
       // if the search query is empty, set isSearching to false and return
       isSearching = false;
       return;
@@ -79,7 +79,8 @@ class _FolderPageState extends State<FolderPage> {
     isSearching = true;
 
     // Filters the folders based on the search query
-    final List<FolderEntity> filteredFolders = _folders.where((folder) {
+    final List<FolderEntity> filteredFolders =
+        BlocProvider.of<QueryCubit>(context).state.folders.where((folder) {
       // Converts folder name and search query to lowercase for case-insensitive comparison
       final folderName = folder.folderName.toLowerCase();
       final searchLower = query.toLowerCase();
@@ -95,11 +96,13 @@ class _FolderPageState extends State<FolderPage> {
     }).toList();
 
     // Updates the state with the filtered folders
-    BlocProvider.of<QueryCubit>(context).update(
-      state.copyWith(
-        folders: filteredFolders,
-      ),
-    );
+    // BlocProvider.of<QueryCubit>(context).update(
+    //   state.copyWith(
+    //     folders: filteredFolders,
+    //   ),
+    // );
+
+    _folders = filteredFolders;
 
     // Calls setState to update the UI
     setState(() {});
@@ -159,9 +162,9 @@ class _FolderPageState extends State<FolderPage> {
                   ListView.builder(
                     shrinkWrap: true, // Allows the ListView to hug its content
                     itemBuilder: (context, index) {
-                      return _buildFolderItem(state.folders[index]);
+                      return _buildFolderItem(_folders[index]);
                     },
-                    itemCount: state.folders.length,
+                    itemCount: _folders.length,
                   ),
                   // Divider
                   Divider(color: AppColors().onSurfaceVariant),
@@ -181,7 +184,7 @@ class _FolderPageState extends State<FolderPage> {
               );
             } else {
               // Display normal folder list when not searching
-              return _buildFolderList(state.folders);
+              return _buildFolderList(_folders);
             }
           },
         ),
@@ -308,47 +311,8 @@ class _FolderPageState extends State<FolderPage> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final song = songs[index];
-        return ListTile(
-          minLeadingWidth: 0,
-          leading: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(500),
-              image: DecorationImage(
-                image: song.albumArt != null
-                    ? Image.file(
-                        File(song.albumArt ?? ''),
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/splash_screen/icon.png',
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ).image
-                    : const AssetImage(
-                        'assets/splash_screen/icon.png',
-                      ), // Default cover
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          title: Text(
-            song.displayNameWOExt,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.mBM.copyWith(
-                  color: AppColors().onSurface,
-                ),
-          ),
-          subtitle: Text(
-            "${song.artist}",
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.lBM.copyWith(
-                  color: AppColors().onSurfaceVariant,
-                ),
-          ),
+        return SongListTile(
+          song: song,
         );
       },
       itemCount: songs.length,

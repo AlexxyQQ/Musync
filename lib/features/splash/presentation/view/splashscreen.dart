@@ -5,7 +5,7 @@ import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
-import 'package:musync/core/utils/app_text_theme_extension.dart';
+import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

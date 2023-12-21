@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/core/utils/app_text_theme_extension.dart';
+import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 
 class OnBoardPageComponent extends StatelessWidget {
   final String lottieUrl;
