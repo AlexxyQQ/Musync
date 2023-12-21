@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:musync/features/auth/presentation/view/forgot_password_page.dart';
 import 'package:musync/features/home/presentation/pages/home_page.dart';
 import 'package:musync/features/home/presentation/widgets/folder_page.dart';
-import 'package:musync/features/home/presentation/widgets/recent_page.dart';
 
 import '../../core/common/no_page_route.dart';
 import '../../features/auth/presentation/view/login_page.dart';
@@ -23,7 +22,6 @@ class AppRoutes {
   static const String settingRoute = '/settings';
   static const String manageAllSongsRoute = '/manageAllSongs';
   static const String manageAllPublicSongsRoute = '/manageAllPublicSongs';
-  static const String recentPageRoute = '/recentPage';
   static const String folderPageRoute = '/folderPage';
 
   static final Map<String, Widget Function(BuildContext)> appPageRoutes = {
@@ -37,7 +35,6 @@ class AppRoutes {
     forgotPasswordRoute: (context) => const ForgotPasswordPage(),
     // Home
     homeRoute: (context) => HomePage(),
-    recentPageRoute: (context) => RecentPage(),
     folderPageRoute: (context) => FolderPage(),
     // Settings
   };

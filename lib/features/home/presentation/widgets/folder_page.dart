@@ -12,6 +12,7 @@ import 'package:musync/features/home/domain/entity/folder_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
+import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
 
 class FolderPage extends StatefulWidget {
   const FolderPage({super.key});
@@ -201,31 +202,43 @@ class _FolderPageState extends State<FolderPage> {
   ///
   /// Returns a ListTile widget for the folder item.
   Widget _buildFolderItem(FolderEntity folder) {
-    return ListTile(
-      minLeadingWidth: 0,
-      leading: SvgPicture.asset(
-        'assets/iconography/music-folder-filled.svg',
-        height: 32.h,
-        width: 32.w,
-        color: AppColors().onSurfaceVariant,
-      ),
-      title: Text(
-        folder.folderName,
-        style: Theme.of(context).textTheme.mBM.copyWith(
-              color: AppColors().onSurface,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SongsListPage(
+              songs: folder.songs ?? [],
             ),
-      ),
-      subtitle: Text(
-        '${folder.songs?.length} songs',
-        style: Theme.of(context).textTheme.lBM.copyWith(
-              color: AppColors().onSurfaceVariant,
-            ),
-      ),
-      trailing: IconButton(
-        onPressed: () {},
-        icon: Icon(
-          Icons.more_vert_rounded,
+          ),
+        );
+      },
+      child: ListTile(
+        minLeadingWidth: 0,
+        leading: SvgPicture.asset(
+          'assets/iconography/music-folder-filled.svg',
+          height: 32.h,
+          width: 32.w,
           color: AppColors().onSurfaceVariant,
+        ),
+        title: Text(
+          folder.folderName,
+          style: Theme.of(context).textTheme.mBM.copyWith(
+                color: AppColors().onSurface,
+              ),
+        ),
+        subtitle: Text(
+          '${folder.songs?.length} songs',
+          style: Theme.of(context).textTheme.lBM.copyWith(
+                color: AppColors().onSurfaceVariant,
+              ),
+        ),
+        trailing: IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.more_vert_rounded,
+            color: AppColors().onSurfaceVariant,
+          ),
         ),
       ),
     );
@@ -254,31 +267,43 @@ class _FolderPageState extends State<FolderPage> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final folder = folders[index];
-        return ListTile(
-          minLeadingWidth: 0,
-          leading: SvgPicture.asset(
-            'assets/iconography/music-folder-filled.svg',
-            height: 32.h,
-            width: 32.w,
-            color: AppColors().onSurfaceVariant,
-          ),
-          title: Text(
-            folder.folderName,
-            style: Theme.of(context).textTheme.mBM.copyWith(
-                  color: AppColors().onSurface,
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SongsListPage(
+                  songs: folder.songs ?? [],
                 ),
-          ),
-          subtitle: Text(
-            '${folder.songs?.length} songs',
-            style: Theme.of(context).textTheme.lBM.copyWith(
-                  color: AppColors().onSurfaceVariant,
-                ),
-          ),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.more_vert_rounded,
+              ),
+            );
+          },
+          child: ListTile(
+            minLeadingWidth: 0,
+            leading: SvgPicture.asset(
+              'assets/iconography/music-folder-filled.svg',
+              height: 32.h,
+              width: 32.w,
               color: AppColors().onSurfaceVariant,
+            ),
+            title: Text(
+              folder.folderName,
+              style: Theme.of(context).textTheme.mBM.copyWith(
+                    color: AppColors().onSurface,
+                  ),
+            ),
+            subtitle: Text(
+              '${folder.songs?.length} songs',
+              style: Theme.of(context).textTheme.lBM.copyWith(
+                    color: AppColors().onSurfaceVariant,
+                  ),
+            ),
+            trailing: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.more_vert_rounded,
+                color: AppColors().onSurfaceVariant,
+              ),
             ),
           ),
         );

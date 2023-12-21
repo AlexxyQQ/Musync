@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
+import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
+import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
 
 class TopButtons extends StatelessWidget {
   const TopButtons({super.key});
@@ -29,7 +32,18 @@ class TopButtons extends StatelessWidget {
         // Recent Button
         KButton(
           onPressed: () {
-            Navigator.pushNamed(context, AppRoutes.recentPageRoute);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SongsListPage(
+                  songs: BlocProvider.of<QueryCubit>(context)
+                          .state
+                          .recentlyPlayed
+                          ?.songs ??
+                      [],
+                ),
+              ),
+            );
           },
           label: 'Recent',
           backgroundColor: AppColors().secondaryContainer,
