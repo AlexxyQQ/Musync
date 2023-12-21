@@ -1,4 +1,3 @@
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';

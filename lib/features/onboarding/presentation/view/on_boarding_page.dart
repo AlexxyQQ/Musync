@@ -88,7 +88,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ),
               // Get Started Offline and Terms and Conditions
               Positioned(
-                bottom: 0,
+                bottom: isLastPage ? 0 : 18,
                 left: 0,
                 right: 0,
                 child: isLastPage

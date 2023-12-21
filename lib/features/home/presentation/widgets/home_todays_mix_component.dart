@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_svg/svg.dart';
@@ -89,126 +88,128 @@ class HomeTodaysMixComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Section Title
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Today's Mix",
-              style: Theme.of(context).textTheme.h5.copyWith(
-                    color: AppColors().onBackground,
-                  ),
-            ),
-            IconButton(
-              onPressed: () {
-                // TODO: Go to all folders page
-              },
-              icon: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-              ),
-            ),
-          ],
-        ),
-        // List Section
-        BlocBuilder<QueryCubit, HomeState>(
+    return BlocBuilder<QueryCubit, HomeState>(
+      builder: (context, state) {
+        return BlocBuilder<QueryCubit, HomeState>(
           builder: (context, state) {
             if (state.isLoading) {
-              return SizedBox(
-                height: 180,
-                width: MediaQuery.of(context).size.width,
-                child: _buildShimmerEffect(context),
-              );
+              return const SizedBox.shrink();
             } else if (state.isSuccess) {
-              if (state.albums!.isEmpty) {
-                return const Center(
-                  child: Text('No data'),
-                );
+              if (state.albums.isEmpty) {
+                return const SizedBox.shrink();
               } else {
-                return SizedBox(
-                  height: 180,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: ((context, index) {
-                      // Fetching album cover from the list of songs
-                      var albumCover = state.albums![index].songs!
-                          .firstWhere(
-                            (song) => song.albumArt != null,
-                          )
-                          .albumArt;
+                return Column(
+                  children: [
+                    // Section Title
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Today's Mix",
+                          style: Theme.of(context).textTheme.h5.copyWith(
+                                color: AppColors().onBackground,
+                              ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            // TODO: Go to all folders page
+                          },
+                          icon: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // List Section
+                    SizedBox(
+                      height: 180,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: ((context, index) {
+                          // Fetching album cover from the list of songs
+                          var albumCover = state.albums[index].songs!
+                              .firstWhere(
+                                (song) => song.albumArt != null,
+                              )
+                              .albumArt;
 
-                      return Container(
-                        height: 300,
-                        width: 180,
-                        alignment: Alignment.bottomLeft,
-                        margin:
-                            const EdgeInsets.only(bottom: 8, right: 8, left: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            // Album Cover
-                            Stack(
+                          return Container(
+                            height: 300,
+                            width: 180,
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(
+                                bottom: 8, right: 8, left: 8,),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Container(
-                                  height: 110,
-                                  width: 180,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    image: DecorationImage(
-                                      image: albumCover != null
-                                          ? Image.file(File(albumCover)).image
-                                          : const AssetImage(
-                                              'assets/images/default_cover.jpg',
-                                            ), // Default cover
-                                      fit: BoxFit.cover,
+                                // Album Cover
+                                Stack(
+                                  children: [
+                                    Container(
+                                      height: 110,
+                                      width: 180,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        image: DecorationImage(
+                                          image: albumCover != null
+                                              ? Image.file(File(albumCover))
+                                                  .image
+                                              : const AssetImage(
+                                                  'assets/images/default_cover.jpg',
+                                                ), // Default cover
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                // Musync Logo
-                                Positioned(
-                                  top: 4,
-                                  left: 4,
-                                  child: SvgPicture.asset(
-                                    'assets/splash_screen/Logo.svg',
-                                    color: AppColors().primary,
-                                    height: 12,
-                                    width: 12,
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  child: Container(
-                                    height: 4,
-                                    width: 180,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(500),
-                                      color: PrimitiveColors.primary200,
+                                    // Musync Logo
+                                    Positioned(
+                                      top: 4,
+                                      left: 4,
+                                      child: SvgPicture.asset(
+                                        'assets/splash_screen/Logo.svg',
+                                        color: AppColors().primary,
+                                        height: 12,
+                                        width: 12,
+                                      ),
                                     ),
-                                  ),
+                                    Positioned(
+                                      bottom: 0,
+                                      child: Container(
+                                        height: 4,
+                                        width: 180,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(500),
+                                          color: PrimitiveColors.primary200,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                // Album Details
+                                Text(
+                                  "${state.albums[index].artist}, ${state.albums[index].artist}, ${state.albums[index].artist},${state.albums[index].artist}",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  maxLines: 2,
+                                  style:
+                                      Theme.of(context).textTheme.lBS.copyWith(
+                                            color: AppColors().onBackground,
+                                          ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
-                            // Album Details
-                            Text(
-                              "${state.albums![index].artist}, ${state.albums![index].artist}, ${state.albums![index].artist},${state.albums![index].artist}",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                              maxLines: 2,
-                              style: Theme.of(context).textTheme.lBS.copyWith(
-                                    color: AppColors().onBackground,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                    // only show 10 items
-                    itemCount:
-                        state.albums!.length > 10 ? 10 : state.albums!.length,
-                  ),
+                          );
+                        }),
+                        // only show 10 items
+                        itemCount: state.albums.length > 10
+                            ? 10
+                            : state.albums.length,
+                      ),
+                    ),
+                  ],
                 );
               }
             } else {
@@ -217,8 +218,8 @@ class HomeTodaysMixComponent extends StatelessWidget {
               );
             }
           },
-        ),
-      ],
+        );
+      },
     );
   }
 }

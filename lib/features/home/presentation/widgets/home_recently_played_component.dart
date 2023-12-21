@@ -1,5 +1,4 @@
 import 'dart:io' as io;
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/services.dart';
@@ -131,182 +130,191 @@ class _HomeRecentlyPayedComponentState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Section Title
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Recently Played",
-              style: Theme.of(context).textTheme.h5.copyWith(
-                    color: AppColors().onBackground,
-                  ),
-            ),
-            IconButton(
-              onPressed: () {
-                // TODO: Go to all folders page
-              },
-              icon: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-              ),
-            ),
-          ],
-        ),
-        // List Section
-        BlocBuilder<QueryCubit, HomeState>(
+    return BlocBuilder<QueryCubit, HomeState>(
+      builder: (context, state) {
+        return BlocBuilder<QueryCubit, HomeState>(
           builder: (context, state) {
             if (state.isLoading) {
               return SizedBox(height: 118, child: _buildShimmerEffect(context));
             } else if (state.isSuccess) {
-              if (state.albums!.isEmpty) {
-                return const Center(
-                  child: Text('No data'),
-                );
+              if (state.albums.isEmpty) {
+                return const SizedBox.shrink();
               } else {
-                return SizedBox(
-                  height: 118,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: ((context, index) {
-                      // Fetching album cover from the list of songs
-                      var albumCover = state.albums![index].songs!
-                          .firstWhere(
-                            (song) => song.albumArt != null,
-                          )
-                          .albumArt;
-
-                      if (albumCover != null) {
-                        _extractAlbumArtColor(albumCover);
-                      }
-
-                      Color currentColor =
-                          albumArtColors[albumCover] ?? AppColors().primary;
-
-                      return Container(
-                        width: 250,
-                        height: 110,
-                        margin:
-                            const EdgeInsets.only(bottom: 8, right: 8, left: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
+                return Column(
+                  children: [
+                    // Section Title
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Recently Played",
+                          style: Theme.of(context).textTheme.h5.copyWith(
+                                color: AppColors().onBackground,
+                              ),
                         ),
-                        child: Stack(
-                          children: [
-                            // Album Cover
-                            Positioned(
-                              right: 0,
-                              child: Container(
-                                height: 110,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: DecorationImage(
-                                    image: albumCover != null
-                                        ? Image.file(io.File(albumCover)).image
-                                        : const AssetImage(
-                                            'assets/images/default_cover.jpg',
-                                          ), // Default cover
-                                    fit: BoxFit.cover,
+                        IconButton(
+                          onPressed: () {
+                            // TODO: Go to all folders page
+                          },
+                          icon: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // List Section
+                    SizedBox(
+                      height: 118,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: ((context, index) {
+                          // Fetching album cover from the list of songs
+                          var albumCover = state.albums[index].songs!
+                              .firstWhere(
+                                (song) => song.albumArt != null,
+                              )
+                              .albumArt;
+
+                          if (albumCover != null) {
+                            _extractAlbumArtColor(albumCover);
+                          }
+
+                          Color currentColor =
+                              albumArtColors[albumCover] ?? AppColors().primary;
+
+                          return Container(
+                            width: 250,
+                            height: 110,
+                            margin: const EdgeInsets.only(
+                                bottom: 8, right: 8, left: 8,),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Stack(
+                              children: [
+                                // Album Cover
+                                Positioned(
+                                  right: 0,
+                                  child: Container(
+                                    height: 110,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: DecorationImage(
+                                        image: albumCover != null
+                                            ? Image.file(io.File(albumCover))
+                                                .image
+                                            : const AssetImage(
+                                                'assets/images/default_cover.jpg',
+                                              ), // Default cover
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            // Gradient
-                            Positioned(
-                              top: 0,
-                              child: Container(
-                                height: 110,
-                                width: 500,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  // LinearGradient
-                                  gradient: LinearGradient(
-                                    tileMode: TileMode.clamp,
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      currentColor,
-                                      currentColor,
-                                      currentColor.withOpacity(0.2),
-                                      currentColor.withOpacity(0.1),
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                    ],
+                                // Gradient
+                                Positioned(
+                                  top: 0,
+                                  child: Container(
+                                    height: 110,
+                                    width: 500,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      // LinearGradient
+                                      gradient: LinearGradient(
+                                        tileMode: TileMode.clamp,
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          currentColor,
+                                          currentColor,
+                                          currentColor.withOpacity(0.2),
+                                          currentColor.withOpacity(0.1),
+                                          Colors.transparent,
+                                          Colors.transparent,
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            // Play Button
-                            Positioned(
-                              left: 160,
-                              top: (110 / 2) - 15,
-                              child: Container(
-                                height: 24,
-                                width: 24,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(500),
-                                  color:
-                                      PrimitiveColors.greyV100.withOpacity(0.5),
-                                ),
-                                child: const Icon(
-                                  Icons.play_arrow_rounded,
-                                  size: 16,
-                                  color: PrimitiveColors.greyV900,
-                                ),
-                              ),
-                            ),
-                            // Song Name and Artist
-                            Positioned(
-                              left: 8,
-                              top: 25,
-                              child: Container(
-                                height: 60,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.albums![index].songs!.first.title,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .mBL
-                                          .copyWith(
-                                            color: AppDarkColor.onBackground,
-                                          ),
+                                // Play Button
+                                Positioned(
+                                  left: 160,
+                                  top: (110 / 2) - 15,
+                                  child: Container(
+                                    height: 24,
+                                    width: 24,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(500),
+                                      color: PrimitiveColors.greyV100
+                                          .withOpacity(0.5),
                                     ),
-                                    Text(
-                                      "${state.albums![index].artist}",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.start,
-                                      maxLines: 1,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .lBS
-                                          .copyWith(
-                                            color: AppDarkColor.onBackground,
-                                          ),
+                                    child: const Icon(
+                                      Icons.play_arrow_rounded,
+                                      size: 16,
+                                      color: PrimitiveColors.greyV900,
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                // Song Name and Artist
+                                Positioned(
+                                  left: 8,
+                                  top: 25,
+                                  child: Container(
+                                    height: 60,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          state.albums[index].songs!.first
+                                              .title,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          maxLines: 1,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .mBL
+                                              .copyWith(
+                                                color:
+                                                    AppDarkColor.onBackground,
+                                              ),
+                                        ),
+                                        Text(
+                                          "${state.albums[index].artist}",
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          maxLines: 1,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .lBS
+                                              .copyWith(
+                                                color:
+                                                    AppDarkColor.onBackground,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    }),
-                    // only show 10 items
-                    itemCount:
-                        state.albums!.length > 10 ? 10 : state.albums!.length,
-                  ),
+                          );
+                        }),
+                        // only show 10 items
+                        itemCount: state.albums.length > 10
+                            ? 10
+                            : state.albums.length,
+                      ),
+                    ),
+                  ],
                 );
               }
             } else {
@@ -315,8 +323,8 @@ class _HomeRecentlyPayedComponentState
               );
             }
           },
-        ),
-      ],
+        );
+      },
     );
   }
 }

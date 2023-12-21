@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/artist_entity.dart';
@@ -10,16 +12,16 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 class HomeState {
   final bool isLoading;
   final AppErrorHandler? error;
-  final List<SongEntity>? songs;
-  final List<AlbumEntity>? albums;
-  final List<ArtistEntity>? artists;
-  final List<FolderEntity>? folders;
+  final List<SongEntity> songs;
+  final List<AlbumEntity> albums;
+  final List<ArtistEntity> artists;
+  final List<FolderEntity> folders;
   final bool isSuccess;
   final int count;
   HomeState({
     required this.isLoading,
     required this.error,
-    this.songs,
+    required this.songs,
     required this.albums,
     required this.artists,
     required this.folders,
@@ -33,10 +35,10 @@ class HomeState {
       error: null,
       isSuccess: false,
       count: 0,
-      songs: null,
-      albums: null,
-      artists: null,
-      folders: null,
+      songs: [],
+      albums: [],
+      artists: [],
+      folders: [],
     );
   }
 
@@ -64,24 +66,14 @@ class HomeState {
 
   @override
   String toString() {
-    return 'HomeState: \n'
-        'isLoading: $isLoading, \n'
-        'error: $error, \n'
-        'songs: $songs, \n'
-        'albums: $albums, \n'
-        'artists: $artists, \n'
-        'folders: $folders, \n'
-        'isSuccess: $isSuccess, \n'
-        'count: $count, \n';
+    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, isSuccess: $isSuccess, count: $count)';
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(covariant HomeState other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
-    return other is HomeState &&
-        other.isLoading == isLoading &&
+    return other.isLoading == isLoading &&
         other.error == error &&
         listEquals(other.songs, songs) &&
         listEquals(other.albums, albums) &&
@@ -104,78 +96,51 @@ class HomeState {
   }
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    result.addAll({'isLoading': isLoading});
-    if (error != null) {
-      result.addAll({'error': error!.toMap()});
-    }
-    if (songs != null) {
-      result.addAll({'songs': songs!.map((x) => x.toMap()).toList()});
-    }
-    if (albums != null) {
-      result.addAll({'albums': albums!.map((x) => x.toMap()).toList()});
-    }
-    if (artists != null) {
-      result.addAll({'artists': artists!.map((x) => x.toMap()).toList()});
-    }
-    if (folders != null) {
-      result.addAll({'folders': folders!.map((x) => x.toMap()).toList()});
-    }
-    result.addAll({'isSuccess': isSuccess});
-    result.addAll({'count': count});
-
-    return result;
+    return <String, dynamic>{
+      'isLoading': isLoading,
+      'error': error?.toMap(),
+      'songs': songs.map((x) => x.toMap()).toList(),
+      'albums': albums.map((x) => x.toMap()).toList(),
+      'artists': artists.map((x) => x.toMap()).toList(),
+      'folders': folders.map((x) => x.toMap()).toList(),
+      'isSuccess': isSuccess,
+      'count': count,
+    };
   }
 
   factory HomeState.fromMap(Map<String, dynamic> map) {
     return HomeState(
-      isLoading: map['isLoading'] ?? false,
-      error:
-          map['error'] != null ? AppErrorHandler.fromMap(map['error']) : null,
-      songs: map['songs'] != null
-          ? List<SongEntity>.from(
-              map['songs']?.map(
-                (x) => SongEntity.fromMap(
-                  x,
-                ),
-              ),
-            )
+      isLoading: map['isLoading'] as bool,
+      error: map['error'] != null
+          ? AppErrorHandler.fromMap(map['error'] as Map<String, dynamic>)
           : null,
-      albums: map['albums'] != null
-          ? List<AlbumEntity>.from(
-              map['albums']?.map(
-                (x) => AlbumEntity.fromMap(
-                  x,
-                ),
-              ),
-            )
-          : null,
-      artists: map['artists'] != null
-          ? List<ArtistEntity>.from(
-              map['artists']?.map(
-                (x) => ArtistEntity.fromMap(
-                  x,
-                ),
-              ),
-            )
-          : null,
-      folders: map['folders'] != null
-          ? List<FolderEntity>.from(
-              map['folders']?.map(
-                (x) => FolderEntity.fromMap(
-                  x,
-                ),
-              ),
-            )
-          : null,
-      isSuccess: map['isSuccess'] ?? false,
-      count: map['count']?.toInt() ?? 0,
+      songs: List<SongEntity>.from(
+        (map['songs'] as List<int>).map<SongEntity>(
+          (x) => SongEntity.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      albums: List<AlbumEntity>.from(
+        (map['albums'] as List<int>).map<AlbumEntity>(
+          (x) => AlbumEntity.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      artists: List<ArtistEntity>.from(
+        (map['artists'] as List<int>).map<ArtistEntity>(
+          (x) => ArtistEntity.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      folders: List<FolderEntity>.from(
+        (map['folders'] as List<int>).map<FolderEntity>(
+          (x) => FolderEntity.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      isSuccess: map['isSuccess'] as bool,
+      count: map['count'] as int,
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory HomeState.fromJson(String source) =>
-      HomeState.fromMap(json.decode(source));
+      HomeState.fromMap(json.decode(source) as Map<String, dynamic>);
 }

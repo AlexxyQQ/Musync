@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
@@ -64,57 +63,56 @@ class HomeArtistComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Section Title
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Artists",
-              style: Theme.of(context).textTheme.h5.copyWith(
-                    color: AppColors().onBackground,
-                  ),
-            ),
-            IconButton(
-              onPressed: () {
-                // TODO: Go to all folders page
-              },
-              icon: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-              ),
-            ),
-          ],
-        ),
-        // List Section
-        BlocBuilder<QueryCubit, HomeState>(
-          builder: (context, state) {
-            if (state.isLoading) {
-              return SizedBox(
-                height: 150,
-                width: MediaQuery.of(context).size.width,
-                child: _buildShimmerEffect(context),
-              );
-            } else if (state.isSuccess) {
-              if (state.artists!.isEmpty) {
-                return const Center(
-                  child: Text('No data'),
-                );
-              } else {
-                return SizedBox(
+    return BlocBuilder<QueryCubit, HomeState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return SizedBox(
+            height: 150,
+            width: MediaQuery.of(context).size.width,
+            child: _buildShimmerEffect(context),
+          );
+        } else if (state.isSuccess) {
+          if (state.artists.isEmpty) {
+            return const SizedBox.shrink();
+          } else {
+            return Column(
+              children: [
+                // Section Title
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Artists",
+                      style: Theme.of(context).textTheme.h5.copyWith(
+                            color: AppColors().onBackground,
+                          ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        // TODO: Go to all folders page
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 16,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // List Section
+                SizedBox(
                   height: 160,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
                       // Fetching album cover from the list of songs
-                      var albumCover = state.artists![index].songs!
+                      var albumCover = state.artists[index].songs!
                           .firstWhere(
                             (song) => song.albumArt != null,
                           )
                           .albumArt;
 
-                      log("DD:${state.artists![index].songs}");
+                      log("DD:${state.artists[index].songs}");
 
                       return Container(
                         height: 150,
@@ -141,7 +139,7 @@ class HomeArtistComponent extends StatelessWidget {
                             const SizedBox(height: 8),
                             // Album Details
                             Text(
-                              state.artists![index].artist,
+                              state.artists[index].artist,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                               maxLines: 2,
@@ -155,18 +153,18 @@ class HomeArtistComponent extends StatelessWidget {
                     }),
                     // only show 10 items
                     itemCount:
-                        state.artists!.length > 10 ? 10 : state.artists!.length,
+                        state.artists.length > 10 ? 10 : state.artists.length,
                   ),
-                );
-              }
-            } else {
-              return const Center(
-                child: Text('No data'),
-              );
-            }
-          },
-        ),
-      ],
+                ),
+              ],
+            );
+          }
+        } else {
+          return const Center(
+            child: Text('No data'),
+          );
+        }
+      },
     );
   }
 }

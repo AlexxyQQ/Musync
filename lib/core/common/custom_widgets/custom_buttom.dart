@@ -95,7 +95,7 @@ class KButton extends StatelessWidget {
           width: 20.w,
           height: 20.h,
           color: foregroundColor ?? AppColors().onSurface,
-        ));
+        ),);
       }
 
       // Add Icon if not null

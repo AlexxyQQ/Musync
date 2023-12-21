@@ -4,7 +4,6 @@ import 'package:musync/config/route/routes.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/features/auth/presentation/widgets/auth_page_component.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 

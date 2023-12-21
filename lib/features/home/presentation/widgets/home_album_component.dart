@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
@@ -87,51 +86,49 @@ class HomeAlbumComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Section Title
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Albums",
-              style: Theme.of(context).textTheme.h5.copyWith(
-                    color: AppColors().onBackground,
-                  ),
-            ),
-            IconButton(
-              onPressed: () {
-                // TODO: Go to all folders page
-              },
-              icon: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-              ),
-            ),
-          ],
-        ),
-        // List Section
-        BlocBuilder<QueryCubit, HomeState>(
-          builder: (context, state) {
-            if (state.isLoading) {
-              return SizedBox(
-                height: 160,
-                width: MediaQuery.of(context).size.width,
-                child: _buildShimmerEffect(context),
-              );
-            } else if (state.isSuccess) {
-              if (state.albums!.isEmpty) {
-                return const Center(
-                  child: Text('No data'),
-                );
-              } else {
-                return SizedBox(
+    return BlocBuilder<QueryCubit, HomeState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return SizedBox(
+            height: 160,
+            width: MediaQuery.of(context).size.width,
+            child: _buildShimmerEffect(context),
+          );
+        } else if (state.isSuccess) {
+          if (state.albums.isEmpty) {
+            return const SizedBox.shrink();
+          } else {
+            return Column(
+              children: [
+                // Section Title
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Albums",
+                      style: Theme.of(context).textTheme.h5.copyWith(
+                            color: AppColors().onBackground,
+                          ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        // TODO: Go to all folders page
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 16,
+                      ),
+                    ),
+                  ],
+                ),
+                // List Section
+                SizedBox(
                   height: 160,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
                       // Fetching album cover from the list of songs
-                      var albumCover = state.albums![index].songs!
+                      var albumCover = state.albums[index].songs!
                           .firstWhere(
                             (song) => song.albumArt != null,
                           )
@@ -168,7 +165,7 @@ class HomeAlbumComponent extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  state.albums![index].album,
+                                  state.albums[index].album,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
                                   maxLines: 1,
@@ -178,7 +175,7 @@ class HomeAlbumComponent extends StatelessWidget {
                                           ),
                                 ),
                                 Text(
-                                  "${state.albums![index].artist}",
+                                  "${state.albums[index].artist}",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
                                   maxLines: 1,
@@ -195,18 +192,18 @@ class HomeAlbumComponent extends StatelessWidget {
                     }),
                     // only show 10 items
                     itemCount:
-                        state.albums!.length > 10 ? 10 : state.albums!.length,
+                        state.albums.length > 10 ? 10 : state.albums.length,
                   ),
-                );
-              }
-            } else {
-              return const Center(
-                child: Text('No data'),
-              );
-            }
-          },
-        ),
-      ],
+                ),
+              ],
+            );
+          }
+        } else {
+          return const Center(
+            child: Text('No data'),
+          );
+        }
+      },
     );
   }
 }

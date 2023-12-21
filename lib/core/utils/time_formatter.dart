@@ -1,4 +1,3 @@
-
 class DateTimeFormatter {
   static String formatAgo(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString).toLocal();

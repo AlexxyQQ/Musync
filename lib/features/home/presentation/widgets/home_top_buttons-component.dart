@@ -23,6 +23,7 @@ class TopButtons extends StatelessWidget {
           foregroundColor: AppColors().onPrimaryContainer,
           borderRadius: 12,
           svg: 'assets/iconography/heart-outline.svg',
+          fixedSize: const Size(150, 30),
         ),
         // Recent Button
         KButton(
@@ -32,6 +33,7 @@ class TopButtons extends StatelessWidget {
           foregroundColor: AppColors().onSecondaryContainer,
           borderRadius: 12,
           svg: 'assets/iconography/recent.svg',
+          fixedSize: const Size(150, 30),
         ),
         // Folder Button
         KButton(
@@ -41,6 +43,7 @@ class TopButtons extends StatelessWidget {
           foregroundColor: AppColors().onAccentContainer,
           borderRadius: 12,
           svg: 'assets/iconography/music-folder-outline.svg',
+          fixedSize: const Size(150, 30),
         ),
         //  Shuffle Button
         KButton(
@@ -50,6 +53,7 @@ class TopButtons extends StatelessWidget {
           foregroundColor: AppColors().onErrorContainer,
           borderRadius: 12,
           svg: 'assets/iconography/shuffle.svg',
+          fixedSize: const Size(150, 30),
         ),
       ],
     );

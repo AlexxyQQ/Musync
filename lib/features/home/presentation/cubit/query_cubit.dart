@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
@@ -81,6 +83,7 @@ class QueryCubit extends Cubit<HomeState> {
       );
 
       data.fold((l) => Left(l), (r) {
+        log('SongsLLL: ${r.length}');
         emit(
           state.copyWith(
             isLoading: false,
@@ -131,7 +134,7 @@ class QueryCubit extends Cubit<HomeState> {
           ),
         );
       }, (r) {
-        final songs = state.songs ?? [];
+        final songs = state.songs;
         final updatedAlbums = r.map((album) {
           final albumSongs =
               songs.where((song) => song.albumId == album.id).toList();
@@ -192,7 +195,7 @@ class QueryCubit extends Cubit<HomeState> {
           ),
         );
       }, (r) {
-        final songs = state.songs ?? [];
+        final songs = state.songs;
         final updatedArtists = r.map((artist) {
           final artistSongs = songs
               .where((song) => song.artistId.toString() == artist.id.toString())
@@ -250,13 +253,18 @@ class QueryCubit extends Cubit<HomeState> {
           ),
         );
       }, (r) {
-        final songs = state.songs ?? [];
+        final songs = state.songs;
         final updatedFolders = r.map((folder) {
           final folderSongs = songs
               .where((song) => song.data.toString().contains(folder.path))
               .toList();
           return folder.copyWith(songs: folderSongs);
         }).toList();
+
+        if (r.isEmpty) {
+          // fetch all songs
+          getAllSongs(first: false, refetch: true);
+        }
 
         emit(
           state.copyWith(

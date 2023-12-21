@@ -194,20 +194,11 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
           );
         } else {
           // else return data from the local storage
-          final hiveSongs = await queryHiveService.getAllSongs();
-          if (hiveSongs.isNotEmpty) {
-            return Right(
-              AppSongModel.fromListHiveModel(
-                hiveSongs,
-              ),
-            );
-          } else {
-            return localDataSource.getAllSongs(
-              onProgress: onProgress,
-              first: first,
-              refetch: refetch,
-            );
-          }
+          return localDataSource.getAllSongs(
+            onProgress: onProgress,
+            first: first,
+            refetch: refetch,
+          );
         }
       } else {
         final hiveSongs = await queryHiveService.getAllSongs();

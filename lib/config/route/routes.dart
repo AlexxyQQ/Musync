@@ -32,7 +32,7 @@ class AppRoutes {
     signupRoute: (context) => const SignupPage(),
     forgotPasswordRoute: (context) => const ForgotPasswordPage(),
     // Home
-    homeRoute: (context) => const HomePage(),
+    homeRoute: (context) => HomePage(),
     // Settings
   };
 

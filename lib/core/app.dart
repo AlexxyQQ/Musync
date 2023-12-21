@@ -24,7 +24,7 @@ class _AppState extends State<App> {
     return MultiBlocProvider(
       providers: BlocProvidersList.blocList,
       child: ScreenUtilInit(
-        designSize: const Size(360, 690),
+        designSize: MediaQuery.of(context).size,
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
