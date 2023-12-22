@@ -4,6 +4,7 @@ import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
 import 'package:musync/core/common/song_list_tile.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
+import 'package:musync/features/bottom_nav/presentation/widget/mini_player.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 class SongsListPage extends StatefulWidget {
@@ -201,6 +202,10 @@ class _SongsListPageState extends State<SongsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: Padding(
+        padding: EdgeInsets.only(bottom: 20.h),
+        child: const MiniPlayer(),
+      ),
       appBar: AppBar(
         leading: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
@@ -269,7 +274,6 @@ class _SongsListPageState extends State<SongsListPage> {
     }
 
     return ListView.builder(
-      shrinkWrap: true,
       itemBuilder: (context, index) {
         final song = songs[index];
         return SongListTile(

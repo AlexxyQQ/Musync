@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
 import 'package:musync/core/common/song_list_tile.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
+import 'package:musync/features/bottom_nav/presentation/widget/mini_player.dart';
 import 'package:musync/features/home/domain/entity/folder_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
@@ -111,6 +111,10 @@ class _FolderPageState extends State<FolderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: Padding(
+        padding: EdgeInsets.only(bottom: 20.h),
+        child: const MiniPlayer(),
+      ),
       appBar: AppBar(
         leading: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),

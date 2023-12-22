@@ -63,6 +63,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     return BlocBuilder<QueryCubit, HomeState>(
       builder: (context, state) {
         return Scaffold(
+          bottomSheet: Padding(
+            padding: EdgeInsets.only(bottom: 4.h),
+            child: const MiniPlayer(),
+          ),
           appBar: AppBar(
             leading: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
@@ -91,24 +95,12 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             leadingWidth: MediaQuery.of(context).size.width,
             toolbarHeight: 80.h,
           ),
-          body: Stack(
-            children: [
-              PageView.builder(
-                controller: _pageController,
-                itemBuilder: (context, index) =>
-                    _widgetOptions.elementAt(index),
-                itemCount: _widgetOptions.length,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) =>
-                    setState(() => _selectedIndex = index),
-              ),
-              Positioned(
-                left: 4.w,
-                right: 4.w,
-                bottom: 4.h,
-                child: MiniPlayer(),
-              ),
-            ],
+          body: PageView.builder(
+            controller: _pageController,
+            itemBuilder: (context, index) => _widgetOptions.elementAt(index),
+            itemCount: _widgetOptions.length,
+            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) => setState(() => _selectedIndex = index),
           ),
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
