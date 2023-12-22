@@ -132,7 +132,7 @@ class LoginSignupButton extends StatelessWidget {
                       await get<SettingsHiveService>().getSettings();
                   // await ref.read(songProvider).permission();
                   navigator.pushNamedAndRemoveUntil(
-                    AppRoutes.homeRoute,
+                    AppRoutes.bottomNavRoute,
                     (route) => false,
                     arguments: {
                       "selectedIndex": 0,

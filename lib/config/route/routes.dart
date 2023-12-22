@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musync/features/auth/presentation/view/forgot_password_page.dart';
-import 'package:musync/features/home/presentation/pages/home_page.dart';
+import 'package:musync/features/bottom_nav/presentation/page/bottom_navigation.dart';
 import 'package:musync/features/home/presentation/widgets/folder_page.dart';
 
 import '../../core/common/no_page_route.dart';
@@ -14,7 +14,7 @@ class AppRoutes {
   static const String initialRoute = '/';
   static const String loginRoute = '/login';
   static const String signupRoute = '/signup';
-  static const String homeRoute = '/home';
+  static const String bottomNavRoute = '/bottomNav';
   static const String getStartedRoute = '/welcome';
   static const String onBoardingRoute = '/onBoarding';
   static const String forgotPasswordRoute = '/forgotPassword';
@@ -34,7 +34,7 @@ class AppRoutes {
     signupRoute: (context) => const SignupPage(),
     forgotPasswordRoute: (context) => const ForgotPasswordPage(),
     // Home
-    homeRoute: (context) => HomePage(),
+    bottomNavRoute: (context) => const BottomNavigationScreen(),
     folderPageRoute: (context) => const FolderPage(),
     // Settings
   };

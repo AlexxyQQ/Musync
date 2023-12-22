@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
           });
           String email = _emailController.text;
           String password = _passwordController.text;
-          Navigator.pushNamed(context, AppRoutes.homeRoute);
+          Navigator.pushNamed(context, AppRoutes.bottomNavRoute);
           BlocProvider.of<AuthenticationCubit>(context).login(
             email: email,
             password: password,
