@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
+import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeAlbumComponent extends StatelessWidget {
@@ -128,60 +127,69 @@ class HomeAlbumComponent extends StatelessWidget {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
-                      // Fetching album cover from the list of songs
-                      var albumCover = state.albums[index].songs!
-                          .firstWhere(
-                            (song) => song.albumArt != null,
-                          )
-                          .albumArt;
-
-                      return Container(
-                        height: 300,
-                        width: 150,
-                        alignment: Alignment.bottomLeft,
-                        margin:
-                            const EdgeInsets.only(bottom: 8, right: 8, left: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            // Album Cover
-                            SongArtWork(
-                              song: state.albums[index].songs!.firstWhere(
-                                (song) => song.albumArt != null,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SongsListPage(
+                                songs: state.albums[index].songs ?? [],
                               ),
-                              height: 100,
-                              width: 150,
-                              borderRadius: 8,
                             ),
+                          );
+                        },
+                        child: Container(
+                          height: 300,
+                          width: 150,
+                          alignment: Alignment.bottomLeft,
+                          margin: const EdgeInsets.only(
+                              bottom: 8, right: 8, left: 8,),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // Album Cover
+                              SongArtWork(
+                                song: state.albums[index].songs!.firstWhere(
+                                  (song) => song.albumArt != null,
+                                ),
+                                height: 100,
+                                width: 150,
+                                borderRadius: 8,
+                              ),
 
-                            const SizedBox(height: 8),
-                            // Album Details
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  state.albums[index].album,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  style:
-                                      Theme.of(context).textTheme.mBL.copyWith(
-                                            color: AppColors().onBackground,
-                                          ),
-                                ),
-                                Text(
-                                  "${state.albums[index].artist}",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  style:
-                                      Theme.of(context).textTheme.lBS.copyWith(
-                                            color: AppColors().onBackground,
-                                          ),
-                                ),
-                              ],
-                            ),
-                          ],
+                              const SizedBox(height: 8),
+                              // Album Details
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.albums[index].album,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    maxLines: 1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .mBL
+                                        .copyWith(
+                                          color: AppColors().onBackground,
+                                        ),
+                                  ),
+                                  Text(
+                                    "${state.albums[index].artist}",
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    maxLines: 1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .lBS
+                                        .copyWith(
+                                          color: AppColors().onBackground,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     }),

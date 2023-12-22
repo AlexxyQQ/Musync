@@ -1,12 +1,10 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
+import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeArtistComponent extends StatelessWidget {
@@ -106,40 +104,45 @@ class HomeArtistComponent extends StatelessWidget {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
-                      // Fetching album cover from the list of songs
-                      var albumCover = state.artists[index].songs!
-                          .firstWhere(
-                            (song) => song.albumArt != null,
-                          )
-                          .albumArt;
-
-                      return Container(
-                        height: 150,
-                        width: 150,
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: Column(
-                          children: [
-                            // Album Cover
-                            SongArtWork(
-                              song: state.artists[index].songs!.firstWhere(
-                                (song) => song.albumArt != null,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SongsListPage(
+                                songs: state.artists[index].songs ?? [],
                               ),
-                              height: 100,
-                              width: 100,
-                              borderRadius: 500,
                             ),
-                            const SizedBox(height: 8),
-                            // Album Details
-                            Text(
-                              state.artists[index].artist,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              style: Theme.of(context).textTheme.mBM.copyWith(
-                                    color: AppColors().onBackground,
-                                  ),
-                            ),
-                          ],
+                          );
+                        },
+                        child: Container(
+                          height: 150,
+                          width: 150,
+                          margin: const EdgeInsets.only(bottom: 8),
+                          child: Column(
+                            children: [
+                              // Album Cover
+                              SongArtWork(
+                                song: state.artists[index].songs!.firstWhere(
+                                  (song) => song.albumArt != null,
+                                ),
+                                height: 100,
+                                width: 100,
+                                borderRadius: 500,
+                              ),
+                              const SizedBox(height: 8),
+                              // Album Details
+                              Text(
+                                state.artists[index].artist,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                style: Theme.of(context).textTheme.mBM.copyWith(
+                                      color: AppColors().onBackground,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     }),

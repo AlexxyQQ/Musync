@@ -48,11 +48,6 @@ class GetAllSongsUseCase extends UseCase<List<SongEntity>, GetQueryParams> {
                 SongEntity.toListHiveModel(r);
             await queryHiveService.addSongs(convertedHiveSongs);
 
-            final List<SongHiveModel> hiveSongs =
-                await queryHiveService.getAllSongs();
-
-            log('hiveSongs: $hiveSongs');
-
             return Right(r);
           } else {
             final List<SongHiveModel> convertedHiveSongs =

@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
@@ -36,7 +33,7 @@ class _SongListTileState extends State<SongListTile> {
         borderRadius: 500,
       ),
       title: Text(
-        widget.song.displayNameWOExt,
+        widget.song.title,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         style: Theme.of(context).textTheme.mBM.copyWith(

@@ -150,6 +150,12 @@ class KTextFormField extends StatelessWidget {
             color: Colors.transparent,
           ),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(
+            color: Colors.transparent,
+          ),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.r),
           borderSide: const BorderSide(

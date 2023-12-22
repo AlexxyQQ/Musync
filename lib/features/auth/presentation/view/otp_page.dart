@@ -63,10 +63,7 @@ class _OTPPageState extends State<OTPPage> {
       focusNodes: focusNodes,
       onPressed: () {
         if (formKey.currentState!.validate()) {
-          log(
-            'OTP: ${getOTPCode()}',
-            name: 'OTP',
-          );
+         
           BlocProvider.of<AuthenticationCubit>(context).otpValidator(
             email: widget.email,
             otp: getOTPCode(),

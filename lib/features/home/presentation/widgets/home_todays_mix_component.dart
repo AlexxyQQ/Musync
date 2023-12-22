@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_svg/svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/constants/colors/primitive_colors.dart';
@@ -8,6 +6,7 @@ import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
+import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeTodaysMixComponent extends StatelessWidget {
@@ -128,75 +127,82 @@ class HomeTodaysMixComponent extends StatelessWidget {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: ((context, index) {
-                          // Fetching album cover from the list of songs
-                          var albumCover = state.albums[index].songs!
-                              .firstWhere(
-                                (song) => song.albumArt != null,
-                              )
-                              .albumArt;
-
-                          return Container(
-                            height: 300,
-                            width: 180,
-                            alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(
-                              bottom: 8,
-                              right: 8,
-                              left: 8,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                // Album Cover
-                                Stack(
-                                  children: [
-                                    SongArtWork(
-                                      song:
-                                          state.albums[index].songs!.firstWhere(
-                                        (song) => song.albumArt != null,
-                                      ),
-                                      height: 110,
-                                      width: 180,
-                                      borderRadius: 8,
-                                    ),
-                                    // Musync Logo
-                                    Positioned(
-                                      top: 4,
-                                      left: 4,
-                                      child: SvgPicture.asset(
-                                        'assets/splash_screen/Logo.svg',
-                                        color: AppColors().primary,
-                                        height: 12,
-                                        width: 12,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      child: Container(
-                                        height: 4,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SongsListPage(
+                                    songs: state.albums[index].songs ?? [],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 300,
+                              width: 180,
+                              alignment: Alignment.bottomLeft,
+                              margin: const EdgeInsets.only(
+                                bottom: 8,
+                                right: 8,
+                                left: 8,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // Album Cover
+                                  Stack(
+                                    children: [
+                                      SongArtWork(
+                                        song: state.albums[index].songs!
+                                            .firstWhere(
+                                          (song) => song.albumArt != null,
+                                        ),
+                                        height: 110,
                                         width: 180,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(500),
-                                          color: PrimitiveColors.primary200,
+                                        borderRadius: 8,
+                                      ),
+                                      // Musync Logo
+                                      Positioned(
+                                        top: 4,
+                                        left: 4,
+                                        child: SvgPicture.asset(
+                                          'assets/splash_screen/Logo.svg',
+                                          color: AppColors().primary,
+                                          height: 12,
+                                          width: 12,
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                // Album Details
-                                Text(
-                                  "${state.albums[index].artist}, ${state.albums[index].artist}, ${state.albums[index].artist},${state.albums[index].artist}",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  maxLines: 2,
-                                  style:
-                                      Theme.of(context).textTheme.lBS.copyWith(
-                                            color: AppColors().onBackground,
+                                      Positioned(
+                                        bottom: 0,
+                                        child: Container(
+                                          height: 4,
+                                          width: 180,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(500),
+                                            color: PrimitiveColors.primary200,
                                           ),
-                                ),
-                              ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  // Album Details
+                                  Text(
+                                    "${state.albums[index].artist}, ${state.albums[index].artist}, ${state.albums[index].artist},${state.albums[index].artist}",
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    maxLines: 2,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .lBS
+                                        .copyWith(
+                                          color: AppColors().onBackground,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         }),

@@ -38,7 +38,6 @@ class _SongArtWorkState extends State<SongArtWork> {
     } else if (widget.song.albumArt != null || widget.song.albumArt != '') {
       isNetworkImage = false;
     }
-    log('isNetworkImage: $isNetworkImage');
     setState(() {});
   }
 

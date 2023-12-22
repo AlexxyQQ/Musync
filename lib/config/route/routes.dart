@@ -35,7 +35,7 @@ class AppRoutes {
     forgotPasswordRoute: (context) => const ForgotPasswordPage(),
     // Home
     homeRoute: (context) => HomePage(),
-    folderPageRoute: (context) => FolderPage(),
+    folderPageRoute: (context) => const FolderPage(),
     // Settings
   };
 

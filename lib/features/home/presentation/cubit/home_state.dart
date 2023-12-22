@@ -144,7 +144,7 @@ class HomeState {
       ),
       recentlyPlayed: map['recentlyPlayed'] != null
           ? RecentlyPlayedEntity.fromMap(
-              map['recentlyPlayed'] as Map<String, dynamic>)
+              map['recentlyPlayed'] as Map<String, dynamic>,)
           : null,
       isSuccess: map['isSuccess'] as bool,
       count: map['count'] as int,

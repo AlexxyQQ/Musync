@@ -263,7 +263,14 @@ class QueryCubit extends Cubit<HomeState> {
         final songs = state.songs;
         final updatedFolders = r.map((folder) {
           final folderSongs = songs
-              .where((song) => song.data.toString().contains(folder.path))
+              .where(
+                (song) =>
+                    song.data.toString().replaceAll(
+                          "${song.displayNameWOExt}.${song.fileExtension}",
+                          '',
+                        ) ==
+                    "${folder.path}/",
+              )
               .toList();
           return folder.copyWith(songs: folderSongs);
         }).toList();
