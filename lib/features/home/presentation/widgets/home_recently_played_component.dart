@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:ui' as ui;
 
@@ -26,8 +27,9 @@ class HomeRecentlyPayedComponent extends StatefulWidget {
 class _HomeRecentlyPayedComponentState
     extends State<HomeRecentlyPayedComponent> {
   Map<String, Color> albumArtColors = {}; // Map to store colors for each album
+  Map<String, Color> tetxColors = {}; // Map to store colors for text
 
-  Future<void> _extractAlbumArtColor(String path) async {
+  Future<void> extractAlbumArtColor(String path) async {
     if (!albumArtColors.containsKey(path)) {
       // Check if color is already extracted
       try {
@@ -37,10 +39,13 @@ class _HomeRecentlyPayedComponentState
 
         final PaletteGenerator paletteGenerator =
             await PaletteGenerator.fromImage(frameInfo.image);
-
+        final bool text =
+            paletteGenerator.dominantColor!.color.computeLuminance() > 0.5;
         setState(() {
           albumArtColors[path] =
               paletteGenerator.dominantColor?.color ?? AppColors().primary;
+          tetxColors[path] =
+              text ? AppLightColor.onSurface : AppDarkColor.onSurface;
         });
       } catch (e) {
         print("Error extracting color: $e");
@@ -181,11 +186,14 @@ class _HomeRecentlyPayedComponentState
                               .albumArt;
 
                           if (albumCover != null) {
-                            _extractAlbumArtColor(albumCover);
+                            extractAlbumArtColor(albumCover);
                           }
 
-                          Color currentColor =
+                          Color currentAlbumColor =
                               albumArtColors[albumCover] ?? AppColors().primary;
+
+                          Color currentTextColor = albumArtColors[albumCover] ??
+                              AppColors().onBackground;
 
                           return Container(
                             width: 250,
@@ -227,10 +235,10 @@ class _HomeRecentlyPayedComponentState
                                         begin: Alignment.centerLeft,
                                         end: Alignment.centerRight,
                                         colors: [
-                                          currentColor,
-                                          currentColor,
-                                          currentColor.withOpacity(0.2),
-                                          currentColor.withOpacity(0.1),
+                                          currentAlbumColor,
+                                          currentAlbumColor,
+                                          currentAlbumColor.withOpacity(0.2),
+                                          currentAlbumColor.withOpacity(0.1),
                                           Colors.transparent,
                                           Colors.transparent,
                                         ],
@@ -282,8 +290,7 @@ class _HomeRecentlyPayedComponentState
                                               .textTheme
                                               .mBL
                                               .copyWith(
-                                                color:
-                                                    AppDarkColor.onBackground,
+                                                color: currentTextColor,
                                               ),
                                         ),
                                         Text(
@@ -295,8 +302,7 @@ class _HomeRecentlyPayedComponentState
                                               .textTheme
                                               .lBS
                                               .copyWith(
-                                                color:
-                                                    AppDarkColor.onBackground,
+                                                color: currentTextColor,
                                               ),
                                         ),
                                       ],

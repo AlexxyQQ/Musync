@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
@@ -20,6 +21,10 @@ class HomeState {
   final RecentlyPlayedEntity? recentlyPlayed;
   final bool isSuccess;
   final int count;
+
+  // Bottom Navigation Bar Selected Index
+  final int selectedIndex;
+  final PageController pageController;
   HomeState({
     required this.isLoading,
     required this.error,
@@ -30,6 +35,8 @@ class HomeState {
     this.recentlyPlayed,
     required this.isSuccess,
     required this.count,
+    required this.selectedIndex,
+    required this.pageController,
   });
 
   factory HomeState.initial() {
@@ -37,6 +44,8 @@ class HomeState {
       isLoading: false,
       error: null,
       isSuccess: false,
+      selectedIndex: 0,
+      pageController: PageController(initialPage: 0),
       count: 0,
       songs: [],
       albums: [],
@@ -54,6 +63,8 @@ class HomeState {
     List<FolderEntity>? folders,
     RecentlyPlayedEntity? recentlyPlayed,
     bool? isSuccess,
+    int? selectedIndex,
+    PageController? pageController,
     int? count,
   }) {
     return HomeState(
@@ -66,12 +77,14 @@ class HomeState {
       recentlyPlayed: recentlyPlayed ?? this.recentlyPlayed,
       isSuccess: isSuccess ?? this.isSuccess,
       count: count ?? this.count,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
+      pageController: pageController ?? this.pageController,
     );
   }
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, recentlyPlayed: $recentlyPlayed, isSuccess: $isSuccess, count: $count)';
+    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, recentlyPlayed: $recentlyPlayed, isSuccess: $isSuccess, count: $count, selectedIndex: $selectedIndex)';
   }
 
   @override
@@ -119,6 +132,8 @@ class HomeState {
   factory HomeState.fromMap(Map<String, dynamic> map) {
     return HomeState(
       isLoading: map['isLoading'] as bool,
+      pageController: map['pageController'] as PageController,
+      selectedIndex: map['selectedIndex'] as int,
       error: map['error'] != null
           ? AppErrorHandler.fromMap(map['error'] as Map<String, dynamic>)
           : null,
@@ -144,7 +159,8 @@ class HomeState {
       ),
       recentlyPlayed: map['recentlyPlayed'] != null
           ? RecentlyPlayedEntity.fromMap(
-              map['recentlyPlayed'] as Map<String, dynamic>,)
+              map['recentlyPlayed'] as Map<String, dynamic>,
+            )
           : null,
       isSuccess: map['isSuccess'] as bool,
       count: map['count'] as int,

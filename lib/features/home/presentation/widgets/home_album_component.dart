@@ -4,7 +4,8 @@ import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
-import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
+import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
+import 'package:musync/features/library/presentation/cubit/libray_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeAlbumComponent extends StatelessWidget {
@@ -112,7 +113,10 @@ class HomeAlbumComponent extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {
-                        // TODO: Go to all folders page
+                        BlocProvider.of<QueryCubit>(context)
+                            .updateSelectedIndex(2);
+                        BlocProvider.of<LibraryCubit>(context)
+                            .selectCategory('Albums');
                       },
                       icon: const Icon(
                         Icons.arrow_forward_ios_rounded,
@@ -143,7 +147,10 @@ class HomeAlbumComponent extends StatelessWidget {
                           width: 150,
                           alignment: Alignment.bottomLeft,
                           margin: const EdgeInsets.only(
-                              bottom: 8, right: 8, left: 8,),
+                            bottom: 8,
+                            right: 8,
+                            left: 8,
+                          ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [

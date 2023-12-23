@@ -6,7 +6,7 @@ import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
-import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
+import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeTodaysMixComponent extends StatelessWidget {

@@ -1,5 +1,5 @@
-
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
@@ -90,6 +90,9 @@ class QueryCubit extends Cubit<HomeState> {
       );
 
       data.fold((l) => Left(l), (r) {
+        r.sort(
+          (a, b) => a.title.compareTo(b.title),
+        );
         emit(
           state.copyWith(
             isLoading: false,
@@ -389,5 +392,19 @@ class QueryCubit extends Cubit<HomeState> {
 
   void update(HomeState copyWith) {
     emit(copyWith);
+  }
+
+  void updateSelectedIndex(int index) {
+    state.pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+    emit(
+      state.copyWith(
+        selectedIndex: index,
+        pageController: state.pageController,
+      ),
+    );
   }
 }

@@ -1,17 +1,31 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
+import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/common/song_list_tile.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/bottom_nav/presentation/widget/mini_player.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
+import 'package:musync/features/home/presentation/widgets/method/show_songs_options.dart';
+import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
 
 class SongsListPage extends StatefulWidget {
   final List<SongEntity> songs;
+  final bool appbar;
+  final double coverHeight;
+  final double coverWidth;
+  final double borderRadius;
   const SongsListPage({
     super.key,
     required this.songs,
+    this.appbar = true,
+    this.coverHeight = 50,
+    this.coverWidth = 50,
+    this.borderRadius = 500,
   });
 
   @override
@@ -201,11 +215,28 @@ class _SongsListPageState extends State<SongsListPage> {
 
   @override
   Widget build(BuildContext context) {
+    return widget.appbar
+        ? withAppBarandPlayer(
+            context,
+            widget.coverHeight,
+            widget.coverWidth,
+            widget.borderRadius,
+          )
+        : withoutAppBarandPlayer(
+            context,
+            widget.coverHeight,
+            widget.coverWidth,
+            widget.borderRadius,
+          );
+  }
+
+  Scaffold withAppBarandPlayer(
+    BuildContext context,
+    double? height,
+    double? width,
+    double? borderRadius,
+  ) {
     return Scaffold(
-      bottomSheet: Padding(
-        padding: EdgeInsets.only(bottom: 20.h),
-        child: const MiniPlayer(),
-      ),
       appBar: AppBar(
         leading: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
@@ -246,10 +277,39 @@ class _SongsListPageState extends State<SongsListPage> {
         leadingWidth: MediaQuery.of(context).size.width,
         toolbarHeight: 80.h,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.h),
-        child: _buildSongList(isSearching ? searchedSongs : widget.songs),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.h),
+            child: _buildSongList(
+              isSearching ? searchedSongs : widget.songs,
+              height,
+              width,
+              borderRadius,
+            ),
+          ),
+          Positioned(
+            bottom: 12.w,
+            left: 8.w,
+            right: 8.w,
+            child: const MiniPlayer(),
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget withoutAppBarandPlayer(
+    BuildContext context,
+    double? height,
+    double? width,
+    double? borderRadius,
+  ) {
+    return _buildSongList(
+      isSearching ? searchedSongs : widget.songs,
+      height,
+      width,
+      borderRadius,
     );
   }
 
@@ -261,7 +321,12 @@ class _SongsListPageState extends State<SongsListPage> {
   /// [songs]: A list of SongEntity objects representing songs.
   ///
   /// Returns a ListView.builder containing song items or a "No Songs Found" message.
-  Widget _buildSongList(List<SongEntity> songs) {
+  Widget _buildSongList(
+    List<SongEntity> songs,
+    double? height,
+    double? width,
+    double? borderRadius,
+  ) {
     if (songs.isEmpty) {
       return Center(
         child: Text(
@@ -276,12 +341,20 @@ class _SongsListPageState extends State<SongsListPage> {
     return ListView.builder(
       itemBuilder: (context, index) {
         final song = songs[index];
-        return SongListTile(
-          song: song,
-          trailing: true,
+        return GestureDetector(
           onTap: () {
-            _songOptions();
+            BlocProvider.of<NowPlayingCubit>(context).setCurrentSong(song);
           },
+          child: SongListTile(
+            song: song,
+            trailing: true,
+            coverHeight: height ?? 50.h,
+            coverWidth: width ?? 50.w,
+            borderRadius: borderRadius ?? 500.r,
+            onTap: () {
+              songOptions(song, context);
+            },
+          ),
         );
       },
       itemCount: songs.length,
@@ -289,189 +362,25 @@ class _SongsListPageState extends State<SongsListPage> {
   }
 
   // Function to show the bottom sheet
-  void _songOptions() {
-    //  Show the bottom sheet
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          height: 500.h,
-          decoration: BoxDecoration(
-            color: AppColors(inverseDarkMode: true).surfaceContainerHigh,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.r),
-              topRight: Radius.circular(12.r),
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add_circle_outline_rounded,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Add to Playlist',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.queue_music_rounded,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Add to Queue',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Play Next',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(
-                  color: AppColors().surfaceDim,
-                ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.album_outlined,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Go to Album',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.person_3_outlined,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Go to Artist',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.folder_open_rounded,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Go to Folder',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(
-                  color: AppColors().surfaceDim,
-                ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline_rounded,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Info',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.delete_rounded,
-                        color: AppColors().onSurfaceVariant,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        'Delete',
-                        style: Theme.of(context).textTheme.mBM.copyWith(
-                              color: AppColors().onSurface,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+
+  void deleteFile(String filePath) async {
+    try {
+      // Check permissions
+
+      var file = File(filePath);
+
+      // Check if file exists
+      if (await file.exists()) {
+        //  Delete file
+
+        await file.delete();
+
+        print("File deleted successfully");
+      } else {
+        print("File does not exist");
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 }

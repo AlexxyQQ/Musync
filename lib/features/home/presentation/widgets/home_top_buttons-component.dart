@@ -4,7 +4,7 @@ import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
-import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
+import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
 
 class TopButtons extends StatelessWidget {
   const TopButtons({super.key});

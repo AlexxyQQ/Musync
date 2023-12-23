@@ -11,7 +11,7 @@ import 'package:musync/features/home/domain/entity/folder_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
-import 'package:musync/features/home/presentation/widgets/folder_song_list_page.dart';
+import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
 
 class FolderPage extends StatefulWidget {
   const FolderPage({super.key});
@@ -111,10 +111,6 @@ class _FolderPageState extends State<FolderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: Padding(
-        padding: EdgeInsets.only(bottom: 20.h),
-        child: const MiniPlayer(),
-      ),
       appBar: AppBar(
         leading: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
@@ -146,52 +142,65 @@ class _FolderPageState extends State<FolderPage> {
         leadingWidth: MediaQuery.of(context).size.width,
         toolbarHeight: 80.h,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.h),
-        child: BlocBuilder<QueryCubit, HomeState>(
-          builder: (context, state) {
-            if (isSearching) {
-              /// In a column to display the folders and songs separately and make the folder take the least amount of space
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title for matching folders
-                  Text(
-                    'Search Results Folders',
-                    style: Theme.of(context).textTheme.mBL.copyWith(
-                          color: AppColors().onBackground,
-                        ),
-                  ),
-                  // ListView for matching folders
-                  ListView.builder(
-                    shrinkWrap: true, // Allows the ListView to hug its content
-                    itemBuilder: (context, index) {
-                      return _buildFolderItem(_folders[index]);
-                    },
-                    itemCount: _folders.length,
-                  ),
-                  // Divider
-                  Divider(color: AppColors().onSurfaceVariant),
-                  SizedBox(height: 12.h),
-                  // Title for matching songs
-                  Text(
-                    'Search Results Songs',
-                    style: Theme.of(context).textTheme.mBL.copyWith(
-                          color: AppColors().onBackground,
-                        ),
-                  ),
-                  // Flexible for matching songs
-                  Flexible(
-                    child: _buildSongList(searchedSongs),
-                  ),
-                ],
-              );
-            } else {
-              // Display normal folder list when not searching
-              return _buildFolderList(_folders);
-            }
-          },
-        ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.h),
+            child: BlocBuilder<QueryCubit, HomeState>(
+              builder: (context, state) {
+                if (isSearching) {
+                  /// In a column to display the folders and songs separately and make the folder take the least amount of space
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title for matching folders
+                      Text(
+                        'Search Results Folders',
+                        style: Theme.of(context).textTheme.mBL.copyWith(
+                              color: AppColors().onBackground,
+                            ),
+                      ),
+                      // ListView for matching folders
+                      ListView.builder(
+                        shrinkWrap:
+                            true, // Allows the ListView to hug its content
+                        itemBuilder: (context, index) {
+                          return _buildFolderItem(_folders[index]);
+                        },
+                        itemCount: _folders.length,
+                      ),
+                      // Divider
+                      Divider(color: AppColors().onSurfaceVariant),
+                      SizedBox(height: 12.h),
+                      // Title for matching songs
+                      Text(
+                        'Search Results Songs',
+                        style: Theme.of(context).textTheme.mBL.copyWith(
+                              color: AppColors().onBackground,
+                            ),
+                      ),
+                      // Flexible for matching songs
+                      Flexible(
+                        child: _buildSongList(searchedSongs),
+                      ),
+                    ],
+                  );
+                } else {
+                  // Display normal folder list when not searching
+                  return _buildFolderList(_folders);
+                }
+              },
+            ),
+          ),
+          isSearching
+              ? Positioned(
+                  bottom: 4.w,
+                  left: 8.w,
+                  right: 8.w,
+                  child: const MiniPlayer(),
+                )
+              : const SizedBox.shrink(),
+        ],
       ),
     );
   }
@@ -231,7 +240,7 @@ class _FolderPageState extends State<FolderPage> {
               ),
         ),
         subtitle: Text(
-          '${folder.songs?.length} songs',
+          '${folder.songs?.length} ${folder.songs!.length > 1 ? 'Songs' : 'Song'}',
           style: Theme.of(context).textTheme.lBM.copyWith(
                 color: AppColors().onSurfaceVariant,
               ),

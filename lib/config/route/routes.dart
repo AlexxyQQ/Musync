@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musync/features/auth/presentation/view/forgot_password_page.dart';
 import 'package:musync/features/bottom_nav/presentation/page/bottom_navigation.dart';
 import 'package:musync/features/home/presentation/widgets/folder_page.dart';
+import 'package:musync/features/now_playing/presentation/page/now_playing_page.dart';
 
 import '../../core/common/no_page_route.dart';
 import '../../features/auth/presentation/view/login_page.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String manageAllSongsRoute = '/manageAllSongs';
   static const String manageAllPublicSongsRoute = '/manageAllPublicSongs';
   static const String folderPageRoute = '/folderPage';
+  static const String nowPlayingoute = '/nowPlaying';
 
   static final Map<String, Widget Function(BuildContext)> appPageRoutes = {
     // Starters
@@ -36,6 +38,7 @@ class AppRoutes {
     // Home
     bottomNavRoute: (context) => const BottomNavigationScreen(),
     folderPageRoute: (context) => const FolderPage(),
+    nowPlayingRoute: (context) => const NowPlayingPage(),
     // Settings
   };
 

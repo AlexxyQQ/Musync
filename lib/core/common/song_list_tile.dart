@@ -10,11 +10,17 @@ class SongListTile extends StatefulWidget {
   final SongEntity song;
   final bool trailing;
   final Function()? onTap;
+  final double coverHeight;
+  final double coverWidth;
+  final double borderRadius;
   const SongListTile({
     super.key,
     required this.song,
     this.trailing = false,
     this.onTap,
+    this.coverHeight = 50,
+    this.coverWidth = 50,
+    this.borderRadius = 500,
   });
 
   @override
@@ -30,7 +36,9 @@ class _SongListTileState extends State<SongListTile> {
       minLeadingWidth: 0,
       leading: SongArtWork(
         song: widget.song,
-        borderRadius: 500,
+        height: widget.coverHeight,
+        width: widget.coverWidth,
+        borderRadius: widget.borderRadius,
       ),
       title: Text(
         widget.song.title,
@@ -42,24 +50,32 @@ class _SongListTileState extends State<SongListTile> {
       ),
       subtitle: Row(
         children: [
-          Text(
-            "${widget.song.artist}",
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.lBS.copyWith(
-                  color: AppColors().onSurfaceVariant,
-                ),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 128.w,
+            ),
+            child: Text(
+              "${widget.song.artist}",
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.lBS.copyWith(
+                    color: AppColors().onSurfaceVariant,
+                  ),
+            ),
           ),
           SizedBox(
             width: 4.w,
           ),
-          Text(
-            " - ${widget.song.duration.formatDuration()}",
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.lBS.copyWith(
-                  color: AppColors().onSurfaceVariant,
-                ),
+          SizedBox(
+            width: 56.w,
+            child: Text(
+              " - ${widget.song.duration.formatDuration()}",
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.lBS.copyWith(
+                    color: AppColors().onSurfaceVariant,
+                  ),
+            ),
           ),
         ],
       ),
