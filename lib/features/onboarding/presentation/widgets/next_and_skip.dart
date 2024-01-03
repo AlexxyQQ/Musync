@@ -28,6 +28,7 @@ class NextAndSkip extends StatelessWidget {
                 curve: Curves.linearToEaseOut,
               );
             },
+            fixedSize: Size(350.w, 50.h),
             label: 'Next',
             backgroundColor: AppColors(inverseDarkMode: true).surface,
             foregroundColor: AppColors(inverseDarkMode: true).onSurface,
@@ -43,9 +44,11 @@ class NextAndSkip extends StatelessWidget {
                 curve: Curves.easeInOut,
               );
             },
+            elevation: 0,
             fixedSize: Size(350.w, 50.h),
             label: 'Skip',
             borderRadius: 26,
+            backgroundColor: Colors.transparent,
           ),
         ],
       ),

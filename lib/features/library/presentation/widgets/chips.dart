@@ -1,6 +1,6 @@
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/library/presentation/cubit/library_state.dart';
@@ -30,18 +30,20 @@ class LibraryChips extends StatelessWidget {
                     label: Text(
                       category,
                       style: Theme.of(context).textTheme.mBS.copyWith(
-                            color: AppLightColor.onBackground,
+                            color: state.category == category
+                                ? PrimitiveColors.grey0
+                                : AppColors().onBackground,
                           ),
                     ),
-                    selected: state.category == category && category != 'All',
-                    selectedColor: AppLightColor.primary,
-                    disabledColor: AppColors().background,
+                    selected: state.category == category,
+                    selectedColor: PrimitiveColors.primary500,
+                    backgroundColor: AppColors().background,
                     showCheckmark: false,
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
                         color: state.category == category
                             ? Colors.transparent
-                            : AppColors(inverseDarkMode: true).background,
+                            : AppColors().outline,
                         width: 1.w,
                       ),
                       borderRadius: BorderRadius.circular(24.r),

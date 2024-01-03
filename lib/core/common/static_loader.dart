@@ -55,7 +55,7 @@ class Loader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              color: AppAccentColor.yellow,
+              color: AppTertiaryColor.yellow,
               strokeWidth: 6,
               strokeCap: StrokeCap.round,
               semanticsValue: 'Loading...',

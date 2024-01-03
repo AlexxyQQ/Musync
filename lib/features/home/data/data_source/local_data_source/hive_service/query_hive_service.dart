@@ -197,7 +197,13 @@ class QueryHiveService {
     final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
       HiveTableConstant.recentlyPlayedBox,
     );
-    return recentlyPlayedBox.get(0)!;
+    final data = recentlyPlayedBox.values;
+    if (data.isEmpty) {
+      addRecentlyPlayed(RecentlyPlayedHiveModel.empty());
+      return RecentlyPlayedHiveModel.empty();
+    } else {
+      return data.first;
+    }
   }
 
   Future<void> addRecentlyPlayed(RecentlyPlayedHiveModel recentlyPlayed) async {
@@ -208,7 +214,8 @@ class QueryHiveService {
   }
 
   Future<void> updateRecentlyPlayed(
-      RecentlyPlayedHiveModel recentlyPlayed,) async {
+    RecentlyPlayedHiveModel recentlyPlayed,
+  ) async {
     final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
       HiveTableConstant.recentlyPlayedBox,
     );

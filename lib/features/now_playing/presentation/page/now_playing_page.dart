@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/core/common/album_query_widget.dart';
+import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
+import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
 
 class NowPlayingPage extends StatefulWidget {
   const NowPlayingPage({super.key});
@@ -13,6 +16,7 @@ class NowPlayingPage extends StatefulWidget {
 class _NowPlayingPageState extends State<NowPlayingPage> {
   @override
   Widget build(BuildContext context) {
+    final song = BlocProvider.of<NowPlayingCubit>(context).state.currentSong!;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -35,7 +39,7 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
                   ),
             ),
             Text(
-              'Song Title',
+              song.title,
               style: Theme.of(context).textTheme.mBS.copyWith(
                     color: AppColors().onBackground,
                   ),
@@ -60,26 +64,20 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
               padding: EdgeInsets.symmetric(
                 vertical: 44.h,
               ),
-              child: Placeholder(
-                fallbackHeight: 300.h,
-                fallbackWidth: MediaQuery.of(context).size.width,
+              child: SongArtWork(
+                song: song,
+                height: 300.h,
+                width: MediaQuery.of(context).size.width,
+                borderRadius: 8.r,
               ),
             ),
-            // SongArtWork(
-            //   song: BlocProvider.of<QueryCubit>(context)
-            //       .state
-            //       .songs
-            //       .first,
-            //   height: 44.h,
-            //   width: 44.w,
-            //   borderRadius: 8.r,
-            // ),
+
             SizedBox(
               height: 8.h,
             ),
             // Song Title
             Text(
-              'Song Title',
+              song.title,
               style: Theme.of(context).textTheme.bBL.copyWith(
                     color: AppColors().onBackground,
                   ),
@@ -89,7 +87,7 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
             ),
             // Artist Name
             Text(
-              'Artist Name',
+              '${song.artist}',
               style: Theme.of(context).textTheme.mBM.copyWith(
                     color: AppColors(inverseDarkMode: true).surfaceDim,
                   ),

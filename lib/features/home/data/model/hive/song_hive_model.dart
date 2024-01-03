@@ -510,9 +510,9 @@ class SongHiveModel {
     return SongHiveModel(
       id: map['id'] as int,
       data: map['data'] as String,
-      albumArt: map['album_art'] as String,
+      albumArt: map['album_art'] == null ? "" : map['album_art'] as String,
       albumArtUrl: map['album_art_url'],
-      serverUrl: map['server_url'] as String,
+      serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
       uri: map['uri'] != null ? map['uri'] as String : null,
       displayName: map['display_name'] as String,
       displayNameWOExt: map['display_name_wo_ext'] as String,

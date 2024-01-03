@@ -28,11 +28,11 @@ class KColors {
   static const offWhiteColorTwo = Color(0xFF696C6E);
   static const offWhiteColorThree = Color.fromARGB(255, 184, 189, 192);
   static const greyColor = Color(0xFF666666);
-  static const accentColor = Color(0xFFFFC800);
+  static const tertiaryColor = Color(0xFFFFC800);
   static const todoColor = Colors.red;
 }
 
-class AppAccentColor {
+class AppTertiaryColor {
   static const yellow = Color(0xFFFFC800);
   static const green = Color(0xFFA1CD44);
   static const red = Color(0xFFCD5444);

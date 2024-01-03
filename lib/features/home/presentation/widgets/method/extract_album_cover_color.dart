@@ -25,7 +25,6 @@ Future<List<Color>> extractAlbumArtColor(String path) async {
       text ? AppLightColor.onSurface : AppDarkColor.onSurface,
     ]; // Default color
   } catch (e) {
-    print("Error extracting color: $e");
     return [
       PrimitiveColors.grey900,
       AppDarkColor.onSurface,

@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,6 +97,8 @@ class QueryCubit extends Cubit<HomeState> {
         r.sort(
           (a, b) => a.title.compareTo(b.title),
         );
+        log('JSON file created at: ');
+
         emit(
           state.copyWith(
             isLoading: false,
@@ -102,6 +108,9 @@ class QueryCubit extends Cubit<HomeState> {
             songs: r,
           ),
         ); // Pass the final list of songs
+        String jsonString = jsonEncode(r.map((e) => e.toMap()).toList());
+
+        log('JSON file created at: $jsonString');
       });
     } catch (e) {
       emit(
@@ -325,13 +334,20 @@ class QueryCubit extends Cubit<HomeState> {
           ),
         );
       }, (r) {
+        RecentlyPlayedEntity recentlyPlayed = r;
+        // Sort the list and remove duplicates
+        recentlyPlayed.songs.sort((a, b) => a.title.compareTo(b.title));
+        recentlyPlayed = recentlyPlayed.copyWith(
+          songs: recentlyPlayed.songs.toSet().toList(),
+        );
+
         emit(
           state.copyWith(
             isLoading: false,
             isSuccess: true,
             error: null,
             count: state.count,
-            recentlyPlayed: r,
+            recentlyPlayed: recentlyPlayed,
           ),
         );
       });
@@ -357,8 +373,17 @@ class QueryCubit extends Cubit<HomeState> {
       ),
     );
     try {
-      final data = await updateRecentlyPlayedUsecase.call(song);
+      // Check the song is already in the list
+      final isAlreadyInList = state.recentlyPlayed?.songs
+          .where((element) => element.id == song.id)
+          .isNotEmpty;
 
+      if (isAlreadyInList!) {
+        log("Song is already in the list", name: "Recent SOngs Check");
+        return;
+      }
+
+      final data = await updateRecentlyPlayedUsecase.call(song);
       data.fold((l) {
         emit(
           state.copyWith(

@@ -24,7 +24,6 @@ class AppRoutes {
   static const String manageAllSongsRoute = '/manageAllSongs';
   static const String manageAllPublicSongsRoute = '/manageAllPublicSongs';
   static const String folderPageRoute = '/folderPage';
-  static const String nowPlayingoute = '/nowPlaying';
 
   static final Map<String, Widget Function(BuildContext)> appPageRoutes = {
     // Starters

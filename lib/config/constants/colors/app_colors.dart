@@ -3,99 +3,123 @@ import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/exports.dart';
 
 class AppDarkColor {
-  static const Color background = PrimitiveColors.grey900;
-  static const Color onBackground = PrimitiveColors.grey50;
-  static const Color error = PrimitiveColors.error400;
-  static const Color onError = PrimitiveColors.error800;
-  static const Color errorContainer = PrimitiveColors.error700;
-  static const Color onErrorContainer = PrimitiveColors.error300;
-  static const Color primary = PrimitiveColors.primary400;
-  static const Color onPrimary = PrimitiveColors.primary800;
-  static const Color primaryContainer = PrimitiveColors.primary700;
-  static const Color onPrimaryContainer = PrimitiveColors.primary300;
-  static const Color primaryFixed = PrimitiveColors.primary700;
-  static const Color primaryFixedDim = PrimitiveColors.primary600;
-  static const Color onPrimaryFixed = PrimitiveColors.primary800;
-  static const Color onPrimaryFixedVariant = PrimitiveColors.primary600;
-  static const Color secondary = PrimitiveColors.secondary400;
-  static const Color onSecondary = PrimitiveColors.secondary800;
-  static const Color secondaryContainer = PrimitiveColors.secondary700;
-  static const Color onSecondaryContainer = PrimitiveColors.secondary300;
-  static const Color secondaryFixed = PrimitiveColors.secondary700;
-  static const Color secondaryFixedDim = PrimitiveColors.secondary600;
-  static const Color onSecondaryFixed = PrimitiveColors.secondary800;
-  static const Color onSecondaryFixedVariant = PrimitiveColors.secondary600;
-  static const Color surface = PrimitiveColors.grey900;
-  static const Color surfaceDim = PrimitiveColors.grey700;
-  static const Color surfaceBright = PrimitiveColors.grey600;
-  static const Color surfaceContainerLow = PrimitiveColors.grey600;
-  static const Color surfaceContainerLowest = PrimitiveColors.grey700;
-  static const Color surfaceContainer = PrimitiveColors.grey500;
-  static const Color surfaceContainerHigh = PrimitiveColors.grey400;
-  static const Color surfaceContainerHighest = PrimitiveColors.grey300;
-  static const Color onSurface = PrimitiveColors.grey100;
-  static const Color onSurfaceVariant = PrimitiveColors.grey300;
-  static const Color outline = PrimitiveColors.grey400;
-  static const Color outlineVariant = PrimitiveColors.grey500;
-  static const Color accent = PrimitiveColors.accent400;
-  static const Color onAccent = PrimitiveColors.accent800;
-  static const Color accentContainer = PrimitiveColors.accent700;
-  static const Color onAccentContainer = PrimitiveColors.accent300;
-  static const Color accentFixed = PrimitiveColors.accent700;
-  static const Color accentFixedDim = PrimitiveColors.accent600;
-  static const Color onAccentFixed = PrimitiveColors.accent800;
-  static const Color onAccentFixedVariant = PrimitiveColors.accent600;
+  static const Color primary = PrimitiveColors.primary800;
+  static const Color onPrimary = PrimitiveColors.primary200;
+  static const Color primaryContainer = PrimitiveColors.primary300;
+  static const Color onPrimaryContainer = PrimitiveColors.primary900;
+  static const Color primaryFixed = PrimitiveColors.primary900;
+  static const Color primaryFixedDim = PrimitiveColors.primary800;
+  static const Color onPrimaryFixed = PrimitiveColors.primary100;
+  static const Color onPrimaryFixedVariant = PrimitiveColors.primary300;
+
+  static const Color secondary = PrimitiveColors.secondary800;
+  static const Color onSecondary = PrimitiveColors.secondary200;
+  static const Color secondaryContainer = PrimitiveColors.secondary300;
+  static const Color onSecondaryContainer = PrimitiveColors.secondary900;
+  static const Color secondaryFixed = PrimitiveColors.secondary900;
+  static const Color secondaryFixedDim = PrimitiveColors.secondary800;
+  static const Color onSecondaryFixed = PrimitiveColors.secondary100;
+  static const Color onSecondaryFixedVariant = PrimitiveColors.secondary300;
+
+  static const Color tertiary = PrimitiveColors.tertiary800;
+  static const Color onTertiary = PrimitiveColors.tertiary200;
+  static const Color tertiaryContainer = PrimitiveColors.tertiary300;
+  static const Color onTertiaryContainer = PrimitiveColors.tertiary900;
+  static const Color tertiaryFixed = PrimitiveColors.tertiary900;
+  static const Color tertiaryFixedDim = PrimitiveColors.tertiary800;
+  static const Color onTertiaryFixed = PrimitiveColors.tertiary100;
+  static const Color onTertiaryFixedVariant = PrimitiveColors.tertiary300;
+
+  static const Color error = PrimitiveColors.error800;
+  static const Color onError = PrimitiveColors.error200;
+  static const Color errorContainer = PrimitiveColors.error300;
+  static const Color onErrorContainer = PrimitiveColors.error900;
+  static const Color errorFixed = PrimitiveColors.error900;
+  static const Color errorFixedDim = PrimitiveColors.error800;
+  static const Color onErrorFixed = PrimitiveColors.error100;
+  static const Color onErrorFixedVariant = PrimitiveColors.error300;
+
+  static const Color surfaceDim = PrimitiveColors.grey200;
+  static const Color surface = PrimitiveColors.grey60;
+  static const Color surfaceBright = PrimitiveColors.grey240;
+  static const Color surfaceContainerLowest = PrimitiveColors.grey40;
+  static const Color surfaceContainerLow = PrimitiveColors.grey100;
+  static const Color surfaceContainer = PrimitiveColors.grey120;
+  static const Color surfaceContainerHigh = PrimitiveColors.grey170;
+  static const Color surfaceContainerHighest = PrimitiveColors.grey220;
+  static const Color onSurface = PrimitiveColors.grey900;
+  static const Color onSurfaceVariant = PrimitiveColors.greyV800;
+  static const Color outline = PrimitiveColors.greyV600;
+  static const Color outlineVariant = PrimitiveColors.greyV300;
+  static const Color inverseSurface = PrimitiveColors.grey900;
+  static const Color inverseOnSurface = PrimitiveColors.grey200;
+  static const Color inversePrimary = PrimitiveColors.primary400;
+  static const Color scrim = PrimitiveColors.grey0;
+  static const Color shadow = PrimitiveColors.grey0;
+  static const Color background = PrimitiveColors.grey60;
+  static const Color onBackground = PrimitiveColors.grey960;
 }
 
 class AppLightColor {
-// Accent color aliases
-  static const Color accent = PrimitiveColors.accent500;
-  static const Color onAccent = PrimitiveColors.accent100;
-  static const Color accentContainer = PrimitiveColors.accent300;
-  static const Color onAccentContainer = PrimitiveColors.accent800;
-  static const Color accentFixed = PrimitiveColors.accent300;
-  static const Color accentFixedDim = PrimitiveColors.accent400;
-  static const Color onAccentFixed = PrimitiveColors.accent800;
-  static const Color onAccentFixedVariant = PrimitiveColors.accent600;
-  // Backconst ground color aliases
-  static const Color background = PrimitiveColors.grey50;
-  static const Color onBackground = PrimitiveColors.grey900;
-  // Erroconst r color aliases
-  static const Color error = PrimitiveColors.error500;
-  static const Color onError = PrimitiveColors.error100;
-  static const Color errorContainer = PrimitiveColors.error300;
-  static const Color onErrorContainer = PrimitiveColors.error800;
-  // Primconst ary color aliases
-  static const Color primary = PrimitiveColors.primary500;
-  static const Color primaryContainer = PrimitiveColors.primary300;
-  static const Color primaryFixed = PrimitiveColors.primary300;
-  static const Color primaryFixedDim = PrimitiveColors.primary400;
-  static const Color onPrimaryContainer = PrimitiveColors.primary800;
-  static const Color onPrimaryFixed = PrimitiveColors.primary800;
-  static const Color onPrimary = PrimitiveColors.primary100;
-  static const Color onPrimaryFixedVariant = PrimitiveColors.primary600;
-  // Secoconst ndary color aliases
-  static const Color secondary = PrimitiveColors.secondary500;
-  static const Color secondaryContainer = PrimitiveColors.secondary300;
-  static const Color secondaryFixed = PrimitiveColors.secondary300;
-  static const Color secondaryFixedDim = PrimitiveColors.secondary400;
-  static const Color onSecondary = PrimitiveColors.secondary100;
-  static const Color onSecondaryContainer = PrimitiveColors.secondary800;
-  static const Color onSecondaryFixed = PrimitiveColors.secondary800;
-  static const Color onSecondaryFixedVariant = PrimitiveColors.secondary600;
-  // Surfconst ace color aliases
-  static const Color surface = PrimitiveColors.grey50;
-  static const Color surfaceDim = PrimitiveColors.grey100;
-  static const Color surfaceBright = PrimitiveColors.grey50;
-  static const Color surfaceContainerLow = PrimitiveColors.grey200;
-  static const Color surfaceContainerLowest = PrimitiveColors.grey100;
-  static const Color surfaceContainer = PrimitiveColors.grey300;
-  static const Color surfaceContainerHigh = PrimitiveColors.grey400;
-  static const Color surfaceContainerHighest = PrimitiveColors.grey500;
-  static const Color onSurface = PrimitiveColors.grey900;
-  static const Color onSurfaceVariant = PrimitiveColors.grey800;
-  static const Color outline = PrimitiveColors.grey700;
-  static const Color outlineVariant = PrimitiveColors.grey600;
+  static const Color primary = PrimitiveColors.primary400;
+  static const Color onPrimary = PrimitiveColors.primary1000;
+  static const Color primaryContainer = PrimitiveColors.primary900;
+  static const Color onPrimaryContainer = PrimitiveColors.primary100;
+  static const Color primaryFixed = PrimitiveColors.primary900;
+  static const Color primaryFixedDim = PrimitiveColors.primary800;
+  static const Color onPrimaryFixed = PrimitiveColors.primary100;
+  static const Color onPrimaryFixedVariant = PrimitiveColors.primary300;
+
+  static const Color secondary = PrimitiveColors.secondary400;
+  static const Color onSecondary = PrimitiveColors.secondary1000;
+  static const Color secondaryContainer = PrimitiveColors.secondary900;
+  static const Color onSecondaryContainer = PrimitiveColors.secondary100;
+  static const Color secondaryFixed = PrimitiveColors.secondary900;
+  static const Color secondaryFixedDim = PrimitiveColors.secondary800;
+  static const Color onSecondaryFixed = PrimitiveColors.secondary100;
+  static const Color onSecondaryFixedVariant = PrimitiveColors.secondary300;
+
+  static const Color tertiary = PrimitiveColors.tertiary400;
+  static const Color onTertiary = PrimitiveColors.tertiary1000;
+  static const Color tertiaryContainer = PrimitiveColors.tertiary900;
+  static const Color onTertiaryContainer = PrimitiveColors.tertiary100;
+  static const Color tertiaryFixed = PrimitiveColors.tertiary900;
+  static const Color tertiaryFixedDim = PrimitiveColors.tertiary800;
+  static const Color onTertiaryFixed = PrimitiveColors.tertiary100;
+  static const Color onTertiaryFixedVariant = PrimitiveColors.tertiary300;
+
+  static const Color error = PrimitiveColors.error400;
+  static const Color onError = PrimitiveColors.error1000;
+  static const Color errorContainer = PrimitiveColors.error900;
+  static const Color onErrorContainer = PrimitiveColors.error100;
+  static const Color errorFixed = PrimitiveColors.error900;
+  static const Color errorFixedDim = PrimitiveColors.error800;
+  static const Color onErrorFixed = PrimitiveColors.error100;
+  static const Color onErrorFixedVariant = PrimitiveColors.error300;
+
+  static const Color surfaceDim = PrimitiveColors.grey870;
+  static const Color surface = PrimitiveColors.grey980;
+  static const Color surfaceBright = PrimitiveColors.grey980;
+  static const Color surfaceContainerLowest = PrimitiveColors.grey1000;
+  static const Color surfaceContainerLow = PrimitiveColors.grey960;
+  static const Color surfaceContainer = PrimitiveColors.grey940;
+  static const Color surfaceContainerHigh = PrimitiveColors.grey920;
+  static const Color surfaceContainerHighest = PrimitiveColors.grey900;
+  static const Color onSurface = PrimitiveColors.grey100;
+  static const Color onSurfaceVariant = PrimitiveColors.greyV300;
+
+  static const Color outline = PrimitiveColors.greyV500;
+  static const Color outlineVariant = PrimitiveColors.greyV800;
+
+  static const Color inverseSurface = PrimitiveColors.grey200;
+  static const Color inverseOnSurface = PrimitiveColors.grey950;
+  static const Color inversePrimary = PrimitiveColors.primary800;
+
+  static const Color scrim = PrimitiveColors.grey0;
+  static const Color shadow = PrimitiveColors.grey0;
+
+  static const Color background = PrimitiveColors.grey960;
+  static const Color onBackground = PrimitiveColors.grey60;
 }
 
 class AppColors {
@@ -194,6 +218,38 @@ class AppColors {
       ? AppDarkColor.onSecondaryFixedVariant
       : AppLightColor.onSecondaryFixedVariant;
 
+  Color get tertiary => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.tertiary
+      : AppLightColor.tertiary;
+
+  Color get onTertiary => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.onTertiary
+      : AppLightColor.onTertiary;
+
+  Color get tertiaryContainer => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.tertiaryContainer
+      : AppLightColor.tertiaryContainer;
+
+  Color get onTertiaryContainer => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.onTertiaryContainer
+      : AppLightColor.onTertiaryContainer;
+
+  Color get tertiaryFixed => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.tertiaryFixed
+      : AppLightColor.tertiaryFixed;
+
+  Color get tertiaryFixedDim => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.tertiaryFixedDim
+      : AppLightColor.tertiaryFixedDim;
+
+  Color get onTertiaryFixed => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.onTertiaryFixed
+      : AppLightColor.onTertiaryFixed;
+
+  Color get onTertiaryFixedVariant => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.onTertiaryFixedVariant
+      : AppLightColor.onTertiaryFixedVariant;
+
   Color get surface => (_isDarkMode != inverseDarkMode)
       ? AppDarkColor.surface
       : AppLightColor.surface;
@@ -242,35 +298,23 @@ class AppColors {
       ? AppDarkColor.outlineVariant
       : AppLightColor.outlineVariant;
 
-  Color get accent => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.accent
-      : AppLightColor.accent;
+  Color get inverseSurface => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.inverseSurface
+      : AppLightColor.inverseSurface;
 
-  Color get onAccent => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.onAccent
-      : AppLightColor.onAccent;
+  Color get inverseOnSurface => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.inverseOnSurface
+      : AppLightColor.inverseOnSurface;
 
-  Color get accentContainer => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.accentContainer
-      : AppLightColor.accentContainer;
+  Color get inversePrimary => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.inversePrimary
+      : AppLightColor.inversePrimary;
 
-  Color get onAccentContainer => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.onAccentContainer
-      : AppLightColor.onAccentContainer;
+  Color get scrim => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.scrim
+      : AppLightColor.scrim;
 
-  Color get accentFixed => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.accentFixed
-      : AppLightColor.accentFixed;
-
-  Color get accentFixedDim => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.accentFixedDim
-      : AppLightColor.accentFixedDim;
-
-  Color get onAccentFixed => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.onAccentFixed
-      : AppLightColor.onAccentFixed;
-
-  Color get onAccentFixedVariant => (_isDarkMode != inverseDarkMode)
-      ? AppDarkColor.onAccentFixedVariant
-      : AppLightColor.onAccentFixedVariant;
+  Color get shadow => (_isDarkMode != inverseDarkMode)
+      ? AppDarkColor.shadow
+      : AppLightColor.shadow;
 }

@@ -47,7 +47,7 @@ class RecentlyPlayedEntity {
       date: map['date'] as String,
       expiringDate: map['expiring_date'] as String,
       songs: List<SongEntity>.from(
-        (map['songs'] as List<int>).map<SongEntity>(
+        map['songs'].map<SongEntity>(
           (x) => SongEntity.fromMap(x as Map<String, dynamic>),
         ),
       ),

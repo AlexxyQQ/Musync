@@ -26,6 +26,8 @@ import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 ///   [iconData] - (Optional) The icon to be displayed alongside the button label.
 ///   [label] - (Optional) The text label of the button.
 ///   [borderRadius] - (Optional) The border radius of the button.
+///   [svg] - (Optional) The SVG icon to be displayed alongside the button label.
+///   [picture] - (Optional) The image to be displayed alongside the button label.
 ///
 /// Example Usage:
 /// ```dart
@@ -58,6 +60,7 @@ class KButton extends StatelessWidget {
   final String? label;
   final double? borderRadius;
   final String? svg;
+  final String? picture;
   const KButton({
     super.key,
     required this.onPressed,
@@ -73,6 +76,7 @@ class KButton extends StatelessWidget {
     this.label,
     this.borderRadius,
     this.svg,
+    this.picture,
   });
 
   @override
@@ -90,12 +94,26 @@ class KButton extends StatelessWidget {
 
       // Add SVG if not null
       if (svg != null) {
-        addWidgetWithSpacer(SvgPicture.asset(
-          svg!,
-          width: 20.w,
-          height: 20.h,
-          color: foregroundColor ?? AppColors().onSurface,
-        ),);
+        addWidgetWithSpacer(
+          SvgPicture.asset(
+            svg!,
+            width: 20.w,
+            height: 20.h,
+            color: foregroundColor ?? AppColors().onSurface,
+          ),
+        );
+      }
+
+      // Add Picture if not null
+      if (picture != null) {
+        addWidgetWithSpacer(
+          Image.asset(
+            picture!,
+            width: 20.w,
+            height: 20.h,
+            color: foregroundColor ?? AppColors().onSurface,
+          ),
+        );
       }
 
       // Add Icon if not null

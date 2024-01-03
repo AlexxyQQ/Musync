@@ -5,6 +5,7 @@ import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
+import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
 
 class TopButtons extends StatelessWidget {
   const TopButtons({super.key});
@@ -23,17 +24,18 @@ class TopButtons extends StatelessWidget {
         KButton(
           onPressed: () {},
           label: 'Favorite',
-          backgroundColor: AppColors().primaryContainer,
-          foregroundColor: AppColors().onPrimaryContainer,
+          backgroundColor: AppDarkColor.primary,
+          foregroundColor: AppDarkColor.onPrimary,
           borderRadius: 12,
           svg: 'assets/iconography/heart-outline.svg',
           fixedSize: const Size(150, 30),
         ),
         // Recent Button
         KButton(
-          onPressed: () {
-            Navigator.push(
-              context,
+          onPressed: () async {
+            final nav = Navigator.of(context);
+            await BlocProvider.of<QueryCubit>(context).getRecentlyPlayedSongs();
+            nav.push(
               MaterialPageRoute(
                 builder: (context) => SongsListPage(
                   songs: BlocProvider.of<QueryCubit>(context)
@@ -46,8 +48,8 @@ class TopButtons extends StatelessWidget {
             );
           },
           label: 'Recent',
-          backgroundColor: AppColors().secondaryContainer,
-          foregroundColor: AppColors().onSecondaryContainer,
+          backgroundColor: AppDarkColor.secondary,
+          foregroundColor: AppDarkColor.onSecondary,
           borderRadius: 12,
           svg: 'assets/iconography/recent.svg',
           fixedSize: const Size(150, 30),
@@ -58,18 +60,31 @@ class TopButtons extends StatelessWidget {
             Navigator.pushNamed(context, AppRoutes.folderPageRoute);
           },
           label: 'Folder',
-          backgroundColor: AppColors().accentContainer,
-          foregroundColor: AppColors().onAccentContainer,
+          backgroundColor: AppDarkColor.tertiary,
+          foregroundColor: AppDarkColor.onTertiary,
           borderRadius: 12,
           svg: 'assets/iconography/music-folder-outline.svg',
           fixedSize: const Size(150, 30),
         ),
         //  Shuffle Button
         KButton(
-          onPressed: () {},
+          onPressed: () {
+            if (BlocProvider.of<QueryCubit>(context).state.songs.isNotEmpty) {
+              BlocProvider.of<NowPlayingCubit>(context).clearQueue();
+              BlocProvider.of<NowPlayingCubit>(context).setSongs(
+                songs: BlocProvider.of<QueryCubit>(context).state.songs,
+                song: BlocProvider.of<QueryCubit>(context).state.songs.first,
+                context: context,
+              );
+              BlocProvider.of<NowPlayingCubit>(context).shuffle();
+              BlocProvider.of<QueryCubit>(context).updateRecentlyPlayedSongs(
+                song: BlocProvider.of<QueryCubit>(context).state.songs.first,
+              );
+            }
+          },
           label: 'Shuffle',
-          backgroundColor: AppColors().errorContainer,
-          foregroundColor: AppColors().onErrorContainer,
+          backgroundColor: AppDarkColor.error,
+          foregroundColor: AppDarkColor.onError,
           borderRadius: 12,
           svg: 'assets/iconography/shuffle.svg',
           fixedSize: const Size(150, 30),

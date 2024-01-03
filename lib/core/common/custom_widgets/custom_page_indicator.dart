@@ -10,7 +10,7 @@ import 'package:musync/config/constants/global_constants.dart';
 /// Parameters:
 ///   [controller] - PageController that this page indicator will respond to.
 ///   [itemCount] - The total number of items (dots) to display, typically matching the number of pages in the PageView.
-///   [activeColor] - (Optional) The Color for the active dot. Defaults to AppAccentColor.yellow.
+///   [activeColor] - (Optional) The Color for the active dot. Defaults to AppTertiaryColor.yellow.
 ///   [inactiveColor] - (Optional) The Color for the inactive dots. Defaults to AppIconColor.dim.
 ///   [activeDotHeight] - (Optional) The height of the active dot. Defaults to 10.0.
 ///   [activeDotWidth] - (Optional) The width of the active dot. Defaults to 20.0.
@@ -55,7 +55,7 @@ class KPageIndicator extends StatefulWidget {
     Key? key,
     required this.controller,
     required this.itemCount,
-    this.activeColor = AppAccentColor.yellow,
+    this.activeColor = AppTertiaryColor.yellow,
     this.inactiveColor = AppIconColor.dim,
     this.activeDotHeight = 10.0,
     this.activeDotWidth = 20.0,

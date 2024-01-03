@@ -93,4 +93,12 @@ class RecentlyPlayedHiveModel {
 
   @override
   int get hashCode => date.hashCode ^ expiringDate.hashCode ^ songs.hashCode;
+
+  static RecentlyPlayedHiveModel empty() {
+    return RecentlyPlayedHiveModel(
+      date: '',
+      expiringDate: '',
+      songs: [],
+    );
+  }
 }

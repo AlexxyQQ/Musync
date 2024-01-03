@@ -11,6 +11,7 @@ import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
+import 'package:musync/features/home/presentation/widgets/method/extract_album_cover_color.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,30 +28,12 @@ class HomeRecentlyPayedComponent extends StatefulWidget {
 class _HomeRecentlyPayedComponentState
     extends State<HomeRecentlyPayedComponent> {
   Map<String, Color> albumArtColors = {}; // Map to store colors for each album
-  Map<String, Color> tetxColors = {}; // Map to store colors for text
+  Map<String, Color> textColors = {}; // Map to store colors for text
 
-  Future<void> extractAlbumArtColor(String path) async {
-    if (!albumArtColors.containsKey(path)) {
-      // Check if color is already extracted
-      try {
-        final Uint8List fileData = await io.File(path).readAsBytes();
-        final ui.Codec codec = await ui.instantiateImageCodec(fileData);
-        final ui.FrameInfo frameInfo = await codec.getNextFrame();
-
-        final PaletteGenerator paletteGenerator =
-            await PaletteGenerator.fromImage(frameInfo.image);
-        final bool text =
-            paletteGenerator.dominantColor!.color.computeLuminance() > 0.5;
-        setState(() {
-          albumArtColors[path] =
-              paletteGenerator.dominantColor?.color ?? AppColors().primary;
-          tetxColors[path] =
-              text ? AppLightColor.onSurface : AppDarkColor.onSurface;
-        });
-      } catch (e) {
-        print("Error extracting color: $e");
-      }
-    }
+  Future<void> extractAlbumArtColors(String path) async {
+    final data = await extractAlbumArtColor(path);
+    albumArtColors[path] = data[0];
+    textColors[path] = data[1];
   }
 
   Widget _buildShimmerEffect(BuildContext context) {
@@ -186,14 +169,14 @@ class _HomeRecentlyPayedComponentState
                               .albumArt;
 
                           if (albumCover != null) {
-                            extractAlbumArtColor(albumCover);
+                            extractAlbumArtColors(albumCover);
                           }
 
                           Color currentAlbumColor =
                               albumArtColors[albumCover] ?? AppColors().primary;
 
-                          Color currentTextColor = albumArtColors[albumCover] ??
-                              AppColors().onBackground;
+                          Color currentTextColor = textColors[albumCover] ??
+                              AppColors(inverseDarkMode: true).onBackground;
 
                           return Container(
                             width: 250,
@@ -314,8 +297,7 @@ class _HomeRecentlyPayedComponentState
                           );
                         }),
                         // only show 10 items
-                        itemCount:
-                            state.albums.length > 10 ? 10 : state.albums.length,
+                        itemCount: songs.length > 10 ? 10 : songs.length,
                       ),
                     ),
                   ],

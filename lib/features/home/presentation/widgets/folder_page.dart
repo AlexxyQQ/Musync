@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
 import 'package:musync/core/common/song_list_tile.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
@@ -12,6 +13,7 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
+import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
 
 class FolderPage extends StatefulWidget {
   const FolderPage({super.key});
@@ -133,10 +135,10 @@ class _FolderPageState extends State<FolderPage> {
               },
               icon: Icon(
                 Icons.arrow_back_rounded,
-                color: AppColors().onSurfaceVariant,
+                color: AppColors().onSurface,
               ),
             ),
-            fillColor: AppColors().surfaceContainer,
+            fillColor: AppColors().surfaceContainerHigh,
           ),
         ),
         leadingWidth: MediaQuery.of(context).size.width,
@@ -348,8 +350,19 @@ class _FolderPageState extends State<FolderPage> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final song = songs[index];
-        return SongListTile(
-          song: song,
+        return GestureDetector(
+          onTap: () async {
+            BlocProvider.of<NowPlayingCubit>(context).setSongs(
+              song: song,
+              songs: songs,
+              context: context,
+            );
+            BlocProvider.of<QueryCubit>(context)
+                .updateRecentlyPlayedSongs(song: song);
+          },
+          child: SongListTile(
+            song: song,
+          ),
         );
       },
       itemCount: songs.length,

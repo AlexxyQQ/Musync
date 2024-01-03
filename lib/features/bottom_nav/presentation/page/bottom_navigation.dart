@@ -1,10 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
@@ -71,9 +71,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                     ),
                 prefixIcon: Icon(
                   Icons.menu_rounded,
-                  color: AppColors().onSurfaceVariant,
+                  color: AppColors().onSurface,
                 ),
-                fillColor: AppColors().surfaceContainer,
+                fillColor: AppColors().surfaceContainerHigh,
               ),
             ),
             leadingWidth: MediaQuery.of(context).size.width,
@@ -98,7 +98,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           ),
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
-              color: AppColors().surfaceDim,
+              color: AppColors().surface,
               boxShadow: [
                 BoxShadow(
                   blurRadius: 20,
@@ -114,13 +114,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   rippleColor: Colors.grey[300]!,
                   hoverColor: Colors.grey[100]!,
                   gap: 8,
-                  activeColor: AppColors().onBackground,
+                  activeColor: AppColors().onSurface,
                   iconSize: 18.r,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   duration: const Duration(milliseconds: 400),
-                  tabBackgroundColor: AppColors().surfaceContainerLow,
-                  color: AppColors().onSurface,
+                  tabBackgroundColor: AppColors().surfaceContainerHigh,
+                  color: PrimitiveColors.grey500,
                   textStyle: Theme.of(context)
                       .textTheme
                       .bBM

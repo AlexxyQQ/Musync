@@ -27,8 +27,8 @@ import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 /// kShowSnackBar(
 ///   message: 'This is a snack bar message!',
 ///   context: context, // Use this if you have a BuildContext available.
-///   // Or use the scaffoldKey if BuildContext is not available.
-///   // scaffoldKey: _scaffoldKey,
+///    Or use the scaffoldKey if BuildContext is not available.
+///    scaffoldKey: _scaffoldKey,
 /// )
 /// ```
 ///
@@ -48,13 +48,12 @@ void kShowSnackBar({
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor:
-            isError ? AppLightColor.errorContainer : backgroundColor,
+        backgroundColor: isError ? AppLightColor.error : backgroundColor,
         elevation: 2,
         content: Text(
           message,
           style: Theme.of(context).textTheme.mBS.copyWith(
-                color: textColor,
+                color: isError ? AppLightColor.onError : textColor,
               ),
         ),
         duration: duration,

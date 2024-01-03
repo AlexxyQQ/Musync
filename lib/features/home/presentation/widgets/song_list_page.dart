@@ -259,7 +259,7 @@ class _SongsListPageState extends State<SongsListPage> {
               },
               icon: Icon(
                 Icons.arrow_back_rounded,
-                color: AppColors().onSurfaceVariant,
+                color: AppColors().onSurface,
               ),
             ),
             suffixIcon: IconButton(
@@ -268,10 +268,10 @@ class _SongsListPageState extends State<SongsListPage> {
               },
               icon: Icon(
                 Icons.filter_list,
-                color: AppColors().onSurfaceVariant,
+                color: AppColors().onSurface,
               ),
             ),
-            fillColor: AppColors().surfaceContainer,
+            fillColor: AppColors().surfaceContainerHigh,
           ),
         ),
         leadingWidth: MediaQuery.of(context).size.width,
@@ -342,8 +342,14 @@ class _SongsListPageState extends State<SongsListPage> {
       itemBuilder: (context, index) {
         final song = songs[index];
         return GestureDetector(
-          onTap: () {
-            BlocProvider.of<NowPlayingCubit>(context).setCurrentSong(song);
+          onTap: () async {
+            BlocProvider.of<NowPlayingCubit>(context).setSongs(
+              song: song,
+              songs: songs,
+              context: context,
+            );
+            BlocProvider.of<QueryCubit>(context)
+                .updateRecentlyPlayedSongs(song: song);
           },
           child: SongListTile(
             song: song,

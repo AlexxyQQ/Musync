@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_page_indicator.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/onboarding/presentation/widgets/last_page.dart';
@@ -151,8 +152,8 @@ class IconAndPageIndicator extends StatelessWidget {
           activeDotWidth: 70,
           dotSpacing: 15,
           trailing: false,
-          activeColor: AppLightColor.primary,
-          inactiveColor: AppLightColor.surfaceContainer,
+          activeColor: PrimitiveColors.primary500,
+          inactiveColor: AppLightColor.surfaceDim,
         ),
       ],
     );

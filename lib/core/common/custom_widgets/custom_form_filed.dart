@@ -37,6 +37,7 @@ import 'package:musync/config/constants/global_constants.dart';
 ///   [inputFormatters] - (Optional) List of TextInputFormatters to control the input.
 ///   [focusNode] - (Optional) FocusNode for handling focus.
 ///   [textAlign] - (Optional) How the text should be aligned horizontally.
+///   [maxLines] - (Optional) The maximum number of lines for the text field.
 ///
 /// Example Usage:
 /// ```dart
@@ -92,6 +93,7 @@ class KTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final FocusNode? focusNode;
   final TextAlign? textAlign;
+  final int? maxLines;
 
   const KTextFormField({
     super.key,
@@ -120,6 +122,7 @@ class KTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.focusNode,
     this.textAlign,
+    this.maxLines = 1,
   });
 
   @override
@@ -136,6 +139,7 @@ class KTextFormField extends StatelessWidget {
       enableIMEPersonalizedLearning: enableIMEPersonalizedLearning ?? true,
       style: contentStyle ?? GlobalConstants.textStyle(),
       focusNode: focusNode,
+      maxLines: maxLines,
       decoration: InputDecoration(
         counterText: '',
         errorMaxLines: 1,
@@ -169,7 +173,7 @@ class KTextFormField extends StatelessWidget {
                 .errorContainer, // Set the error border color to amber
           ),
         ),
-        fillColor: fillColor ?? AppColors().surfaceDim,
+        fillColor: fillColor ?? AppColors().surfaceContainerHigh,
         filled: true,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 16.w,

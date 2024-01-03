@@ -5,6 +5,7 @@ import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
+import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/method/extract_album_cover_color.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
@@ -114,19 +115,33 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         children: [
                           // Play
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (state.isPlaying) {
+                                context.read<NowPlayingCubit>().pause();
+                              } else {
+                                context.read<NowPlayingCubit>().play();
+                              }
+                            },
                             icon: Icon(
-                              CupertinoIcons.play,
-                              color: AppDarkColor.onBackground,
+                              state.isPlaying
+                                  ? CupertinoIcons.pause
+                                  : CupertinoIcons.play,
+                              color: textColor,
                               size: 18.r,
                             ),
                           ),
                           // Next
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<NowPlayingCubit>().next();
+                              BlocProvider.of<QueryCubit>(context)
+                                  .updateRecentlyPlayedSongs(
+                                song: state.currentSong!,
+                              );
+                            },
                             icon: Icon(
                               CupertinoIcons.forward_end_alt,
-                              color: AppDarkColor.onBackground,
+                              color: textColor,
                               size: 18.r,
                             ),
                           ),
@@ -135,7 +150,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             onPressed: () {},
                             icon: Icon(
                               CupertinoIcons.repeat,
-                              color: AppDarkColor.onBackground,
+                              color: textColor,
                               size: 18.r,
                             ),
                           ),
