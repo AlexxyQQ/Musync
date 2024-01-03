@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-
+import 'package:just_audio/just_audio.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
@@ -12,6 +14,7 @@ class NowPlayingState {
   final SongEntity? currentSong;
   final List<SongEntity>? queue;
   final int currentIndex;
+  final AudioPlayer? audioPlayer;
 
   // Audio Control
   final bool isPlaying;
@@ -25,6 +28,7 @@ class NowPlayingState {
     this.currentSong,
     this.queue,
     required this.currentIndex,
+    required this.audioPlayer,
     required this.isPlaying,
     required this.isShuffle,
     required this.isRepeat,
@@ -41,6 +45,7 @@ class NowPlayingState {
       isShuffle: false,
       isRepeat: false,
       currentIndex: 0,
+      audioPlayer: null,
     );
   }
 
@@ -51,6 +56,7 @@ class NowPlayingState {
     SongEntity? currentSong,
     List<SongEntity>? queue,
     int? currentIndex,
+    AudioPlayer? audioPlayer,
     bool? isPlaying,
     bool? isShuffle,
     bool? isRepeat,
@@ -62,63 +68,22 @@ class NowPlayingState {
       currentSong: currentSong ?? this.currentSong,
       queue: queue ?? this.queue,
       currentIndex: currentIndex ?? this.currentIndex,
+      audioPlayer: audioPlayer ?? this.audioPlayer,
       isPlaying: isPlaying ?? this.isPlaying,
       isShuffle: isShuffle ?? this.isShuffle,
       isRepeat: isRepeat ?? this.isRepeat,
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'isLoading': isLoading,
-      'isSuccess': isSuccess,
-      'error': error?.toMap(),
-      'currentSong': currentSong?.toMap(),
-      'queue': queue?.map((x) => x?.toMap()).toList(),
-      'currentIndex': currentIndex,
-      'isPlaying': isPlaying,
-      'isShuffle': isShuffle,
-      'isRepeat': isRepeat,
-    };
-  }
-
-  factory NowPlayingState.fromMap(Map<String, dynamic> map) {
-    return NowPlayingState(
-      isLoading: map['isLoading'] as bool,
-      isSuccess: map['isSuccess'] as bool,
-      error: map['error'] != null
-          ? AppErrorHandler.fromMap(map['error'] as Map<String, dynamic>)
-          : null,
-      currentSong: map['currentSong'] != null
-          ? SongEntity.fromMap(map['currentSong'] as Map<String, dynamic>)
-          : null,
-      queue: map['queue'] != null
-          ? List<SongEntity>.from(
-              (map['queue'] as List<int>).map<SongEntity?>(
-                (x) => SongEntity.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
-      currentIndex: map['currentIndex'] as int,
-      isPlaying: map['isPlaying'] as bool,
-      isShuffle: map['isShuffle'] as bool,
-      isRepeat: map['isRepeat'] as bool,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory NowPlayingState.fromJson(String source) =>
-      NowPlayingState.fromMap(json.decode(source) as Map<String, dynamic>);
-
   @override
   String toString() {
-    return 'NowPlayingState(isLoading: $isLoading, isSuccess: $isSuccess, error: $error, currentSong: $currentSong, queue: $queue, currentIndex: $currentIndex, isPlaying: $isPlaying, isShuffle: $isShuffle, isRepeat: $isRepeat)';
+    return 'NowPlayingState(isLoading: $isLoading, isSuccess: $isSuccess, error: $error, currentSong: $currentSong, queue: $queue, currentIndex: $currentIndex, audioPlayer: $audioPlayer, isPlaying: $isPlaying, isShuffle: $isShuffle, isRepeat: $isRepeat)';
   }
 
   @override
   bool operator ==(covariant NowPlayingState other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other.isLoading == isLoading &&
         other.isSuccess == isSuccess &&
@@ -126,6 +91,7 @@ class NowPlayingState {
         other.currentSong == currentSong &&
         listEquals(other.queue, queue) &&
         other.currentIndex == currentIndex &&
+        other.audioPlayer == audioPlayer &&
         other.isPlaying == isPlaying &&
         other.isShuffle == isShuffle &&
         other.isRepeat == isRepeat;
@@ -139,6 +105,7 @@ class NowPlayingState {
         currentSong.hashCode ^
         queue.hashCode ^
         currentIndex.hashCode ^
+        audioPlayer.hashCode ^
         isPlaying.hashCode ^
         isShuffle.hashCode ^
         isRepeat.hashCode;

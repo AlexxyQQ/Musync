@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:just_audio/just_audio.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
@@ -17,10 +19,11 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
     emit(
       state.copyWith(
         currentIndex: songs.indexOf(song),
+        audioPlayer: get<AudioPlayer>(),
       ),
     );
     final nav = Navigator.of(context);
-    await get<AudioPlayer>().setAudioSource(
+    await state.audioPlayer!.setAudioSource(
       ConcatenatingAudioSource(
         children: songs
             .map(
@@ -33,7 +36,10 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
       ),
       initialIndex: state.currentIndex,
     );
-    get<AudioPlayer>().play();
+    state.audioPlayer!.play();
+    if (!state.isPlaying) {
+      nav.pushNamed(AppRoutes.nowPlayingRoute);
+    }
     emit(
       state.copyWith(
         currentSong: song,
@@ -41,13 +47,10 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
         queue: songs,
       ),
     );
-    if (state.queue!.isEmpty) {
-      nav.pushNamed(AppRoutes.nowPlayingRoute);
-    }
   }
 
   void play() {
-    get<AudioPlayer>().play();
+    state.audioPlayer!.play();
     emit(
       state.copyWith(
         isPlaying: true,
@@ -56,7 +59,7 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
   }
 
   void pause() {
-    get<AudioPlayer>().pause();
+    state.audioPlayer!.pause();
     emit(
       state.copyWith(
         isPlaying: false,
@@ -65,7 +68,7 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
   }
 
   void stop() {
-    get<AudioPlayer>().stop();
+    state.audioPlayer!.stop();
     emit(
       state.copyWith(
         isPlaying: false,
@@ -74,28 +77,28 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
   }
 
   void next() async {
-    await get<AudioPlayer>().seekToNext();
+    await state.audioPlayer!.seekToNext();
     emit(
       state.copyWith(
-        currentSong: state.queue![get<AudioPlayer>().currentIndex ?? 0],
-        currentIndex: get<AudioPlayer>().currentIndex ?? 0,
+        currentSong: state.queue![state.audioPlayer!.currentIndex ?? 0],
+        currentIndex: state.audioPlayer!.currentIndex ?? 0,
       ),
     );
   }
 
   void shuffle() async {
-    await get<AudioPlayer>().shuffle();
+    await state.audioPlayer!.shuffle();
     emit(
       state.copyWith(
-        currentSong: state.queue![get<AudioPlayer>().currentIndex ?? 0],
-        currentIndex: get<AudioPlayer>().currentIndex ?? 0,
+        currentSong: state.queue![state.audioPlayer!.currentIndex ?? 0],
+        currentIndex: state.audioPlayer!.currentIndex ?? 0,
         queue: state.queue,
       ),
     );
   }
 
   void clearQueue() async {
-    await get<AudioPlayer>().stop();
+    await state.audioPlayer!.stop();
     emit(
       state.copyWith(
         currentSong: null,

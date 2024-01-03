@@ -5,6 +5,7 @@ import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
+import 'package:musync/features/bottom_nav/presentation/widget/duration_slider.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/method/extract_album_cover_color.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
@@ -145,11 +146,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               size: 18.r,
                             ),
                           ),
-                          // Repeat
+                          // Share
                           IconButton(
                             onPressed: () {},
                             icon: Icon(
-                              CupertinoIcons.repeat,
+                              Icons.share_outlined,
                               color: textColor,
                               size: 18.r,
                             ),
@@ -162,15 +163,17 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
                 //Prograss Bar
                 Positioned(
-                  bottom: 0,
-                  left: 4.w,
-                  child: Container(
-                    height: 4.h,
-                    width: MediaQuery.of(context).size.width - 30.w,
-                    decoration: BoxDecoration(
-                      color: PrimitiveColors.primary300,
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
+                  bottom: -18.h,
+                  left: -20.w,
+                  width: 416.w,
+                  child: DurationSlider(
+                    height: 6.h,
+                    activeColor: PrimitiveColors.primary500,
+                    thumbRadius: 0,
+                    overlayRadius: 20.r,
+                    inactiveColor: PrimitiveColors.primary900,
+                    audioPlayer: state.audioPlayer!,
+                    duration: false,
                   ),
                 ),
               ],
