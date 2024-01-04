@@ -27,7 +27,7 @@ Future<List<Color>> extractAlbumArtColor(String path) async {
   } catch (e) {
     return [
       PrimitiveColors.grey900,
-      AppDarkColor.onSurface,
+      AppLightColor.onSurface,
     ]; // Return a default color in case of an error
   }
 }

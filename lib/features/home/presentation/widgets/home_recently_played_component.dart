@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
@@ -151,13 +152,10 @@ class _HomeRecentlyPayedComponentState
                       height: 118,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
+                        itemCount: songs.length > 10 ? 10 : songs.length,
                         itemBuilder: ((context, index) {
                           // Fetching album cover from the list of songs
-                          var albumCover = songs
-                              .firstWhere(
-                                (song) => song.albumArt != null,
-                              )
-                              .albumArt;
+                          var albumCover = songs[index].albumArt;
 
                           if (albumCover != null) {
                             extractAlbumArtColors(albumCover);
@@ -168,7 +166,7 @@ class _HomeRecentlyPayedComponentState
 
                           Color currentTextColor = textColors[albumCover] ??
                               AppColors(inverseDarkMode: true).onBackground;
-
+                          log("currentAlbumColor: $albumArtColors");
                           return Container(
                             width: 250,
                             height: 110,
@@ -187,9 +185,7 @@ class _HomeRecentlyPayedComponentState
                                 Positioned(
                                   right: 0,
                                   child: SongArtWork(
-                                    song: songs.firstWhere(
-                                      (song) => song.albumArt != null,
-                                    ),
+                                    song: songs[index],
                                     height: 110,
                                     width: 150,
                                     borderRadius: 12,
@@ -256,7 +252,7 @@ class _HomeRecentlyPayedComponentState
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          songs.first.title,
+                                          songs[index].title,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.start,
                                           maxLines: 1,
@@ -288,7 +284,6 @@ class _HomeRecentlyPayedComponentState
                           );
                         }),
                         // only show 10 items
-                        itemCount: songs.length > 10 ? 10 : songs.length,
                       ),
                     ),
                   ],

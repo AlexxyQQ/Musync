@@ -170,4 +170,53 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
       );
     }
   }
+
+  void playNext(
+    SongEntity song,
+  ) async {
+    state.queue!.insert(
+      state.audioPlayer!.currentIndex! + 1,
+      song,
+    );
+    await state.audioPlayer!.setAudioSource(
+      ConcatenatingAudioSource(
+        children: state.queue!
+            .map(
+              (song) => AudioSource.uri(
+                Uri.file(song.data),
+                tag: song,
+              ),
+            )
+            .toList(),
+      ),
+      initialIndex: state.audioPlayer!.currentIndex,
+    );
+    emit(
+      state.copyWith(
+        queue: state.queue,
+      ),
+    );
+  }
+
+  void addToQueue(SongEntity song) async {
+    state.queue!.add(song);
+    await state.audioPlayer!.setAudioSource(
+      ConcatenatingAudioSource(
+        children: state.queue!
+            .map(
+              (song) => AudioSource.uri(
+                Uri.file(song.data),
+                tag: song,
+              ),
+            )
+            .toList(),
+      ),
+      initialIndex: state.audioPlayer!.currentIndex,
+    );
+    emit(
+      state.copyWith(
+        queue: state.queue,
+      ),
+    );
+  }
 }
