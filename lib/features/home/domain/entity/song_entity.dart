@@ -67,6 +67,10 @@ class SongEntity extends Equatable {
 
   final bool? isPublic;
 
+  final String? lyrics;
+
+  final bool isFavorite;
+
   const SongEntity({
     required this.id,
     required this.data,
@@ -98,6 +102,8 @@ class SongEntity extends Equatable {
     required this.isRingtone,
     this.albumArtUrl,
     this.isPublic,
+    this.lyrics,
+    this.isFavorite = false,
   });
 
   SongEntity copyWith({
@@ -131,6 +137,8 @@ class SongEntity extends Equatable {
     String? albumArt,
     String? albumArtUrl,
     bool? isPublic,
+    String? lyrics,
+    bool? isFavorite,
   }) {
     return SongEntity(
       id: id ?? this.id,
@@ -163,6 +171,8 @@ class SongEntity extends Equatable {
       albumArt: albumArt ?? this.albumArt,
       albumArtUrl: albumArtUrl ?? this.albumArtUrl,
       isPublic: isPublic ?? this.isPublic,
+      lyrics: lyrics ?? this.lyrics,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 
@@ -198,6 +208,8 @@ class SongEntity extends Equatable {
       'album_art': albumArt,
       'album_art_url': albumArtUrl,
       'is_public': isPublic,
+      'lyrics': lyrics,
+      'is_favorite': isFavorite,
     };
   }
 
@@ -238,6 +250,9 @@ class SongEntity extends Equatable {
       albumArtUrl:
           map['album_art_url'] != null ? map['album_art_url'] as String : null,
       isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
+      lyrics: map['lyrics'] != null ? map['lyrics'] as String : null,
+      isFavorite:
+          map['is_favorite'] != null ? map['is_favorite'] as bool : false,
     );
   }
 
@@ -276,6 +291,10 @@ class SongEntity extends Equatable {
         '  - Is Notification: $isNotification\n'
         '  - Is Podcast: $isPodcast\n'
         '  - Album Art: $albumArt\n'
+        '  - Album Art URL: $albumArtUrl\n'
+        '  - Is Public: $isPublic\n'
+        '  - Lyrics: $lyrics\n'
+        '  - Is Favorite: $isFavorite\n'
         '  - Is Ringtone: $isRingtone';
   }
 
@@ -317,6 +336,9 @@ class SongEntity extends Equatable {
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
       isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
+      lyrics: map['lyrics'] != null ? map['lyrics'] as String : null,
+      isFavorite:
+          map['is_favorite'] != null ? map['is_favorite'] as bool : false,
     );
   }
 
@@ -352,6 +374,8 @@ class SongEntity extends Equatable {
         albumArt,
         albumArtUrl,
         isPublic,
+        lyrics,
+        isFavorite,
       ];
 
   SongHiveModel toHiveModel() {
@@ -386,6 +410,8 @@ class SongEntity extends Equatable {
       albumArt: albumArt,
       albumArtUrl: albumArtUrl,
       isPublic: isPublic,
+      lyrics: lyrics,
+      isFavorite: isFavorite,
     );
   }
 

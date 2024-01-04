@@ -4,6 +4,8 @@ import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/bottom_nav/presentation/widget/duration_slider.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
 import 'package:musync/features/now_playing/presentation/widgets/audio_controllers.dart';
+import 'package:musync/features/now_playing/presentation/widgets/lyrics_view.dart';
+import 'package:musync/features/now_playing/presentation/widgets/queue_view.dart';
 
 class NowPlayingPage extends StatefulWidget {
   const NowPlayingPage({super.key});
@@ -68,57 +70,70 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              children: [
-                //? Album Cover
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 44.h,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  //? Album Cover
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 44.h,
+                    ),
+                    child: SongArtWork(
+                      song: state.currentSong!,
+                      height: 350.h,
+                      width: MediaQuery.of(context).size.width,
+                      borderRadius: 8.r,
+                    ),
                   ),
-                  child: SongArtWork(
-                    song: state.currentSong!,
-                    height: 350.h,
-                    width: MediaQuery.of(context).size.width,
-                    borderRadius: 8.r,
-                  ),
-                ),
 
-                SizedBox(
-                  height: 8.h,
-                ),
-                //? Song Title
-                Text(
-                  state.currentSong!.title,
-                  style: Theme.of(context).textTheme.bBL.copyWith(
-                        color: AppColors().onBackground,
-                      ),
-                ),
-                SizedBox(
-                  height: 8.h,
-                ),
-                //? Artist Name
-                Text(
-                  '${state.currentSong!.artist}',
-                  style: Theme.of(context).textTheme.mBM.copyWith(
-                        color: AppColors(inverseDarkMode: true).surfaceDim,
-                      ),
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                // ? Duration Slider
-                DurationSlider(
-                  audioPlayer: state.audioPlayer!,
-                  height: 4.h,
-                  thumbRadius: 8.r,
-                  overlayRadius: 8.r,
-                  duration: true,
-                ),
-                SizedBox(
-                  height: 12.h,
-                ),
-                const AudioControllers(),
-              ],
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  //? Song Title
+                  Text(
+                    state.currentSong!.title,
+                    style: Theme.of(context).textTheme.bBL.copyWith(
+                          color: AppColors().onBackground,
+                        ),
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  //? Artist Name
+                  Text(
+                    '${state.currentSong!.artist}',
+                    style: Theme.of(context).textTheme.mBM.copyWith(
+                          color: AppColors(inverseDarkMode: true).surfaceDim,
+                        ),
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  // ? Duration Slider
+                  DurationSlider(
+                    audioPlayer: state.audioPlayer!,
+                    height: 4.h,
+                    thumbRadius: 8.r,
+                    overlayRadius: 8.r,
+                    duration: true,
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  const AudioControllers(),
+                  //? LyricsView
+                  LyricsView(
+                    song: state.currentSong!,
+                  ),
+                  SizedBox(
+                    height: 24.h,
+                  ),
+                  //? QueueView
+                  QueueView(
+                    songList: state.queue!,
+                  ),
+                ],
+              ),
             ),
           ),
         );

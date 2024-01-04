@@ -38,6 +38,8 @@ class AppSongModel extends SongEntity {
     String? albumArt,
     String? albumArtUrl,
     bool? isPublic,
+    String? lyrics,
+    required bool isFavorite,
   }) : super(
           id: id,
           data: data,
@@ -69,6 +71,8 @@ class AppSongModel extends SongEntity {
           albumArt: albumArt,
           albumArtUrl: albumArtUrl,
           isPublic: isPublic,
+          lyrics: lyrics,
+          isFavorite: isFavorite,
         );
 
   factory AppSongModel.fromModelMap(Map<String, dynamic> map) {
@@ -108,6 +112,9 @@ class AppSongModel extends SongEntity {
       albumArtUrl:
           map['album_art_url'] != null ? map['album_art_url'] as String : null,
       isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
+      lyrics: map['lyrics'] != null ? map['lyrics'] as String : null,
+      isFavorite:
+          map['is_favorite'] != null ? map['is_favorite'] as bool : false,
     );
   }
 
@@ -146,6 +153,8 @@ class AppSongModel extends SongEntity {
         '  - Album Art: $albumArt\n'
         '  - Album Art URL: $albumArtUrl\n'
         '  - Is Public: $isPublic\n'
+        '  - Lyrics: $lyrics\n'
+        '  - Is Favorite: $isFavorite\n'
         '  - Is Ringtone: $isRingtone';
   }
 
@@ -187,6 +196,9 @@ class AppSongModel extends SongEntity {
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
       isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
+      lyrics: map['lyrics'] != null ? map['lyrics'] as String : null,
+      isFavorite:
+          map['is_favorite'] != null ? map['is_favorite'] as bool : false,
     );
   }
 
@@ -222,6 +234,8 @@ class AppSongModel extends SongEntity {
         albumArt,
         albumArtUrl,
         isPublic,
+        lyrics,
+        isFavorite,
       ];
   static AppSongModel fromSongModel(SongModel songModel) {
     return AppSongModel.fromModelMap(convertMap(songModel.getMap));

@@ -100,6 +100,12 @@ class SongHiveModel {
   @HiveField(29)
   final bool isPublic;
 
+  @HiveField(30)
+  final String? lyrics;
+
+  @HiveField(31)
+  final bool isFavorite;
+
   SongHiveModel.empty()
       : this(
           id: 0,
@@ -132,6 +138,8 @@ class SongHiveModel {
           albumArt: '',
           albumArtUrl: '',
           isPublic: false,
+          lyrics: '',
+          isFavorite: false,
         );
 
   SongHiveModel({
@@ -165,6 +173,8 @@ class SongHiveModel {
     required this.albumArt,
     String? albumArtUrl,
     bool? isPublic,
+    String? lyrics,
+    bool? isFavorite,
   })  : uri = uri ?? "",
         album = album ?? '',
         albumId = albumId ?? '',
@@ -185,6 +195,8 @@ class SongHiveModel {
         isPodcast = isPodcast ?? false,
         albumArtUrl = albumArtUrl ?? '',
         isPublic = isPublic ?? false,
+        lyrics = lyrics ?? '',
+        isFavorite = isFavorite ?? false,
         serverUrl = serverUrl ?? '';
 
   SongEntity toEntity() => SongEntity(
@@ -218,6 +230,8 @@ class SongHiveModel {
         albumArt: albumArt ?? '',
         albumArtUrl: albumArtUrl ?? '',
         isPublic: isPublic,
+        lyrics: lyrics ?? '',
+        isFavorite: isFavorite ?? false,
       );
   SongHiveModel toHiveModel(SongEntity entity) => SongHiveModel(
         id: entity.id,
@@ -250,6 +264,8 @@ class SongHiveModel {
         albumArt: entity.albumArt,
         albumArtUrl: entity.albumArtUrl,
         isPublic: entity.isPublic,
+        lyrics: entity.lyrics,
+        isFavorite: entity.isFavorite,
       );
 
   SongModel toSongModel(SongEntity entity) => SongModel({
@@ -279,6 +295,8 @@ class SongHiveModel {
         "is_notification": entity.isNotification,
         "is_podcast": entity.isPodcast,
         "is_ringtone": entity.isRingtone,
+        "lyrics": entity.lyrics,
+        "is_favorite": entity.isFavorite,
       });
 
   List<SongEntity> toEntityList(List<SongHiveModel> models) =>
@@ -331,6 +349,8 @@ class SongHiveModel {
     String? albumArt,
     String? albumArtUrl,
     bool? isPublic,
+    String? lyrics,
+    bool? isFavorite,
   }) {
     return SongHiveModel(
       id: id ?? this.id,
@@ -363,6 +383,8 @@ class SongHiveModel {
       albumArt: albumArt ?? this.albumArt,
       albumArtUrl: albumArtUrl ?? this.albumArtUrl,
       isPublic: isPublic ?? this.isPublic,
+      lyrics: lyrics ?? this.lyrics,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 
@@ -398,6 +420,8 @@ class SongHiveModel {
       albumArt: albumArt ?? '',
       albumArtUrl: albumArtUrl,
       isPublic: isPublic,
+      lyrics: lyrics,
+      isFavorite: isFavorite,
     );
   }
 
@@ -433,6 +457,8 @@ class SongHiveModel {
       'album_art': albumArt,
       'album_art_url': albumArtUrl,
       'is_public': isPublic,
+      'lyrics': lyrics,
+      'is_favorite': isFavorite,
     };
   }
 
@@ -467,6 +493,8 @@ class SongHiveModel {
         '  - Is Music: $isMusic\n'
         '  - Is Notification: $isNotification\n'
         '  - Is Podcast: $isPodcast\n'
+        '  - Lyrics: $lyrics\n'
+        '  - Is Favorite: $isFavorite\n'
         '  - Is Ringtone: $isRingtone';
   }
 
@@ -542,6 +570,9 @@ class SongHiveModel {
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
       isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
+      lyrics: map['lyrics'] != null ? map['lyrics'] as String : null,
+      isFavorite:
+          map['is_favorite'] != null ? map['is_favorite'] as bool : null,
     );
   }
 }
