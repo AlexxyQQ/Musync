@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musync/config/constants/global_constants.dart';
 
 class AllTextStyle {
   // ===========================10===========================

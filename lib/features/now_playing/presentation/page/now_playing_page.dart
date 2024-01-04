@@ -2,7 +2,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/bottom_nav/presentation/widget/duration_slider.dart';
-import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
 import 'package:musync/features/now_playing/presentation/widgets/audio_controllers.dart';
 
