@@ -19,7 +19,3 @@
 ### Improved
 
 - General UI and UX improvements across the app.
-
-### Fixed
-
-- Various bug fixes and performance improvements.
