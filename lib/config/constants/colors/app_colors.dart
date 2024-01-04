@@ -1,5 +1,4 @@
 import 'package:flutter/scheduler.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/exports.dart';
 
 class AppDarkColor {

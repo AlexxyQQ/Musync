@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
-
-import '../../config/constants/global_constants.dart';
+import 'package:musync/config/constants/colors/primitive_colors.dart';
 
 /// Loader - A Custom Loading Indicator Widget for Flutter Applications.
 ///
@@ -55,7 +54,7 @@ class Loader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              color: AppTertiaryColor.yellow,
+              color: PrimitiveColors.primary500,
               strokeWidth: 6,
               strokeCap: StrokeCap.round,
               semanticsValue: 'Loading...',

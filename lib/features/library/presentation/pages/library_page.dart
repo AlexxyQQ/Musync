@@ -1,7 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
-import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
 import 'package:musync/features/library/presentation/cubit/library_state.dart';
 import 'package:musync/features/library/presentation/cubit/libray_cubit.dart';

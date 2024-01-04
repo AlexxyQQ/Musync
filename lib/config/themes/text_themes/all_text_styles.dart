@@ -72,7 +72,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f10W1D = const TextStyle(
     letterSpacing: 0.15,
@@ -80,7 +79,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W1Di = const TextStyle(
     letterSpacing: 0.15,
@@ -88,7 +86,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W1LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -96,7 +93,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -106,7 +102,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f10W2D = const TextStyle(
     letterSpacing: 0.15,
@@ -114,7 +109,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W2Di = const TextStyle(
     letterSpacing: 0.15,
@@ -122,7 +116,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W2LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -130,7 +123,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -140,7 +132,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f10W3D = const TextStyle(
     letterSpacing: 0.15,
@@ -148,7 +139,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W3Di = const TextStyle(
     letterSpacing: 0.15,
@@ -156,7 +146,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W3LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -164,7 +153,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
   // 400
@@ -174,7 +162,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f10W4D = const TextStyle(
     letterSpacing: 0.15,
@@ -182,7 +169,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W4Di = const TextStyle(
     letterSpacing: 0.15,
@@ -190,7 +176,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W4LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -198,7 +183,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
   // 500
   static TextStyle f10W5L = const TextStyle(
@@ -207,7 +191,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f10W5D = const TextStyle(
     letterSpacing: 0.15,
@@ -215,7 +198,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W5Di = const TextStyle(
     letterSpacing: 0.15,
@@ -223,7 +205,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W5LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -231,7 +212,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
   // 600
   static TextStyle f10W6L = const TextStyle(
@@ -240,7 +220,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f10W6D = const TextStyle(
     letterSpacing: 0.15,
@@ -248,7 +227,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W6Di = const TextStyle(
     letterSpacing: 0.15,
@@ -256,7 +234,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W6LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -264,7 +241,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
   // 700
   static TextStyle f10W7L = const TextStyle(
@@ -273,7 +249,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f10W7D = const TextStyle(
     letterSpacing: 0.15,
@@ -281,7 +256,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W7Di = const TextStyle(
     letterSpacing: 0.15,
@@ -289,7 +263,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W7LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -297,7 +270,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
   // 800
   static TextStyle f10W8L = const TextStyle(
@@ -306,7 +278,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f10W8D = const TextStyle(
     letterSpacing: 0.15,
@@ -314,7 +285,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W8Di = const TextStyle(
     letterSpacing: 0.15,
@@ -322,7 +292,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W8LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -330,7 +299,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
   // 900
   static TextStyle f10W9L = const TextStyle(
@@ -339,7 +307,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f10W9D = const TextStyle(
     letterSpacing: 0.15,
@@ -347,7 +314,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f10W9Di = const TextStyle(
     letterSpacing: 0.15,
@@ -355,7 +321,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f10W9LDi = const TextStyle(
     letterSpacing: 0.15,
@@ -363,7 +328,6 @@ class AllTextStyle {
     fontSize: 10,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================12===========================
@@ -428,28 +392,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f12W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -458,28 +418,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f12W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -488,28 +444,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f12W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -518,28 +470,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f12W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -548,28 +496,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f12W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -578,28 +522,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f12W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -608,28 +548,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f12W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -638,28 +574,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f12W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -668,28 +600,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f12W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f12W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f12W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 12,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================14===========================
@@ -753,28 +681,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f14W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -783,28 +707,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f14W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -813,28 +733,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f14W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -843,28 +759,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f14W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -873,28 +785,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f14W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -903,28 +811,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f14W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -933,28 +837,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f14W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -963,28 +863,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f14W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -993,28 +889,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f14W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f14W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f14W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 14,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================16===========================
@@ -1078,28 +970,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f16W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -1108,28 +996,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f16W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -1138,28 +1022,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f16W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -1168,28 +1048,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f16W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -1198,28 +1074,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f16W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -1228,28 +1100,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f16W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -1258,28 +1126,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f16W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -1288,28 +1152,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f16W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -1318,28 +1178,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f16W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f16W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f16W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 16,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================18===========================
@@ -1403,28 +1259,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f18W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -1433,28 +1285,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f18W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -1463,28 +1311,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f18W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -1493,28 +1337,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f18W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -1523,28 +1363,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f18W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -1553,28 +1389,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f18W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -1583,28 +1415,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f18W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -1613,28 +1441,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f18W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -1643,28 +1467,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f18W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f18W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f18W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 18,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================20===========================
@@ -1728,28 +1548,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f20W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -1758,28 +1574,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f20W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -1788,28 +1600,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f20W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -1818,28 +1626,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f20W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -1848,28 +1652,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f20W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -1878,28 +1678,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f20W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -1908,28 +1704,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f20W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -1938,28 +1730,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f20W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -1968,28 +1756,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f20W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f20W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f20W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 20,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================22===========================
@@ -2053,28 +1837,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f22W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -2083,28 +1863,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f22W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -2113,28 +1889,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f22W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -2143,28 +1915,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f22W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -2173,28 +1941,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f22W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -2203,28 +1967,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f22W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -2233,28 +1993,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f22W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -2263,28 +2019,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f22W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -2293,28 +2045,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f22W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f22W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f22W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 22,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================24===========================
@@ -2378,28 +2126,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f24W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -2408,28 +2152,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f24W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -2438,28 +2178,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f24W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -2468,28 +2204,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f24W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -2498,28 +2230,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f24W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -2528,28 +2256,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f24W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -2558,28 +2282,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f24W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -2588,28 +2308,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f24W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -2618,28 +2334,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f24W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f24W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f24W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 24,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================26===========================
@@ -2703,28 +2415,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f26W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -2733,28 +2441,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f26W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -2763,28 +2467,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f26W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -2793,28 +2493,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f26W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -2823,28 +2519,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f26W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -2853,28 +2545,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f26W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -2883,28 +2571,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f26W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -2913,28 +2597,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f26W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -2943,28 +2623,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f26W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f26W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f26W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 26,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================28===========================
@@ -3028,28 +2704,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f28W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -3058,28 +2730,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f28W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -3088,28 +2756,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f28W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -3118,28 +2782,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f28W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -3148,28 +2808,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f28W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -3178,28 +2834,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f28W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -3208,28 +2860,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f28W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -3238,28 +2886,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f28W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -3268,28 +2912,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f28W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f28W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f28W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 28,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
   // ===========================30===========================
@@ -3353,28 +2993,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f30W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -3383,28 +3019,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f30W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -3413,28 +3045,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f30W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -3443,28 +3071,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f30W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -3473,28 +3097,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f30W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -3503,28 +3123,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f30W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -3533,28 +3149,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f30W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -3563,28 +3175,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f30W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -3593,28 +3201,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f30W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f30W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f30W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 30,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
 // ===========================32===========================
@@ -3679,28 +3283,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f32W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -3709,28 +3309,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f32W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -3739,28 +3335,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f32W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -3769,28 +3361,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f32W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -3799,28 +3387,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f32W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -3829,28 +3413,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f32W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -3859,28 +3439,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f32W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -3889,28 +3465,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f32W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -3919,28 +3491,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f32W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f32W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f32W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 32,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 
 // ===========================36===========================
@@ -4005,28 +3573,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.light,
   );
   static TextStyle f36W1D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W1Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W1LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w100,
-    color: AppTextColor.lightDim,
   );
 
 // 200
@@ -4035,28 +3599,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.light,
   );
   static TextStyle f36W2D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W2Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W2LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w200,
-    color: AppTextColor.lightDim,
   );
 
 // 300
@@ -4065,28 +3625,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.light,
   );
   static TextStyle f36W3D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W3Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W3LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w300,
-    color: AppTextColor.lightDim,
   );
 
 // 400
@@ -4095,28 +3651,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.light,
   );
   static TextStyle f36W4D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W4Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W4LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w400,
-    color: AppTextColor.lightDim,
   );
 
 // 500
@@ -4125,28 +3677,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.light,
   );
   static TextStyle f36W5D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W5Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W5LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w500,
-    color: AppTextColor.lightDim,
   );
 
 // 600
@@ -4155,28 +3703,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.light,
   );
   static TextStyle f36W6D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W6Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W6LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w600,
-    color: AppTextColor.lightDim,
   );
 
 // 700
@@ -4185,28 +3729,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.light,
   );
   static TextStyle f36W7D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W7Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W7LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w700,
-    color: AppTextColor.lightDim,
   );
 
 // 800
@@ -4215,28 +3755,24 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.light,
   );
   static TextStyle f36W8D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W8Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W8LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w800,
-    color: AppTextColor.lightDim,
   );
 
 // 900
@@ -4245,27 +3781,23 @@ class AllTextStyle {
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.light,
   );
   static TextStyle f36W9D = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dark,
   );
   static TextStyle f36W9Di = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.dim,
   );
   static TextStyle f36W9LDi = const TextStyle(
     letterSpacing: 0.15,
     height: 1.5,
     fontSize: 36,
     fontWeight: FontWeight.w900,
-    color: AppTextColor.lightDim,
   );
 }

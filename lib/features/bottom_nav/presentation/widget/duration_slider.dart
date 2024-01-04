@@ -1,14 +1,8 @@
-import 'dart:async';
-
-import 'package:just_audio/just_audio.dart';
 import 'package:musync/core/common/exports.dart';
-import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
 
 class DurationSlider extends StatefulWidget {
   final double height;
   final bool duration;
-  final Color activeColor;
-  final Color inactiveColor;
   final double thumbRadius;
   final double overlayRadius;
 
@@ -17,10 +11,8 @@ class DurationSlider extends StatefulWidget {
     required this.audioPlayer,
     required this.height,
     this.duration = true,
-    required this.activeColor,
     required this.thumbRadius,
     required this.overlayRadius,
-    required this.inactiveColor,
   }) : super(key: key);
 
   final AudioPlayer audioPlayer;
@@ -80,9 +72,9 @@ class _DurationSliderState extends State<DurationSlider> {
       children: [
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
-            thumbColor: widget.activeColor,
-            activeTrackColor: widget.activeColor,
-            inactiveTrackColor: widget.inactiveColor,
+            thumbColor: PrimitiveColors.primary500,
+            activeTrackColor: PrimitiveColors.primary500,
+            inactiveTrackColor: PrimitiveColors.primary900,
             overlayColor: Colors.blue.withOpacity(0.2),
             trackHeight: widget.height,
             thumbShape: RoundSliderThumbShape(
@@ -119,7 +111,7 @@ class _DurationSliderState extends State<DurationSlider> {
                         ),
                       ),
                       style: TextStyle(
-                        color: widget.activeColor,
+                        color: AppColors().onBackground,
                       ),
                     ),
                     Text(
@@ -129,13 +121,13 @@ class _DurationSliderState extends State<DurationSlider> {
                         ),
                       ),
                       style: TextStyle(
-                        color: widget.activeColor,
+                        color: AppColors().onBackground,
                       ),
                     ),
                   ],
                 ),
               )
-            : const SizedBox()
+            : const SizedBox(),
       ],
     );
   }

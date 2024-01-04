@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/constants/global_constants.dart';
 
 class IllegalPageBuilder extends StatelessWidget {
@@ -63,9 +64,7 @@ class IllegalPageBuilder extends StatelessWidget {
             child: Container(
               height: MediaQuery.of(context).size.height * 0.465,
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? KColors.offWhiteColorTwo
-                    : KColors.offWhiteColor,
+                color: AppColors().surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Lottie.asset(

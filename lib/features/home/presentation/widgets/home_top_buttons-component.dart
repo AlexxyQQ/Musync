@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
@@ -27,7 +28,7 @@ class TopButtons extends StatelessWidget {
           backgroundColor: AppDarkColor.primary,
           foregroundColor: AppDarkColor.onPrimary,
           borderRadius: 12,
-          svg: 'assets/iconography/heart-outline.svg',
+          svg: AppIcons.heartOutlined,
           fixedSize: const Size(150, 30),
         ),
         // Recent Button
@@ -51,7 +52,7 @@ class TopButtons extends StatelessWidget {
           backgroundColor: AppDarkColor.secondary,
           foregroundColor: AppDarkColor.onSecondary,
           borderRadius: 12,
-          svg: 'assets/iconography/recent.svg',
+          svg: AppIcons.recent,
           fixedSize: const Size(150, 30),
         ),
         // Folder Button
@@ -63,7 +64,7 @@ class TopButtons extends StatelessWidget {
           backgroundColor: AppDarkColor.tertiary,
           foregroundColor: AppDarkColor.onTertiary,
           borderRadius: 12,
-          svg: 'assets/iconography/music-folder-outline.svg',
+          svg: AppIcons.musicFolderOutlined,
           fixedSize: const Size(150, 30),
         ),
         //  Shuffle Button
@@ -86,7 +87,7 @@ class TopButtons extends StatelessWidget {
           backgroundColor: AppDarkColor.error,
           foregroundColor: AppDarkColor.onError,
           borderRadius: 12,
-          svg: 'assets/iconography/shuffle.svg',
+          svg: AppIcons.shuffle,
           fixedSize: const Size(150, 30),
         ),
       ],

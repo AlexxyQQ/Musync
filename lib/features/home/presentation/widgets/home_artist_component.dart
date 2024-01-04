@@ -1,9 +1,6 @@
-import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
-import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
-import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
 import 'package:musync/features/library/presentation/cubit/libray_cubit.dart';
 import 'package:shimmer/shimmer.dart';

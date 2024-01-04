@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/common/custom_widgets/custom_buttom.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
@@ -181,7 +182,7 @@ class LogoAndAppName extends StatelessWidget {
           children: [
             // Logo
             SvgPicture.asset(
-              'assets/splash_screen/Logo.svg',
+              AppIcons.logo,
               height: 80,
             ),
             // App Name

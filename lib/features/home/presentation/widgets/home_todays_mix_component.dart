@@ -1,11 +1,8 @@
 import 'package:flutter_svg/svg.dart';
-import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
+import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
-import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
-import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/song_list_page.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -167,7 +164,7 @@ class HomeTodaysMixComponent extends StatelessWidget {
                                         top: 4,
                                         left: 4,
                                         child: SvgPicture.asset(
-                                          'assets/splash_screen/Logo.svg',
+                                          AppIcons.logo,
                                           color: AppColors().primary,
                                           height: 12,
                                           width: 12,

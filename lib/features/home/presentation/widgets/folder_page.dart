@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/route/routes.dart';
+import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
 import 'package:musync/core/common/song_list_tile.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
@@ -230,7 +230,7 @@ class _FolderPageState extends State<FolderPage> {
       child: ListTile(
         minLeadingWidth: 0,
         leading: SvgPicture.asset(
-          'assets/iconography/music-folder-filled.svg',
+          AppIcons.musicFolderFilled,
           height: 32.h,
           width: 32.w,
           color: AppColors().onSurfaceVariant,
@@ -295,7 +295,7 @@ class _FolderPageState extends State<FolderPage> {
           child: ListTile(
             minLeadingWidth: 0,
             leading: SvgPicture.asset(
-              'assets/iconography/music-folder-filled.svg',
+              AppIcons.musicFolderFilled,
               height: 32.h,
               width: 32.w,
               color: AppColors().onSurfaceVariant,

@@ -72,7 +72,7 @@ class AppTheme {
             color: AppLightColor.onSurface,
           ),
           elevation: 5,
-          backgroundColor: KColors.transparentColor,
+          backgroundColor: Colors.transparent,
         ),
       ),
       iconTheme: const IconThemeData(
@@ -151,7 +151,7 @@ class AppTheme {
             color: AppDarkColor.onSurface,
           ),
           elevation: 5,
-          backgroundColor: KColors.transparentColor,
+          backgroundColor: Colors.transparent,
         ),
       ),
       iconTheme: const IconThemeData(

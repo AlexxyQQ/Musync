@@ -1,7 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/core/common/exports.dart';
-import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 void songOptions(SongEntity song, BuildContext context) {

@@ -1,18 +1,9 @@
-import 'dart:developer';
-import 'dart:io' as io;
-import 'dart:ui' as ui;
 
-import 'package:flutter/services.dart';
-import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
-import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
-import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/method/extract_album_cover_color.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeRecentlyPayedComponent extends StatefulWidget {

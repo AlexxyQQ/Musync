@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musync/config/constants/global_constants.dart';
+import 'package:musync/config/constants/colors/app_colors.dart';
+import 'package:musync/config/constants/colors/primitive_colors.dart';
 
 /// KPageIndicator - A Customizable Page Indicator for Flutter PageView.
 ///
@@ -55,8 +56,8 @@ class KPageIndicator extends StatefulWidget {
     Key? key,
     required this.controller,
     required this.itemCount,
-    this.activeColor = AppTertiaryColor.yellow,
-    this.inactiveColor = AppIconColor.dim,
+    this.activeColor = PrimitiveColors.primary500,
+    this.inactiveColor = AppLightColor.surfaceDim,
     this.activeDotHeight = 10.0,
     this.activeDotWidth = 20.0,
     this.inactiveDotHeight = 8.0,

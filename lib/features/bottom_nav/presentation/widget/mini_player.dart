@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
-import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/bottom_nav/presentation/widget/duration_slider.dart';
-import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/widgets/method/extract_album_cover_color.dart';
-import 'package:musync/features/now_playing/presentation/cubit/now_playing_cubit.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
 
 class MiniPlayer extends StatefulWidget {
@@ -123,12 +120,12 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                 context.read<NowPlayingCubit>().play();
                               }
                             },
-                            icon: Icon(
+                            icon: SvgPicture.asset(
                               state.isPlaying
-                                  ? CupertinoIcons.pause
-                                  : CupertinoIcons.play,
+                                  ? AppIcons.playOutlined
+                                  : AppIcons.pause,
                               color: textColor,
-                              size: 18.r,
+                              height: 18.r,
                             ),
                           ),
                           // Next
@@ -140,19 +137,19 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                 song: state.currentSong!,
                               );
                             },
-                            icon: Icon(
-                              CupertinoIcons.forward_end_alt,
+                            icon: SvgPicture.asset(
+                              AppIcons.nextOutlined,
                               color: textColor,
-                              size: 18.r,
+                              height: 18.r,
                             ),
                           ),
                           // Share
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(
-                              Icons.share_outlined,
+                            icon: SvgPicture.asset(
+                              AppIcons.share,
                               color: textColor,
-                              size: 18.r,
+                              height: 18.r,
                             ),
                           ),
                         ],
@@ -168,10 +165,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
                   width: 416.w,
                   child: DurationSlider(
                     height: 6.h,
-                    activeColor: PrimitiveColors.primary500,
                     thumbRadius: 0,
                     overlayRadius: 20.r,
-                    inactiveColor: PrimitiveColors.primary900,
                     audioPlayer: state.audioPlayer!,
                     duration: false,
                   ),

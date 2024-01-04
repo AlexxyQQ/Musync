@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:just_audio/just_audio.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
@@ -87,14 +84,50 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
   }
 
   void shuffle() async {
-    await state.audioPlayer!.shuffle();
-    emit(
-      state.copyWith(
-        currentSong: state.queue![state.audioPlayer!.currentIndex ?? 0],
-        currentIndex: state.audioPlayer!.currentIndex ?? 0,
-        queue: state.queue,
-      ),
-    );
+    // if already shuffled, unshuffle arrange in order of title
+    if (state.isShuffle) {
+      state.queue!.sort((a, b) => a.title.compareTo(b.title));
+      await state.audioPlayer!.setAudioSource(
+        ConcatenatingAudioSource(
+          children: state.queue!
+              .map(
+                (song) => AudioSource.uri(
+                  Uri.file(song.data),
+                  tag: song,
+                ),
+              )
+              .toList(),
+        ),
+        initialIndex: state.queue!.indexOf(state.currentSong!),
+      );
+      emit(
+        state.copyWith(
+          queue: state.queue,
+          isShuffle: false,
+        ),
+      );
+    } else {
+      state.queue!.shuffle();
+      await state.audioPlayer!.setAudioSource(
+        ConcatenatingAudioSource(
+          children: state.queue!
+              .map(
+                (song) => AudioSource.uri(
+                  Uri.file(song.data),
+                  tag: song,
+                ),
+              )
+              .toList(),
+        ),
+        initialIndex: state.queue!.indexOf(state.currentSong!),
+      );
+      emit(
+        state.copyWith(
+          queue: state.queue,
+          isShuffle: true,
+        ),
+      );
+    }
   }
 
   void clearQueue() async {
@@ -107,5 +140,34 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
         queue: [],
       ),
     );
+  }
+
+  void previous() {
+    state.audioPlayer!.seekToPrevious();
+    emit(
+      state.copyWith(
+        currentSong: state.queue![state.audioPlayer!.currentIndex ?? 0],
+        currentIndex: state.audioPlayer!.currentIndex ?? 0,
+      ),
+    );
+  }
+
+  void repeat() {
+    // Repeat single song
+    if (state.isRepeat) {
+      state.audioPlayer!.setLoopMode(LoopMode.off);
+      emit(
+        state.copyWith(
+          isRepeat: false,
+        ),
+      );
+    } else {
+      state.audioPlayer!.setLoopMode(LoopMode.one);
+      emit(
+        state.copyWith(
+          isRepeat: true,
+        ),
+      );
+    }
   }
 }
