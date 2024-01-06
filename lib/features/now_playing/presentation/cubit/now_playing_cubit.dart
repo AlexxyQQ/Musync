@@ -131,13 +131,28 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
   }
 
   void clearQueue() async {
-    await state.audioPlayer!.stop();
+    final newQueue = [
+      state.currentSong!,
+    ];
+    await state.audioPlayer!.setAudioSource(
+      ConcatenatingAudioSource(
+        children: newQueue
+            .map(
+              (song) => AudioSource.uri(
+                Uri.file(song.data),
+                tag: song,
+              ),
+            )
+            .toList(),
+      ),
+      initialIndex: 0,
+    );
     emit(
       state.copyWith(
         currentSong: null,
         currentIndex: 0,
         isPlaying: false,
-        queue: [],
+        queue: newQueue,
       ),
     );
   }

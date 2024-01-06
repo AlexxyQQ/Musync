@@ -1,5 +1,5 @@
-
 import 'package:dartz/dartz.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
 
 import '../../../../core/failure/error_handler.dart';
 import '../../domain/entity/album_entity.dart';
@@ -54,6 +54,15 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
   }) async {
     return await audioQueryDataSource.getAllFolders(
       refetch: refetch,
+    );
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> updateSong({
+    required SongEntity song,
+  }) async {
+    return await audioQueryDataSource.updateSong(
+      song: AppSongModel.fromEntity(song),
     );
   }
 }

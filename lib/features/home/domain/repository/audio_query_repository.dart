@@ -23,4 +23,8 @@ abstract class IAudioQueryRepository {
   Future<Either<AppErrorHandler, List<FolderEntity>>> getAllFolders({
     bool? refetch,
   });
+
+  Future<Either<AppErrorHandler, String>> updateSong({
+    required SongEntity song,
+  });
 }

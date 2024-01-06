@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/artist_entity.dart';
@@ -19,6 +19,7 @@ class HomeState {
   final List<ArtistEntity> artists;
   final List<FolderEntity> folders;
   final RecentlyPlayedEntity? recentlyPlayed;
+  final List<SongEntity>? favouriteSongs;
   final bool isSuccess;
   final int count;
 
@@ -33,6 +34,7 @@ class HomeState {
     required this.artists,
     required this.folders,
     this.recentlyPlayed,
+    this.favouriteSongs,
     required this.isSuccess,
     required this.count,
     required this.selectedIndex,
@@ -51,6 +53,7 @@ class HomeState {
       albums: [],
       artists: [],
       folders: [],
+      favouriteSongs: [],
     );
   }
 
@@ -62,10 +65,11 @@ class HomeState {
     List<ArtistEntity>? artists,
     List<FolderEntity>? folders,
     RecentlyPlayedEntity? recentlyPlayed,
+    List<SongEntity>? favouriteSongs,
     bool? isSuccess,
+    int? count,
     int? selectedIndex,
     PageController? pageController,
-    int? count,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
@@ -75,6 +79,7 @@ class HomeState {
       artists: artists ?? this.artists,
       folders: folders ?? this.folders,
       recentlyPlayed: recentlyPlayed ?? this.recentlyPlayed,
+      favouriteSongs: favouriteSongs ?? this.favouriteSongs,
       isSuccess: isSuccess ?? this.isSuccess,
       count: count ?? this.count,
       selectedIndex: selectedIndex ?? this.selectedIndex,
@@ -84,12 +89,13 @@ class HomeState {
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, recentlyPlayed: $recentlyPlayed, isSuccess: $isSuccess, count: $count, selectedIndex: $selectedIndex)';
+    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, recentlyPlayed: $recentlyPlayed, favouriteSongs: $favouriteSongs, isSuccess: $isSuccess, count: $count, selectedIndex: $selectedIndex, pageController: $pageController)';
   }
 
   @override
   bool operator ==(covariant HomeState other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other.isLoading == isLoading &&
         other.error == error &&
@@ -98,8 +104,11 @@ class HomeState {
         listEquals(other.artists, artists) &&
         listEquals(other.folders, folders) &&
         other.recentlyPlayed == recentlyPlayed &&
+        listEquals(other.favouriteSongs, favouriteSongs) &&
         other.isSuccess == isSuccess &&
-        other.count == count;
+        other.count == count &&
+        other.selectedIndex == selectedIndex &&
+        other.pageController == pageController;
   }
 
   @override
@@ -111,64 +120,10 @@ class HomeState {
         artists.hashCode ^
         folders.hashCode ^
         recentlyPlayed.hashCode ^
+        favouriteSongs.hashCode ^
         isSuccess.hashCode ^
-        count.hashCode;
+        count.hashCode ^
+        selectedIndex.hashCode ^
+        pageController.hashCode;
   }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'isLoading': isLoading,
-      'error': error?.toMap(),
-      'songs': songs.map((x) => x.toMap()).toList(),
-      'albums': albums.map((x) => x.toMap()).toList(),
-      'artists': artists.map((x) => x.toMap()).toList(),
-      'folders': folders.map((x) => x.toMap()).toList(),
-      'recentlyPlayed': recentlyPlayed?.toMap(),
-      'isSuccess': isSuccess,
-      'count': count,
-    };
-  }
-
-  factory HomeState.fromMap(Map<String, dynamic> map) {
-    return HomeState(
-      isLoading: map['isLoading'] as bool,
-      pageController: map['pageController'] as PageController,
-      selectedIndex: map['selectedIndex'] as int,
-      error: map['error'] != null
-          ? AppErrorHandler.fromMap(map['error'] as Map<String, dynamic>)
-          : null,
-      songs: List<SongEntity>.from(
-        (map['songs'] as List<int>).map<SongEntity>(
-          (x) => SongEntity.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      albums: List<AlbumEntity>.from(
-        (map['albums'] as List<int>).map<AlbumEntity>(
-          (x) => AlbumEntity.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      artists: List<ArtistEntity>.from(
-        (map['artists'] as List<int>).map<ArtistEntity>(
-          (x) => ArtistEntity.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      folders: List<FolderEntity>.from(
-        (map['folders'] as List<int>).map<FolderEntity>(
-          (x) => FolderEntity.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      recentlyPlayed: map['recentlyPlayed'] != null
-          ? RecentlyPlayedEntity.fromMap(
-              map['recentlyPlayed'] as Map<String, dynamic>,
-            )
-          : null,
-      isSuccess: map['isSuccess'] as bool,
-      count: map['count'] as int,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory HomeState.fromJson(String source) =>
-      HomeState.fromMap(json.decode(source) as Map<String, dynamic>);
 }

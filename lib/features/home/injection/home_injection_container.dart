@@ -1,4 +1,5 @@
 import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
+import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 
 import '../../../injection/app_injection_container.dart';
 import '../data/data_source/local_data_source/hive_service/query_hive_service.dart';
@@ -75,6 +76,11 @@ class HomeInjectionContainer {
         queryHiveService: get(),
       ),
     );
+    get.registerLazySingleton(
+      () => UpdateSongUsecase(
+        audioQueryRepository: get(),
+      ),
+    );
 
     // Cubit
     get.registerFactory(
@@ -87,6 +93,7 @@ class HomeInjectionContainer {
         queryHiveService: get(),
         getRecentlyPlayedUsecase: get(),
         updateRecentlyPlayedUsecase: get(),
+        updateSongUsecase: get(),
       ),
     );
   }

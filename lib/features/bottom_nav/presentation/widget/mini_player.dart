@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
+import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/features/bottom_nav/presentation/widget/duration_slider.dart';
 import 'package:musync/features/home/presentation/widgets/method/extract_album_cover_color.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
@@ -66,11 +67,14 @@ class _MiniPlayerState extends State<MiniPlayer> {
                       Row(
                         children: [
                           // Album Cover
-                          SongArtWork(
-                            song: state.currentSong!,
-                            height: 44.h,
-                            width: 44.w,
-                            borderRadius: 8.r,
+                          Hero(
+                            tag: 'NowPlayingAlbumArt',
+                            child: SongArtWork(
+                              song: state.currentSong!,
+                              height: 44.h,
+                              width: 44.w,
+                              borderRadius: 8.r,
+                            ),
                           ),
                           SizedBox(
                             width: 8.w,
@@ -143,14 +147,44 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             ),
                           ),
                           // Share
-                          IconButton(
-                            onPressed: () {},
-                            icon: SvgPicture.asset(
-                              AppIcons.share,
-                              color: textColor,
-                              height: 18.r,
-                            ),
-                          ),
+                          (BlocProvider.of<AuthenticationCubit>(context)
+                                      .state
+                                      .loggedUser !=
+                                  null)
+                              ? IconButton(
+                                  onPressed: () {},
+                                  icon: SvgPicture.asset(
+                                    AppIcons.share,
+                                    color: textColor,
+                                    height: 18.r,
+                                  ),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    if (state.currentSong!.isFavorite) {
+                                      BlocProvider.of<QueryCubit>(context)
+                                          .updateFavouriteSongs(
+                                        song: state.currentSong!.copyWith(
+                                          isFavorite: false,
+                                        ),
+                                      );
+                                    } else {
+                                      BlocProvider.of<QueryCubit>(context)
+                                          .updateFavouriteSongs(
+                                        song: state.currentSong!.copyWith(
+                                          isFavorite: true,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: SvgPicture.asset(
+                                    state.currentSong!.isFavorite
+                                        ? AppIcons.heartFilled
+                                        : AppIcons.heartOutlined,
+                                    color: textColor,
+                                    height: 18.r,
+                                  ),
+                                )
                         ],
                       ),
                     ],

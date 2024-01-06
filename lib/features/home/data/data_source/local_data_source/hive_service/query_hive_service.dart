@@ -79,6 +79,11 @@ class QueryHiveService {
     await box.clear();
   }
 
+  Future<void> updateSong(SongHiveModel song) async {
+    var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
+    await box.put(song.id, song);
+  }
+
   // ------------------ All Albums Queries ------------------ //
   Future<List<AlbumHiveModel>> getAllAlbums() async {
     final albums =

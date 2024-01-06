@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:musync/config/constants/api/api_endpoints.dart';
 import 'package:musync/core/utils/song_model_map_converter.dart';
+import 'package:musync/features/home/data/model/app_song_model.dart';
 import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -430,4 +431,5 @@ class SongEntity extends Equatable {
   static List<SongEntity> fromListSongModel(List<SongModel> songs) {
     return songs.map((e) => formSongModel(e)).toList();
   }
+
 }

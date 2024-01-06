@@ -41,6 +41,7 @@ class _AudioControllersState extends State<AudioControllers> {
               icon: SvgPicture.asset(
                 AppIcons.previousFilled,
                 height: 28.r,
+                color: AppColors().onSurface,
               ),
             ),
             //? Play/Pause
@@ -74,6 +75,7 @@ class _AudioControllersState extends State<AudioControllers> {
               icon: SvgPicture.asset(
                 AppIcons.nextFilled,
                 height: 28.r,
+                color: AppColors().onSurface,
               ),
             ),
             //? Repeat
@@ -85,10 +87,12 @@ class _AudioControllersState extends State<AudioControllers> {
                   ? SvgPicture.asset(
                       AppIcons.repeatOne,
                       height: 28.r,
+                      color: AppColors().onSurface,
                     )
                   : SvgPicture.asset(
                       AppIcons.repeatAll,
                       height: 28.r,
+                      color: AppColors().onSurface,
                     ),
             ),
           ],

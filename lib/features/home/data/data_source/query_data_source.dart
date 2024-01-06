@@ -27,6 +27,10 @@ abstract class IAudioQueryDataSource {
   Future<Either<AppErrorHandler, List<AppFolderModel>>> getAllFolders({
     bool? refetch,
   });
+
+  Future<Either<AppErrorHandler, String>> updateSong({
+    required AppSongModel song,
+  });
 }
 
 class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
@@ -216,6 +220,32 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
             ),
           );
         }
+      }
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> updateSong({
+    required AppSongModel song,
+  }) async {
+    try {
+      // check for the connectivity and server up
+      final connectivity = await ConnectivityCheck.connectivity();
+      final serverUp = await ConnectivityCheck.isServerup();
+      // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
+      if (connectivity && serverUp) {
+        // ! TODO: here should be remote data source
+        return localDataSource.updateSong(song: song);
+      } else {
+        // else return data from the local storage
+        return localDataSource.updateSong(song: song);
       }
     } catch (e) {
       return Left(

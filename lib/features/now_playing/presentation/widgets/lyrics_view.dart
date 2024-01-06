@@ -28,48 +28,56 @@ class LyricsView extends StatelessWidget {
               leadingWidth: MediaQuery.of(context).size.width,
               // Gradient Container
               leading: Container(
-                  height: 24.h,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors().surfaceContainerLowest,
-                        AppColors().surfaceContainerHighest,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
+                height: 24.h,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      //? Queue Title
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Text(
-                          'Lyrics',
-                          style: Theme.of(context).textTheme.bBL.copyWith(
-                                color: AppColors().onSurface,
-                                letterSpacing: 1,
-                              ),
-                        ),
-                      ),
-                      //? Expand Lyrics Button
-                      Padding(
-                        padding: EdgeInsets.only(right: 10.w),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.expand_more_rounded,
-                            color: AppColors().onSurface,
-                          ),
-                        ),
-                      ),
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors().surfaceContainerLowest,
+                      AppColors().surfaceContainerHighest,
                     ],
-                  ),),
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //? Queue Title
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        'Lyrics',
+                        style: Theme.of(context).textTheme.bBL.copyWith(
+                              color: AppColors().onSurface,
+                              letterSpacing: 1,
+                            ),
+                      ),
+                    ),
+                    //? Expand Lyrics Button
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => LyricsViewBig(),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.fullscreen_outlined,
+                          color: AppColors().onSurface,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             body:
                 // if no lyrics then
@@ -93,6 +101,25 @@ class LyricsView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class LyricsViewBig extends StatelessWidget {
+  const LyricsViewBig({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        color: AppColors().surfaceContainerHighest,
+      ),
     );
   }
 }

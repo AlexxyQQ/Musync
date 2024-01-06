@@ -5,6 +5,7 @@ import 'package:musync/features/bottom_nav/presentation/widget/duration_slider.d
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
 import 'package:musync/features/now_playing/presentation/widgets/audio_controllers.dart';
 import 'package:musync/features/now_playing/presentation/widgets/lyrics_view.dart';
+import 'package:musync/features/now_playing/presentation/widgets/more_controls.dart';
 import 'package:musync/features/now_playing/presentation/widgets/queue_view.dart';
 
 class NowPlayingPage extends StatefulWidget {
@@ -15,6 +16,9 @@ class NowPlayingPage extends StatefulWidget {
 }
 
 class _NowPlayingPageState extends State<NowPlayingPage> {
+  final scrollController = ScrollController();
+  final GlobalKey queueTarget = GlobalKey();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -61,9 +65,7 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
             ),
             actions: [
               IconButton(
-                onPressed: () {
-                  // songOptions(song, context);
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.more_vert_rounded),
               ),
             ],
@@ -71,18 +73,22 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: SingleChildScrollView(
+              controller: scrollController,
               child: Column(
                 children: [
                   //? Album Cover
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 44.h,
-                    ),
-                    child: SongArtWork(
-                      song: state.currentSong!,
-                      height: 350.h,
-                      width: MediaQuery.of(context).size.width,
-                      borderRadius: 8.r,
+                  Hero(
+                    tag: 'NowPlayingAlbumArt',
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 44.h,
+                      ),
+                      child: SongArtWork(
+                        song: state.currentSong!,
+                        height: 300.h,
+                        width: MediaQuery.of(context).size.width,
+                        borderRadius: 8.r,
+                      ),
                     ),
                   ),
 
@@ -121,6 +127,15 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
                     height: 12.h,
                   ),
                   const AudioControllers(),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  MoreControls(
+                    setScroll: scrollToTarget,
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
                   //? LyricsView
                   LyricsView(
                     song: state.currentSong!,
@@ -130,6 +145,7 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
                   ),
                   //? QueueView
                   QueueView(
+                    key: queueTarget,
                     songList: state.queue!,
                   ),
                 ],
@@ -139,5 +155,16 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
         );
       },
     );
+  }
+
+  void scrollToTarget() async {
+    final context = queueTarget.currentContext;
+    if (context != null) {
+      await Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }

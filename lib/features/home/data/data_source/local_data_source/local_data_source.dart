@@ -1,11 +1,14 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
+import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
 import 'package:musync/features/home/data/data_source/query_data_source.dart';
 import 'package:musync/features/home/data/model/app_album_model.dart';
 import 'package:musync/features/home/data/model/app_artist_model.dart';
 import 'package:musync/features/home/data/model/app_folder_model.dart';
+import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
+import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/injection/app_injection_container.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../../core/utils/song_model_map_converter.dart';
@@ -173,6 +176,31 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
         AppFolderModel.fromListofPaths(
           allQueryFolders,
         ),
+      );
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  Future<Either<AppErrorHandler, String>> updateSong({
+    required AppSongModel song,
+  }) async {
+    try {
+      final queryHiveService = get<QueryHiveService>();
+
+      final hiveSong = song.toHiveModel();
+
+      await queryHiveService.updateSong(
+        hiveSong,
+      );
+
+      return const Right(
+        'Song Updated',
       );
     } catch (e) {
       return Left(

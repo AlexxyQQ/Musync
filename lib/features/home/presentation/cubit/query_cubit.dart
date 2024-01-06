@@ -9,6 +9,7 @@ import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
 import 'package:musync/features/home/domain/entity/recently_played_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
+import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -29,6 +30,7 @@ class QueryCubit extends Cubit<HomeState> {
   final QueryHiveService queryHiveService;
   final GetRecentlyPlayedUsecase getRecentlyPlayedUsecase;
   final UpdateRecentlyPlayedUsecase updateRecentlyPlayedUsecase;
+  final UpdateSongUsecase updateSongUsecase;
 
   QueryCubit({
     required this.getAllSongsUseCase,
@@ -39,6 +41,7 @@ class QueryCubit extends Cubit<HomeState> {
     required this.queryHiveService,
     required this.getRecentlyPlayedUsecase,
     required this.updateRecentlyPlayedUsecase,
+    required this.updateSongUsecase,
   }) : super(HomeState.initial()) {
     init();
   }
@@ -412,6 +415,31 @@ class QueryCubit extends Cubit<HomeState> {
         ),
       );
     }
+  }
+
+  Future<void> getFavouriteSongs() async {
+    await getAllSongs(first: false, refetch: false);
+    final List<SongEntity> fav = [];
+    for (var song in state.songs) {
+      if (song.isFavorite) {
+        fav.add(song);
+      }
+    }
+
+    emit(
+      state.copyWith(
+        isLoading: false,
+        isSuccess: true,
+        error: null,
+        favouriteSongs: fav,
+      ),
+    );
+  }
+
+  Future<void> updateFavouriteSongs({
+    required SongEntity song,
+  }) async {
+    await updateSongUsecase.call(song);
   }
 
   void update(HomeState copyWith) {

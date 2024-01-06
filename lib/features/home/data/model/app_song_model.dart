@@ -252,4 +252,41 @@ class AppSongModel extends SongEntity {
   static List<AppSongModel> fromListHiveModel(List<SongHiveModel> hiveSongs) {
     return hiveSongs.map((e) => fromHiveModel(e)).toList();
   }
+
+  factory AppSongModel.fromEntity(SongEntity songEntity) {
+    return AppSongModel(
+      id: songEntity.id,
+      data: songEntity.data,
+      serverUrl: songEntity.serverUrl,
+      uri: songEntity.uri,
+      displayName: songEntity.displayName,
+      displayNameWOExt: songEntity.displayNameWOExt,
+      size: songEntity.size,
+      album: songEntity.album,
+      albumId: songEntity.albumId,
+      artist: songEntity.artist,
+      artistId: songEntity.artistId,
+      genre: songEntity.genre,
+      genreId: songEntity.genreId,
+      bookmark: songEntity.bookmark,
+      composer: songEntity.composer,
+      dateAdded: songEntity.dateAdded,
+      dateModified: songEntity.dateModified,
+      duration: songEntity.duration,
+      title: songEntity.title,
+      track: songEntity.track,
+      fileExtension: songEntity.fileExtension,
+      isAlarm: songEntity.isAlarm,
+      isAudioBook: songEntity.isAudioBook,
+      isMusic: songEntity.isMusic,
+      isNotification: songEntity.isNotification,
+      isPodcast: songEntity.isPodcast,
+      isRingtone: songEntity.isRingtone,
+      albumArt: songEntity.albumArt,
+      albumArtUrl: songEntity.albumArtUrl,
+      isPublic: songEntity.isPublic,
+      lyrics: songEntity.lyrics,
+      isFavorite: songEntity.isFavorite,
+    );
+  }
 }
