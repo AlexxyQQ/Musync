@@ -440,6 +440,9 @@ class QueryCubit extends Cubit<HomeState> {
     required SongEntity song,
   }) async {
     await updateSongUsecase.call(song);
+    // getAllSongs(first: false, refetch: false);
+    // log(state.songs.where((element) => element.isFavorite).toList().toString(),
+    //     name: "Favourite Songs");
   }
 
   void update(HomeState copyWith) {

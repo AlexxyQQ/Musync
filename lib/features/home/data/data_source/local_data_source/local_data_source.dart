@@ -6,8 +6,6 @@ import 'package:musync/features/home/data/data_source/query_data_source.dart';
 import 'package:musync/features/home/data/model/app_album_model.dart';
 import 'package:musync/features/home/data/model/app_artist_model.dart';
 import 'package:musync/features/home/data/model/app_folder_model.dart';
-import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
-import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -21,7 +19,7 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
     required this.onAudioQuery,
   });
 
-  // Get All Songs
+  // Songs
   @override
   Future<Either<AppErrorHandler, List<AppSongModel>>> getAllSongs({
     required Function(int) onProgress,
@@ -108,6 +106,84 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
     }
   }
 
+  @override
+  Future<Either<AppErrorHandler, String>> updateSong({
+    required AppSongModel song,
+  }) async {
+    try {
+      final queryHiveService = get<QueryHiveService>();
+
+      final hiveSong = song.toHiveModel();
+
+      await queryHiveService.updateSong(
+        hiveSong,
+      );
+
+      return const Right(
+        'Song Updated',
+      );
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> addSong({
+    required AppSongModel song,
+  }) async {
+    try {
+      final queryHiveService = get<QueryHiveService>();
+
+      final hiveSong = song.toHiveModel();
+
+      await queryHiveService.addSong(
+        hiveSong,
+      );
+
+      return const Right(
+        'Song Added',
+      );
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> addSongs({
+    required List<AppSongModel> songs,
+  }) async {
+    try {
+      final queryHiveService = get<QueryHiveService>();
+
+      final hiveSongs = songs.map((e) => e.toHiveModel()).toList();
+
+      await queryHiveService.addSongs(
+        hiveSongs,
+      );
+
+      return const Right(
+        'Songs Added',
+      );
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
   // Get All Albums
   @override
   Future<Either<AppErrorHandler, List<AppAlbumModel>>> getAllAlbums({
@@ -176,31 +252,6 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
         AppFolderModel.fromListofPaths(
           allQueryFolders,
         ),
-      );
-    } catch (e) {
-      return Left(
-        AppErrorHandler(
-          message: e.toString(),
-          status: false,
-        ),
-      );
-    }
-  }
-
-  Future<Either<AppErrorHandler, String>> updateSong({
-    required AppSongModel song,
-  }) async {
-    try {
-      final queryHiveService = get<QueryHiveService>();
-
-      final hiveSong = song.toHiveModel();
-
-      await queryHiveService.updateSong(
-        hiveSong,
-      );
-
-      return const Right(
-        'Song Updated',
       );
     } catch (e) {
       return Left(

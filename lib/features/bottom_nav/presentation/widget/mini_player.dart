@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:musync/config/constants/global_constants.dart';
@@ -161,21 +163,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                 )
                               : IconButton(
                                   onPressed: () {
-                                    if (state.currentSong!.isFavorite) {
-                                      BlocProvider.of<QueryCubit>(context)
-                                          .updateFavouriteSongs(
-                                        song: state.currentSong!.copyWith(
-                                          isFavorite: false,
-                                        ),
-                                      );
-                                    } else {
-                                      BlocProvider.of<QueryCubit>(context)
-                                          .updateFavouriteSongs(
-                                        song: state.currentSong!.copyWith(
-                                          isFavorite: true,
-                                        ),
-                                      );
-                                    }
+                                    BlocProvider.of<NowPlayingCubit>(context)
+                                        .favouriteSong(
+                                      song: state.currentSong!,
+                                      context: context,
+                                    );
                                   },
                                   icon: SvgPicture.asset(
                                     state.currentSong!.isFavorite

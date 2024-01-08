@@ -25,9 +25,14 @@ class ApiEndpoints {
   static const String changePasswordRoute = "/users/changePassword";
   static const String resendVerificationRoute = "/users/resendVerification";
   // Music Endpoints
-  static const String uploadAlbumArtRoute = '/music/uploadAlbumArt';
-  static const String addAllSongsRoute = '/music/addAllSongs';
+
+  // Songs
+  static const String addSongRoute = '/music/addSong';
+  static const String addSongsRoute = '/music/addSongs';
   static const String getAllSongsRoute = '/music/getAllSongs';
+  static const String updateSongRoute = '/music/updateSong';
+  //
+  static const String uploadAlbumArtRoute = '/music/uploadAlbumArt';
   static const String getAllPublicSongsRoute = '/music/getAllPublicSongs';
   static const String getUserPublicSongsRoute = '/music/getUserPublicSongs';
   static const String getAllFolderWithSongsRoute =

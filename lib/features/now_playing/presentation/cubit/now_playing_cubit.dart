@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
@@ -233,5 +235,39 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
         queue: state.queue,
       ),
     );
+  }
+
+  void favouriteSong(
+      {required SongEntity song, required BuildContext context}) async {
+    log("Favourite Songs : ${state.currentSong!.isFavorite}");
+
+    // change the current song isFavourite parameter
+    if (song.isFavorite) {
+      BlocProvider.of<QueryCubit>(context).updateFavouriteSongs(
+        song: song.copyWith(
+          isFavorite: false,
+        ),
+      );
+      emit(
+        state.copyWith(
+          currentSong: song.copyWith(
+            isFavorite: false,
+          ),
+        ),
+      );
+    } else {
+      BlocProvider.of<QueryCubit>(context).updateFavouriteSongs(
+        song: song.copyWith(
+          isFavorite: true,
+        ),
+      );
+      emit(
+        state.copyWith(
+          currentSong: song.copyWith(
+            isFavorite: true,
+          ),
+        ),
+      );
+    }
   }
 }
