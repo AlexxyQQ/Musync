@@ -17,6 +17,20 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
     required this.audioQueryDataSource,
     required this.audioQueryDataSourceImpl,
   });
+  @override
+  Future<Either<AppErrorHandler, String>> getLyrics({
+    required String artist,
+    required String title,
+    required int songId,
+    required String token,
+  }) async {
+    return await audioQueryDataSourceImpl.getLyrics(
+      artist: artist,
+      title: title,
+      songId: songId,
+      token: token,
+    );
+  }
 
   @override
   Future<Either<AppErrorHandler, List<AppSongModel>>> getAllSongs({

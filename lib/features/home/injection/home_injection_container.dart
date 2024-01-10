@@ -1,4 +1,5 @@
 import 'package:musync/features/home/data/data_source/remote_data_source/remote_data_source.dart';
+import 'package:musync/features/home/domain/usecase/get_lyrics_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
 import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 
@@ -100,6 +101,12 @@ class HomeInjectionContainer {
       () => UpdateSongUsecase(
         settingsHiveService: get(),
         audioQueryRepository: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => GetLyricsUseCase(
+        audioQueryRepository: get(),
+        settingsHiveService: get(),
       ),
     );
 

@@ -1,13 +1,69 @@
+import 'dart:developer';
 
+import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/domain/usecase/get_lyrics_usecase.dart';
 import 'package:musync/features/now_playing/presentation/cubit/now_playing_state.dart';
 
 class NowPlayingCubit extends Cubit<NowPlayingState> {
-  NowPlayingCubit()
-      : super(
+  NowPlayingCubit({
+    required this.getLyricsUseCase,
+  }) : super(
           NowPlayingState.initial(),
         );
+
+  final GetLyricsUseCase getLyricsUseCase;
+
+  Future<void> getLyrics({
+    required String artist,
+    required String title,
+    required int songId,
+    required int currentIndex,
+    required SongEntity song,
+  }) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+      ),
+    );
+    final data = await getLyricsUseCase(
+      GetLyricsParams(
+        artist: artist,
+        title: title,
+        songId: songId,
+      ),
+    );
+    log('data: $data');
+    data.fold(
+      (error) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            error: error,
+            currentSong: song,
+            currentIndex: currentIndex,
+          ),
+        );
+      },
+      (lyrics) {
+        // set the current song lyrics
+        final newSong = song.copyWith(
+          lyrics: lyrics,
+        );
+        log('lyrics: ${newSong.toString()}');
+        emit(
+          state.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            error: null,
+            currentSong: newSong,
+            currentIndex: currentIndex,
+          ),
+        );
+      },
+    );
+  }
 
   void setSongs({
     required List<SongEntity> songs,
@@ -38,7 +94,7 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
     if (!state.isPlaying) {
       nav.pushNamed(AppRoutes.nowPlayingRoute);
     }
-    
+
     emit(
       state.copyWith(
         currentSong: song,
@@ -77,12 +133,27 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
 
   void next() async {
     await state.audioPlayer!.seekToNext();
-    emit(
-      state.copyWith(
-        currentSong: state.queue![state.audioPlayer!.currentIndex ?? 0],
-        currentIndex: state.audioPlayer!.currentIndex ?? 0,
-      ),
-    );
+    // Get the current song lyrics
+    final song = state.queue![state.audioPlayer!.currentIndex ?? 0];
+    final currentIndex = state.audioPlayer!.currentIndex ?? 0;
+
+    final setting = await get<SettingsHiveService>().getSettings();
+    if (setting.server) {
+      await getLyrics(
+        artist: song.artist!,
+        title: song.title,
+        songId: song.id,
+        currentIndex: currentIndex,
+        song: song,
+      );
+    } else {
+      emit(
+        state.copyWith(
+          currentSong: song,
+          currentIndex: currentIndex,
+        ),
+      );
+    }
   }
 
   void shuffle() async {
@@ -237,8 +308,10 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
     );
   }
 
-  void favouriteSong(
-      {required SongEntity song, required BuildContext context,}) async {
+  void favouriteSong({
+    required SongEntity song,
+    required BuildContext context,
+  }) async {
     // change the current song isFavourite parameter
     if (song.isFavorite) {
       BlocProvider.of<QueryCubit>(context).updateFavouriteSongs(

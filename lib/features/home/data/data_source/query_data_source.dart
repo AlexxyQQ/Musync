@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/local_data_source.dart';
 import 'package:musync/features/home/data/data_source/remote_data_source/remote_data_source.dart';
@@ -58,8 +57,32 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required this.queryHiveService,
     required this.remoteDataSource,
   });
+  // Lyrics
+  Future<Either<AppErrorHandler, String>> getLyrics({
+    required String artist,
+    required String title,
+    required int songId,
+    required String token,
+  }) async {
+    try {
+      final response = await remoteDataSource.getLyrics(
+        artist: artist,
+        title: title,
+        songId: songId,
+        token: token,
+      );
+      return response;
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
 
-// Songs
+  // Songs
   @override
   Future<Either<AppErrorHandler, List<AppSongModel>>> getAllSongs({
     required Function(int p1) onProgress,

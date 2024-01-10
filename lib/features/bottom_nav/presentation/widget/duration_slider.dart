@@ -48,6 +48,8 @@ class _DurationSliderState extends State<DurationSlider> {
     });
   }
 
+  // HI my miss piggy
+
   @override
   void dispose() {
     try {

@@ -14,6 +14,53 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
     required this.api,
   });
 
+  // Lyrics
+
+  Future<Either<AppErrorHandler, String>> getLyrics({
+    required String artist,
+    required String title,
+    required int songId,
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.getLyricsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+        data: {
+          "song_artist": artist,
+          "song_title": title,
+          "song_id": songId,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return Right(
+          response.data['data']['lyrics'],
+        );
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: response.data['message'],
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
   // Songs
   @override
   Future<Either<AppErrorHandler, List<AppSongModel>>> getAllSongs({

@@ -66,7 +66,9 @@ class LyricsView extends StatelessWidget {
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
-                            builder: (context) => const LyricsViewBig(),
+                            builder: (context) => LyricsViewBig(
+                              lyrics: song.lyrics ?? 'NO LYRICS FOUND',
+                            ),
                           );
                         },
                         icon: Icon(
@@ -91,12 +93,20 @@ class LyricsView extends StatelessWidget {
                               ),
                         ),
                       )
-                    : Text(
-                        song.lyrics!,
-                        style: Theme.of(context).textTheme.bBM.copyWith(
-                              color: AppColors().onSurface,
-                              letterSpacing: 1,
-                            ),
+                    : Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 10.h,
+                        ),
+                        child: SingleChildScrollView(
+                          child: Text(
+                            song.lyrics!,
+                            style: Theme.of(context).textTheme.bBM.copyWith(
+                                  color: AppColors().onSurface,
+                                  letterSpacing: 1,
+                                ),
+                          ),
+                        ),
                       ),
           ),
         );
@@ -106,19 +116,51 @@ class LyricsView extends StatelessWidget {
 }
 
 class LyricsViewBig extends StatelessWidget {
-  const LyricsViewBig({super.key});
+  const LyricsViewBig({
+    super.key,
+    required this.lyrics,
+  });
+
+  final String lyrics;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(
+        horizontal: 24.w,
+        vertical: 60.h,
+      ),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
         color: AppColors().surfaceContainerHighest,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'Lyrics',
+              style: Theme.of(context).textTheme.h3.copyWith(
+                    color: AppColors().onSurface,
+                    letterSpacing: 1,
+                  ),
+            ),
+            SizedBox(height: 20.h),
+            Text(
+              lyrics,
+              style: Theme.of(context).textTheme.h5.copyWith(
+                    color: AppColors().onSurface,
+                    letterSpacing: 1,
+                    height: 1.5,
+                    fontWeight: FontWeight.w400,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -7,6 +7,12 @@ import 'package:musync/features/home/domain/entity/song_entity.dart';
 import '../../../../core/failure/error_handler.dart';
 
 abstract class IAudioQueryRepository {
+  Future<Either<AppErrorHandler, String>> getLyrics({
+    required String artist,
+    required String title,
+    required int songId,
+    required String token,
+  });
   Future<Either<AppErrorHandler, List<SongEntity>>> getAllSongs({
     required Function(int) onProgress,
     bool? first,

@@ -6,7 +6,9 @@ class NowPlayingInjectionContainer {
   void register() {
     // Cubit
     get.registerFactory(
-      () => NowPlayingCubit(),
+      () => NowPlayingCubit(
+        getLyricsUseCase: get(),
+      ),
     );
   }
 }

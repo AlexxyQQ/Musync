@@ -1,7 +1,7 @@
 class ApiEndpoints {
   static const String socketURL = "http://localhost:3002";
-  static const String baseDomain = "http://192.168.1.204:3001/";
-  static const String baseURL = "http://192.168.1.204:3001/api";
+  static const String baseDomain = "http://192.168.1.67:3001/";
+  static const String baseURL = "http://192.168.1.67:3001/api";
   static const Map<String, dynamic> defaultHeaders = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -25,7 +25,8 @@ class ApiEndpoints {
   static const String changePasswordRoute = "/users/changePassword";
   static const String resendVerificationRoute = "/users/resendVerification";
   // Music Endpoints
-
+  // Lyrics
+  static String getLyricsRoute = '/music/getLyrics';
   // Songs
   static const String addSongRoute = '/music/addSong';
   static const String addSongsRoute = '/music/addSongs';
