@@ -26,7 +26,7 @@ class GetAllAlbumsUsecase extends UseCase<List<AlbumEntity>, GetQueryParams> {
     try {
       final setting = await settingsHiveService.getSettings();
 
-      if (setting.token == null) {
+      if (setting.token == null && !setting.offline) {
         return Left(
           AppErrorHandler(
             message: 'No Token',
@@ -36,7 +36,7 @@ class GetAllAlbumsUsecase extends UseCase<List<AlbumEntity>, GetQueryParams> {
       }
       final data = await audioQueryRepository.getAllAlbums(
         refetch: params.refetch ?? false,
-        token: setting.token!,
+        token: setting.token ?? '',
       );
       return data.fold(
         (l) => Left(l),

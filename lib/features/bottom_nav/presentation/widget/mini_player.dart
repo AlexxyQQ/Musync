@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -71,11 +71,24 @@ class _MiniPlayerState extends State<MiniPlayer> {
                           // Album Cover
                           Hero(
                             tag: 'NowPlayingAlbumArt',
-                            child: SongArtWork(
-                              song: state.currentSong!,
+                            child: Container(
                               height: 44.h,
                               width: 44.w,
-                              borderRadius: 8.r,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.r),
+                                image: DecorationImage(
+                                  image: Image.file(
+                                    File(state.currentSong!.albumArt ?? ''),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/splash_screen/icon.png',
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ).image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -176,7 +189,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                     color: textColor,
                                     height: 18.r,
                                   ),
-                                )
+                                ),
                         ],
                       ),
                     ],

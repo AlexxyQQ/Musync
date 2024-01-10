@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/config/constants/global_constants.dart';
 import 'package:musync/core/common/exports.dart';
-import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 
 class MoreControls extends StatelessWidget {

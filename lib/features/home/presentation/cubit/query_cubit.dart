@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -95,13 +93,10 @@ class QueryCubit extends Cubit<HomeState> {
         ),
       );
 
-      log("Dataaas: $data");
-
       data.fold((l) => Left(l), (r) {
         r.sort(
           (a, b) => a.title.compareTo(b.title),
         );
-        log('JSON file created at: ');
 
         emit(
           state.copyWith(
@@ -112,9 +107,6 @@ class QueryCubit extends Cubit<HomeState> {
             songs: r,
           ),
         ); // Pass the final list of songs
-        String jsonString = jsonEncode(r.map((e) => e.toMap()).toList());
-
-        log('JSON file created at: $jsonString');
       });
     } catch (e) {
       emit(
@@ -383,7 +375,6 @@ class QueryCubit extends Cubit<HomeState> {
           .isNotEmpty;
 
       if (isAlreadyInList!) {
-        log("Song is already in the list", name: "Recent SOngs Check");
         return;
       }
 
@@ -443,8 +434,6 @@ class QueryCubit extends Cubit<HomeState> {
   }) async {
     await updateSongUsecase.call(song);
     // getAllSongs(first: false, refetch: false);
-    // log(state.songs.where((element) => element.isFavorite).toList().toString(),
-    //     name: "Favourite Songs");
   }
 
   void update(HomeState copyWith) {

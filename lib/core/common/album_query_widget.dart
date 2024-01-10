@@ -1,9 +1,12 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:musync/config/constants/colors/primitive_colors.dart';
+import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/injection/app_injection_container.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class SongArtWork extends StatefulWidget {
   const SongArtWork({
@@ -24,25 +27,39 @@ class SongArtWork extends StatefulWidget {
 
 class _SongArtWorkState extends State<SongArtWork> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    saveImage();
+  }
+
+  void saveImage() async {
+    await AlbumArtQuerySave(audioQuery: get<OnAudioQuery>()).saveAlbumArt(
+      id: widget.song.id,
+      type: ArtworkType.AUDIO,
+      fileName: widget.song.displayNameWOExt,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height.h,
-      width: widget.width.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(widget.borderRadius.r),
-        image: DecorationImage(
-          image: Image.file(
-            File(widget.song.albumArt ?? ''),
-            errorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                'assets/splash_screen/icon.png',
-                fit: BoxFit.cover,
-              );
-            },
-          ).image,
-          fit: BoxFit.cover,
-        ),
+    return QueryArtworkWidget(
+      id: widget.song.id,
+      artworkHeight: widget.height.h,
+      artworkWidth: widget.width.w,
+      artworkBorder: BorderRadius.circular(widget.borderRadius.r),
+      nullArtworkWidget: const Icon(
+        Icons.music_note_rounded,
+        size: 40,
+        color: PrimitiveColors.primary500,
       ),
+      type: ArtworkType.AUDIO,
+      errorBuilder: (p0, p1, p2) {
+        return const Icon(
+          Icons.music_note_rounded,
+          color: PrimitiveColors.primary500,
+        );
+      },
     );
   }
 }

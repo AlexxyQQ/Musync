@@ -38,35 +38,3 @@ class SettingsHiveService {
     await box.putAt(0, settings);
   }
 }
-
-// Future<void> addSettings(AppSettingsHiveModel settings) async {
-//   log('SettingsHiveService: getSettings: $settings');
-//   await _settingsBox?.add(settings);
-// }
-
-// Future<AppSettingsHiveModel> getSettings() async {
-//   final data = _settingsBox?.values;
-//   log('SettingsHiveService: getSettings: $data');
-//   if (data == null) {
-//     return AppSettingsHiveModel(
-//       firstTime: true,
-//       goHome: false,
-//       server: false,
-//       token: null,
-//     );
-//   } else {
-//     return AppSettingsHiveModel.empty();
-//   }
-// }
-
-// Future<void> updateSettings(AppSettingsHiveModel settings) async {
-//   await _settingsBox?.putAt(0, settings);
-// }
-
-// Future<void> deleteSettings() async {
-//   await _settingsBox?.delete(0);
-// }
-
-// Future<void> clearSettings() async {
-//   await _settingsBox?.clear();
-// }

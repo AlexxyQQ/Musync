@@ -24,7 +24,7 @@ class GetAllSongsUseCase extends UseCase<List<SongEntity>, GetQueryParams> {
     try {
       final setting = await settingsHiveService.getSettings();
 
-      if (setting.token == null) {
+      if (setting.token == null && !setting.offline) {
         return Left(
           AppErrorHandler(
             message: 'No Token',
@@ -37,7 +37,7 @@ class GetAllSongsUseCase extends UseCase<List<SongEntity>, GetQueryParams> {
         onProgress: params.onProgress!,
         first: params.first,
         refetch: params.refetch ?? false,
-        token: setting.token!,
+        token: setting.token?? '',
       );
       return data.fold(
         (l) => Left(l),

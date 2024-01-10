@@ -66,7 +66,7 @@ class LyricsView extends StatelessWidget {
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
-                            builder: (context) => LyricsViewBig(),
+                            builder: (context) => const LyricsViewBig(),
                           );
                         },
                         icon: Icon(

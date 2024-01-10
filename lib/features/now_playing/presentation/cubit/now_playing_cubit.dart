@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
@@ -39,6 +38,7 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
     if (!state.isPlaying) {
       nav.pushNamed(AppRoutes.nowPlayingRoute);
     }
+    
     emit(
       state.copyWith(
         currentSong: song,
@@ -238,9 +238,7 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
   }
 
   void favouriteSong(
-      {required SongEntity song, required BuildContext context}) async {
-    log("Favourite Songs : ${state.currentSong!.isFavorite}");
-
+      {required SongEntity song, required BuildContext context,}) async {
     // change the current song isFavourite parameter
     if (song.isFavorite) {
       BlocProvider.of<QueryCubit>(context).updateFavouriteSongs(

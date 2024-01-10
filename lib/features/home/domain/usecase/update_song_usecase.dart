@@ -19,7 +19,7 @@ class UpdateSongUsecase extends UseCase<String, SongEntity> {
     try {
       final setting = await settingsHiveService.getSettings();
 
-      if (setting.token == null) {
+      if (setting.token == null && !setting.offline) {
         return Left(
           AppErrorHandler(
             message: 'No Token',
@@ -29,7 +29,7 @@ class UpdateSongUsecase extends UseCase<String, SongEntity> {
       } else {
         final response = await audioQueryRepository.updateSong(
           song: params,
-          token: setting.token!,
+          token: setting.token ?? '',
         );
         return response;
       }

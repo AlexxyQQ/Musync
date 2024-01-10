@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -6,7 +5,6 @@ import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/data/data_source/query_data_source.dart';
 import 'package:musync/features/home/data/model/app_album_model.dart';
 import 'package:musync/features/home/data/model/app_artist_model.dart';
-import 'package:musync/features/home/data/model/app_folder_model.dart';
 import 'package:musync/features/home/data/model/app_song_model.dart';
 
 class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
@@ -35,9 +33,7 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
       );
 
       if (response.statusCode == 200) {
-        log(response.data.toString());
         // for each song in the response, check if it exists in the phone
-
         final List<AppSongModel> existingSongs = [];
 
         for (final Map<String, dynamic> song

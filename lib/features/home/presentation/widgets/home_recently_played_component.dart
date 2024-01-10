@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
@@ -166,7 +165,6 @@ class _HomeRecentlyPayedComponentState
 
                           Color currentTextColor = textColors[albumCover] ??
                               AppColors(inverseDarkMode: true).onBackground;
-                          log("currentAlbumColor: $albumArtColors");
                           return Container(
                             width: 250,
                             height: 110,
