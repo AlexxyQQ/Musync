@@ -89,21 +89,15 @@ class SongHiveModel {
   final bool isRingtone;
 
   @HiveField(26)
-  final String serverUrl;
-
-  @HiveField(27)
   final String? albumArt;
 
-  @HiveField(28)
-  final String? albumArtUrl;
-
-  @HiveField(29)
+  @HiveField(27)
   final bool isPublic;
 
-  @HiveField(30)
+  @HiveField(28)
   final String? lyrics;
 
-  @HiveField(31)
+  @HiveField(29)
   final bool isFavorite;
 
   SongHiveModel.empty()
@@ -134,9 +128,7 @@ class SongHiveModel {
           isNotification: false,
           isPodcast: false,
           isRingtone: false,
-          serverUrl: '',
           albumArt: '',
-          albumArtUrl: '',
           isPublic: false,
           lyrics: '',
           isFavorite: false,
@@ -152,7 +144,6 @@ class SongHiveModel {
     String? album,
     String? albumId,
     String? artist,
-    String? serverUrl,
     String? artistId,
     String? genre,
     String? genreId,
@@ -171,7 +162,6 @@ class SongHiveModel {
     bool? isPodcast,
     required this.isRingtone,
     required this.albumArt,
-    String? albumArtUrl,
     bool? isPublic,
     String? lyrics,
     bool? isFavorite,
@@ -193,16 +183,13 @@ class SongHiveModel {
         isMusic = isMusic ?? false,
         isNotification = isNotification ?? false,
         isPodcast = isPodcast ?? false,
-        albumArtUrl = albumArtUrl ?? '',
         isPublic = isPublic ?? false,
         lyrics = lyrics ?? '',
-        isFavorite = isFavorite ?? false,
-        serverUrl = serverUrl ?? '';
+        isFavorite = isFavorite ?? false;
 
   SongEntity toEntity() => SongEntity(
         id: id,
         data: data,
-        serverUrl: serverUrl,
         uri: uri,
         displayName: displayName,
         displayNameWOExt: displayNameWOExt,
@@ -228,7 +215,6 @@ class SongHiveModel {
         isPodcast: isPodcast,
         isRingtone: isRingtone,
         albumArt: albumArt ?? '',
-        albumArtUrl: albumArtUrl ?? '',
         isPublic: isPublic,
         lyrics: lyrics ?? '',
         isFavorite: isFavorite ?? false,
@@ -236,7 +222,6 @@ class SongHiveModel {
   SongHiveModel toHiveModel(SongEntity entity) => SongHiveModel(
         id: entity.id,
         data: entity.data,
-        serverUrl: entity.serverUrl,
         uri: entity.uri,
         displayName: entity.displayName,
         displayNameWOExt: entity.displayNameWOExt,
@@ -262,7 +247,6 @@ class SongHiveModel {
         isPodcast: entity.isPodcast,
         isRingtone: entity.isRingtone,
         albumArt: entity.albumArt,
-        albumArtUrl: entity.albumArtUrl,
         isPublic: entity.isPublic,
         lyrics: entity.lyrics,
         isFavorite: entity.isFavorite,
@@ -345,9 +329,7 @@ class SongHiveModel {
     bool? isNotification,
     bool? isPodcast,
     bool? isRingtone,
-    String? serverUrl,
     String? albumArt,
-    String? albumArtUrl,
     bool? isPublic,
     String? lyrics,
     bool? isFavorite,
@@ -379,9 +361,7 @@ class SongHiveModel {
       isNotification: isNotification ?? this.isNotification,
       isPodcast: isPodcast ?? this.isPodcast,
       isRingtone: isRingtone ?? this.isRingtone,
-      serverUrl: serverUrl ?? this.serverUrl,
       albumArt: albumArt ?? this.albumArt,
-      albumArtUrl: albumArtUrl ?? this.albumArtUrl,
       isPublic: isPublic ?? this.isPublic,
       lyrics: lyrics ?? this.lyrics,
       isFavorite: isFavorite ?? this.isFavorite,
@@ -416,9 +396,7 @@ class SongHiveModel {
       isNotification: isNotification,
       isPodcast: isPodcast,
       isRingtone: isRingtone,
-      serverUrl: serverUrl,
       albumArt: albumArt ?? '',
-      albumArtUrl: albumArtUrl,
       isPublic: isPublic,
       lyrics: lyrics,
       isFavorite: isFavorite,
@@ -453,9 +431,7 @@ class SongHiveModel {
       'is_notification': isNotification,
       'is_podcast': isPodcast,
       'is_ringtone': isRingtone,
-      'server_url': serverUrl,
       'album_art': albumArt,
-      'album_art_url': albumArtUrl,
       'is_public': isPublic,
       'lyrics': lyrics,
       'is_favorite': isFavorite,
@@ -467,9 +443,7 @@ class SongHiveModel {
     return 'SongHiveModel Details:\n'
         '  - ID: $id\n'
         '  - Data: $data\n'
-        '  - Server URL: $serverUrl\n'
         '  - Album Art: $albumArt\n'
-        '  - Album Art URL: $albumArtUrl\n'
         '  - URI: $uri\n'
         '  - Display Name: $displayName\n'
         '  - Display Name Without Extension: $displayNameWOExt\n'
@@ -539,8 +513,6 @@ class SongHiveModel {
       id: map['id'] as int,
       data: map['data'] as String,
       albumArt: map['album_art'] == null ? "" : map['album_art'] as String,
-      albumArtUrl: map['album_art_url'],
-      serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
       uri: map['uri'] != null ? map['uri'] as String : null,
       displayName: map['display_name'] as String,
       displayNameWOExt: map['display_name_wo_ext'] as String,

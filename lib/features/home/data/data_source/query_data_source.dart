@@ -16,32 +16,39 @@ abstract class IAudioQueryDataSource {
     required Function(int) onProgress,
     bool? first,
     bool? refetch,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, String>> updateSong({
     required AppSongModel song,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, String>> addSong({
     required AppSongModel song,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, String>> addSongs({
     required List<AppSongModel> songs,
+    required String token,
   });
 
   //
 
   Future<Either<AppErrorHandler, List<AppAlbumModel>>> getAllAlbums({
     bool? refetch,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, List<AppArtistModel>>> getAllArtists({
     bool? refetch,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, List<AppFolderModel>>> getAllFolders({
     bool? refetch,
+    required String token,
   });
 }
 
@@ -62,6 +69,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required Function(int p1) onProgress,
     bool? first,
     bool? refetch,
+    required String token,
   }) async {
     try {
       // check for the connectivity and server up
@@ -74,6 +82,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
             onProgress: onProgress,
             first: first,
             refetch: refetch,
+            token: token,
           );
         } else {
           // else return data from the local storage
@@ -81,6 +90,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
             onProgress: onProgress,
             first: first,
             refetch: refetch,
+            token: token,
           );
         }
       } else {
@@ -113,6 +123,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, String>> addSong({
     required AppSongModel song,
+    required String token,
   }) async {
     try {
       // check for the connectivity and server up
@@ -120,10 +131,16 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       final serverUp = await ConnectivityCheck.isServerup();
 
       if (connectivity && serverUp) {
-        return remoteDataSource.addSong(song: song);
+        return remoteDataSource.addSong(
+          song: song,
+          token: token,
+        );
       } else {
         // else return data from the local storage
-        return localDataSource.addSong(song: song);
+        return localDataSource.addSong(
+          song: song,
+          token: token,
+        );
       }
     } catch (e) {
       return Left(
@@ -138,6 +155,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, String>> addSongs({
     required List<AppSongModel> songs,
+    required String token,
   }) async {
     try {
       // check for the connectivity and server up
@@ -145,10 +163,16 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       final serverUp = await ConnectivityCheck.isServerup();
 
       if (connectivity && serverUp) {
-        return remoteDataSource.addSongs(songs: songs);
+        return remoteDataSource.addSongs(
+          songs: songs,
+          token: token,
+        );
       } else {
         // else return data from the local storage
-        return localDataSource.addSongs(songs: songs);
+        return localDataSource.addSongs(
+          songs: songs,
+          token: token,
+        );
       }
     } catch (e) {
       return Left(
@@ -163,6 +187,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, String>> updateSong({
     required AppSongModel song,
+    required String token,
   }) async {
     try {
       // check for the connectivity and server up
@@ -170,10 +195,16 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       final serverUp = await ConnectivityCheck.isServerup();
       // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
       if (connectivity && serverUp) {
-        return remoteDataSource.updateSong(song: song);
+        return remoteDataSource.updateSong(
+          song: song,
+          token: token,
+        );
       } else {
         // else return data from the local storage
-        return localDataSource.updateSong(song: song);
+        return localDataSource.updateSong(
+          song: song,
+          token: token,
+        );
       }
     } catch (e) {
       return Left(
@@ -189,6 +220,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, List<AppAlbumModel>>> getAllAlbums({
     bool? refetch,
+    required String token,
   }) async {
     try {
       // check for the connectivity and server up
@@ -200,10 +232,12 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
           // !  TODO: here should be remote data source
           return localDataSource.getAllAlbums(
             refetch: refetch,
+            token: token,
           );
         } else {
           return localDataSource.getAllAlbums(
             refetch: refetch,
+            token: token,
           );
         }
       } else {
@@ -236,6 +270,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, List<AppArtistModel>>> getAllArtists({
     bool? refetch,
+    required String token,
   }) async {
     try {
       // check for the connectivity and server up
@@ -246,10 +281,12 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
         if (connectivity && serverUp) {
           return localDataSource.getAllArtists(
             refetch: refetch,
+            token: token,
           );
         } else {
           return localDataSource.getAllArtists(
             refetch: refetch,
+            token: token,
           );
         }
       } else {
@@ -282,6 +319,7 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, List<AppFolderModel>>> getAllFolders({
     bool? refetch,
+    required String token,
   }) async {
     try {
       // check for the connectivity and server up
@@ -290,9 +328,15 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
         if (connectivity && serverUp) {
-          return localDataSource.getAllFolders(refetch: refetch);
+          return localDataSource.getAllFolders(
+            refetch: refetch,
+            token: token,
+          );
         } else {
-          return localDataSource.getAllFolders(refetch: refetch);
+          return localDataSource.getAllFolders(
+            refetch: refetch,
+            token: token,
+          );
         }
       } else {
         final hiveFolders = await queryHiveService.getAllFolders();

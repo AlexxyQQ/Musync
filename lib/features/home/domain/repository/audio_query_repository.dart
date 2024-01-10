@@ -11,20 +11,25 @@ abstract class IAudioQueryRepository {
     required Function(int) onProgress,
     bool? first,
     bool? refetch,
+    required String token,
   });
   Future<Either<AppErrorHandler, List<AlbumEntity>>> getAllAlbums({
     bool? refetch,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, List<ArtistEntity>>> getAllArtists({
     bool? refetch,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, List<FolderEntity>>> getAllFolders({
     bool? refetch,
+    required String token,
   });
 
   Future<Either<AppErrorHandler, String>> updateSong({
     required SongEntity song,
+    required String token,
   });
 }

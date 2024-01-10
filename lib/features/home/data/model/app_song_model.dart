@@ -2,15 +2,13 @@ import 'dart:convert';
 
 import 'package:musync/core/utils/song_model_map_converter.dart';
 import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
-import 'package:on_audio_query_platform_interface/src/models/song_model.dart';
-import '../../../../config/constants/api/api_endpoints.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import '../../domain/entity/song_entity.dart';
 
 class AppSongModel extends SongEntity {
   const AppSongModel({
     required int id,
     required String data,
-    String? serverUrl,
     String? uri,
     required String displayName,
     required String displayNameWOExt,
@@ -36,14 +34,12 @@ class AppSongModel extends SongEntity {
     bool? isPodcast,
     required bool isRingtone,
     String? albumArt,
-    String? albumArtUrl,
     bool? isPublic,
     String? lyrics,
     required bool isFavorite,
   }) : super(
           id: id,
           data: data,
-          serverUrl: serverUrl,
           uri: uri,
           displayName: displayName,
           displayNameWOExt: displayNameWOExt,
@@ -69,7 +65,6 @@ class AppSongModel extends SongEntity {
           isPodcast: isPodcast,
           isRingtone: isRingtone,
           albumArt: albumArt,
-          albumArtUrl: albumArtUrl,
           isPublic: isPublic,
           lyrics: lyrics,
           isFavorite: isFavorite,
@@ -107,10 +102,7 @@ class AppSongModel extends SongEntity {
           : null,
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
-      serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
       albumArt: map['album_art'] != null ? map['album_art'] as String : '',
-      albumArtUrl:
-          map['album_art_url'] != null ? map['album_art_url'] as String : null,
       isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
       lyrics: map['lyrics'] != null ? map['lyrics'] as String : null,
       isFavorite:
@@ -126,7 +118,6 @@ class AppSongModel extends SongEntity {
     return 'AppSongModel Details:\n'
         '  - ID: $id\n'
         '  - Data: $data\n'
-        '  - Server URL: $serverUrl\n'
         '  - URI: $uri\n'
         '  - Display Name: $displayName\n'
         '  - Display Name Without Extension: $displayNameWOExt\n'
@@ -151,7 +142,6 @@ class AppSongModel extends SongEntity {
         '  - Is Notification: $isNotification\n'
         '  - Is Podcast: $isPodcast\n'
         '  - Album Art: $albumArt\n'
-        '  - Album Art URL: $albumArtUrl\n'
         '  - Is Public: $isPublic\n'
         '  - Lyrics: $lyrics\n'
         '  - Is Favorite: $isFavorite\n'
@@ -163,10 +153,6 @@ class AppSongModel extends SongEntity {
       id: map['id'] as int,
       data: map['data'] as String,
       albumArt: map['album_art'] as String,
-      albumArtUrl: map['album_art_url'] != null
-          ? "${ApiEndpoints.baseDomain}${map['album_art_url']}"
-          : null,
-      serverUrl: map['server_url'] as String,
       uri: map['uri'] != null ? map['uri'] as String : null,
       displayName: map['display_name'] as String,
       displayNameWOExt: map['display_name_wo_ext'] as String,
@@ -206,7 +192,6 @@ class AppSongModel extends SongEntity {
   List<Object?> get props => [
         id,
         data,
-        serverUrl,
         uri,
         displayName,
         displayNameWOExt,
@@ -232,11 +217,15 @@ class AppSongModel extends SongEntity {
         isPodcast,
         isRingtone,
         albumArt,
-        albumArtUrl,
         isPublic,
         lyrics,
         isFavorite,
       ];
+
+  static List<AppSongModel> fromMapList(List<dynamic> mapList) {
+    return mapList.map((e) => AppSongModel.fromMap(e)).toList();
+  }
+
   static AppSongModel fromSongModel(SongModel songModel) {
     return AppSongModel.fromModelMap(convertMap(songModel.getMap));
   }
@@ -257,7 +246,6 @@ class AppSongModel extends SongEntity {
     return AppSongModel(
       id: songEntity.id,
       data: songEntity.data,
-      serverUrl: songEntity.serverUrl,
       uri: songEntity.uri,
       displayName: songEntity.displayName,
       displayNameWOExt: songEntity.displayNameWOExt,
@@ -283,7 +271,6 @@ class AppSongModel extends SongEntity {
       isPodcast: songEntity.isPodcast,
       isRingtone: songEntity.isRingtone,
       albumArt: songEntity.albumArt,
-      albumArtUrl: songEntity.albumArtUrl,
       isPublic: songEntity.isPublic,
       lyrics: songEntity.lyrics,
       isFavorite: songEntity.isFavorite,

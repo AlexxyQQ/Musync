@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musync/config/route/routes.dart';
 import 'package:musync/features/auth/domain/use_case/rend_verification_usecase.dart';
 import 'package:musync/features/auth/presentation/view/change_password_page.dart';
 import 'package:musync/features/auth/presentation/view/otp_page.dart';
@@ -186,6 +187,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       );
 
       kShowSnackBar(context: context, message: 'Logged in successfully');
+      Navigator.pushNamed(context, AppRoutes.bottomNavRoute);
     }
   }
 

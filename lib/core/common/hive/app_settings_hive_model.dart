@@ -22,11 +22,15 @@ class AppSettingsHiveModel {
   @HiveField(3)
   final String? token;
 
+  @HiveField(4)
+  final bool offline;
+
   AppSettingsHiveModel({
     required this.firstTime,
     required this.goHome,
     required this.server,
     this.token,
+    required this.offline,
   });
 
   factory AppSettingsHiveModel.empty() {
@@ -35,6 +39,7 @@ class AppSettingsHiveModel {
       goHome: false,
       server: false,
       token: null,
+      offline: false,
     );
   }
 
@@ -43,12 +48,14 @@ class AppSettingsHiveModel {
     bool? goHome,
     bool? server,
     String? token,
+    bool? offline,
   }) {
     return AppSettingsHiveModel(
       firstTime: firstTime ?? this.firstTime,
       goHome: goHome ?? this.goHome,
       server: server ?? this.server,
       token: token ?? this.token,
+      offline: offline ?? this.offline,
     );
   }
 
@@ -61,6 +68,7 @@ class AppSettingsHiveModel {
     if (token != null) {
       result.addAll({'token': token});
     }
+    result.addAll({'offline': offline});
 
     return result;
   }
@@ -71,6 +79,7 @@ class AppSettingsHiveModel {
       goHome: map['goHome'] ?? false,
       server: map['server'] ?? false,
       token: map['token'],
+      offline: map['offline'] ?? false,
     );
   }
 
@@ -85,6 +94,7 @@ class AppSettingsHiveModel {
         '  - First Time: $firstTime\n'
         '  - Go Home: $goHome\n'
         '  - Server: $server\n'
+        '  - Offline: $offline\n'
         '  - Token: $token\n';
   }
 
@@ -96,6 +106,7 @@ class AppSettingsHiveModel {
         other.firstTime == firstTime &&
         other.goHome == goHome &&
         other.server == server &&
+        other.offline == offline &&
         other.token == token;
   }
 
@@ -104,6 +115,7 @@ class AppSettingsHiveModel {
     return firstTime.hashCode ^
         goHome.hashCode ^
         server.hashCode ^
+        offline.hashCode ^
         token.hashCode;
   }
 }

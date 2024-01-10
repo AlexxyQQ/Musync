@@ -127,6 +127,7 @@ class LoginSignupButton extends StatelessWidget {
                   await get<SettingsHiveService>().updateSettings(
                     setting.copyWith(
                       goHome: true,
+                      offline: true,
                     ),
                   );
                   // await ref.read(songProvider).permission();

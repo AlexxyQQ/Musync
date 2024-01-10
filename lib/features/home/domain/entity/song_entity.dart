@@ -12,8 +12,6 @@ class SongEntity extends Equatable {
 
   final String data;
 
-  final String? serverUrl;
-
   final String? uri;
 
   final String displayName;
@@ -64,8 +62,6 @@ class SongEntity extends Equatable {
 
   final String? albumArt;
 
-  final String? albumArtUrl;
-
   final bool? isPublic;
 
   final String? lyrics;
@@ -81,7 +77,6 @@ class SongEntity extends Equatable {
     required this.size,
     this.albumArt,
     this.album,
-    this.serverUrl,
     this.albumId,
     this.artist,
     this.artistId,
@@ -101,7 +96,6 @@ class SongEntity extends Equatable {
     this.isNotification,
     this.isPodcast,
     required this.isRingtone,
-    this.albumArtUrl,
     this.isPublic,
     this.lyrics,
     this.isFavorite = false,
@@ -134,9 +128,7 @@ class SongEntity extends Equatable {
     bool? isNotification,
     bool? isPodcast,
     bool? isRingtone,
-    String? serverUrl,
     String? albumArt,
-    String? albumArtUrl,
     bool? isPublic,
     String? lyrics,
     bool? isFavorite,
@@ -168,9 +160,7 @@ class SongEntity extends Equatable {
       isNotification: isNotification ?? this.isNotification,
       isPodcast: isPodcast ?? this.isPodcast,
       isRingtone: isRingtone ?? this.isRingtone,
-      serverUrl: serverUrl ?? this.serverUrl,
       albumArt: albumArt ?? this.albumArt,
-      albumArtUrl: albumArtUrl ?? this.albumArtUrl,
       isPublic: isPublic ?? this.isPublic,
       lyrics: lyrics ?? this.lyrics,
       isFavorite: isFavorite ?? this.isFavorite,
@@ -205,9 +195,7 @@ class SongEntity extends Equatable {
       'is_notification': isNotification,
       'is_podcast': isPodcast,
       'is_ringtone': isRingtone,
-      'server_url': serverUrl,
       'album_art': albumArt,
-      'album_art_url': albumArtUrl,
       'is_public': isPublic,
       'lyrics': lyrics,
       'is_favorite': isFavorite,
@@ -246,10 +234,7 @@ class SongEntity extends Equatable {
           : null,
       isPodcast: map['is_podcast'] != null ? map['is_podcast'] as bool : null,
       isRingtone: map['is_ringtone'] as bool,
-      serverUrl: map['server_url'] != null ? map['server_url'] as String : null,
       albumArt: map['album_art'] != null ? map['album_art'] as String : '',
-      albumArtUrl:
-          map['album_art_url'] != null ? map['album_art_url'] as String : null,
       isPublic: map['is_public'] != null ? map['is_public'] as bool : null,
       lyrics: map['lyrics'] != null ? map['lyrics'] as String : null,
       isFavorite:
@@ -267,7 +252,6 @@ class SongEntity extends Equatable {
     return 'SongEntity Details:\n'
         '  - ID: $id\n'
         '  - Data: $data\n'
-        '  - Server URL: $serverUrl\n'
         '  - URI: $uri\n'
         '  - Display Name: $displayName\n'
         '  - Display Name Without Extension: $displayNameWOExt\n'
@@ -292,7 +276,6 @@ class SongEntity extends Equatable {
         '  - Is Notification: $isNotification\n'
         '  - Is Podcast: $isPodcast\n'
         '  - Album Art: $albumArt\n'
-        '  - Album Art URL: $albumArtUrl\n'
         '  - Is Public: $isPublic\n'
         '  - Lyrics: $lyrics\n'
         '  - Is Favorite: $isFavorite\n'
@@ -304,10 +287,6 @@ class SongEntity extends Equatable {
       id: map['id'] as int,
       data: map['data'] as String,
       albumArt: map['album_art'] as String,
-      albumArtUrl: map['album_art_url'] != null
-          ? "${ApiEndpoints.baseDomain}${map['album_art_url']}"
-          : null,
-      serverUrl: map['server_url'] as String,
       uri: map['uri'] != null ? map['uri'] as String : null,
       displayName: map['display_name'] as String,
       displayNameWOExt: map['display_name_wo_ext'] as String,
@@ -347,7 +326,6 @@ class SongEntity extends Equatable {
   List<Object?> get props => [
         id,
         data,
-        serverUrl,
         uri,
         displayName,
         displayNameWOExt,
@@ -373,7 +351,6 @@ class SongEntity extends Equatable {
         isPodcast,
         isRingtone,
         albumArt,
-        albumArtUrl,
         isPublic,
         lyrics,
         isFavorite,
@@ -383,7 +360,6 @@ class SongEntity extends Equatable {
     return SongHiveModel(
       id: id,
       data: data,
-      serverUrl: serverUrl,
       uri: uri,
       displayName: displayName,
       displayNameWOExt: displayNameWOExt,
@@ -409,7 +385,6 @@ class SongEntity extends Equatable {
       isPodcast: isPodcast,
       isRingtone: isRingtone,
       albumArt: albumArt,
-      albumArtUrl: albumArtUrl,
       isPublic: isPublic,
       lyrics: lyrics,
       isFavorite: isFavorite,
@@ -431,5 +406,4 @@ class SongEntity extends Equatable {
   static List<SongEntity> fromListSongModel(List<SongModel> songs) {
     return songs.map((e) => formSongModel(e)).toList();
   }
-
 }

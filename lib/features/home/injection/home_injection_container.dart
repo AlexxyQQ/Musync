@@ -53,23 +53,27 @@ class HomeInjectionContainer {
       () => GetAllSongsUseCase(
         audioQueryRepository: get(),
         queryHiveService: get(),
+        settingsHiveService: get(),
       ),
     );
     get.registerLazySingleton(
       () => GetAllAlbumsUsecase(
         audioQueryRepository: get(),
+        settingsHiveService: get(),
         queryHiveService: get(),
       ),
     );
     get.registerLazySingleton(
       () => GetAllArtistsUsecase(
         audioQueryRepository: get(),
+        settingsHiveService: get(),
         queryHiveService: get(),
       ),
     );
     get.registerLazySingleton(
       () => GetAllFoldersUsecase(
         audioQueryRepository: get(),
+        settingsHiveService: get(),
         queryHiveService: get(),
       ),
     );
@@ -85,6 +89,7 @@ class HomeInjectionContainer {
     );
     get.registerLazySingleton(
       () => UpdateSongUsecase(
+        settingsHiveService: get(),
         audioQueryRepository: get(),
       ),
     );

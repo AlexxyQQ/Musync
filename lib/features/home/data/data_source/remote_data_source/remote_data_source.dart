@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/data/data_source/query_data_source.dart';
@@ -5,7 +7,6 @@ import 'package:musync/features/home/data/model/app_album_model.dart';
 import 'package:musync/features/home/data/model/app_artist_model.dart';
 import 'package:musync/features/home/data/model/app_folder_model.dart';
 import 'package:musync/features/home/data/model/app_song_model.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   final Api api;
@@ -20,20 +21,22 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
     required Function(int p1) onProgress,
     bool? first,
     bool? refetch,
+    required String token,
   }) async {
     try {
       final response = await api.sendRequest.get(
         ApiEndpoints.getAllSongsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
       );
 
       if (response.statusCode == 200) {
-        final List<AppSongModel> allSongs = (response.data as List)
-            .map(
-              (e) => AppSongModel.fromJson(
-                e,
-              ),
-            )
-            .toList();
+        log(response.data.toString());
+        final List<AppSongModel> allSongs =
+            AppSongModel.fromMapList(response.data['songs']);
 
         return Right(allSongs);
       } else {
@@ -59,6 +62,7 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, String>> addSong({
     required AppSongModel song,
+    required String token,
   }) async {
     try {
       final response = await api.sendRequest.post(
@@ -93,6 +97,7 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, String>> addSongs({
     required List<AppSongModel> songs,
+    required String token,
   }) async {
     try {
       final response = await api.sendRequest.post(
@@ -127,6 +132,7 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   @override
   Future<Either<AppErrorHandler, String>> updateSong({
     required AppSongModel song,
+    required String token,
   }) async {
     try {
       final response = await api.sendRequest.post(
@@ -162,8 +168,10 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   }
 
   @override
-  Future<Either<AppErrorHandler, List<AppAlbumModel>>> getAllAlbums(
-      {bool? refetch}) async {
+  Future<Either<AppErrorHandler, List<AppAlbumModel>>> getAllAlbums({
+    bool? refetch,
+    required String token,
+  }) async {
     try {
       // Not implemented
       return Left(
@@ -185,8 +193,10 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   }
 
   @override
-  Future<Either<AppErrorHandler, List<AppArtistModel>>> getAllArtists(
-      {bool? refetch}) async {
+  Future<Either<AppErrorHandler, List<AppArtistModel>>> getAllArtists({
+    bool? refetch,
+    required String token,
+  }) async {
     try {
       // Not implemented
       return Left(
@@ -208,8 +218,10 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   }
 
   @override
-  Future<Either<AppErrorHandler, List<AppFolderModel>>> getAllFolders(
-      {bool? refetch}) async {
+  Future<Either<AppErrorHandler, List<AppFolderModel>>> getAllFolders({
+    bool? refetch,
+    required String token,
+  }) async {
     try {
       // Not implemented
       return Left(

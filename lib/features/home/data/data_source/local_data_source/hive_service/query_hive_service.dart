@@ -27,10 +27,8 @@ class QueryHiveService {
     var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
     for (var song in songs) {
       if (box.containsKey(song.id)) {
-        var existingSong = box.get(song.id);
-        var updatedSong = existingSong!
-            .copyWith(serverUrl: song.serverUrl, albumArtUrl: song.albumArtUrl);
-        await box.put(song.id, updatedSong);
+        // Add lyrics to existing song or someting later
+        return;
       } else {
         await box.put(song.id, song);
       }
@@ -40,10 +38,8 @@ class QueryHiveService {
   Future<void> addSong(SongHiveModel song) async {
     var box = await Hive.openBox<SongHiveModel>(HiveTableConstant.songBox);
     if (box.containsKey(song.id)) {
-      var existingSong = box.get(song.id);
-      var updatedSong = existingSong!
-          .copyWith(serverUrl: song.serverUrl, albumArtUrl: song.albumArtUrl);
-      await box.put(song.id, updatedSong);
+      // Add lyrics to existing song or someting later
+      return;
     } else {
       await box.put(song.id, song);
     }

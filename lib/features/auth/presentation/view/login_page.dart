@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController =
       TextEditingController(text: "aayushpandey616@gmail.com");
   final TextEditingController _passwordController =
-      TextEditingController(text: "VerySecretPassword@100");
+      TextEditingController(text: "VerySecretPassword@123");
 
   bool isPressed = false;
 
@@ -56,7 +56,6 @@ class _LoginPageState extends State<LoginPage> {
           });
           String email = _emailController.text;
           String password = _passwordController.text;
-          Navigator.pushNamed(context, AppRoutes.bottomNavRoute);
           BlocProvider.of<AuthenticationCubit>(context).login(
             email: email,
             password: password,

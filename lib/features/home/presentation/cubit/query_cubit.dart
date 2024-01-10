@@ -87,13 +87,15 @@ class QueryCubit extends Cubit<HomeState> {
                 isSuccess: false,
                 error: null,
                 count: count,
-              ),
+              ), // Pass the count of songs
             );
           },
           first: first,
           refetch: refetch ?? false,
         ),
       );
+
+      log("Dataaas: $data");
 
       data.fold((l) => Left(l), (r) {
         r.sort(

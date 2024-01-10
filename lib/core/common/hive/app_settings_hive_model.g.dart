@@ -21,13 +21,14 @@ class AppSettingsHiveModelAdapter extends TypeAdapter<AppSettingsHiveModel> {
       goHome: fields[1] as bool,
       server: fields[2] as bool,
       token: fields[3] as String?,
+      offline: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppSettingsHiveModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.firstTime)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class AppSettingsHiveModelAdapter extends TypeAdapter<AppSettingsHiveModel> {
       ..writeByte(2)
       ..write(obj.server)
       ..writeByte(3)
-      ..write(obj.token);
+      ..write(obj.token)
+      ..writeByte(4)
+      ..write(obj.offline);
   }
 
   @override

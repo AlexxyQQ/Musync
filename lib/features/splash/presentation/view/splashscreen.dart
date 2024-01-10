@@ -5,6 +5,7 @@ import 'package:musync/config/constants/colors/app_colors.dart';
 import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/config/route/routes.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
+import 'package:musync/core/utils/connectivity_check.dart';
 import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,7 +57,17 @@ class _SplashScreenState extends State<SplashScreen>
     final authCubit = BlocProvider.of<AuthenticationCubit>(context);
     await authCubit.initialLogin(context: context);
 
+    // check connection
+    final bool isServerUp = await ConnectivityCheck.isServerup();
+
     final settings = await get<SettingsHiveService>().getSettings();
+    if (!settings.offline) {
+      await get<SettingsHiveService>().updateSettings(
+        settings.copyWith(
+          server: isServerUp,
+        ),
+      );
+    }
     _zoomAnimationController!.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (settings.firstTime) {

@@ -21,11 +21,13 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
     required Function(int) onProgress,
     bool? first,
     bool? refetch,
+    required String token,
   }) async {
     final data = await audioQueryDataSource.getAllSongs(
       onProgress: onProgress,
       first: first,
       refetch: refetch,
+      token: token,
     );
     return data;
   }
@@ -33,36 +35,44 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
   @override
   Future<Either<AppErrorHandler, List<AlbumEntity>>> getAllAlbums({
     bool? refetch,
+    required String token,
   }) async {
     return await audioQueryDataSource.getAllAlbums(
       refetch: refetch,
+      token: token,
     );
   }
 
   @override
   Future<Either<AppErrorHandler, List<ArtistEntity>>> getAllArtists({
     bool? refetch,
+    required String token,
   }) async {
     return await audioQueryDataSource.getAllArtists(
       refetch: refetch,
+      token: token,
     );
   }
 
   @override
   Future<Either<AppErrorHandler, List<FolderEntity>>> getAllFolders({
     bool? refetch,
+    required String token,
   }) async {
     return await audioQueryDataSource.getAllFolders(
       refetch: refetch,
+      token: token,
     );
   }
 
   @override
   Future<Either<AppErrorHandler, String>> updateSong({
     required SongEntity song,
+    required String token,
   }) async {
     return await audioQueryDataSource.updateSong(
       song: AppSongModel.fromEntity(song),
+      token: token,
     );
   }
 }

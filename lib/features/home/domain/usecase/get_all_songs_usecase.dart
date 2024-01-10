@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/failure/error_handler.dart';
@@ -12,19 +11,33 @@ import 'package:musync/injection/app_injection_container.dart';
 class GetAllSongsUseCase extends UseCase<List<SongEntity>, GetQueryParams> {
   final IAudioQueryRepository audioQueryRepository;
   final QueryHiveService queryHiveService;
+  final SettingsHiveService settingsHiveService;
 
   GetAllSongsUseCase({
     required this.audioQueryRepository,
     required this.queryHiveService,
+    required this.settingsHiveService,
   });
 
   @override
   Future<Either<AppErrorHandler, List<SongEntity>>> call(params) async {
     try {
+      final setting = await settingsHiveService.getSettings();
+
+      if (setting.token == null) {
+        return Left(
+          AppErrorHandler(
+            message: 'No Token',
+            status: false,
+          ),
+        );
+      }
+
       final data = await audioQueryRepository.getAllSongs(
         onProgress: params.onProgress!,
         first: params.first,
         refetch: params.refetch ?? false,
+        token: setting.token!,
       );
       return data.fold(
         (l) => Left(l),

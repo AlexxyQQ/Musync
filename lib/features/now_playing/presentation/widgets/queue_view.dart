@@ -31,50 +31,51 @@ class QueueView extends StatelessWidget {
               leadingWidth: MediaQuery.of(context).size.width,
               // Gradient Container
               leading: Container(
-                  height: 24.h,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors().surfaceContainerLowest,
-                        AppColors().surfaceContainerHighest,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
+                height: 24.h,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      //? Queue Title
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w),
-                        child: Text(
-                          'Queue',
-                          style: Theme.of(context).textTheme.bBL.copyWith(
-                                color: AppColors().onSurface,
-                                letterSpacing: 1,
-                              ),
-                        ),
-                      ),
-                      //? Clear Queue Button
-                      Padding(
-                        padding: EdgeInsets.only(right: 10.w),
-                        child: IconButton(
-                          onPressed: () {
-                            context.read<NowPlayingCubit>().clearQueue();
-                          },
-                          icon: Icon(
-                            Icons.clear_rounded,
-                            color: AppColors().onSurface,
-                          ),
-                        ),
-                      ),
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors().surfaceContainerLowest,
+                      AppColors().surfaceContainerHighest,
                     ],
-                  ),),
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //? Queue Title
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        'Queue',
+                        style: Theme.of(context).textTheme.bBL.copyWith(
+                              color: AppColors().onSurface,
+                              letterSpacing: 1,
+                            ),
+                      ),
+                    ),
+                    //? Clear Queue Button
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: IconButton(
+                        onPressed: () {
+                          context.read<NowPlayingCubit>().clearQueue();
+                        },
+                        icon: Icon(
+                          Icons.clear_rounded,
+                          color: AppColors().onSurface,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             body: songList.isEmpty
                 ? Center(
@@ -102,31 +103,21 @@ class QueueView extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: state.queue![index].albumArtUrl == null ||
-                                    state.queue![index].albumArtUrl == ''
-                                ? QueryArtworkWidget(
-                                    id: state.queue![index].id,
-                                    nullArtworkWidget: const Icon(
-                                      Icons.music_note_rounded,
-                                      size: 40,
-                                      color: PrimitiveColors.primary500,
-                                    ),
-                                    type: ArtworkType.AUDIO,
-                                    errorBuilder: (p0, p1, p2) {
-                                      return const Icon(
-                                        Icons.music_note_rounded,
-                                        color: PrimitiveColors.primary500,
-                                      );
-                                    },
-                                  )
-                                : Image.network(
-                                    state.queue![index].albumArtUrl!,
-                                    fit: BoxFit.cover,
-                                  ),
-                            // : QueryArtworkFromApi(
-                            //     data: state.queue,
-                            //     index: index,
-                            //   ),
+                            child: QueryArtworkWidget(
+                              id: state.queue![index].id,
+                              nullArtworkWidget: const Icon(
+                                Icons.music_note_rounded,
+                                size: 40,
+                                color: PrimitiveColors.primary500,
+                              ),
+                              type: ArtworkType.AUDIO,
+                              errorBuilder: (p0, p1, p2) {
+                                return const Icon(
+                                  Icons.music_note_rounded,
+                                  color: PrimitiveColors.primary500,
+                                );
+                              },
+                            ),
                           ),
                           title: Text(
                             state.queue![index].title,
