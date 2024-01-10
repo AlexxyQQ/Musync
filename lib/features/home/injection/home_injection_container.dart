@@ -41,10 +41,19 @@ class HomeInjectionContainer {
       ),
     );
 
+    get.registerLazySingleton<AudioQueryDataSourceImpl>(
+      () => AudioQueryDataSourceImpl(
+        localDataSource: get(),
+        queryHiveService: get(),
+        remoteDataSource: get(),
+      ),
+    );
+
     // Repository
     get.registerLazySingleton<IAudioQueryRepository>(
       () => AudioQueryRepositiryImpl(
         audioQueryDataSource: get(),
+        audioQueryDataSourceImpl: get(),
       ),
     );
 

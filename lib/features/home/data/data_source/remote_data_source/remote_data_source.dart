@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/exports.dart';
@@ -35,10 +36,23 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
 
       if (response.statusCode == 200) {
         log(response.data.toString());
-        final List<AppSongModel> allSongs =
-            AppSongModel.fromMapList(response.data['songs']);
+        // for each song in the response, check if it exists in the phone
 
-        return Right(allSongs);
+        final List<AppSongModel> existingSongs = [];
+
+        for (final Map<String, dynamic> song
+            in response.data['songs'] as List) {
+          final songExists = await File(song['data']).exists();
+          if (songExists) {
+            existingSongs.add(
+              AppSongModel.fromMap(
+                song,
+              ),
+            );
+          }
+        }
+
+        return Right(existingSongs);
       } else {
         return Left(
           AppErrorHandler(
@@ -167,19 +181,35 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
     }
   }
 
+  // Albums
   @override
   Future<Either<AppErrorHandler, List<AppAlbumModel>>> getAllAlbums({
     bool? refetch,
     required String token,
   }) async {
     try {
-      // Not implemented
-      return Left(
-        AppErrorHandler(
-          message: 'Not implemented',
-          status: false,
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllAlbumsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
         ),
       );
+
+      if (response.statusCode == 200) {
+        final List<AppAlbumModel> allAlbums =
+            AppAlbumModel.fromMapList(response.data['albums']);
+
+        return Right(allAlbums);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: response.data['message'],
+            status: false,
+          ),
+        );
+      }
     } on DioError catch (e) {
       return Left(AppErrorHandler.fromDioError(e));
     } catch (e) {
@@ -192,44 +222,35 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
     }
   }
 
+  // Artists
   @override
   Future<Either<AppErrorHandler, List<AppArtistModel>>> getAllArtists({
     bool? refetch,
     required String token,
   }) async {
     try {
-      // Not implemented
-      return Left(
-        AppErrorHandler(
-          message: 'Not implemented',
-          status: false,
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllArtistRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
         ),
       );
-    } on DioError catch (e) {
-      return Left(AppErrorHandler.fromDioError(e));
-    } catch (e) {
-      return Left(
-        AppErrorHandler(
-          message: e.toString(),
-          status: false,
-        ),
-      );
-    }
-  }
 
-  @override
-  Future<Either<AppErrorHandler, List<AppFolderModel>>> getAllFolders({
-    bool? refetch,
-    required String token,
-  }) async {
-    try {
-      // Not implemented
-      return Left(
-        AppErrorHandler(
-          message: 'Not implemented',
-          status: false,
-        ),
-      );
+      if (response.statusCode == 200) {
+        final List<AppArtistModel> allArtists =
+            AppArtistModel.fromMapList(response.data['artists']);
+
+        return Right(allArtists);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: response.data['message'],
+            status: false,
+          ),
+        );
+      }
     } on DioError catch (e) {
       return Left(AppErrorHandler.fromDioError(e));
     } catch (e) {

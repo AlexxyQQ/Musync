@@ -31,6 +31,10 @@ class ApiEndpoints {
   static const String addSongsRoute = '/music/addSongs';
   static const String getAllSongsRoute = '/music/getAllSongs';
   static const String updateSongRoute = '/music/updateSong';
+  // Albums
+  static const String getAllAlbumsRoute = '/music/getAllAlbums';
+  // Artists
+  static const String getAllArtistRoute = '/music/getAllArtists';
   //
   static const String uploadAlbumArtRoute = '/music/uploadAlbumArt';
   static const String getAllPublicSongsRoute = '/music/getAllPublicSongs';
@@ -40,10 +44,7 @@ class ApiEndpoints {
   static const String getAllFoldersRoute = '/music/getAllFolders';
   static const String getFolderSongsRoute = '/music/getFolderSongs';
   static const String addFoldersRoute = '/music/addFolders';
-  static const String getAllArtistWithSongsRoute =
-      '/music/getAllArtistWithSongs';
   static const String addAlbumsRoute = '/music/addAlbums';
-  static const String getAllAlbumsRoute = '/music/getAllAlbums';
   static const String getAllAlbumWithSongsRoute = '/music/getAllAlbumWithSongs';
   static const String addToPlaylistRoute = '/music/addToPlaylist';
   static const String createPlaylistRoute = '/music/createPlaylist';

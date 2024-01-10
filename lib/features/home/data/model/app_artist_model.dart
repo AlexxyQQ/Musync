@@ -110,4 +110,8 @@ class AppArtistModel extends ArtistEntity {
   ) {
     return hiveAlbums.map((e) => fromHiveModel(e)).toList();
   }
+
+  static List<AppArtistModel> fromMapList(List<dynamic> data) {
+    return data.map((e) => AppArtistModel.fromMap(e)).toList();
+  }
 }

@@ -111,4 +111,8 @@ class AppAlbumModel extends AlbumEntity {
   static List<AppAlbumModel> fromListHiveModel(List<AlbumHiveModel> hiveSongs) {
     return hiveSongs.map((e) => fromHiveModelm(e)).toList();
   }
+
+  static List<AppAlbumModel> fromMapList(List<dynamic> data) {
+    return data.map((e) => AppAlbumModel.fromMap(e)).toList();
+  }
 }

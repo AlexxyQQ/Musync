@@ -11,9 +11,11 @@ import '../model/app_song_model.dart';
 
 class AudioQueryRepositiryImpl implements IAudioQueryRepository {
   final IAudioQueryDataSource audioQueryDataSource;
+  final AudioQueryDataSourceImpl audioQueryDataSourceImpl;
 
   AudioQueryRepositiryImpl({
     required this.audioQueryDataSource,
+    required this.audioQueryDataSourceImpl,
   });
 
   @override
@@ -59,7 +61,7 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
     bool? refetch,
     required String token,
   }) async {
-    return await audioQueryDataSource.getAllFolders(
+    return await audioQueryDataSourceImpl.getAllFolders(
       refetch: refetch,
       token: token,
     );
