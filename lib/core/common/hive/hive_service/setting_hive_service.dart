@@ -37,4 +37,6 @@ class SettingsHiveService {
     );
     await box.putAt(0, settings);
   }
+
+  void clearSettings() {}
 }

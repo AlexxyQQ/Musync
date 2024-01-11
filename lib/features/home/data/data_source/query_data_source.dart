@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/local_data_source.dart';
 import 'package:musync/features/home/data/data_source/remote_data_source/remote_data_source.dart';
 
@@ -22,6 +23,7 @@ abstract class IAudioQueryDataSource {
   Future<Either<AppErrorHandler, String>> updateSong({
     required AppSongModel song,
     required String token,
+    required bool offline,
   });
 
   Future<Either<AppErrorHandler, String>> addSong({
@@ -44,6 +46,22 @@ abstract class IAudioQueryDataSource {
   Future<Either<AppErrorHandler, List<AppArtistModel>>> getAllArtists({
     bool? refetch,
     required String token,
+  });
+
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs({
+    required Function(int) onProgress,
+    bool? first,
+    bool? refetch,
+    required String token,
+  });
+
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getRecentSongs({
+    required String token,
+  });
+
+  Future<Either<AppErrorHandler, String>> addRecentSongs({
+    required String token,
+    List<AppSongModel>? songs,
   });
 }
 
@@ -94,9 +112,12 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       // check for the connectivity and server up
       final connectivity = await ConnectivityCheck.connectivity();
       final serverUp = await ConnectivityCheck.isServerup();
+      final offline = await get<SettingsHiveService>().getSettings().then(
+            (value) => value.offline,
+          );
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-        if (connectivity && serverUp) {
+        if (connectivity && serverUp && !offline) {
           return remoteDataSource.getAllSongs(
             onProgress: onProgress,
             first: first,
@@ -148,8 +169,10 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       // check for the connectivity and server up
       final connectivity = await ConnectivityCheck.connectivity();
       final serverUp = await ConnectivityCheck.isServerup();
-
-      if (connectivity && serverUp) {
+      final offline = await get<SettingsHiveService>().getSettings().then(
+            (value) => value.offline,
+          );
+      if (connectivity && serverUp && !offline) {
         return remoteDataSource.addSong(
           song: song,
           token: token,
@@ -180,8 +203,11 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       // check for the connectivity and server up
       final connectivity = await ConnectivityCheck.connectivity();
       final serverUp = await ConnectivityCheck.isServerup();
+      final offline = await get<SettingsHiveService>().getSettings().then(
+            (value) => value.offline,
+          );
 
-      if (connectivity && serverUp) {
+      if (connectivity && serverUp && !offline) {
         return remoteDataSource.addSongs(
           songs: songs,
           token: token,
@@ -207,22 +233,26 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
   Future<Either<AppErrorHandler, String>> updateSong({
     required AppSongModel song,
     required String token,
+    required bool offline,
   }) async {
     try {
       // check for the connectivity and server up
       final connectivity = await ConnectivityCheck.connectivity();
       final serverUp = await ConnectivityCheck.isServerup();
+
       // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-      if (connectivity && serverUp) {
+      if (connectivity && serverUp && !offline) {
         return remoteDataSource.updateSong(
           song: song,
           token: token,
+          offline: offline,
         );
       } else {
         // else return data from the local storage
         return localDataSource.updateSong(
           song: song,
           token: token,
+          offline: offline,
         );
       }
     } catch (e) {
@@ -242,22 +272,12 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required String token,
   }) async {
     try {
-      // check for the connectivity and server up
-      final connectivity = await ConnectivityCheck.connectivity();
-      final serverUp = await ConnectivityCheck.isServerup();
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-        if (connectivity && serverUp) {
-          return remoteDataSource.getAllAlbums(
-            refetch: refetch,
-            token: token,
-          );
-        } else {
-          return localDataSource.getAllAlbums(
-            refetch: refetch,
-            token: token,
-          );
-        }
+        return localDataSource.getAllAlbums(
+          refetch: refetch,
+          token: token,
+        );
       } else {
         final hiveAlbums = await queryHiveService.getAllAlbums();
         if (hiveAlbums.isNotEmpty) {
@@ -292,22 +312,13 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required String token,
   }) async {
     try {
-      // check for the connectivity and server up
-      final connectivity = await ConnectivityCheck.connectivity();
-      final serverUp = await ConnectivityCheck.isServerup();
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-        if (connectivity && serverUp) {
-          return remoteDataSource.getAllArtists(
-            refetch: refetch,
-            token: token,
-          );
-        } else {
-          return localDataSource.getAllArtists(
-            refetch: refetch,
-            token: token,
-          );
-        }
+
+        return localDataSource.getAllArtists(
+          refetch: refetch,
+          token: token,
+        );
       } else {
         final hiveArtists = await queryHiveService.getAllArtists();
         if (hiveArtists.isNotEmpty) {
@@ -340,22 +351,13 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required String token,
   }) async {
     try {
-      // check for the connectivity and server up
-      final connectivity = await ConnectivityCheck.connectivity();
-      final serverUp = await ConnectivityCheck.isServerup();
       if (refetch == true) {
         // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-        if (connectivity && serverUp) {
-          return localDataSource.getAllFolders(
-            refetch: refetch,
-            token: token,
-          );
-        } else {
-          return localDataSource.getAllFolders(
-            refetch: refetch,
-            token: token,
-          );
-        }
+
+        return localDataSource.getAllFolders(
+          refetch: refetch,
+          token: token,
+        );
       } else {
         final hiveFolders = await queryHiveService.getAllFolders();
         if (hiveFolders.isNotEmpty) {
@@ -372,6 +374,104 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
             ),
           );
         }
+      }
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs({
+    required Function(int p1) onProgress,
+    bool? first,
+    bool? refetch,
+    required String token,
+  }) async {
+    try {
+      // check for the connectivity and server up
+      final connectivity = await ConnectivityCheck.connectivity();
+      final serverUp = await ConnectivityCheck.isServerup();
+      final offline = await get<SettingsHiveService>().getSettings().then(
+            (value) => value.offline,
+          );
+      // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
+      if (connectivity && serverUp && !offline) {
+        return remoteDataSource.getTodaysMixSongs(
+          onProgress: onProgress,
+          first: first,
+          refetch: refetch,
+          token: token,
+        );
+      } else {
+        // else return data from the local storage
+        return const Right([]);
+      }
+    } catch (e) {
+      return const Right([]);
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getRecentSongs(
+      {required String token}) async {
+    try {
+      // check for the connectivity and server up
+      final connectivity = await ConnectivityCheck.connectivity();
+      final serverUp = await ConnectivityCheck.isServerup();
+      final offline = await get<SettingsHiveService>().getSettings().then(
+            (value) => value.offline,
+          );
+      // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
+      if (connectivity && serverUp && !offline) {
+        return remoteDataSource.getRecentSongs(
+          token: token,
+        );
+      } else {
+        // else return data from the local storage
+        return localDataSource.getRecentSongs(
+          token: token,
+        );
+      }
+    } catch (e) {
+      return const Right([]);
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> addRecentSongs({
+    required String token,
+    List<AppSongModel>? songs,
+  }) async {
+    try {
+      // check for the connectivity and server up
+      final connectivity = await ConnectivityCheck.connectivity();
+      final serverUp = await ConnectivityCheck.isServerup();
+      final offline = await get<SettingsHiveService>().getSettings().then(
+            (value) => value.offline,
+          );
+      // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
+      if (connectivity && serverUp && !offline) {
+        // else return data from the local storage
+        final data = localDataSource.addRecentSongs(
+          token: token,
+          songs: songs,
+        );
+
+        return await remoteDataSource.addRecentSongs(
+          token: token,
+          songs: songs,
+        );
+      } else {
+        // else return data from the local storage
+        return localDataSource.addRecentSongs(
+          token: token,
+          songs: songs,
+        );
       }
     } catch (e) {
       return Left(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,8 @@ import 'package:musync/features/home/data/data_source/local_data_source/hive_ser
 import 'package:musync/features/home/data/model/hive/album_hive_model.dart';
 import 'package:musync/features/home/domain/entity/recently_played_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
+import 'package:musync/features/home/domain/usecase/add_all_recent_songs_usecase.dart';
+import 'package:musync/features/home/domain/usecase/get_all_recentsongs_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
 import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 import 'package:musync/injection/app_injection_container.dart';
@@ -30,6 +34,9 @@ class QueryCubit extends Cubit<HomeState> {
   final UpdateRecentlyPlayedUsecase updateRecentlyPlayedUsecase;
   final UpdateSongUsecase updateSongUsecase;
 
+  final GetAllRecentSongsUseCase getAllRecentSongsUseCase;
+  final AddAllRecentSongsUseCase addAllRecentSongsUseCase;
+
   QueryCubit({
     required this.getAllSongsUseCase,
     required this.getAllAlbumsUsecase,
@@ -40,6 +47,8 @@ class QueryCubit extends Cubit<HomeState> {
     required this.getRecentlyPlayedUsecase,
     required this.updateRecentlyPlayedUsecase,
     required this.updateSongUsecase,
+    required this.getAllRecentSongsUseCase,
+    required this.addAllRecentSongsUseCase,
   }) : super(HomeState.initial()) {
     init();
   }
@@ -59,6 +68,79 @@ class QueryCubit extends Cubit<HomeState> {
         goHome: true,
       ),
     );
+  }
+
+  Future<void> getAllRecentSongs() async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        isSuccess: false,
+        error: null,
+      ),
+    );
+    final data = await getAllRecentSongsUseCase.call(null);
+
+    data.fold((l) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: false,
+          error: l,
+          count: state.count,
+        ),
+      );
+    }, (r) {
+      final RecentlyPlayedEntity recentlyPlayed = RecentlyPlayedEntity.fromMap({
+        "songs": r,
+      });
+      // sort the list and remove duplicates
+      recentlyPlayed.songs.sort((a, b) => a.title.compareTo(b.title));
+      recentlyPlayed.copyWith(
+        songs: recentlyPlayed.songs.toSet().toList(),
+      );
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          error: null,
+          count: state.count,
+          recentlyPlayed: recentlyPlayed,
+        ),
+      );
+    });
+  }
+
+  Future addAllRecentSongs({
+    required List<SongEntity> songs,
+  }) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        isSuccess: false,
+        error: null,
+      ),
+    );
+    final data = await addAllRecentSongsUseCase.call(songs);
+
+    data.fold((l) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: false,
+          error: l,
+          count: state.count,
+        ),
+      );
+    }, (r) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          error: null,
+          count: state.count,
+        ),
+      );
+    });
   }
 
   Future<void> getAllSongs({
@@ -93,7 +175,7 @@ class QueryCubit extends Cubit<HomeState> {
         ),
       );
 
-      data.fold((l) => Left(l), (r) {
+      data.fold((l) => Left(l), (r) async {
         r.sort(
           (a, b) => a.title.compareTo(b.title),
         );
@@ -107,6 +189,15 @@ class QueryCubit extends Cubit<HomeState> {
             songs: r,
           ),
         ); // Pass the final list of songs
+        // create a json file for the songs and save it in the root directory
+
+        final map = r.map((e) => e.toMap()).toList();
+        //  now write the file
+        String jsonString = jsonEncode(map);
+
+        // now save the json file in the root directory
+
+        log(jsonString);
       });
     } catch (e) {
       emit(
@@ -432,7 +523,14 @@ class QueryCubit extends Cubit<HomeState> {
   Future<void> updateFavouriteSongs({
     required SongEntity song,
   }) async {
-    await updateSongUsecase.call(song);
+    final setting = await get<SettingsHiveService>().getSettings();
+
+    await updateSongUsecase.call(
+      UpdateParams(
+        song: song,
+        offline: setting.offline,
+      ),
+    );
     // getAllSongs(first: false, refetch: false);
   }
 

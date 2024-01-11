@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
@@ -7,6 +6,7 @@ import 'package:musync/features/home/data/data_source/query_data_source.dart';
 import 'package:musync/features/home/data/model/app_album_model.dart';
 import 'package:musync/features/home/data/model/app_artist_model.dart';
 import 'package:musync/features/home/data/model/app_folder_model.dart';
+import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -112,6 +112,7 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
   Future<Either<AppErrorHandler, String>> updateSong({
     required AppSongModel song,
     required String token,
+    required bool offline,
   }) async {
     try {
       final queryHiveService = get<QueryHiveService>();
@@ -261,6 +262,64 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
           allQueryFolders,
         ),
       );
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs(
+      {required Function(int p1) onProgress,
+      bool? first,
+      bool? refetch,
+      required String token}) async {
+    return const Right([]);
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> addRecentSongs(
+      {required String token, List<AppSongModel>? songs}) async {
+    try {
+      final queryHiveService = get<QueryHiveService>();
+
+      final hiveSongs = songs?.map((e) => e.toHiveModel()).toList() ?? [];
+
+      await queryHiveService.addRecentSongs(
+        hiveSongs,
+      );
+
+      return const Right(
+        'Songs Added',
+      );
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getRecentSongs({
+    required String token,
+  }) async {
+    try {
+      final queryHiveService = get<QueryHiveService>();
+
+      final List<SongHiveModel> hiveRecentSongs =
+          await queryHiveService.getAllRecentSongs();
+
+      final List<AppSongModel> recentSongs =
+          AppSongModel.fromListHiveModel(hiveRecentSongs);
+
+      return Right(recentSongs);
     } catch (e) {
       return Left(
         AppErrorHandler(

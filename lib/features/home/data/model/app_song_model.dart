@@ -276,4 +276,8 @@ class AppSongModel extends SongEntity {
       isFavorite: songEntity.isFavorite,
     );
   }
+
+  static List<AppSongModel> fromEntityList(List<SongEntity> songEntity) {
+    return songEntity.map((e) => AppSongModel.fromEntity(e)).toList();
+  }
 }

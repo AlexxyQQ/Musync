@@ -22,7 +22,7 @@ class AlbumHiveModelAdapter extends TypeAdapter<AlbumHiveModel> {
       artist: fields[2] as String?,
       artistId: fields[3] as String?,
       numOfSongs: fields[4] as int,
-      songs: (fields[5] as List?)?.cast<AppSongModel>(),
+      songs: (fields[5] as List?)?.cast<SongHiveModel>(),
     );
   }
 

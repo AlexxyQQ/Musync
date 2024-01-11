@@ -3,9 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musync/config/route/routes.dart';
+import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
+import 'package:musync/features/auth/data/model/user_model.dart';
 import 'package:musync/features/auth/domain/use_case/rend_verification_usecase.dart';
 import 'package:musync/features/auth/presentation/view/change_password_page.dart';
 import 'package:musync/features/auth/presentation/view/otp_page.dart';
+import 'package:musync/injection/app_injection_container.dart';
 
 import '../../../../core/common/custom_widgets/custom_snackbar.dart';
 import '../../../splash/domain/use_case/splash_use_case.dart';
@@ -186,8 +189,17 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         ),
       );
 
+      final settings = await get<SettingsHiveService>().getSettings();
+      get<SettingsHiveService>().updateSettings(
+        settings.copyWith(
+          token: data.fold((l) => null, (r) => r.token),
+          offline: false,
+        ),
+      );
+
       kShowSnackBar(context: context, message: 'Logged in successfully');
-      Navigator.pushNamed(context, AppRoutes.bottomNavRoute);
+      Navigator.pushNamedAndRemoveUntil(
+          context, AppRoutes.bottomNavRoute, (route) => false,);
     }
   }
 
@@ -209,6 +221,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         state.copyWith(
           isLoading: false,
           eror: data.fold((l) => l, (r) => null),
+        ),
+      );
+      final settings = await get<SettingsHiveService>().getSettings();
+      get<SettingsHiveService>().updateSettings(
+        settings.copyWith(
+          offline: true,
         ),
       );
       kShowSnackBar(
@@ -425,6 +443,23 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         );
         Navigator.of(context).pushNamed('/login');
       },
+    );
+  }
+
+  void logout() async {
+    // clear all the hive data
+    emit(
+      state.copyWith(
+        loggedUser: UserModel.fromMap({}),
+        token: '',
+      ),
+    );
+    final settings = await get<SettingsHiveService>().getSettings();
+    get<SettingsHiveService>().updateSettings(
+      settings.copyWith(
+        token: '',
+        offline: true,
+      ),
     );
   }
 }

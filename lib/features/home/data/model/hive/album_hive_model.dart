@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:musync/config/constants/hive/hive_tabel_constant.dart';
 import 'package:musync/core/utils/song_model_map_converter.dart';
 import 'package:musync/features/home/data/model/app_album_model.dart';
-import 'package:musync/features/home/data/model/app_song_model.dart';
+import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 part 'album_hive_model.g.dart';
@@ -29,7 +29,7 @@ class AlbumHiveModel {
   final int numOfSongs;
 
   @HiveField(5)
-  final List<AppSongModel>? songs;
+  final List<SongHiveModel>? songs;
 
   AlbumHiveModel({
     required this.id,
@@ -48,9 +48,9 @@ class AlbumHiveModel {
       artistId: map['artist_id'],
       numOfSongs: map['num_of_songs']?.toInt() ?? 0,
       songs: map['songs'] != null
-          ? List<AppSongModel>.from(
+          ? List<SongHiveModel>.from(
               map['songs']?.map(
-                (x) => AppSongModel.fromMap(x),
+                (x) => SongHiveModel.fromMap(x),
               ),
             )
           : null,
@@ -98,9 +98,9 @@ class AlbumHiveModel {
       artistId: map['artist_id'] ?? '',
       numOfSongs: map['numsongs']?.toInt() ?? 0,
       songs: map['songs'] != null
-          ? List<AppSongModel>.from(
+          ? List<SongHiveModel>.from(
               map['songs']?.map(
-                (x) => AppSongModel.fromMap(x),
+                (x) => SongHiveModel.fromMap(x),
               ),
             )
           : null,
@@ -131,7 +131,7 @@ class AlbumHiveModel {
     String? artist,
     String? artistId,
     int? numOfSongs,
-    List<AppSongModel>? songs,
+    List<SongHiveModel>? songs,
   }) {
     return AlbumHiveModel(
       id: id ?? this.id,

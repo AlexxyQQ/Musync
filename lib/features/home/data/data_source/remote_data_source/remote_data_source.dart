@@ -190,10 +190,16 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
   Future<Either<AppErrorHandler, String>> updateSong({
     required AppSongModel song,
     required String token,
+    required bool offline,
   }) async {
     try {
       final response = await api.sendRequest.post(
         ApiEndpoints.updateSongRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
         data: {
           "song_id": song.id,
           'songMap': song.toMap(),
@@ -286,6 +292,167 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
             AppArtistModel.fromMapList(response.data['artists']);
 
         return Right(allArtists);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: response.data['message'],
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs({
+    required Function(int p1) onProgress,
+    bool? first,
+    bool? refetch,
+    required String token,
+  }) async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getAllSongsRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // for each song in the response, check if it exists in the phone
+        final List<AppSongModel> existingSongs = [];
+
+        for (final Map<String, dynamic> song
+            in response.data['songs'] as List) {
+          final songExists = await File(song['data']).exists();
+          if (songExists) {
+            existingSongs.add(
+              AppSongModel.fromMap(
+                song,
+              ),
+            );
+          }
+        }
+
+        return Right(existingSongs);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: response.data['message'],
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getRecentSongs(
+      {required String token}) async {
+    try {
+      final response = await api.sendRequest.get(
+        ApiEndpoints.getRecentSongRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // for each song in the response, check if it exists in the phone
+        final List<AppSongModel> existingSongs = [];
+
+        for (final Map<String, dynamic> song
+            in response.data['songs'] as List) {
+          final songExists = await File(song['data']).exists();
+          if (songExists) {
+            existingSongs.add(
+              AppSongModel.fromMap(
+                song,
+              ),
+            );
+          }
+        }
+
+        return Right(existingSongs);
+      } else {
+        return Left(
+          AppErrorHandler(
+            message: response.data['message'],
+            status: false,
+          ),
+        );
+      }
+    } on DioError catch (e) {
+      return Left(AppErrorHandler.fromDioError(e));
+    } catch (e) {
+      return Left(
+        AppErrorHandler(
+          message: e.toString(),
+          status: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> addRecentSongs({
+    required String token,
+    List<AppSongModel>? songs,
+  }) async {
+    try {
+      final response = await api.sendRequest.post(
+        ApiEndpoints.getRecentSongRoute,
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token',
+          },
+        ),
+        data: {
+          "songsMaps": songs?.map((song) => song.toMap()).toList(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // for each song in the response, check if it exists in the phone
+        final List<AppSongModel> existingSongs = [];
+
+        for (final Map<String, dynamic> song
+            in response.data['songs'] as List) {
+          final songExists = await File(song['data']).exists();
+          if (songExists) {
+            existingSongs.add(
+              AppSongModel.fromMap(
+                song,
+              ),
+            );
+          }
+        }
+
+        return Right(
+          response.data['message'],
+        );
       } else {
         return Left(
           AppErrorHandler(

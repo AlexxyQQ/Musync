@@ -44,8 +44,12 @@ class RecentlyPlayedEntity {
 
   factory RecentlyPlayedEntity.fromMap(Map<String, dynamic> map) {
     return RecentlyPlayedEntity(
-      date: map['date'] as String,
-      expiringDate: map['expiring_date'] as String,
+      date: map['date'] != null
+          ? map['date'] as String
+          : DateTime.now().toString(),
+      expiringDate: map['expiring_date'] != null
+          ? map['expiring_date'] as String
+          : DateTime.now().add(const Duration(days: 1)).toString(),
       songs: List<SongEntity>.from(
         map['songs'].map<SongEntity>(
           (x) => SongEntity.fromMap(x as Map<String, dynamic>),
@@ -74,4 +78,8 @@ class RecentlyPlayedEntity {
 
   @override
   int get hashCode => date.hashCode ^ expiringDate.hashCode ^ songs.hashCode;
+
+  static fromMapList(List<Map<String, dynamic>> list) {
+    return list.map((e) => RecentlyPlayedEntity.fromMap(e)).toList();
+  }
 }

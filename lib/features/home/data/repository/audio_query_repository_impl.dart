@@ -85,9 +85,41 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
   Future<Either<AppErrorHandler, String>> updateSong({
     required SongEntity song,
     required String token,
+    required bool offline,
   }) async {
     return await audioQueryDataSource.updateSong(
       song: AppSongModel.fromEntity(song),
+      token: token,
+      offline: offline,
+    );
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<SongEntity>>> getTodaysMixSongs({
+    required Function(int p1) onProgress,
+    bool? first,
+    bool? refetch,
+    required String token,
+  }) async {
+    return await audioQueryDataSource.getAllSongs(
+      token: token,
+      onProgress: onProgress,
+    );
+  }
+
+  @override
+  Future<Either<AppErrorHandler, String>> addRecentSongs(
+      {required String token, List<SongEntity>? songs}) {
+    return audioQueryDataSourceImpl.addRecentSongs(
+      token: token,
+      songs: AppSongModel.fromEntityList(songs!),
+    );
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<SongEntity>>> getRecentSongs(
+      {required String token}) async {
+    return await audioQueryDataSourceImpl.getRecentSongs(
       token: token,
     );
   }

@@ -32,6 +32,8 @@ class ApiEndpoints {
   static const String addSongsRoute = '/music/addSongs';
   static const String getAllSongsRoute = '/music/getAllSongs';
   static const String updateSongRoute = '/music/updateSong';
+  static const String addRecentSongRoute = '/music/addRecentSongs';
+  static const String getRecentSongRoute = '/music/addRecentSongs';
   // Albums
   static const String getAllAlbumsRoute = '/music/getAllAlbums';
   // Artists

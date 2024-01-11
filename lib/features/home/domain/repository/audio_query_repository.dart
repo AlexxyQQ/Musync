@@ -37,5 +37,22 @@ abstract class IAudioQueryRepository {
   Future<Either<AppErrorHandler, String>> updateSong({
     required SongEntity song,
     required String token,
+    required bool offline,
+  });
+
+  Future<Either<AppErrorHandler, List<SongEntity>>> getTodaysMixSongs({
+    required Function(int) onProgress,
+    bool? first,
+    bool? refetch,
+    required String token,
+  });
+
+  Future<Either<AppErrorHandler, String>> addRecentSongs({
+    required String token,
+    List<SongEntity>? songs,
+  });
+
+  Future<Either<AppErrorHandler, List<SongEntity>>> getRecentSongs({
+    required String token,
   });
 }

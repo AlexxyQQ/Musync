@@ -95,6 +95,12 @@ class HomeTodaysMixComponent extends StatelessWidget {
               if (state.albums.isEmpty) {
                 return const SizedBox.shrink();
               } else {
+                // Select 10 random songs from the songs list
+                final recommendedSongs = state.songs
+                    .where((song) => song.albumArt != null)
+                    .toList()
+                    .getRange(0, 10)
+                    .toList();
                 return Column(
                   children: [
                     // Section Title
@@ -122,6 +128,7 @@ class HomeTodaysMixComponent extends StatelessWidget {
                     SizedBox(
                       height: 180,
                       child: ListView.builder(
+                        itemCount: recommendedSongs.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: ((context, index) {
                           return GestureDetector(
@@ -151,10 +158,7 @@ class HomeTodaysMixComponent extends StatelessWidget {
                                   Stack(
                                     children: [
                                       SongArtWork(
-                                        song: state.albums[index].songs!
-                                            .firstWhere(
-                                          (song) => song.albumArt != null,
-                                        ),
+                                        song: recommendedSongs[index],
                                         height: 110,
                                         width: 180,
                                         borderRadius: 8,
@@ -187,9 +191,9 @@ class HomeTodaysMixComponent extends StatelessWidget {
                                   const SizedBox(height: 8),
                                   // Album Details
                                   Text(
-                                    "${state.albums[index].artist}, ${state.albums[index].artist}, ${state.albums[index].artist},${state.albums[index].artist}",
+                                    "${recommendedSongs[index].album} \n ${recommendedSongs[index].artist ?? ''}",
                                     overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.start,
+                                    textAlign: TextAlign.center,
                                     maxLines: 2,
                                     style: Theme.of(context)
                                         .textTheme
@@ -203,9 +207,6 @@ class HomeTodaysMixComponent extends StatelessWidget {
                             ),
                           );
                         }),
-                        // only show 10 items
-                        itemCount:
-                            state.albums.length > 10 ? 10 : state.albums.length,
                       ),
                     ),
                   ],

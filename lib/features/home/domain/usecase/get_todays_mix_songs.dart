@@ -2,20 +2,27 @@ import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/core/usecase/usecase.dart';
+import 'package:musync/features/home/data/data_source/local_data_source/hive_service/query_hive_service.dart';
+import 'package:musync/features/home/data/model/hive/song_hive_model.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/repository/audio_query_repository.dart';
+import 'package:musync/features/home/domain/usecase/get_all_songs_usecase.dart';
+import 'package:musync/injection/app_injection_container.dart';
 
-class UpdateSongUsecase extends UseCase<String, UpdateParams> {
+class GetTodaysMixSongsUseCase
+    extends UseCase<List<SongEntity>, GetQueryParams> {
   final IAudioQueryRepository audioQueryRepository;
+  final QueryHiveService queryHiveService;
   final SettingsHiveService settingsHiveService;
 
-  UpdateSongUsecase({
+  GetTodaysMixSongsUseCase({
     required this.audioQueryRepository,
+    required this.queryHiveService,
     required this.settingsHiveService,
   });
 
   @override
-  Future<Either<AppErrorHandler, String>> call(UpdateParams params) async {
+  Future<Either<AppErrorHandler, List<SongEntity>>> call(params) async {
     try {
       final setting = await settingsHiveService.getSettings();
 
@@ -26,14 +33,21 @@ class UpdateSongUsecase extends UseCase<String, UpdateParams> {
             status: false,
           ),
         );
-      } else {
-        final response = await audioQueryRepository.updateSong(
-          song: params.song,
-          offline: params.offline,
-          token: setting.token ?? '',
-        );
-        return response;
       }
+
+      final data = await audioQueryRepository.getTodaysMixSongs(
+        onProgress: params.onProgress!,
+        first: params.first,
+        refetch: params.refetch ?? false,
+        token: setting.token ?? '',
+      );
+      return data.fold(
+        (l) => Left(l),
+        (r) async {
+          return Right(r);
+        },
+      );
+      // }
     } catch (e) {
       return Left(
         AppErrorHandler(
@@ -43,13 +57,4 @@ class UpdateSongUsecase extends UseCase<String, UpdateParams> {
       );
     }
   }
-}
-
-class UpdateParams {
-  final SongEntity song;
-  final bool offline;
-  UpdateParams({
-    required this.song,
-    required this.offline,
-  });
 }

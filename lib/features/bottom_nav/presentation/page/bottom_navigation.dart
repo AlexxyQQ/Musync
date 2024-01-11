@@ -1,19 +1,16 @@
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musync/config/constants/colors/app_colors.dart';
-import 'package:musync/config/constants/colors/primitive_colors.dart';
 import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
-import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
-import 'package:musync/core/utils/extensions/app_text_theme_extension.dart';
+import 'package:musync/core/common/exports.dart';
+import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
+import 'package:musync/features/auth/presentation/cubit/authentication_state.dart';
 import 'package:musync/features/bottom_nav/presentation/widget/mini_player.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
-import 'package:musync/features/home/presentation/cubit/query_cubit.dart';
 import 'package:musync/features/home/presentation/pages/home_page.dart';
 import 'package:musync/features/library/presentation/pages/library_page.dart';
-import 'package:musync/injection/app_injection_container.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -25,6 +22,8 @@ class BottomNavigationScreen extends StatefulWidget {
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   bool isFirstTime = false;
   final TextEditingController _controller = TextEditingController();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<Widget> _widgetOptions = [
     const HomePage(),
@@ -42,15 +41,16 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     await get<SettingsHiveService>()
         .getSettings()
         .then((value) => isFirstTime = value.firstTime);
-
+    BlocProvider.of<QueryCubit>(context).init();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QueryCubit, HomeState>(
-      builder: (context, state) {
+      builder: (blocContext, state) {
         return Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             leading: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 8.h),
@@ -69,9 +69,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 errorTextStyle: Theme.of(context).textTheme.mC.copyWith(
                       color: AppColors().onErrorContainer,
                     ),
-                prefixIcon: Icon(
-                  Icons.menu_rounded,
-                  color: AppColors().onSurface,
+                prefixIcon: GestureDetector(
+                  onTap: () {
+                    // open drawer
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  child: Icon(
+                    Icons.menu_rounded,
+                    color: AppColors().onSurface,
+                  ),
                 ),
                 fillColor: AppColors().surfaceContainerHigh,
               ),
@@ -148,14 +154,78 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               ),
             ),
           ),
+          drawer: const AppDrawer(),
         );
       },
     );
   }
+}
+
+class AppDrawer extends StatelessWidget {
+  const AppDrawer({
+    super.key,
+  });
 
   @override
-  void dispose() {
-    BlocProvider.of<QueryCubit>(context).state.pageController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
+      builder: (context, state) {
+        return Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: AppColors().surface,
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: (state.loggedUser != null &&
+                              state.loggedUser?.id != null)
+                          ? CachedNetworkImage(
+                              imageUrl: state.loggedUser!.profilePic ?? "",)
+                          : Image.asset('assets/default_profile.jpeg'),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      (state.loggedUser != null && state.loggedUser?.id != null)
+                          ? state.loggedUser?.username ?? "---"
+                          : 'Guest',
+                      style: Theme.of(context).textTheme.lBM.copyWith(
+                            color: AppColors().onSurface,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                title: Text(
+                  'Logout',
+                  style: Theme.of(context).textTheme.mBM.copyWith(
+                        color: AppColors().onSurface,
+                      ),
+                ),
+                onTap: () async {
+                  BlocProvider.of<AuthenticationCubit>(context).logout();
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.getStartedRoute,
+                    (route) => false,
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

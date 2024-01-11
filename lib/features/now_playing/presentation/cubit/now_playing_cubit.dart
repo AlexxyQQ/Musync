@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/usecase/get_lyrics_usecase.dart';
@@ -16,9 +15,6 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
   final GetLyricsUseCase getLyricsUseCase;
 
   Future<void> getLyrics({
-    required String artist,
-    required String title,
-    required int songId,
     required int currentIndex,
     required SongEntity song,
   }) async {
@@ -29,9 +25,7 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
     );
     final data = await getLyricsUseCase(
       GetLyricsParams(
-        artist: artist,
-        title: title,
-        songId: songId,
+        song: song,
       ),
     );
     log('data: $data');
@@ -140,9 +134,6 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
     final setting = await get<SettingsHiveService>().getSettings();
     if (setting.server) {
       await getLyrics(
-        artist: song.artist!,
-        title: song.title,
-        songId: song.id,
         currentIndex: currentIndex,
         song: song,
       );

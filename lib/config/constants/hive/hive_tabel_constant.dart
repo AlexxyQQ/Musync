@@ -18,4 +18,7 @@ class HiveTableConstant {
 
   static const int recentlyPlayedTableId = 5;
   static const String recentlyPlayedBox = "recentlyPlayedBox";
+
+  static const int recentSongTableId = 6;
+  static const String recentSongBox = "recentSongBox";
 }

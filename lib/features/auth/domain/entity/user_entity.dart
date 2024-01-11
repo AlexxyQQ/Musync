@@ -56,7 +56,7 @@ class UserEntity {
       'username': username,
       'email': email,
       'password': password,
-      'profilePic': profilePic,
+      'profile_pic': profilePic,
       'verified': verified,
       'type': type,
       'token': token,
@@ -72,7 +72,7 @@ class UserEntity {
       email: map['email'] != null ? map['email'] as String : null,
       password: map['password'] != null ? map['password'] as String : null,
       profilePic:
-          map['profilePic'] != null ? map['profilePic'] as String : null,
+          map['profile_pic'] != null ? map['profile_pic'] as String : null,
       verified: map['verified'] != null ? map['verified'] as bool : null,
       type: map['type'] != null ? map['type'] as String : null,
       token: map['token'] != null ? map['token'] as String : null,

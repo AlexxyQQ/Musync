@@ -1,6 +1,9 @@
 import 'package:musync/features/home/data/data_source/remote_data_source/remote_data_source.dart';
+import 'package:musync/features/home/domain/usecase/add_all_recent_songs_usecase.dart';
+import 'package:musync/features/home/domain/usecase/get_all_recentsongs_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_lyrics_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
+import 'package:musync/features/home/domain/usecase/get_todays_mix_songs.dart';
 import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 
 import '../../../injection/app_injection_container.dart';
@@ -107,6 +110,28 @@ class HomeInjectionContainer {
       () => GetLyricsUseCase(
         audioQueryRepository: get(),
         settingsHiveService: get(),
+        updateSongUsecase: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => GetTodaysMixSongsUseCase(
+        audioQueryRepository: get(),
+        queryHiveService: get(),
+        settingsHiveService: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => AddAllRecentSongsUseCase(
+        audioQueryRepository: get(),
+        queryHiveService: get(),
+        settingsHiveService: get(),
+      ),
+    );
+    get.registerLazySingleton(
+      () => GetAllRecentSongsUseCase(
+        audioQueryRepository: get(),
+        queryHiveService: get(),
+        settingsHiveService: get(),
       ),
     );
 
@@ -122,6 +147,8 @@ class HomeInjectionContainer {
         getRecentlyPlayedUsecase: get(),
         updateRecentlyPlayedUsecase: get(),
         updateSongUsecase: get(),
+        getAllRecentSongsUseCase: get(),
+        addAllRecentSongsUseCase: get(),
       ),
     );
   }

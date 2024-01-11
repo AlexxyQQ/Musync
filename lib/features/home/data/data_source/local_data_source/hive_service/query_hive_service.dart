@@ -92,6 +92,27 @@ class QueryHiveService {
     await box.put(song.id, song);
   }
 
+  // ------------------ AllRecent Songs Queries ------------------ //
+  Future<List<SongHiveModel>> getAllRecentSongs() async {
+    var box =
+        await Hive.openBox<SongHiveModel>(HiveTableConstant.recentSongBox);
+    var songs = box.values.toList();
+    return songs;
+  }
+
+  Future<void> addRecentSongs(List<SongHiveModel> songs) async {
+    var box =
+        await Hive.openBox<SongHiveModel>(HiveTableConstant.recentSongBox);
+    for (var song in songs) {
+      if (box.containsKey(song.id)) {
+        // Add lyrics to existing song or someting later
+        return;
+      } else {
+        await box.put(song.id, song);
+      }
+    }
+  }
+
   // ------------------ All Albums Queries ------------------ //
   Future<List<AlbumHiveModel>> getAllAlbums() async {
     final albums =
