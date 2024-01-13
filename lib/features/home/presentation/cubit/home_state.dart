@@ -1,7 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:musync/core/failure/error_handler.dart';
 import 'package:musync/features/home/domain/entity/album_entity.dart';
 import 'package:musync/features/home/domain/entity/artist_entity.dart';
@@ -20,10 +24,11 @@ class HomeState {
   final List<SongEntity>? favouriteSongs;
   final bool isSuccess;
   final int count;
-
   // Bottom Navigation Bar Selected Index
   final int selectedIndex;
   final PageController pageController;
+  final List<SongEntity>? todaysMix;
+
   HomeState({
     required this.isLoading,
     required this.error,
@@ -37,6 +42,7 @@ class HomeState {
     required this.count,
     required this.selectedIndex,
     required this.pageController,
+    this.todaysMix,
   });
 
   factory HomeState.initial() {
@@ -52,6 +58,7 @@ class HomeState {
       artists: [],
       folders: [],
       favouriteSongs: [],
+      todaysMix: [],
     );
   }
 
@@ -68,6 +75,7 @@ class HomeState {
     int? count,
     int? selectedIndex,
     PageController? pageController,
+    List<SongEntity>? todaysMix,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
@@ -82,18 +90,18 @@ class HomeState {
       count: count ?? this.count,
       selectedIndex: selectedIndex ?? this.selectedIndex,
       pageController: pageController ?? this.pageController,
+      todaysMix: todaysMix ?? this.todaysMix,
     );
   }
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, recentlyPlayed: $recentlyPlayed, favouriteSongs: $favouriteSongs, isSuccess: $isSuccess, count: $count, selectedIndex: $selectedIndex, pageController: $pageController)';
+    return 'HomeState(isLoading: $isLoading, error: $error, songs: $songs, albums: $albums, artists: $artists, folders: $folders, recentlyPlayed: $recentlyPlayed, favouriteSongs: $favouriteSongs, isSuccess: $isSuccess, count: $count, selectedIndex: $selectedIndex, pageController: $pageController, todaysMix: $todaysMix)';
   }
 
   @override
   bool operator ==(covariant HomeState other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
     return other.isLoading == isLoading &&
         other.error == error &&
@@ -106,7 +114,8 @@ class HomeState {
         other.isSuccess == isSuccess &&
         other.count == count &&
         other.selectedIndex == selectedIndex &&
-        other.pageController == pageController;
+        other.pageController == pageController &&
+        listEquals(other.todaysMix, todaysMix);
   }
 
   @override
@@ -122,6 +131,7 @@ class HomeState {
         isSuccess.hashCode ^
         count.hashCode ^
         selectedIndex.hashCode ^
-        pageController.hashCode;
+        pageController.hashCode ^
+        todaysMix.hashCode;
   }
 }

@@ -41,9 +41,6 @@ abstract class IAudioQueryRepository {
   });
 
   Future<Either<AppErrorHandler, List<SongEntity>>> getTodaysMixSongs({
-    required Function(int) onProgress,
-    bool? first,
-    bool? refetch,
     required String token,
   });
 

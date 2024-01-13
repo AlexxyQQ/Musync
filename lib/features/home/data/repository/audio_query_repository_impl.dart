@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 
@@ -96,14 +98,10 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
 
   @override
   Future<Either<AppErrorHandler, List<SongEntity>>> getTodaysMixSongs({
-    required Function(int p1) onProgress,
-    bool? first,
-    bool? refetch,
     required String token,
   }) async {
-    return await audioQueryDataSource.getAllSongs(
+    return await audioQueryDataSource.getTodaysMixSongs(
       token: token,
-      onProgress: onProgress,
     );
   }
 
@@ -119,8 +117,10 @@ class AudioQueryRepositiryImpl implements IAudioQueryRepository {
   @override
   Future<Either<AppErrorHandler, List<SongEntity>>> getRecentSongs(
       {required String token}) async {
-    return await audioQueryDataSourceImpl.getRecentSongs(
+    final data = await audioQueryDataSourceImpl.getRecentSongs(
       token: token,
     );
+    log("Recently Played Songs: $data");
+    return data;
   }
 }

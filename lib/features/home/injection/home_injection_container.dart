@@ -2,7 +2,6 @@ import 'package:musync/features/home/data/data_source/remote_data_source/remote_
 import 'package:musync/features/home/domain/usecase/add_all_recent_songs_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_all_recentsongs_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_lyrics_usecase.dart';
-import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_todays_mix_songs.dart';
 import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 
@@ -90,16 +89,7 @@ class HomeInjectionContainer {
         queryHiveService: get(),
       ),
     );
-    get.registerLazySingleton(
-      () => GetRecentlyPlayedUsecase(
-        queryHiveService: get(),
-      ),
-    );
-    get.registerLazySingleton(
-      () => UpdateRecentlyPlayedUsecase(
-        queryHiveService: get(),
-      ),
-    );
+
     get.registerLazySingleton(
       () => UpdateSongUsecase(
         settingsHiveService: get(),
@@ -144,11 +134,10 @@ class HomeInjectionContainer {
         getAllFoldersUsecase: get(),
         settingsHiveService: get(),
         queryHiveService: get(),
-        getRecentlyPlayedUsecase: get(),
-        updateRecentlyPlayedUsecase: get(),
         updateSongUsecase: get(),
         getAllRecentSongsUseCase: get(),
         addAllRecentSongsUseCase: get(),
+        getTodaysMixSongsUseCase: get(),
       ),
     );
   }

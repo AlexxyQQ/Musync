@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/album_art_query_save.dart';
 import 'package:musync/core/failure/error_handler.dart';
@@ -273,15 +275,6 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
   }
 
   @override
-  Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs(
-      {required Function(int p1) onProgress,
-      bool? first,
-      bool? refetch,
-      required String token}) async {
-    return const Right([]);
-  }
-
-  @override
   Future<Either<AppErrorHandler, String>> addRecentSongs(
       {required String token, List<AppSongModel>? songs}) async {
     try {
@@ -321,6 +314,7 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
 
       return Right(recentSongs);
     } catch (e) {
+      log(e.toString(), name: 'AudioQueryLocalDataSource');
       return Left(
         AppErrorHandler(
           message: e.toString(),
@@ -328,5 +322,12 @@ class AudioQueryLocalDataSource implements IAudioQueryDataSource {
         ),
       );
     }
+  }
+
+  @override
+  Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs(
+      {required String token}) {
+    // TODO: implement getTodaysMixSongs
+    throw UnimplementedError();
   }
 }

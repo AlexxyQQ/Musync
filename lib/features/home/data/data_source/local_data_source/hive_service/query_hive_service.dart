@@ -224,42 +224,4 @@ class QueryHiveService {
         await Hive.openBox<FolderHiveModel>(HiveTableConstant.folderBox);
     await foldersBox.clear();
   }
-
-  // ------------------ All Recently Played Queries ------------------ //
-
-  Future<RecentlyPlayedHiveModel> getRecentlyPlayed() async {
-    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
-      HiveTableConstant.recentlyPlayedBox,
-    );
-    final data = recentlyPlayedBox.values;
-    if (data.isEmpty) {
-      addRecentlyPlayed(RecentlyPlayedHiveModel.empty());
-      return RecentlyPlayedHiveModel.empty();
-    } else {
-      return data.first;
-    }
-  }
-
-  Future<void> addRecentlyPlayed(RecentlyPlayedHiveModel recentlyPlayed) async {
-    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
-      HiveTableConstant.recentlyPlayedBox,
-    );
-    await recentlyPlayedBox.add(recentlyPlayed);
-  }
-
-  Future<void> updateRecentlyPlayed(
-    RecentlyPlayedHiveModel recentlyPlayed,
-  ) async {
-    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
-      HiveTableConstant.recentlyPlayedBox,
-    );
-    await recentlyPlayedBox.put(0, recentlyPlayed);
-  }
-
-  Future<void> deleteRecentlyPlayed() async {
-    final recentlyPlayedBox = await Hive.openBox<RecentlyPlayedHiveModel>(
-      HiveTableConstant.recentlyPlayedBox,
-    );
-    await recentlyPlayedBox.delete(0);
-  }
 }

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +7,7 @@ import 'package:musync/features/home/domain/entity/recently_played_entity.dart';
 import 'package:musync/features/home/domain/entity/song_entity.dart';
 import 'package:musync/features/home/domain/usecase/add_all_recent_songs_usecase.dart';
 import 'package:musync/features/home/domain/usecase/get_all_recentsongs_usecase.dart';
-import 'package:musync/features/home/domain/usecase/get_recently_played_usecase.dart';
+import 'package:musync/features/home/domain/usecase/get_todays_mix_songs.dart';
 import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 import 'package:musync/injection/app_injection_container.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -30,12 +27,12 @@ class QueryCubit extends Cubit<HomeState> {
   final GetAllFoldersUsecase getAllFoldersUsecase;
   final SettingsHiveService settingsHiveService;
   final QueryHiveService queryHiveService;
-  final GetRecentlyPlayedUsecase getRecentlyPlayedUsecase;
-  final UpdateRecentlyPlayedUsecase updateRecentlyPlayedUsecase;
   final UpdateSongUsecase updateSongUsecase;
 
   final GetAllRecentSongsUseCase getAllRecentSongsUseCase;
   final AddAllRecentSongsUseCase addAllRecentSongsUseCase;
+
+  final GetTodaysMixSongsUseCase getTodaysMixSongsUseCase;
 
   QueryCubit({
     required this.getAllSongsUseCase,
@@ -44,11 +41,10 @@ class QueryCubit extends Cubit<HomeState> {
     required this.getAllFoldersUsecase,
     required this.settingsHiveService,
     required this.queryHiveService,
-    required this.getRecentlyPlayedUsecase,
-    required this.updateRecentlyPlayedUsecase,
     required this.updateSongUsecase,
     required this.getAllRecentSongsUseCase,
     required this.addAllRecentSongsUseCase,
+    required this.getTodaysMixSongsUseCase,
   }) : super(HomeState.initial()) {
     init();
   }
@@ -61,6 +57,7 @@ class QueryCubit extends Cubit<HomeState> {
     await getAllArtists(first: settings.firstTime, refetch: true);
     await getAllFolders(first: settings.firstTime, refetch: true);
     await getRecentlyPlayedSongs();
+    await getTodaysMixSongs();
     // Update Settings
     await get<SettingsHiveService>().updateSettings(
       settings.copyWith(
@@ -70,7 +67,39 @@ class QueryCubit extends Cubit<HomeState> {
     );
   }
 
-  Future<void> getAllRecentSongs() async {
+  Future<void> getTodaysMixSongs() async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        isSuccess: false,
+        error: null,
+      ),
+    );
+    final data = await getTodaysMixSongsUseCase.call(null);
+
+    data.fold((l) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: false,
+          error: l,
+          count: state.count,
+        ),
+      );
+    }, (r) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          error: null,
+          count: state.count,
+          todaysMix: r,
+        ),
+      );
+    });
+  }
+
+  Future<void> getRecentlyPlayedSongs() async {
     emit(
       state.copyWith(
         isLoading: true,
@@ -110,8 +139,8 @@ class QueryCubit extends Cubit<HomeState> {
     });
   }
 
-  Future addAllRecentSongs({
-    required List<SongEntity> songs,
+  Future updateRecentlyPlayedSongs({
+    required SongEntity song,
   }) async {
     emit(
       state.copyWith(
@@ -120,7 +149,15 @@ class QueryCubit extends Cubit<HomeState> {
         error: null,
       ),
     );
-    final data = await addAllRecentSongsUseCase.call(songs);
+
+    // add the song to recently played
+
+    final songs = state.recentlyPlayed?.songs ?? [];
+    songs.add(song);
+    // remove duplicates
+    final uniqueSongs = songs.toSet().toList();
+
+    final data = await addAllRecentSongsUseCase.call(uniqueSongs);
 
     data.fold((l) {
       emit(
@@ -189,15 +226,6 @@ class QueryCubit extends Cubit<HomeState> {
             songs: r,
           ),
         ); // Pass the final list of songs
-        // create a json file for the songs and save it in the root directory
-
-        final map = r.map((e) => e.toMap()).toList();
-        //  now write the file
-        String jsonString = jsonEncode(map);
-
-        // now save the json file in the root directory
-
-        log(jsonString);
       });
     } catch (e) {
       emit(
@@ -385,107 +413,6 @@ class QueryCubit extends Cubit<HomeState> {
             error: null,
             count: state.count,
             folders: updatedFolders,
-          ),
-        );
-      });
-    } catch (e) {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          isSuccess: false,
-          error: AppErrorHandler(message: e.toString(), status: false),
-          count: state.count,
-        ),
-      );
-    }
-  }
-
-  Future<void> getRecentlyPlayedSongs() async {
-    emit(
-      state.copyWith(
-        isLoading: true,
-        isSuccess: false,
-        error: null,
-      ),
-    );
-    try {
-      final data = await getRecentlyPlayedUsecase.call(null);
-
-      data.fold((l) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: true,
-            recentlyPlayed: RecentlyPlayedEntity.empty(),
-            count: state.count,
-          ),
-        );
-      }, (r) {
-        RecentlyPlayedEntity recentlyPlayed = r;
-        // Sort the list and remove duplicates
-        recentlyPlayed.songs.sort((a, b) => a.title.compareTo(b.title));
-        recentlyPlayed = recentlyPlayed.copyWith(
-          songs: recentlyPlayed.songs.toSet().toList(),
-        );
-
-        emit(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: true,
-            error: null,
-            count: state.count,
-            recentlyPlayed: recentlyPlayed,
-          ),
-        );
-      });
-    } catch (e) {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          isSuccess: true,
-          error: null,
-          count: state.count,
-          recentlyPlayed: RecentlyPlayedEntity.empty(),
-        ),
-      );
-    }
-  }
-
-  Future<void> updateRecentlyPlayedSongs({required SongEntity song}) async {
-    emit(
-      state.copyWith(
-        isLoading: true,
-        isSuccess: false,
-        error: null,
-      ),
-    );
-    try {
-      // Check the song is already in the list
-      final isAlreadyInList = state.recentlyPlayed?.songs
-          .where((element) => element.id == song.id)
-          .isNotEmpty;
-
-      if (isAlreadyInList!) {
-        return;
-      }
-
-      final data = await updateRecentlyPlayedUsecase.call(song);
-      data.fold((l) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: false,
-            error: l,
-            count: state.count,
-          ),
-        );
-      }, (r) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: true,
-            error: null,
-            count: state.count,
           ),
         );
       });

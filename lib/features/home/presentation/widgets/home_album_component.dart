@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
@@ -86,6 +88,7 @@ class HomeAlbumComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<QueryCubit, HomeState>(
       builder: (context, state) {
+        log(state.error.toString());
         if (state.isLoading) {
           return SizedBox(
             height: 160,

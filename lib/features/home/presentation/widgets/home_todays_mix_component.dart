@@ -92,15 +92,11 @@ class HomeTodaysMixComponent extends StatelessWidget {
             if (state.isLoading) {
               return const SizedBox.shrink();
             } else if (state.isSuccess) {
-              if (state.albums.isEmpty) {
+              if (state.todaysMix!.isEmpty) {
                 return const SizedBox.shrink();
               } else {
                 // Select 10 random songs from the songs list
-                final recommendedSongs = state.songs
-                    .where((song) => song.albumArt != null)
-                    .toList()
-                    .getRange(0, 10)
-                    .toList();
+                final recommendedSongs = state.todaysMix!.take(8).toList();
                 return Column(
                   children: [
                     // Section Title

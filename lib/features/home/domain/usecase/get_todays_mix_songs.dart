@@ -9,8 +9,7 @@ import 'package:musync/features/home/domain/repository/audio_query_repository.da
 import 'package:musync/features/home/domain/usecase/get_all_songs_usecase.dart';
 import 'package:musync/injection/app_injection_container.dart';
 
-class GetTodaysMixSongsUseCase
-    extends UseCase<List<SongEntity>, GetQueryParams> {
+class GetTodaysMixSongsUseCase extends UseCase<List<SongEntity>, void> {
   final IAudioQueryRepository audioQueryRepository;
   final QueryHiveService queryHiveService;
   final SettingsHiveService settingsHiveService;
@@ -36,9 +35,6 @@ class GetTodaysMixSongsUseCase
       }
 
       final data = await audioQueryRepository.getTodaysMixSongs(
-        onProgress: params.onProgress!,
-        first: params.first,
-        refetch: params.refetch ?? false,
         token: setting.token ?? '',
       );
       return data.fold(

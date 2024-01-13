@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -189,7 +188,8 @@ class AppDrawer extends StatelessWidget {
                       child: (state.loggedUser != null &&
                               state.loggedUser?.id != null)
                           ? CachedNetworkImage(
-                              imageUrl: state.loggedUser!.profilePic ?? "",)
+                              imageUrl: state.loggedUser!.profilePic ?? "",
+                            )
                           : Image.asset('assets/default_profile.jpeg'),
                     ),
                     const SizedBox(
@@ -220,6 +220,18 @@ class AppDrawer extends StatelessWidget {
                     AppRoutes.getStartedRoute,
                     (route) => false,
                   );
+                },
+              ),
+              ListTile(
+                title: Text(
+                  'Reload ',
+                  style: Theme.of(context).textTheme.mBM.copyWith(
+                        color: AppColors().onSurface,
+                      ),
+                ),
+                onTap: () async {
+                  BlocProvider.of<QueryCubit>(context).init();
+                  Navigator.pop(context);
                 },
               ),
             ],

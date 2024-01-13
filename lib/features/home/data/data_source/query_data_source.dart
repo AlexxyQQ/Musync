@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/data/data_source/local_data_source/local_data_source.dart';
@@ -49,9 +51,6 @@ abstract class IAudioQueryDataSource {
   });
 
   Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs({
-    required Function(int) onProgress,
-    bool? first,
-    bool? refetch,
     required String token,
   });
 
@@ -272,29 +271,10 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required String token,
   }) async {
     try {
-      if (refetch == true) {
-        // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-        return localDataSource.getAllAlbums(
-          refetch: refetch,
-          token: token,
-        );
-      } else {
-        final hiveAlbums = await queryHiveService.getAllAlbums();
-        if (hiveAlbums.isNotEmpty) {
-          return Right(
-            AppAlbumModel.fromListHiveModel(
-              hiveAlbums,
-            ),
-          );
-        } else {
-          return Left(
-            AppErrorHandler(
-              message: 'No songs found',
-              status: false,
-            ),
-          );
-        }
-      }
+      return localDataSource.getAllAlbums(
+        refetch: refetch,
+        token: token,
+      );
     } catch (e) {
       return Left(
         AppErrorHandler(
@@ -312,30 +292,10 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required String token,
   }) async {
     try {
-      if (refetch == true) {
-        // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-
-        return localDataSource.getAllArtists(
-          refetch: refetch,
-          token: token,
-        );
-      } else {
-        final hiveArtists = await queryHiveService.getAllArtists();
-        if (hiveArtists.isNotEmpty) {
-          return Right(
-            AppArtistModel.fromListHiveModel(
-              hiveArtists,
-            ),
-          );
-        } else {
-          return Left(
-            AppErrorHandler(
-              message: 'No songs found',
-              status: false,
-            ),
-          );
-        }
-      }
+      return localDataSource.getAllArtists(
+        refetch: refetch,
+        token: token,
+      );
     } catch (e) {
       return Left(
         AppErrorHandler(
@@ -351,30 +311,10 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
     required String token,
   }) async {
     try {
-      if (refetch == true) {
-        // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
-
-        return localDataSource.getAllFolders(
-          refetch: refetch,
-          token: token,
-        );
-      } else {
-        final hiveFolders = await queryHiveService.getAllFolders();
-        if (hiveFolders.isNotEmpty) {
-          return Right(
-            AppFolderModel.fromListHiveModel(
-              hiveFolders,
-            ),
-          );
-        } else {
-          return Left(
-            AppErrorHandler(
-              message: 'No songs found',
-              status: false,
-            ),
-          );
-        }
-      }
+      return localDataSource.getAllFolders(
+        refetch: refetch,
+        token: token,
+      );
     } catch (e) {
       return Left(
         AppErrorHandler(
@@ -387,9 +327,6 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
 
   @override
   Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs({
-    required Function(int p1) onProgress,
-    bool? first,
-    bool? refetch,
     required String token,
   }) async {
     try {
@@ -402,9 +339,6 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
       // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
       if (connectivity && serverUp && !offline) {
         return remoteDataSource.getTodaysMixSongs(
-          onProgress: onProgress,
-          first: first,
-          refetch: refetch,
           token: token,
         );
       } else {
@@ -428,14 +362,17 @@ class AudioQueryDataSourceImpl implements IAudioQueryDataSource {
           );
       // if both are true then fetch the data from the server and from local storage and compare the data and update the local storage or server accordingly
       if (connectivity && serverUp && !offline) {
-        return remoteDataSource.getRecentSongs(
+        final data = await localDataSource.getRecentSongs(
           token: token,
         );
+        return data;
       } else {
         // else return data from the local storage
-        return localDataSource.getRecentSongs(
+        final data = await localDataSource.getRecentSongs(
           token: token,
         );
+
+        return data;
       }
     } catch (e) {
       return const Right([]);

@@ -314,14 +314,11 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
 
   @override
   Future<Either<AppErrorHandler, List<AppSongModel>>> getTodaysMixSongs({
-    required Function(int p1) onProgress,
-    bool? first,
-    bool? refetch,
     required String token,
   }) async {
     try {
       final response = await api.sendRequest.get(
-        ApiEndpoints.getAllSongsRoute,
+        ApiEndpoints.getTodaysMixSongRoute,
         options: Options(
           headers: {
             "Authorization": 'Bearer $token',
@@ -330,22 +327,7 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
       );
 
       if (response.statusCode == 200) {
-        // for each song in the response, check if it exists in the phone
-        final List<AppSongModel> existingSongs = [];
-
-        for (final Map<String, dynamic> song
-            in response.data['songs'] as List) {
-          final songExists = await File(song['data']).exists();
-          if (songExists) {
-            existingSongs.add(
-              AppSongModel.fromMap(
-                song,
-              ),
-            );
-          }
-        }
-
-        return Right(existingSongs);
+        return Right(AppSongModel.fromMapList(response.data['data']));
       } else {
         return Left(
           AppErrorHandler(
@@ -381,21 +363,7 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
 
       if (response.statusCode == 200) {
         // for each song in the response, check if it exists in the phone
-        final List<AppSongModel> existingSongs = [];
-
-        for (final Map<String, dynamic> song
-            in response.data['songs'] as List) {
-          final songExists = await File(song['data']).exists();
-          if (songExists) {
-            existingSongs.add(
-              AppSongModel.fromMap(
-                song,
-              ),
-            );
-          }
-        }
-
-        return Right(existingSongs);
+        return Right([]);
       } else {
         return Left(
           AppErrorHandler(
@@ -430,7 +398,7 @@ class AudioQueryRemoteDataSource implements IAudioQueryDataSource {
           },
         ),
         data: {
-          "songsMaps": songs?.map((song) => song.toMap()).toList(),
+          "songMaps": songs?.map((song) => song.toMap()).toList(),
         },
       );
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:musync/core/common/hive/hive_service/setting_hive_service.dart';
 import 'package:musync/core/failure/error_handler.dart';
@@ -36,6 +38,8 @@ class GetAllRecentSongsUseCase extends UseCase<List<SongEntity>, void> {
       final data = await audioQueryRepository.getRecentSongs(
         token: setting.token ?? '',
       );
+
+
       return data.fold(
         (l) => Left(l),
         (r) => Right(r),
