@@ -10,6 +10,7 @@ import 'package:musync/features/home/domain/usecase/get_all_recentsongs_usecase.
 import 'package:musync/features/home/domain/usecase/get_todays_mix_songs.dart';
 import 'package:musync/features/home/domain/usecase/update_song_usecase.dart';
 import 'package:musync/injection/app_injection_container.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../core/common/hive/hive_service/setting_hive_service.dart';
@@ -120,7 +121,7 @@ class QueryCubit extends Cubit<HomeState> {
       );
     }, (r) {
       final RecentlyPlayedEntity recentlyPlayed = RecentlyPlayedEntity.fromMap({
-        "songs": r,
+        "songs": r.map((e) => e.toMap()).toList(),
       });
       // sort the list and remove duplicates
       recentlyPlayed.songs.sort((a, b) => a.title.compareTo(b.title));

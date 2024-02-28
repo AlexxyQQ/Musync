@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:musync/core/common/album_query_widget.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
@@ -72,6 +74,7 @@ class HomeArtistComponent extends StatelessWidget {
           if (state.artists.isEmpty) {
             return const SizedBox.shrink();
           } else {
+            log('Artists: ${state.artists[0].songs}');
             return Column(
               children: [
                 // Section Title
@@ -124,12 +127,15 @@ class HomeArtistComponent extends StatelessWidget {
                             children: [
                               // Album Cover
                               SongArtWork(
-                                song: state.artists[index].songs!.firstWhere(
-                                  (song) => song.albumArt != null,
-                                ),
+                                song: (state.artists[index].songs == null ||
+                                        state.artists[index].songs!.isEmpty)
+                                    ? null
+                                    : state.artists[index].songs!.firstWhere(
+                                        (song) => song.albumArt != null,
+                                      ),
                                 height: 100,
-                                width: 100,
-                                borderRadius: 500,
+                                width: 150,
+                                borderRadius: 8,
                               ),
                               const SizedBox(height: 8),
                               // Album Details

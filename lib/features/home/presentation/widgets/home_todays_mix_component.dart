@@ -133,7 +133,7 @@ class HomeTodaysMixComponent extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SongsListPage(
-                                    songs: state.albums[index].songs ?? [],
+                                    songs: recommendedSongs,
                                   ),
                                 ),
                               );

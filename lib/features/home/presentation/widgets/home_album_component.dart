@@ -156,9 +156,12 @@ class HomeAlbumComponent extends StatelessWidget {
                             children: [
                               // Album Cover
                               SongArtWork(
-                                song: state.albums[index].songs!.firstWhere(
-                                  (song) => song.albumArt != null,
-                                ),
+                                song: (state.albums[index].songs == null ||
+                                        state.albums[index].songs!.isEmpty)
+                                    ? null
+                                    : state.albums[index].songs!.firstWhere(
+                                        (song) => song.albumArt != null,
+                                      ),
                                 height: 100,
                                 width: 150,
                                 borderRadius: 8,

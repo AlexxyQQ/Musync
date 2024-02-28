@@ -102,18 +102,6 @@ class LoginSignupButton extends StatelessWidget {
                   fixedSize: const Size(110, 40),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
-
-                // Google Sign In Button
-                KButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .popAndPushNamed(AppRoutes.signupRoute);
-                  },
-                  svg: 'assets/icons/Google-Colored.svg',
-                  borderRadius: 32,
-                  fixedSize: const Size(110, 40),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                ),
               ],
             ),
             const SizedBox(height: 18),
@@ -130,7 +118,6 @@ class LoginSignupButton extends StatelessWidget {
                       offline: true,
                     ),
                   );
-                  // await ref.read(songProvider).permission();
                   navigator.pushNamedAndRemoveUntil(
                     AppRoutes.bottomNavRoute,
                     (route) => false,

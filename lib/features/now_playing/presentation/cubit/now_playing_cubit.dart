@@ -121,6 +121,7 @@ class NowPlayingCubit extends Cubit<NowPlayingState> {
     emit(
       state.copyWith(
         isPlaying: false,
+        currentSong: null,
       ),
     );
   }

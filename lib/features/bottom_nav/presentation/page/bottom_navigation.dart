@@ -6,6 +6,7 @@ import 'package:musync/core/common/custom_widgets/custom_form_filed.dart';
 import 'package:musync/core/common/exports.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_cubit.dart';
 import 'package:musync/features/auth/presentation/cubit/authentication_state.dart';
+import 'package:musync/features/bottom_nav/presentation/widget/browse_page.dart';
 import 'package:musync/features/bottom_nav/presentation/widget/mini_player.dart';
 import 'package:musync/features/home/presentation/cubit/home_state.dart';
 import 'package:musync/features/home/presentation/pages/home_page.dart';
@@ -26,7 +27,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   final List<Widget> _widgetOptions = [
     const HomePage(),
-    const Placeholder(),
+    const BrowsePage(),
     const LibraryPage(),
   ];
 
@@ -214,6 +215,8 @@ class AppDrawer extends StatelessWidget {
                       ),
                 ),
                 onTap: () async {
+                  // Sotp the music
+                  BlocProvider.of<NowPlayingCubit>(context).stop();
                   BlocProvider.of<AuthenticationCubit>(context).logout();
                   Navigator.pushNamedAndRemoveUntil(
                     context,

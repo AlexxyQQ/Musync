@@ -52,7 +52,7 @@ class RecentlyPlayedEntity {
           : DateTime.now().add(const Duration(days: 1)).toString(),
       songs: List<SongEntity>.from(
         map['songs'].map<SongEntity>(
-          (x) => SongEntity.fromMap(x as Map<String, dynamic>),
+          (x) => SongEntity.fromMap(x),
         ),
       ),
     );
